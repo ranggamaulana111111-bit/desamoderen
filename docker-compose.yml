@@ -1,0 +1,97 @@
+name: prodesa
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: prodesa-app
+    restart: unless-stopped
+    container_name: prodesa-app
+    environment: &app-env
+      APP_NAME: "Prodesa"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_TIMEZONE: Asia/Jakarta
+      APP_URL: "${APP_URL:-http://localhost}"
+      APP_KEY: "${APP_KEY:-}"
+      LOG_CHANNEL: stack
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: "${DB_DATABASE:-prodesa}"
+      DB_USERNAME: "${DB_USERNAME:-prodesa}"
+      DB_PASSWORD: "${DB_PASSWORD:-prodesa}"
+      QUEUE_CONNECTION: database
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: 120
+      FILESYSTEM_DISK: local
+      MAIL_MAILER: log
+      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
+    volumes:
+      - storage-data:/var/www/html/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - prodesa
+
+  web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    container_name: prodesa-web
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - prodesa
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: prodesa-app
+    restart: unless-stopped
+    container_name: prodesa-queue
+    command: ["php", "artisan", "queue:work", "--tries=3", "--timeout=90"]
+    environment: *app-env
+    volumes:
+      - storage-data:/var/www/html/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - prodesa
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    container_name: prodesa-db
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-prodesa}"
+      MYSQL_USER: "${DB_USERNAME:-prodesa}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-prodesa}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-prodesa_root}"
+    ports:
+      - "${DB_PORT_EXPOSE:-3306}:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - prodesa
+
+volumes:
+  storage-data:
+  db-data:
+
+networks:
+  prodesa:
+    driver: bridge
