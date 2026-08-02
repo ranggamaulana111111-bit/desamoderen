@@ -1,0 +1,1 @@
+<link rel="icon" href="{{ asset('storage/' . config('village.logo_desa')) }}">
