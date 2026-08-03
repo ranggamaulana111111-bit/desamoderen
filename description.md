@@ -1,6 +1,16 @@
 # Prodesa (Portal Desa) — Digitalisasi Pelayanan Desa
 
-**Prodesa** adalah aplikasi web desa digital (Web Desa) berbasis **Laravel 11** dan **PHP 8.2**, dirancang untuk memberikan layanan administrasi kependudukan secara online bagi warga **Desa Kumpay, Kecamatan Ciasem, Kabupaten Subang, Jawa Barat**. Aplikasi ini menggantikan proses birokrasi konvensional dengan sistem pengajuan surat secara daring yang cepat, transparan, dan terintegrasi, dilengkapi RBAC multi-level, workflow approval, manajemen dokumen, monitoring antrean, analitik, ketatausahaan desa, inventaris & aset, APBDesa, serta laporan desa kuantitatif.
+<p align="center">
+  <img src="https://img.shields.io/badge/Developer-Rangga_Maulana-0ea5e9?style=for-the-badge&logo=laravel&logoColor=white" alt="Developer">
+</p>
+
+<p align="center">
+  <a href="https://wa.me/6285176922584"><img src="https://img.shields.io/badge/WhatsApp-0851_7692_2584-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp"></a>
+  <a href="https://instagram.com/rangga.mrw"><img src="https://img.shields.io/badge/Instagram-%40rangga.mrw-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+  <a href="https://github.com/ranggamaulana111111-bit"><img src="https://img.shields.io/badge/GitHub-ranggamaulana111111_bit-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
+
+**Prodesa** adalah aplikasi web desa digital (Web Desa) berbasis **Laravel 11** dan **PHP 8.2**, dirancang untuk memberikan layanan administrasi kependudukan secara online bagi warga **Desa Kumpay, Kecamatan Ciasem, Kabupaten Subang, Jawa Barat**. Aplikasi ini menggantikan proses birokrasi konvensional dengan sistem pengajuan surat secara daring yang cepat, transparan, dan terintegrasi, dilengkapi RBAC multi-level, workflow approval, manajemen dokumen, monitoring antrean, pengambilan surat via scan QR, notifikasi Telegram, analitik, ketatausahaan desa, inventaris & aset, APBDesa, serta laporan desa kuantitatif.
 
 ---
 
@@ -18,10 +28,11 @@
 | **Calendar** | FullCalendar | Kalender event desa |
 | **Build Tool** | Vite 5 + laravel-vite-plugin | HMR & build |
 | **PDF Generation** | barryvdh/laravel-dompdf ^3.1 | Generate surat & laporan kuantitatif PDF |
-| **QR Code** | simplesoftwareio/simple-qrcode ^4.2 | QR Code pada PDF & antrean |
+| **QR Code** | simplesoftwareio/simple-qrcode ^4.2 + html5-qrcode | QR Code pada PDF, antrean, & scan kamera pickup |
+| **Notifikasi** | Telegram Bot API (HTTP) | Pengajuan baru & surat selesai via bot |
 | **RBAC** | spatie/laravel-permission | Role & permission management |
 | **Auth** | Kustom (tanpa Breeze/Jetstream) | Login berbasis NIK |
-| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test |
+| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test (41 test) |
 | **Code Style** | Laravel Pint ^1.13 | PSR-12 berbasis Laravel |
 
 ---
@@ -97,8 +108,9 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | Fitur | Endpoint | Permission | Deskripsi |
 |---|---|---|---|
 | **Monitoring Antrean** | `/admin/queue` | `queue.view` | Statistik queue + Chart.js chart + failed jobs (retry/delete) |
+| **Pengambilan Surat** | `/admin/queue/pickup` | `queue.view` / `queue.manage` | Scan QR antrean via kamera, cari manual (live filter), serahkan dokumen / tandai lewat |
 | **Analitik & Laporan** | `/admin/analytics` | `analytics.view` | 8 metrik + 4 Chart.js chart + CSV export |
-| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | Identitas desa, kades, stempel, ttd, jam antrean |
+| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | Identitas desa, kades, stempel, ttd, jam antrean, konfigurasi notifikasi Telegram |
 
 #### Laporan Desa Kuantitatif
 
@@ -138,9 +150,9 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | Role | Login redirect | Menu sidebar yang terlihat |
 |---|---|---|
 | **Super Admin** | `/admin/dashboard` | Semua menu |
-| **Operator Pelayanan** | `/admin/dashboard` | Dashboard, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Monitoring Antrean, Analitik, Laporan, Pengaturan |
-| **Sekretaris Desa** | `/admin/dashboard` | Dashboard, **Panel Sekdes**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, Laporan, Pengaturan |
-| **Kepala Desa** | `/admin/dashboard` | Dashboard, **Panel Kades**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, Laporan, Pengaturan |
+| **Operator Pelayanan** | `/admin/dashboard` | Dashboard, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Monitoring Antrean, **Pengambilan Surat**, Analitik, Laporan, Pengaturan |
+| **Sekretaris Desa** | `/admin/dashboard` | Dashboard, **Panel Sekdes**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, **Pengambilan Surat**, Laporan, Pengaturan |
+| **Kepala Desa** | `/admin/dashboard` | Dashboard, **Panel Kades**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, **Pengambilan Surat**, Laporan, Pengaturan |
 | **RT / RW** | `/admin/dashboard` | Dashboard, Pelayanan Surat, Analitik |
 | **Warga** | `/warga/dashboard` | Panel warga (bukan admin) |
 
@@ -195,8 +207,8 @@ Sekdes → approved_sekdes (letter.verify)
   ↓
 Kades → completed (letter.final_approve)
     ↳ Generate hash verifikasi
-    ↳ Alokasi slot antrean
-    ↳ Dispatch queue job (generate PDF + simpan)
+    ↳ Alokasi slot antrean (nomor + kode QR)
+    ↳ Dispatch queue job (generate PDF + notifikasi Telegram)
 ```
 
 Setiap step bisa **reject** (ke status terminal) atau **revision** (kembali ke warga untuk diperbaiki, status `revision`). Warga memperbaiki lalu resubmit → kembali ke `submitted`.
@@ -227,10 +239,10 @@ Service: `ApprovalService` — menangani step map, permission check, transisi, t
 | Pindah | 483 | 1 bulan |
 
 **Cara kerja:**
-- `LetterConfig` model: `fields` (JSON), `body_template`, `kode_klasifikasi`, `masa_berlaku_bulan`
+- `LetterConfig` model: `fields` (JSON), `body_template`, `kode_klasifikasi`, `masa_berlaku_bulan`, `requirements` (daftar dokumen wajib)
 - `DynamicLetterService` implements `LetterGeneratorInterface` — render body dari template
 - `LetterServiceFactory::make()` → cek existing strategy (sktm/ktp_sementara/akta) → fallback ke `DynamicLetterService`
-- Form warga: render field dinamis (text, select, textarea, number, date, time) dari `LetterConfig.fields`
+- Form warga: render field dinamis (text, select, textarea, number, date, time) dari `LetterConfig.fields` + kotak "Dokumen yang Wajib Dilampirkan" dari `requirements`
 - Validasi: `LetterConfig::getValidationRules()` generate rules otomatis
 - PDF: `pdf/template_dynamic.blade.php` dengan `{{ $rendered_body }}` hasil `LetterConfig::renderBody()`
 
@@ -255,6 +267,24 @@ Dashboard monitoring antrean job Laravel:
 - **Chart.js:** Bar chart mingguan + donut chart distribusi status
 - **Failed jobs:** Tabel dengan aksi retry single / retry all / delete
 - **Service:** `QueueMonitoringService` — query tabel `jobs` + `failed_jobs`
+- **Catatan:** aplikasi memakai `QUEUE_CONNECTION=sync` sehingga job berjalan langsung tanpa worker
+
+---
+
+## Pengambilan Surat (QR Pickup)
+
+Alur pengambilan dokumen selesai diproses oleh petugas:
+
+- **Antrean dibuat otomatis** saat surat `completed` — `nomor_antrean`, slot jadwal, `kode_qr` (unik)
+- **Halaman publik** `/antrean/{kodeQr}` — warga melihat nomor antrean & jadwal pengambilan
+- **Halaman admin** `/admin/queue/pickup` (`AntreanController`):
+  - **Scan kamera** via html5-qrcode (getCameras + start/stop)
+  - **Cari manual** dengan live filter (nomor antrean / kode QR / nama / NIK / jenis surat)
+  - **Detail antrean** — pemohon, NIK, jenis surat, jadwal, nomor surat
+  - **Serahkan Dokumen** (`proses`) → status `diambil`
+  - **Tandai Lewat** (`lewat`) → status `lewat`
+- Setiap aksi dicatat di `activity_logs` (`antrean_diambil` / `antrean_lewat`)
+- Akses: `queue.view` untuk melihat, `queue.manage` untuk memproses
 
 ---
 
@@ -407,10 +437,11 @@ Semua aksi penting dicatat via `ActivityLog::catat()`: create/approve/reject/rev
 
 ### Queue (Async PDF Generation)
 
-`ProcessCompletedLetter` job di-dispatch saat surat selesai:
+`ProcessCompletedLetter` job di-dispatch saat surat selesai (via `QUEUE_CONNECTION=sync`):
 - Generate PDF via DomPDF + Strategy Pattern
 - Simpan ke `storage/app/private/surat/`
 - Update `pdf_path` di `pengajuan_surats`
+- Kirim notifikasi Telegram (surat selesai + jadwal ambil) via `TelegramNotifier`
 
 ### Pessimistic Lock
 
@@ -446,7 +477,7 @@ resources/views/
 │   ├── inventaris/{index,create,show,edit}.blade.php
 │   ├── apbdesa/{index,create,show,edit}.blade.php
 │   ├── laporan/{index,create,show,edit}.blade.php
-│   ├── queue/index.blade.php
+│   ├── queue/{index,pickup}.blade.php
 │   ├── analytics/index.blade.php
 │   └── setting/index.blade.php
 ├── pdf/
@@ -469,7 +500,7 @@ resources/views/
 POST `/logout`
 
 ### Admin — middleware: auth + admin (role != Warga)
-`/admin/dashboard` • `/admin/kades` • `/admin/sekdes` • `/admin/pengajuan/*` • `/admin/warga` • `/admin/users/*` • `/admin/roles/*` • `/admin/berita/*` • `/admin/events/*` • `/admin/surat-masuk/*` • `/admin/surat-keluar/*` • `/admin/disposisi/*` • `/admin/inventaris/*` • `/admin/apbdesa/*` • `/admin/laporan/*` • `/admin/queue/*` • `/admin/analytics/*` • `/admin/pengaturan`
+`/admin/dashboard` • `/admin/kades` • `/admin/sekdes` • `/admin/pengajuan/*` • `/admin/warga` • `/admin/users/*` • `/admin/roles/*` • `/admin/berita/*` • `/admin/events/*` • `/admin/surat-masuk/*` • `/admin/surat-keluar/*` • `/admin/disposisi/*` • `/admin/inventaris/*` • `/admin/apbdesa/*` • `/admin/laporan/*` • `/admin/queue/*` (termasuk `/admin/queue/pickup`) • `/admin/analytics/*` • `/admin/pengaturan`
 
 ### Warga — middleware: auth
 `/warga/dashboard` • `/warga/surat/*` • `/warga/events/{undangan}/konfirmasi`
@@ -489,10 +520,10 @@ POST `/logout`
 
 | Seeder | Fungsi |
 |---|---|
-| `VillageSettingSeeder` | 19 pengaturan default desa |
+| `VillageSettingSeeder` | Pengaturan default desa (profil, officials, signature, nomor surat, workflow, antrean, notifikasi Telegram, backup, keamanan, integrasi, analytics, queue, tampilan) |
 | `RolePermissionSeeder` | 30 permission + 7 role + sync |
 | `AdminUserSeeder` | User admin (NIK 0000000000000000) |
-| `LetterConfigSeeder` | 14 konfigurasi jenis surat |
+| `LetterConfigSeeder` | 14 konfigurasi jenis surat (termasuk `requirements` dokumen wajib) |
 
 ---
 
@@ -501,9 +532,10 @@ POST `/logout`
 ```bash
 php artisan test
 vendor/bin/phpunit tests/Feature/QrVerificationTest.php
+vendor/bin/phpunit tests/Feature/AntreanPickupTest.php
 ```
 
-Konfigurasi test menggunakan MySQL database `prodesa_testing` (bukan SQLite karena JSON column query).
+Konfigurasi test menggunakan SQLite `:memory:` (`DB_CONNECTION=sqlite`, `DB_DATABASE=:memory:`) dengan `CACHE_STORE=array`, `SESSION_DRIVER=array`, dan `QUEUE_CONNECTION=sync`. Total **41 test / 109 assertions**.
 
 ---
 
