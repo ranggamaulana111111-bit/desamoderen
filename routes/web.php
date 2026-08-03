@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\AntreanController;
 use App\Http\Controllers\Admin\ApbdesaController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DisposisiController;
@@ -126,6 +127,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('queue/retry-all', [QueueController::class, 'retryAll'])->middleware('permission:queue.manage')->name('queue.retryAll');
     Route::delete('queue/{id}', [QueueController::class, 'destroy'])->middleware('permission:queue.manage')->name('queue.destroy');
     Route::delete('queue/all', [QueueController::class, 'destroyAll'])->middleware('permission:queue.manage')->name('queue.destroyAll');
+
+    // ── Pengambilan Surat (Scan QR Antrean) ──
+    Route::get('queue/pickup', [AntreanController::class, 'pickup'])->middleware('permission:queue.view')->name('queue.pickup');
+    Route::post('queue/pickup/cari', [AntreanController::class, 'cari'])->middleware('permission:queue.view')->name('queue.pickup.cari');
+    Route::post('queue/pickup/{antrean}/proses', [AntreanController::class, 'proses'])->middleware('permission:queue.manage')->name('queue.pickup.proses');
+    Route::post('queue/pickup/{antrean}/lewat', [AntreanController::class, 'lewat'])->middleware('permission:queue.manage')->name('queue.pickup.lewat');
 
     // ── Analytics ──
     Route::get('analytics', [AnalyticsController::class, 'index'])->middleware('permission:analytics.view')->name('analytics.index');

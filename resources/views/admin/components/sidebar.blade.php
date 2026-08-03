@@ -164,6 +164,14 @@
             </div>
             Monitoring Antrean
         </a>
+
+        <a href="{{ route('admin.queue.pickup') }}"
+           class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all {{ request()->routeIs('admin.queue.pickup') ? 'bg-gradient-to-r from-brand-500/20 to-brand-500/5 text-white shadow-lg shadow-brand-500/10 border border-brand-500/20' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 {{ request()->routeIs('admin.queue.pickup') ? 'bg-brand-500/20 text-brand-400' : 'bg-white/[.06] text-white/40 group-hover:text-white/70 group-hover:bg-white/[.1]' }}">
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z"/></svg>
+            </div>
+            Pengambilan Surat
+        </a>
         @endcan
 
         @can('analytics.view')
@@ -334,6 +342,10 @@
         <a href="{{ route('admin.queue.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium {{ request()->routeIs('admin.queue.*') ? 'bg-brand-500/20 text-white' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25"/></svg>
             Monitoring Antrean
+        </a>
+        <a href="{{ route('admin.queue.pickup') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium {{ request()->routeIs('admin.queue.pickup') ? 'bg-brand-500/20 text-white' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z"/></svg>
+            Pengambilan Surat
         </a>
         @endcan
         @can('analytics.view')

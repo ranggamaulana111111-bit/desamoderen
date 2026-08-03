@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AntreanPengambilan extends Model
 {
+    public const STATUS_MENUNGGU = 'menunggu';
+
+    public const STATUS_DIAMBIL = 'diambil';
+
+    public const STATUS_LEWAT = 'lewat';
+
     protected $table = 'antrean_pengambilan';
 
     protected $fillable = [
@@ -29,6 +35,26 @@ class AntreanPengambilan extends Model
     public function pengajuan(): BelongsTo
     {
         return $this->belongsTo(PengajuanSurat::class, 'pengajuan_id');
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereDate('tanggal_ambil', now()->toDateString());
+    }
+
+    public function scopeWaiting($query)
+    {
+        return $query->where('status', self::STATUS_MENUNGGU);
+    }
+
+    public function markAsTaken(int $userId): void
+    {
+        $this->update(['status' => self::STATUS_DIAMBIL]);
+    }
+
+    public function markAsMissed(int $userId): void
+    {
+        $this->update(['status' => self::STATUS_LEWAT]);
     }
 
     public static function generateNomor(\DateTime $tanggal): string
