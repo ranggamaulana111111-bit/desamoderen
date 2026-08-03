@@ -155,12 +155,6 @@ class SettingStoreRequest extends FormRequest
     private function notificationRules(): array
     {
         return [
-            'notif_smtp_host' => ['nullable', 'string', 'max:200'],
-            'notif_smtp_port' => ['nullable', 'integer', 'min:1', 'max:65535'],
-            'notif_smtp_email' => ['nullable', 'email', 'max:100'],
-            'notif_smtp_password' => ['nullable', 'string', 'max:200'],
-            'notif_wa_api_key' => ['nullable', 'string', 'max:200'],
-            'notif_wa_nomor' => ['nullable', 'string', 'max:20'],
             'notif_telegram_token' => ['nullable', 'string', 'max:200'],
             'notif_telegram_chat_id' => ['nullable', 'string', 'max:100'],
             'notif_reminder_aktif' => ['nullable', 'boolean'],

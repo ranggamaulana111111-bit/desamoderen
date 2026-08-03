@@ -99,11 +99,6 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'antrean_auto_close', 'value' => '0', 'group' => 'service_queue'],
 
             // ─── Notifikasi (notification) ───
-            ['key' => 'notif_smtp_host', 'value' => '', 'group' => 'notification'],
-            ['key' => 'notif_smtp_port', 'value' => '587', 'group' => 'notification'],
-            ['key' => 'notif_smtp_email', 'value' => '', 'group' => 'notification'],
-            ['key' => 'notif_wa_api_key', 'value' => '', 'group' => 'notification'],
-            ['key' => 'notif_wa_nomor', 'value' => '', 'group' => 'notification'],
             ['key' => 'notif_telegram_token', 'value' => '', 'group' => 'notification'],
             ['key' => 'notif_telegram_chat_id', 'value' => '', 'group' => 'notification'],
             ['key' => 'notif_reminder_aktif', 'value' => '1', 'group' => 'notification'],

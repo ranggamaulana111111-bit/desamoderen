@@ -18,39 +18,7 @@
             </div>
         </div>
         <div class="p-6 space-y-5">
-            <div x-data="{ open: true }" class="bg-blue-50/50 rounded-xl border border-blue-100/60 overflow-hidden">
-                <button @@click="open = !open" type="button" class="w-full flex items-center justify-between p-4 text-left">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-                        <h3 class="text-sm font-semibold text-gray-800">SMTP Email</h3>
-                    </div>
-                    <svg class="w-4 h-4 text-gray-400 transition" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div x-show="open" x-collapse class="px-4 pb-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-setting-input name="notif_smtp_host" label="SMTP Host" :value="$settings['notif_smtp_host'] ?? ''" />
-                        <x-setting-input name="notif_smtp_port" label="SMTP Port" type="number" :value="$settings['notif_smtp_port'] ?? '587'" />
-                        <x-setting-input name="notif_smtp_email" label="Email Pengirim" type="email" :value="$settings['notif_smtp_email'] ?? ''" />
-                        <x-setting-input name="notif_smtp_password" label="Password Email" type="password" :value="''" placeholder="••••••••" />
-                    </div>
-                </div>
-            </div>
-            <div x-data="{ open: false }" class="bg-green-50/50 rounded-xl border border-green-100/60 overflow-hidden">
-                <button @@click="open = !open" type="button" class="w-full flex items-center justify-between p-4 text-left">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
-                        <h3 class="text-sm font-semibold text-gray-800">WhatsApp Gateway</h3>
-                    </div>
-                    <svg class="w-4 h-4 text-gray-400 transition" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div x-show="open" x-collapse class="px-4 pb-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-setting-input name="notif_wa_api_key" label="API Key" :value="$settings['notif_wa_api_key'] ?? ''" />
-                        <x-setting-input name="notif_wa_nomor" label="Nomor Tujuan" type="tel" :value="$settings['notif_wa_nomor'] ?? ''" />
-                    </div>
-                </div>
-            </div>
-            <div x-data="{ open: false }" class="bg-sky-50/50 rounded-xl border border-sky-100/60 overflow-hidden">
+            <div x-data="{ open: true }" class="bg-sky-50/50 rounded-xl border border-sky-100/60 overflow-hidden">
                 <button @@click="open = !open" type="button" class="w-full flex items-center justify-between p-4 text-left">
                     <div class="flex items-center gap-2">
                         <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
