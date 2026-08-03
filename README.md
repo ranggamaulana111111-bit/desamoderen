@@ -7,8 +7,13 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 </p>
 
 <p align="center">
-<strong>Developer:</strong> Rangga Maulana<br>
-<strong>Kontak WA:</strong> <a href="https://wa.me/6285176922584">0851 7692 2584</a> &bull; IG: <a href="https://instagram.com/rangga.mrw">@rangga.mrw</a>
+  <img src="https://img.shields.io/badge/Developer-Rangga_Maulana-0ea5e9?style=for-the-badge&logo=laravel&logoColor=white" alt="Developer">
+</p>
+
+<p align="center">
+  <a href="https://wa.me/6285176922584"><img src="https://img.shields.io/badge/WhatsApp-0851_7692_2584-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp"></a>
+  <a href="https://instagram.com/rangga.mrw"><img src="https://img.shields.io/badge/Instagram-%40rangga.mrw-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+  <a href="https://github.com/ranggamaulana111111-bit"><img src="https://img.shields.io/badge/GitHub-ranggamaulana111111_bit-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
 </p>
 
 <p align="center">
