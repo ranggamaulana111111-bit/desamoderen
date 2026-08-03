@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
@@ -180,7 +180,7 @@
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
                 <p class="text-xs font-bold text-slate-800">Lampiran</p>
-                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Unggah dokumen pendukung (PDF/JPG/PNG, maks 2MB) sebagai persyaratan.</p>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Unggah {{ !empty($config->requirements) ? count($config->requirements).' dokumen yang wajib dilampirkan' : 'dokumen pendukung' }} (PDF/JPG/PNG, maks 2MB).</p>
             </div>
             <div class="rounded-2xl p-4 border border-slate-100 bg-white" style="box-shadow:var(--shadow-card)">
                 <div class="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center mb-2">
@@ -373,6 +373,31 @@
                             <p class="text-xs text-slate-400">Dokumen pendukung (wajib)</p>
                         </div>
                     </div>
+
+                    {{-- REQUIRED DOCUMENTS --}}
+                    @if(!empty($config->requirements))
+                    <div class="rounded-xl p-4 mb-5 bg-sky-50/60 border border-sky-200/60">
+                        <div class="flex items-start gap-2.5">
+                            <svg class="w-4 h-4 text-sky-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-sky-800">Dokumen yang Wajib Dilampirkan</p>
+                                <p class="text-[11px] text-sky-600/80 mt-0.5">Unggah seluruh dokumen berikut untuk {{ $config->label }}:</p>
+                                <ul class="mt-2 space-y-1.5">
+                                    @foreach($config->requirements as $req)
+                                    <li class="flex items-start gap-2 text-[11px] text-slate-600">
+                                        <svg class="w-3.5 h-3.5 text-sky-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        {{ $req }}
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                <p class="text-[10px] text-sky-500/70 mt-2 flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Bisa digabung dalam satu file PDF/JPG/PNG (maks 2MB)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     {{-- ERROR FROM SERVER --}}
                     @if($errors->has('lampiran'))
