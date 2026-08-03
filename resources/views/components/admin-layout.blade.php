@@ -391,6 +391,55 @@
         .table-enhanced tbody tr:hover { background: rgba(16,185,129,.02); }
         .dark .table-enhanced tbody tr:hover { background: rgba(16,185,129,.05); }
 
+        /* ── Responsive Table → Card List (Breakpoint: < md 768px) ── */
+        @media (max-width: 767px) {
+            .table-enhanced { display: block; }
+            .table-enhanced thead { display: none; }
+            .table-enhanced tbody { display: block; }
+            .table-enhanced tbody tr {
+                display: block;
+                margin: 0 0 12px;
+                padding: 6px 16px;
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                box-shadow: 0 1px 3px rgba(0,0,0,.05);
+            }
+            .dark .table-enhanced tbody tr { background: #1e293b; border-color: #334155; }
+            .table-enhanced tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                flex-wrap: wrap;
+                padding: 10px 0;
+                border-bottom: 1px dashed rgba(226,232,240,.5);
+            }
+            .dark .table-enhanced tbody td { border-bottom-color: rgba(51,65,85,.5); }
+            .table-enhanced tbody tr td:last-child { border-bottom: 0; }
+            .table-enhanced tbody td::before {
+                content: attr(data-label);
+                color: #64748b;
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .05em;
+                text-align: left;
+                flex-shrink: 0;
+            }
+            .dark .table-enhanced tbody td::before { color: #94a3b8; }
+
+            /* Touch target minimum 44x44px pada Card List */
+            .table-enhanced tbody td a,
+            .table-enhanced tbody td button {
+                min-height: 44px;
+                min-width: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
         /* ── Dark Mode Overrides ── */
         .dark .bg-white { background-color: #1e293b; }
         .dark .bg-gray-50 { background-color: #1e293b; }
@@ -534,6 +583,24 @@
         }
     </script>
     @endpush
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { initResponsiveTables(); });
+        document.addEventListener('alpine:initialized', initResponsiveTables);
+        window.addEventListener('resize', initResponsiveTables);
+        function initResponsiveTables() {
+            document.querySelectorAll('.table-enhanced').forEach(table => {
+                const headRow = table.querySelector('thead tr');
+                const headers = headRow ? Array.prototype.slice.call(headRow.children) : [];
+                table.querySelectorAll('tbody tr').forEach(row => {
+                    Array.prototype.slice.call(row.children).forEach((td, i) => {
+                        const label = headers[i] ? (headers[i].textContent || '').trim() : '';
+                        td.setAttribute('data-label', label || 'Kolom ' + (i + 1));
+                    });
+                });
+            });
+        }
+    </script>
 
     @stack('scripts')
 </body>
