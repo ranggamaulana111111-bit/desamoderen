@@ -7,6 +7,11 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 </p>
 
 <p align="center">
+<strong>Developer:</strong> Rangga Maulana<br>
+<strong>Kontak WA:</strong> <a href="https://wa.me/6285176922584">0851 7692 2584</a> &bull; IG: <a href="https://instagram.com/rangga.mrw">@rangga.mrw</a>
+</p>
+
+<p align="center">
 <a href="#fitur">Fitur</a> &bull;
 <a href="#tech-stack">Tech Stack</a> &bull;
 <a href="#setup">Setup</a> &bull;
@@ -42,9 +47,11 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 - **Laporan Desa Kuantitatif** — 9 modul, narasi akademis, 2 format PDF (surat resmi + LPPD)
 - **Berita & Event** — CRUD + undangan massal per RT/RW
 - **Manajemen Pengguna** — CRUD + role assignment
-- **Monitoring Antrean** — Queue stats + Chart.js
+- **Monitoring Antrean** — Queue stats + Chart.js + retry/hapus failed job
+- **Pengambilan Surat** — Scan QR antrean via kamera, cari manual, serahkan/tandai lewat
+- **Notifikasi Telegram** — Pengajuan baru & surat selesai dikirim otomatis via Telegram Bot
 - **Analitik** — 8 metrik + 4 chart + CSV export
-- **Pengaturan Desa** — Key-value store
+- **Pengaturan Desa** — Key-value store (termasuk konfigurasi Telegram)
 
 ---
 
@@ -57,10 +64,11 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 | Frontend | Tailwind CSS (CDN), Alpine.js 3.x |
 | Chart | Chart.js |
 | PDF | barryvdh/laravel-dompdf ^3.1 |
-| QR Code | simplesoftwareio/simple-qrcode ^4.2 |
+| QR Code | simplesoftwareio/simple-qrcode ^4.2 + html5-qrcode |
+| Notifikasi | Telegram Bot API (HTTP) |
 | RBAC | spatie/laravel-permission |
 | Auth | Kustom (login berbasis NIK) |
-| Testing | PHPUnit 10.5 |
+| Testing | PHPUnit 10.5 (41 test) |
 
 ---
 
@@ -68,7 +76,7 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 
 ```bash
 # Clone & install
-git clone <repo-url> prodesa
+git clone https://github.com/ranggamaulana111111-bit/desamoderen.git prodesa
 cd prodesa
 composer install
 npm install && npm run build
@@ -84,6 +92,8 @@ php artisan migrate:fresh --seed
 php artisan serve
 npm run dev
 ```
+
+> **Catatan:** `QUEUE_CONNECTION=sync` dipakai agar job (PDF + notifikasi) langsung berjalan tanpa worker. Konfigurasi token & chat ID Telegram diatur lewat **Pengaturan Desa → Notifikasi**.
 
 ### Requirements
 - PHP 8.2+ (extensions: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`, `gd`, `zip`)
@@ -134,6 +144,7 @@ npm run dev
 | `/admin/berita` | CRUD Berita |
 | `/admin/events` | CRUD Event |
 | `/admin/queue` | Monitoring antrean |
+| `/admin/queue/pickup` | Pengambilan surat (scan QR + serahkan dokumen) |
 | `/admin/analytics` | Analitik & laporan |
 | `/admin/pengaturan` | Pengaturan desa |
 
@@ -172,7 +183,7 @@ vendor/bin/phpunit tests/Feature/QrVerificationTest.php
 
 ## Credits
 
-- **Developer** — IG `@rangga.mrw` | WA `085176922584`
+- **Developer** — Rangga Maulana | IG `@rangga.mrw` | WA `085176922584`
 - **Framework** — [Laravel](https://laravel.com)
 
 ## License
