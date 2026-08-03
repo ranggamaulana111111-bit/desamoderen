@@ -9,6 +9,7 @@ use App\Models\AntreanPengambilan;
 use App\Models\LetterConfig;
 use App\Models\PengajuanSurat;
 use App\Services\ApprovalService;
+use App\Services\LetterNumberService;
 use App\Services\PdfGenerationService;
 use App\Services\Surat\LetterServiceFactory;
 use Illuminate\Http\Request;
@@ -18,11 +19,10 @@ use Illuminate\Support\Str;
 
 class PengajuanSuratController extends Controller
 {
-    private const SLOT_MENIT = 15;
-
     public function __construct(
         private ApprovalService $approvalService,
         private PdfGenerationService $pdfService,
+        private LetterNumberService $letterNumberService,
     ) {}
 
     public function index(Request $request)
@@ -158,6 +158,12 @@ class PengajuanSuratController extends Controller
                 ]);
             }
 
+            if (! $pengajuan->nomor_surat) {
+                $pengajuan->update([
+                    'nomor_surat' => $this->letterNumberService->generateFor($pengajuan),
+                ]);
+            }
+
             if (! $pengajuan->antrean) {
                 $slot = $this->alokasiSlot();
 
@@ -180,12 +186,17 @@ class PengajuanSuratController extends Controller
         $jamMulai = config('village.antrean_jam_mulai', '09:00');
         $jamSelesai = config('village.antrean_jam_selesai', '12:00');
         $kuotaPerSlot = (int) config('village.antrean_kuota_per_slot', 1);
+        $durasiSlot = (int) config('village.antrean_durasi_slot', 15);
+
+        if ($durasiSlot < 1) {
+            $durasiSlot = 15;
+        }
 
         [$hMulai, $mMulai] = explode(':', $jamMulai);
         [$hSelesai, $mSelesai] = explode(':', $jamSelesai);
         $menitBuka = (int) $hMulai * 60 + (int) $mMulai;
         $menitTutup = (int) $hSelesai * 60 + (int) $mSelesai;
-        $totalSlot = (int) (($menitTutup - $menitBuka) / self::SLOT_MENIT);
+        $totalSlot = (int) (($menitTutup - $menitBuka) / $durasiSlot);
         $kapasitasHarian = $totalSlot * $kuotaPerSlot;
 
         $sekarang = now();
@@ -203,12 +214,12 @@ class PengajuanSuratController extends Controller
 
             if ($jumlahTerisi < $kapasitasHarian) {
                 $slotIndex = intdiv($jumlahTerisi, $kuotaPerSlot);
-                $menitMulai = $menitBuka + ($slotIndex * self::SLOT_MENIT);
+                $menitMulai = $menitBuka + ($slotIndex * $durasiSlot);
 
                 return [
                     'tanggal' => $tgl->toDateString(),
                     'mulai' => sprintf('%02d:%02d', intdiv($menitMulai, 60), $menitMulai % 60),
-                    'selesai' => sprintf('%02d:%02d', intdiv($menitMulai + self::SLOT_MENIT, 60), ($menitMulai + self::SLOT_MENIT) % 60),
+                    'selesai' => sprintf('%02d:%02d', intdiv($menitMulai + $durasiSlot, 60), ($menitMulai + $durasiSlot) % 60),
                 ];
             }
 
@@ -218,7 +229,7 @@ class PengajuanSuratController extends Controller
         return [
             'tanggal' => $tgl->toDateString(),
             'mulai' => $jamMulai,
-            'selesai' => sprintf('%02d:%02d', (int) $hMulai + (int) (self::SLOT_MENIT / 60), (int) $mMulai + (self::SLOT_MENIT % 60)),
+            'selesai' => sprintf('%02d:%02d', (int) $hMulai + (int) ($durasiSlot / 60), (int) $mMulai + ($durasiSlot % 60)),
         ];
     }
 }

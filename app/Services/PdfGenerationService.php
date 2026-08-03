@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PdfGenerationService
 {
+    public function __construct(
+        private readonly LetterNumberService $letterNumberService,
+    ) {}
+
     public function buildViewData(PengajuanSurat $surat, LetterGeneratorInterface $service): array
     {
         $resolved = $service->generate($surat);
@@ -32,11 +36,9 @@ class PdfGenerationService
 
         $qrSvg = QrCode::format('svg')->size(120)->generate($verifyUrl);
 
-        $tahun = $tglCetak->year;
-
         $data = $resolved['data'];
         $data['surat'] = $surat;
-        $data['nomor_surat'] = $surat->nomor_surat ?? sprintf('%s / %s / DS-KP / %s', $service->kodeKlasifikasi(), $surat->id, $tahun);
+        $data['nomor_surat'] = $surat->nomor_surat ?? $this->letterNumberService->format($surat, $tglCetak);
         $data['tgl_cetak'] = $tglCetak->locale('id')->translatedFormat('d F Y');
         $data['tgl_berlaku_sampai'] = $tglBerlakuSampai->locale('id')->translatedFormat('d F Y');
         $data['kades'] = $namaPenandatangan;

@@ -8,6 +8,7 @@ use App\Models\ActivityLog;
 use App\Models\LetterConfig;
 use App\Models\PengajuanSurat;
 use App\Services\ApprovalService;
+use App\Services\TelegramNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -126,6 +127,8 @@ class SuratController extends Controller
             $pengajuan->id
         );
 
+        $this->sendTelegramNotification($pengajuan);
+
         return redirect()->route('warga.surat.show', $pengajuan)
             ->with('success', 'Pengajuan berhasil dikirim ulang untuk diproses kembali.');
     }
@@ -174,8 +177,23 @@ class SuratController extends Controller
             $pengajuan->id
         );
 
+        $this->sendTelegramNotification($pengajuan);
+
         return redirect()
             ->route('warga.surat.show', $pengajuan)
             ->with('success', 'Pengajuan surat berhasil dikirim.');
+    }
+
+    private function sendTelegramNotification(PengajuanSurat $pengajuan): void
+    {
+        $namaPemohon = $pengajuan->user->name ?? 'Warga';
+        $jenis = str_replace('_', ' ', $pengajuan->jenis_surat);
+
+        $message = "Pengajuan Surat Baru\n"
+            ."Pemohon: {$namaPemohon}\n"
+            ."Jenis: {$jenis}\n"
+            .'Link: '.route('admin.pengajuan.show', $pengajuan);
+
+        app(TelegramNotifier::class)->send($message);
     }
 }

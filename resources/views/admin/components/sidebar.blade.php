@@ -244,9 +244,11 @@
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-xs shadow-md shadow-brand-500/20">P</div>
         <span class="font-bold text-sm text-slate-800">Prodesa</span>
     </div>
-    <button onclick="document.getElementById('mobile-sidebar').classList.toggle('hidden')" class="p-2 hover:bg-slate-100 rounded-xl transition">
-        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
-    </button>
+    <div class="flex items-center gap-1">
+        <button onclick="document.getElementById('mobile-sidebar').classList.toggle('hidden')" class="p-2 hover:bg-slate-100 rounded-xl transition">
+            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+        </button>
+    </div>
 </div>
 
 {{-- Mobile Slide-down Drawer --}}

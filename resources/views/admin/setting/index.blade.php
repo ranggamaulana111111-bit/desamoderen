@@ -17,6 +17,7 @@
     @endpush
 
     <div x-data="settingApp()" x-init="initApp()">
+        @php $reservedTabs = ['integrasi', 'keamanan', 'backup', 'queue-driver']; @endphp
 
         {{-- ═══ TOAST NOTIFICATION ═══ --}}
         <div x-show="showToast" x-cloak class="fixed top-4 right-4 z-50 toast-enter" x-transition>
@@ -62,7 +63,7 @@
             <select x-model="activeTab" @change="switchTab($event.target.value)"
                     class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
                 @foreach ($categories as $key => $menu)
-                <option value="{{ $key }}">{{ $menu['label'] }}</option>
+                <option value="{{ $key }}">{{ $menu['label'] }}@if (in_array($key, $reservedTabs)) (nanti)@endif</option>
                 @endforeach
             </select>
         </div>
@@ -81,7 +82,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $menu['icon'] }}"/>
                         </svg>
                         <span class="truncate">{{ $menu['label'] }}</span>
-                        @if ($key === 'audit-log')
+                        @if (in_array($key, $reservedTabs))
+                        <span class="ml-auto text-[10px] font-medium text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full">nanti</span>
+                        @elseif ($key === 'audit-log')
                         <span class="ml-auto text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">{{ $auditLogs->count() }}</span>
                         @endif
                     </button>
@@ -180,18 +183,26 @@
                 },
 
                 updatePreviewNumber() {
-                    const format = this.preview.format_nomor_surat || '470 / {id} / DS-KP / {tahun}';
+                    const format = this.preview.format_nomor_surat || '{prefix} / {no} / {suffix} / {tahun}';
                     const padding = parseInt(this.preview.nomor_padding) || 4;
                     const now = new Date();
                     const year = now.getFullYear();
                     const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
                     const id = '1';
+                    const no = '1';
+                    const paddedNo = String(no).padStart(padding, '0');
                     const paddedId = String(id).padStart(padding, '0');
                     this.previewNumber = format
                         .replace('{kode_surat}', 'SKTM')
+                        .replace('{kode}', 'SKTM')
                         .replace('{id}', paddedId)
+                        .replace('{no}', paddedNo)
+                        .replace('{prefix}', this.preview.nomor_prefix || '470')
+                        .replace('{suffix}', this.preview.nomor_suffix || 'DS-KP')
                         .replace('{tahun}', year)
-                        .replace('{bulan}', month);
+                        .replace('{bulan}', month)
+                        .replace('{hari}', day);
                 },
 
                 updatePreviewLogo(ref) {

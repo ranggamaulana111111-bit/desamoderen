@@ -135,8 +135,8 @@ class KadesDashboardController extends Controller
         // Rata-rata waktu proses per jenis surat
         $avgProcessingTime = PengajuanSurat::select(
             'jenis_surat',
-            DB::raw("AVG(TIMESTAMPDIFF(HOUR, created_at, updated_at)) as avg_hours"),
-            DB::raw("COUNT(*) as total")
+            DB::raw('AVG(TIMESTAMPDIFF(HOUR, created_at, updated_at)) as avg_hours'),
+            DB::raw('COUNT(*) as total')
         )
             ->where('status', 'completed')
             ->where('updated_at', '>=', now()->subMonths(3))

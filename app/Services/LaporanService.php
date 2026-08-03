@@ -6,12 +6,12 @@ use App\Models\Apbdesa;
 use App\Models\Berita;
 use App\Models\Disposisi;
 use App\Models\Event;
+use App\Models\EventPeserta;
 use App\Models\Inventaris;
 use App\Models\PengajuanSurat;
 use App\Models\SuratKeluar;
 use App\Models\SuratMasuk;
 use App\Models\User;
-use App\Models\VillageSetting;
 use Carbon\Carbon;
 
 class LaporanService
@@ -56,11 +56,12 @@ class LaporanService
     {
         $data = [];
         foreach ($modules as $module) {
-            $method = 'gather' . str_replace('_', '', ucwords($module, '_'));
+            $method = 'gather'.str_replace('_', '', ucwords($module, '_'));
             if (method_exists($this, $method)) {
                 $data[$module] = $this->$method($start, $end);
             }
         }
+
         return $data;
     }
 
@@ -70,7 +71,7 @@ class LaporanService
         $narratives = [];
 
         foreach ($data as $moduleKey => $moduleData) {
-            $method = 'narrate' . str_replace('_', '', ucwords($moduleKey, '_'));
+            $method = 'narrate'.str_replace('_', '', ucwords($moduleKey, '_'));
             $narratives[$moduleKey] = [
                 'judul' => self::MODULE_LABELS[$moduleKey] ?? $moduleKey,
                 'teks' => method_exists($this, $method)
@@ -156,7 +157,7 @@ class LaporanService
             ->groupBy('jenis_surat')
             ->orderByDesc('total')
             ->get()
-            ->map(fn($item) => [
+            ->map(fn ($item) => [
                 'jenis' => str_replace('_', ' ', ucfirst($item->jenis_surat)),
                 'total' => (int) $item->total,
                 'selesai' => (int) $item->selesai,
@@ -243,7 +244,7 @@ class LaporanService
         return [
             'total_barang' => $total,
             'total_nilai' => $totalNilai,
-            'formatted_nilai' => 'Rp ' . number_format($totalNilai, 0, ',', '.'),
+            'formatted_nilai' => 'Rp '.number_format($totalNilai, 0, ',', '.'),
             'per_kondisi' => $perKondisi,
             'per_kategori' => $perKategori,
             'per_status' => $perStatus,
@@ -264,7 +265,7 @@ class LaporanService
             ->selectRaw('kategori, SUM(anggaran) as anggaran, SUM(realisasi) as realisasi')
             ->groupBy('kategori')
             ->get()
-            ->map(fn($item) => [
+            ->map(fn ($item) => [
                 'kategori' => $item->kategori,
                 'anggaran' => (float) $item->anggaran,
                 'realisasi' => (float) $item->realisasi,
@@ -277,7 +278,7 @@ class LaporanService
             ->groupBy('bidang')
             ->orderByDesc('anggaran')
             ->get()
-            ->map(fn($item) => [
+            ->map(fn ($item) => [
                 'bidang' => $item->bidang,
                 'anggaran' => (float) $item->anggaran,
                 'realisasi' => (float) $item->realisasi,
@@ -291,8 +292,8 @@ class LaporanService
             'total_anggaran' => $totalAnggaran,
             'total_realisasi' => $totalRealisasi,
             'persentase_realisasi' => $persentase,
-            'formatted_anggaran' => 'Rp ' . number_format($totalAnggaran, 0, ',', '.'),
-            'formatted_realisasi' => 'Rp ' . number_format($totalRealisasi, 0, ',', '.'),
+            'formatted_anggaran' => 'Rp '.number_format($totalAnggaran, 0, ',', '.'),
+            'formatted_realisasi' => 'Rp '.number_format($totalRealisasi, 0, ',', '.'),
             'per_kategori' => $perKategori,
             'per_bidang' => $perBidang,
             'jumlah_items' => $totalItems,
@@ -315,11 +316,11 @@ class LaporanService
             ->pluck('total', 'jenis')
             ->toArray();
 
-        $totalPeserta = \App\Models\EventPeserta::whereHas('event', function ($q) use ($start, $end) {
+        $totalPeserta = EventPeserta::whereHas('event', function ($q) use ($start, $end) {
             $q->whereBetween('events.created_at', [$start, $end]);
         })->count();
 
-        $konfirmasiHadir = \App\Models\EventPeserta::where('konfirmasi', 'hadir')
+        $konfirmasiHadir = EventPeserta::where('konfirmasi', 'hadir')
             ->whereHas('event', function ($q) use ($start, $end) {
                 $q->whereBetween('events.created_at', [$start, $end]);
             })->count();
@@ -348,7 +349,7 @@ class LaporanService
             ->latest()
             ->limit(5)
             ->get()
-            ->map(fn($b) => [
+            ->map(fn ($b) => [
                 'judul' => $b->judul,
                 'status' => $b->status,
                 'tanggal' => $b->created_at->format('d M Y'),
@@ -370,31 +371,31 @@ class LaporanService
         $kd = $data['nama_desa'];
         $lines = [];
 
-        $lines[] = "**Pendahuluan**";
+        $lines[] = '**Pendahuluan**';
         $lines[] = "Laporan ini merupakan dokumen pertanggungjawaban penyelenggaraan pemerintahan desa yang disusun berdasarkan data kuantitatif terkini untuk wilayah **{$kd}**. Desa {$kd} merupakan wilayah pemerintahan desa yang secara administratif terletak di Kecamatan {$data['nama_kecamatan']}, Kabupaten {$data['nama_kabupaten']}. Secara geografis, kantor pemerintahan desa berlokasi di {$data['alamat_kantor']}, yang menjadi pusat kegiatan pelayanan publik dan administrasi pemerintahan desa.";
 
-        $lines[] = "**Struktur Kepemerintahan**";
+        $lines[] = '**Struktur Kepemerintahan**';
         $lines[] = "Penyelenggaraan pemerintahan desa {$kd} dipimpin oleh Kepala Desa **{$data['nama_kades']}** (NIP. {$data['nip_kades']}) yang bertanggung jawab langsung atas seluruh aspek penyelenggaraan pemerintahan, pembangunan, dan kemasyarakatan. Dalam menjalankan tugas administrasi dan ketatausahaan, Kepala Desa dibantu oleh Sekretaris Desa **{$data['nama_sekdes']}** (NIP. {$data['nip_sekdes']}) selaku pejabat pelaksana teknis kegiatan pemerintahan desa.";
 
-        if (!empty($data['deskripsi_desa']) && $data['deskripsi_desa'] !== '-') {
-            $lines[] = "**Profil Desa**";
+        if (! empty($data['deskripsi_desa']) && $data['deskripsi_desa'] !== '-') {
+            $lines[] = '**Profil Desa**';
             $lines[] = "{$data['deskripsi_desa']}";
         }
-        if (!empty($data['motto_desa']) && $data['motto_desa'] !== '-') {
+        if (! empty($data['motto_desa']) && $data['motto_desa'] !== '-') {
             $lines[] = "Motto desa \"{$data['motto_desa']}\" mencerminkan cita-cita dan semangat masyarakat {$kd} dalam menjalani kehidupan bermasyarakat dan bernegara.";
         }
-        if (!empty($data['email_desa']) && $data['email_desa'] !== '-') {
+        if (! empty($data['email_desa']) && $data['email_desa'] !== '-') {
             $kontakParts = ["Email: {$data['email_desa']}"];
-            if (!empty($data['telepon_desa']) && $data['telepon_desa'] !== '-') {
+            if (! empty($data['telepon_desa']) && $data['telepon_desa'] !== '-') {
                 $kontakParts[] = "Telp: {$data['telepon_desa']}";
             }
-            if (!empty($data['website_desa']) && $data['website_desa'] !== '-') {
+            if (! empty($data['website_desa']) && $data['website_desa'] !== '-') {
                 $kontakParts[] = "Website: {$data['website_desa']}";
             }
-            $lines[] = "Kontak desa: " . implode(' | ', $kontakParts) . ".";
+            $lines[] = 'Kontak desa: '.implode(' | ', $kontakParts).'.';
         }
 
-        $lines[] = "**Ruang Lingkup Laporan**";
+        $lines[] = '**Ruang Lingkup Laporan**';
         $lines[] = "Laporan ini mencakup data dan analisis kuantitatif selama periode **{$start->format('d F Y')}** sampai dengan **{$end->format('d F Y')}**, yang meliputi aspek kependudukan, pelayanan publik, ketatausahaan, pengelolaan aset, pelaksanaan anggaran, kegiatan kemasyarakatan, serta informasi dan komunikasi desa. Seluruh data yang disajikan bersumber dari sistem informasi desa dan diverifikasi oleh aparat pemerintahan desa.";
 
         return implode("\n\n", $lines);
@@ -403,24 +404,24 @@ class LaporanService
     private function narrateKependudukan(array $data, Carbon $start, Carbon $end): string
     {
         $lines = [];
-        $lines[] = "**Gambaran Umum Kependudukan**";
+        $lines[] = '**Gambaran Umum Kependudukan**';
         $lines[] = "Data kependudukan merupakan salah satu indikator fundamental dalam perencanaan dan evaluasi penyelenggaraan pemerintahan desa. Pada periode pelaporan ini, jumlah penduduk tercatat di Desa sebanyak **{$data['total_warga']} jiwa** yang terdaftar dalam sistem informasi penduduk desa.";
 
         if ($data['warga_baru_periode'] > 0) {
-            $lines[] = "**Dinamika Pertumbuhan Penduduk**";
+            $lines[] = '**Dinamika Pertumbuhan Penduduk**';
             $lines[] = "Selama periode {$start->format('d F Y')} hingga {$end->format('d F Y')}, tercatat penambahan **{$data['warga_baru_periode']} warga baru** yang melakukan pendaftaran dalam sistem kependudukan desa. Angka ini menunjukkan laju pertumbuhan penduduk sebesar **{$data['pertumbuhan_persen']}%** dari jumlah penduduk sebelumnya ({$data['warga_sebelum_periode']} jiwa). Pertumbuhan ini dapat diasosiasikan dengan beberapa faktor, antara lain migrasi masuk, kelahiran, atau optimalisasi pendataan penduduk oleh aparat desa.";
         } else {
-            $lines[] = "**Stabilitas Jumlah Penduduk**";
-            $lines[] = "Selama periode ini, tidak tercatat penambahan warga baru dalam sistem kependudukan desa, yang mengindikasikan stabilitas jumlah penduduk atau belum optimalnya pendaftaran penduduk baru oleh masyarakat.";
+            $lines[] = '**Stabilitas Jumlah Penduduk**';
+            $lines[] = 'Selama periode ini, tidak tercatat penambahan warga baru dalam sistem kependudukan desa, yang mengindikasikan stabilitas jumlah penduduk atau belum optimalnya pendaftaran penduduk baru oleh masyarakat.';
         }
 
-        if (!empty($data['distribusi_rt'])) {
+        if (! empty($data['distribusi_rt'])) {
             $rtCount = count($data['distribusi_rt']);
             $totalRt = array_sum($data['distribusi_rt']);
             $rataRt = $rtCount > 0 ? round($totalRt / $rtCount, 1) : 0;
 
-            $lines[] = "**Distribusi Spasial Penduduk**";
-            $lines[] = "Secara spasial, penduduk tersebar di **{$rtCount} Rukun Tetangga (RT)** dengan rata-rata **" . number_format($rataRt, 0, ',', '.') . " jiwa per RT**. Distribusi yang tidak merata ini mencerminkan karakteristik pemukiman desa yang memiliki densitas populasi berbeda di tiap wilayah administratif.";
+            $lines[] = '**Distribusi Spasial Penduduk**';
+            $lines[] = "Secara spasial, penduduk tersebar di **{$rtCount} Rukun Tetangga (RT)** dengan rata-rata **".number_format($rataRt, 0, ',', '.').' jiwa per RT**. Distribusi yang tidak merata ini mencerminkan karakteristik pemukiman desa yang memiliki densitas populasi berbeda di tiap wilayah administratif.';
 
             $topRt = array_search(max($data['distribusi_rt']), $data['distribusi_rt']);
             if ($topRt) {
@@ -434,13 +435,13 @@ class LaporanService
             }
         }
 
-        if (!empty($data['distribusi_rw'])) {
+        if (! empty($data['distribusi_rw'])) {
             $rwCount = count($data['distribusi_rw']);
             $lines[] = "Secara hierarkis administratif, penduduk tersebar dalam **{$rwCount} Rukun Warga (RW)**, yang membentuk struktur pemerintahan desa dari tingkat atas hingga tingkat akar rumput.";
         }
 
-        $lines[] = "**Implikasi**";
-        $lines[] = "Data kependudukan ini menjadi dasar penting dalam perencanaan pembangunan desa, penentuan alokasi anggaran, serta perumusan kebijakan pelayanan publik. Pemahaman terhadap dinamika dan distribusi penduduk memungkinkan pemerintah desa untuk merancang program yang tepat sasaran dan responsif terhadap kebutuhan masyarakat di tiap wilayah.";
+        $lines[] = '**Implikasi**';
+        $lines[] = 'Data kependudukan ini menjadi dasar penting dalam perencanaan pembangunan desa, penentuan alokasi anggaran, serta perumusan kebijakan pelayanan publik. Pemahaman terhadap dinamika dan distribusi penduduk memungkinkan pemerintah desa untuk merancang program yang tepat sasaran dan responsif terhadap kebutuhan masyarakat di tiap wilayah.';
 
         return implode("\n\n", $lines);
     }
@@ -448,42 +449,42 @@ class LaporanService
     private function narratePelayananSurat(array $data, Carbon $start, Carbon $end): string
     {
         $lines = [];
-        $periode = $start->format('d F Y') . ' hingga ' . $end->format('d F Y');
+        $periode = $start->format('d F Y').' hingga '.$end->format('d F Y');
 
-        $lines[] = "**Gambaran Umum Pelayanan Surat**";
+        $lines[] = '**Gambaran Umum Pelayanan Surat**';
         $lines[] = "Pelayanan surat-menyurat merupakan salah satu bentuk layanan publik utama yang diselenggarakan oleh pemerintahan desa. Pada periode **{$periode}**, sistem pencatatan digital mencatatkan total **{$data['total']} pengajuan surat** dari warga yang masuk ke meja pelayanan desa.";
 
         if ($data['total'] > 0) {
-            $lines[] = "**Tingkat Penyelesaian dan Alur Proses**";
+            $lines[] = '**Tingkat Penyelesaian dan Alur Proses**';
             $lines[] = "Dari total {$data['total']} pengajuan yang diterima, sebanyak **{$data['selesai']} pengajuan ({$data['tingkat_persetujuan']}%)** telah berhasil diselesaikan dan mendapat tanda tangan elektronik dari pejabat berwenang. Sementara itu, {$data['ditolak']} pengajuan mengalami penolakan karena tidak memenuhi persyaratan administratif, {$data['revisi']} pengajuan dikembalikan kepada pemohon untuk perbaikan dokumen, dan {$data['aktif']} pengajuan masih dalam proses penyelesaian alur kerja pemerintahan desa.";
 
-            if (!empty($data['jenis_terbanyak'])) {
+            if (! empty($data['jenis_terbanyak'])) {
                 $jt = $data['jenis_terbanyak'];
                 $pctJt = round(($jt['total'] / $data['total']) * 100, 1);
-                $lines[] = "**Analisis Jenis Surat**";
+                $lines[] = '**Analisis Jenis Surat**';
                 $lines[] = "Jenis surat yang paling banyak diajukan adalah **{$jt['jenis']}** dengan **{$jt['total']} pengajuan** ({$pctJt}% dari total). Dominasi jenis surat ini mengindikasikan kebutuhan primer masyarakat terhadap pelayanan dokumen tertentu, yang dapat menjadi acuan dalam perencanaan peningkatan kapasitas pelayanan.";
             }
 
             if ($data['rata_rata_hari'] > 0) {
-                $lines[] = "**Efisiensi Waktu Pemrosesan**";
+                $lines[] = '**Efisiensi Waktu Pemrosesan**';
                 $lines[] = "Rata-rata waktu pemrosesan dari tahap pengajuan hingga penyelesaian tercatat sebesar **{$data['rata_rata_hari']} hari** (setara dengan {$data['rata_rata_jam']} jam kerja). Indikator ini mencerminkan tingkat efisiensi dan responsivitas aparat desa dalam memberikan pelayanan kepada warga. Semakin rendah angka ini, semakin baik kualitas layanan yang diberikan.";
             }
 
-            if (!empty($data['per_jenis'])) {
-                $lines[] = "**Rincian per Jenis Surat**";
+            if (! empty($data['per_jenis'])) {
+                $lines[] = '**Rincian per Jenis Surat**';
                 $rincianLines = [];
                 foreach ($data['per_jenis'] as $jenis) {
                     $rincianLines[] = "{$jenis['jenis']}: {$jenis['total']} pengajuan ({$jenis['selesai']} selesai)";
                 }
-                $lines[] = implode('; ', $rincianLines) . '.';
+                $lines[] = implode('; ', $rincianLines).'.';
             }
         } else {
-            $lines[] = "**Catatan**";
-            $lines[] = "Tidak tercatat adanya pengajuan surat dari warga selama periode ini. Fenomena ini dapat mengindikasikan beberapa kemungkinan, antara lain belum optimalnya sosialisasi layanan digital, minimnya kebutuhan administratif warga pada periode ini, atau adanya hambatan akses terhadap layanan pengajuan surat.";
+            $lines[] = '**Catatan**';
+            $lines[] = 'Tidak tercatat adanya pengajuan surat dari warga selama periode ini. Fenomena ini dapat mengindikasikan beberapa kemungkinan, antara lain belum optimalnya sosialisasi layanan digital, minimnya kebutuhan administratif warga pada periode ini, atau adanya hambatan akses terhadap layanan pengajuan surat.';
         }
 
-        $lines[] = "**Penilaian**";
-        $lines[] = "Tingkat penyelesaian sebesar {$data['tingkat_persetujuan']}% menunjukkan " . ($data['tingkat_persetujuan'] >= 90 ? 'kinerja pelayanan yang sangat baik dan dapat diandalkan' : ($data['tingkat_persetujuan'] >= 70 ? 'kinerja pelayanan yang cukup baik namun masih memiliki ruang untuk peningkatan' : 'perlunya evaluasi menyeluruh terhadap prosedur dan kapasitas pelayanan surat-menyurat')) . ".";
+        $lines[] = '**Penilaian**';
+        $lines[] = "Tingkat penyelesaian sebesar {$data['tingkat_persetujuan']}% menunjukkan ".($data['tingkat_persetujuan'] >= 90 ? 'kinerja pelayanan yang sangat baik dan dapat diandalkan' : ($data['tingkat_persetujuan'] >= 70 ? 'kinerja pelayanan yang cukup baik namun masih memiliki ruang untuk peningkatan' : 'perlunya evaluasi menyeluruh terhadap prosedur dan kapasitas pelayanan surat-menyurat')).'.';
 
         return implode("\n\n", $lines);
     }
@@ -493,36 +494,36 @@ class LaporanService
         $lines = [];
         $total = $data['surat_masuk'] + $data['surat_keluar'];
 
-        $lines[] = "**Gambaran Umum Ketatausahaan**";
+        $lines[] = '**Gambaran Umum Ketatausahaan**';
         $lines[] = "Ketatausahaan desa merupakan tulang punggung operasional pemerintahan desa yang mengelola arus informasi dan komunikasi resmi antar-stakeholder. Selama periode pelaporan ini, unit ketatausahaan menangani total **{$total} surat** yang terdiri dari **{$data['surat_masuk']} surat masuk** dan **{$data['surat_keluar']} surat keluar**.";
 
-        if ($data['surat_masuk'] > 0 && !empty($data['per_jenis_masuk'])) {
-            $lines[] = "**Klasifikasi Surat Masuk**";
+        if ($data['surat_masuk'] > 0 && ! empty($data['per_jenis_masuk'])) {
+            $lines[] = '**Klasifikasi Surat Masuk**';
             $rincian = [];
             foreach ($data['per_jenis_masuk'] as $jenis => $jml) {
                 $pct = round(($jml / $data['surat_masuk']) * 100, 1);
-                $rincian[] = ucfirst(str_replace('_', ' ', $jenis)) . " sebanyak {$jml} surat ({$pct}%)";
+                $rincian[] = ucfirst(str_replace('_', ' ', $jenis))." sebanyak {$jml} surat ({$pct}%)";
             }
-            $lines[] = "Surat masuk yang dikelola diklasifikasikan berdasarkan jenisnya, yaitu: " . implode('; ', $rincian) . ". Klasifikasi ini membantu identifikasi pola komunikasi dan kebutuhan informasi yang paling dominan.";
+            $lines[] = 'Surat masuk yang dikelola diklasifikasikan berdasarkan jenisnya, yaitu: '.implode('; ', $rincian).'. Klasifikasi ini membantu identifikasi pola komunikasi dan kebutuhan informasi yang paling dominan.';
         }
 
-        if ($data['surat_masuk'] > 0 && !empty($data['per_sifat_masuk'])) {
-            $lines[] = "**Sifat dan Prioritas Surat**";
+        if ($data['surat_masuk'] > 0 && ! empty($data['per_sifat_masuk'])) {
+            $lines[] = '**Sifat dan Prioritas Surat**';
             $rincian = [];
             foreach ($data['per_sifat_masuk'] as $sifat => $jml) {
-                $rincian[] = ucfirst(str_replace('_', ' ', $sifat)) . " sebanyak {$jml} surat";
+                $rincian[] = ucfirst(str_replace('_', ' ', $sifat))." sebanyak {$jml} surat";
             }
-            $lines[] = "Berdasarkan sifat surat, komposisinya adalah: " . implode('; ', $rincian) . ". Surat ber sifat penting dan segera memerlukan prioritas penanganan yang lebih tinggi dibandingkan surat biasa, sehingga proporsi sifat surat menjadi indikator penting untuk penjadwalan kerja.";
+            $lines[] = 'Berdasarkan sifat surat, komposisinya adalah: '.implode('; ', $rincian).'. Surat ber sifat penting dan segera memerlukan prioritas penanganan yang lebih tinggi dibandingkan surat biasa, sehingga proporsi sifat surat menjadi indikator penting untuk penjadwalan kerja.';
         }
 
         if ($data['total_disposisi'] > 0) {
             $selesaiDisposisi = $data['total_disposisi'] - $data['disposisi_pending'];
             $pctSelesai = round(($selesaiDisposisi / $data['total_disposisi']) * 100, 1);
-            $lines[] = "**Manajemen Disposisi**";
+            $lines[] = '**Manajemen Disposisi**';
             $lines[] = "Sebanyak **{$data['total_disposisi']} disposisi** telah diproses, di mana **{$selesaiDisposisi} disposisi ({$pctSelesai}%)** telah ditindaklanjuti sesuai perintah atasan dan **{$data['disposisi_pending']} disposisi** masih dalam proses penyelesaian. Kemampuan menyelesaikan disposisi secara tepat waktu merupakan indikator kunci efektivitas alur kerja internal pemerintahan desa.";
         } else {
-            $lines[] = "**Manajemen Disposisi**";
-            $lines[] = "Tidak tercatat adanya disposisi surat selama periode ini, yang dapat mengindikasikan bahwa arus surat masuk belum memerlukan penanganan khusus atau mekanisme disposisi belum diterapkan secara optimal.";
+            $lines[] = '**Manajemen Disposisi**';
+            $lines[] = 'Tidak tercatat adanya disposisi surat selama periode ini, yang dapat mengindikasikan bahwa arus surat masuk belum memerlukan penanganan khusus atau mekanisme disposisi belum diterapkan secara optimal.';
         }
 
         return implode("\n\n", $lines);
@@ -532,49 +533,49 @@ class LaporanService
     {
         $lines = [];
 
-        $lines[] = "**Gambaran Umum Inventaris dan Aset**";
+        $lines[] = '**Gambaran Umum Inventaris dan Aset**';
         $lines[] = "Pengelolaan inventaris dan aset desa merupakan bagian integral dari tata kelola pemerintahan desa yang baik (good governance). Pada periode pelaporan ini, Desa mengelola sejumlah **{$data['total_barang']} item inventaris/aset** dengan total nilai perolehan tercatat sebesar **{$data['formatted_nilai']}**.";
 
         if ($data['baru_periode'] > 0) {
-            $lines[] = "**Dinamika Penambahan Aset**";
+            $lines[] = '**Dinamika Penambahan Aset**';
             $lines[] = "Selama periode {$start->format('d F Y')} hingga {$end->format('d F Y')}, sebanyak **{$data['baru_periode']} item baru** telah ditambahkan ke dalam inventaris desa. Penambahan ini mencerminkan upaya pemerintahan desa dalam pemenuhan kebutuhan sarana dan prasarana pendukung operasional pelayanan publik.";
         } else {
-            $lines[] = "**Stabilitas Aset**";
-            $lines[] = "Tidak tercatat adanya penambahan item inventaris baru selama periode ini, yang mengindikasikan bahwa kondisi inventaris yang ada sudah memadai untuk mendukung operasional pemerintahan desa, atau bahwa proses pengadaan barang dan jasa belum dilaksanakan pada periode ini.";
+            $lines[] = '**Stabilitas Aset**';
+            $lines[] = 'Tidak tercatat adanya penambahan item inventaris baru selama periode ini, yang mengindikasikan bahwa kondisi inventaris yang ada sudah memadai untuk mendukung operasional pemerintahan desa, atau bahwa proses pengadaan barang dan jasa belum dilaksanakan pada periode ini.';
         }
 
-        if (!empty($data['per_kondisi'])) {
-            $lines[] = "**Kondisi Fisik Aset**";
+        if (! empty($data['per_kondisi'])) {
+            $lines[] = '**Kondisi Fisik Aset**';
             $kondisiParts = [];
             foreach ($data['per_kondisi'] as $kondisi => $jml) {
                 $pct = round(($jml / $data['total_barang']) * 100, 1);
                 $kondisiParts[] = "**{$jml} {$kondisi}** ({$pct}%)";
             }
-            $lines[] = "Evaluasi kondisi fisik inventaris menunjukkan komposisi sebagai berikut: " . implode(', ', $kondisiParts) . ". Kondisi fisik aset ini menjadi indikator penting untuk perencanaan pemeliharaan, penggantian, dan pengadaan barang inventaris di periode mendatang.";
+            $lines[] = 'Evaluasi kondisi fisik inventaris menunjukkan komposisi sebagai berikut: '.implode(', ', $kondisiParts).'. Kondisi fisik aset ini menjadi indikator penting untuk perencanaan pemeliharaan, penggantian, dan pengadaan barang inventaris di periode mendatang.';
         }
 
-        if (!empty($data['per_kategori'])) {
-            $lines[] = "**Distribusi Berdasarkan Kategori**";
+        if (! empty($data['per_kategori'])) {
+            $lines[] = '**Distribusi Berdasarkan Kategori**';
             $rincian = [];
             foreach ($data['per_kategori'] as $kategori => $jml) {
                 $pct = round(($jml / $data['total_barang']) * 100, 1);
-                $rincian[] = ucfirst(str_replace('_', ' ', $kategori)) . ": {$jml} item ({$pct}%)";
+                $rincian[] = ucfirst(str_replace('_', ' ', $kategori)).": {$jml} item ({$pct}%)";
             }
-            $lines[] = "Inventaris diklasifikasikan ke dalam beberapa kategori: " . implode('; ', $rincian) . ".";
+            $lines[] = 'Inventaris diklasifikasikan ke dalam beberapa kategori: '.implode('; ', $rincian).'.';
         }
 
-        if (!empty($data['per_status'])) {
-            $lines[] = "**Status Penggunaan**";
+        if (! empty($data['per_status'])) {
+            $lines[] = '**Status Penggunaan**';
             $rincian = [];
             foreach ($data['per_status'] as $status => $jml) {
                 $pct = round(($jml / $data['total_barang']) * 100, 1);
-                $rincian[] = ucfirst($status) . ": {$jml} item ({$pct}%)";
+                $rincian[] = ucfirst($status).": {$jml} item ({$pct}%)";
             }
-            $lines[] = "Status penggunaan inventaris: " . implode('; ', $rincian) . ". Analisis status penggunaan membantu identifikasi aset yang belum optimal dimanfaatkan atau yang memerlukan reposisi.";
+            $lines[] = 'Status penggunaan inventaris: '.implode('; ', $rincian).'. Analisis status penggunaan membantu identifikasi aset yang belum optimal dimanfaatkan atau yang memerlukan reposisi.';
         }
 
-        $lines[] = "**Catatan Penilaian**";
-        $lines[] = "Pengelolaan inventaris desa memerlukan komitmen berkelanjutan dalam pemeliharaan, pencatatan, dan audit aset secara berkala untuk memastikan kepatuhan terhadap regulasi pengelolaan barang milik desa.";
+        $lines[] = '**Catatan Penilaian**';
+        $lines[] = 'Pengelolaan inventaris desa memerlukan komitmen berkelanjutan dalam pemeliharaan, pencatatan, dan audit aset secara berkala untuk memastikan kepatuhan terhadap regulasi pengelolaan barang milik desa.';
 
         return implode("\n\n", $lines);
     }
@@ -583,39 +584,39 @@ class LaporanService
     {
         $lines = [];
 
-        $lines[] = "**Gambaran Umum APBDesa**";
+        $lines[] = '**Gambaran Umum APBDesa**';
         $lines[] = "Anggaran Pendapatan dan Belanja Desa (APBDesa) tahun **{$data['tahun']}** merupakan dokumen perencanaan keuangan desa yang menjadi dasar pelaksanaan seluruh kegiatan pemerintahan, pembangunan, dan kemasyarakatan. Total alokasi anggaran sebesar **{$data['formatted_anggaran']}** dengan realisasi sebesar **{$data['formatted_realisasi']}** menghasilkan tingkat realisasi sebesar **{$data['persentase_realisasi']}%**.";
 
-        $lines[] = "**Analisis Realisasi Anggaran**";
+        $lines[] = '**Analisis Realisasi Anggaran**';
         if ($data['persentase_realisasi'] >= 90) {
             $lines[] = "Tingkat realisasi yang mencapai **{$data['persentase_realisasi']}%** menunjukkan bahwa pelaksanaan anggaran berjalan dengan sangat baik dan sesuai perencanaan. Capaian ini merupakan indikator positif bahwa program kerja dan kegiatan pembangunan desa dapat terlaksana secara efektif dan efisien.";
         } elseif ($data['persentase_realisasi'] >= 70) {
-            $lines[] = "Tingkat realisasi sebesar **{$data['persentase_realisasi']}%** tergolong cukup baik namun masih menyisakan ruang peningkatan sebesar " . (100 - $data['persentase_realisasi']) . "%. Perlu dilakukan identifikasi kendala terhadap program yang belum terlaksana agar realisasi dapat dioptimalkan di sisa periode atau periode berikutnya.";
+            $lines[] = "Tingkat realisasi sebesar **{$data['persentase_realisasi']}%** tergolong cukup baik namun masih menyisakan ruang peningkatan sebesar ".(100 - $data['persentase_realisasi']).'%. Perlu dilakukan identifikasi kendala terhadap program yang belum terlaksana agar realisasi dapat dioptimalkan di sisa periode atau periode berikutnya.';
         } else {
             $lines[] = "Tingkat realisasi sebesar **{$data['persentase_realisasi']}%** berada di bawah ambang batas ideal (70%). Hal ini perlu mendapat perhatian serius karena mengindikasikan adanya keterlambatan atau hambatan dalam pelaksanaan program kerja. Evaluasi menyeluruh terhadap faktor penyebab perlu dilakukan secara komprehensif.";
         }
 
-        if (!empty($data['per_kategori'])) {
-            $lines[] = "**Komposisi Anggaran Berdasarkan Kategori**";
+        if (! empty($data['per_kategori'])) {
+            $lines[] = '**Komposisi Anggaran Berdasarkan Kategori**';
             $rincian = [];
             foreach ($data['per_kategori'] as $kat) {
-                $anggaranKat = $kat['anggaran'] > 0 ? 'Rp ' . number_format($kat['anggaran'], 0, ',', '.') : '-';
-                $rincian[] = "{$kat['kategori']}: anggaran {$anggaranKat}, realisasi Rp " . number_format($kat['realisasi'], 0, ',', '.') . " (**{$kat['persentase']}%**)";
+                $anggaranKat = $kat['anggaran'] > 0 ? 'Rp '.number_format($kat['anggaran'], 0, ',', '.') : '-';
+                $rincian[] = "{$kat['kategori']}: anggaran {$anggaranKat}, realisasi Rp ".number_format($kat['realisasi'], 0, ',', '.')." (**{$kat['persentase']}%**)";
             }
-            $lines[] = implode('. ', $rincian) . '.';
+            $lines[] = implode('. ', $rincian).'.';
         }
 
-        if (!empty($data['per_bidang'])) {
-            $lines[] = "**Realisasi Berdasarkan Bidang Kegiatan**";
+        if (! empty($data['per_bidang'])) {
+            $lines[] = '**Realisasi Berdasarkan Bidang Kegiatan**';
             $rincian = [];
             foreach ($data['per_bidang'] as $bidang) {
                 $pct = $bidang['anggaran'] > 0 ? round(($bidang['realisasi'] / $bidang['anggaran']) * 100, 1) : 0;
-                $rincian[] = "{$bidang['bidang']}: anggaran Rp " . number_format($bidang['anggaran'], 0, ',', '.') . ", realisasi Rp " . number_format($bidang['realisasi'], 0, ',', '.') . " ({$pct}%)";
+                $rincian[] = "{$bidang['bidang']}: anggaran Rp ".number_format($bidang['anggaran'], 0, ',', '.').', realisasi Rp '.number_format($bidang['realisasi'], 0, ',', '.')." ({$pct}%)";
             }
-            $lines[] = "Distribusi anggaran dan realisasi berdasarkan bidang kegiatan: " . implode('. ', $rincian) . ".";
+            $lines[] = 'Distribusi anggaran dan realisasi berdasarkan bidang kegiatan: '.implode('. ', $rincian).'.';
         }
 
-        $lines[] = "**Catatan**";
+        $lines[] = '**Catatan**';
         $lines[] = "Terdapat **{$data['jumlah_items']} item** anggaran yang tercatat dalam APBDesa tahun {$data['tahun']}. Evaluasi berkala terhadap realisasi anggaran perlu dilakukan untuk memastikan seluruh program dan kegiatan dapat terlaksana sesuai rencana dan memberikan manfaat optimal bagi masyarakat desa.";
 
         return implode("\n\n", $lines);
@@ -625,39 +626,39 @@ class LaporanService
     {
         $lines = [];
 
-        $lines[] = "**Gambaran Umum Kegiatan Desa**";
+        $lines[] = '**Gambaran Umum Kegiatan Desa**';
         $lines[] = "Penyelenggaraan kegiatan dan event desa merupakan wujud nyata partisipasi pemerintahan desa dalam pemenuhan kebutuhan sosial, budaya, dan kemasyarakatan warga. Pada periode pelaporan ini, tercatat sebanyak **{$data['total']} kegiatan** yang telah dilaksanakan atau direncanakan oleh pemerintahan desa.";
 
         if ($data['selesai'] > 0 && $data['mendatang'] > 0) {
             $pctSelesai = round(($data['selesai'] / $data['total']) * 100, 1);
-            $lines[] = "**Status Pelaksanaan**";
+            $lines[] = '**Status Pelaksanaan**';
             $lines[] = "Dari {$data['total']} kegiatan tersebut, sebanyak **{$data['selesai']} kegiatan ({$pctSelesai}%)** telah berhasil terlaksana sesuai rencana, sementara **{$data['mendatang']} kegiatan** masih dalam tahap pelaksanaan atau menunggu waktu pelaksanaan di masa mendatang.";
         } elseif ($data['selesai'] > 0) {
-            $lines[] = "**Status Pelaksanaan**";
+            $lines[] = '**Status Pelaksanaan**';
             $lines[] = "Seluruh **{$data['selesai']} kegiatan** yang direncanakan telah berhasil terlaksana, yang menunjukkan kemampuan pemerintahan desa dalam mengelola dan mengeksekusi program kerja secara konsisten.";
         } elseif ($data['mendatang'] > 0) {
-            $lines[] = "**Status Pelaksanaan**";
+            $lines[] = '**Status Pelaksanaan**';
             $lines[] = "Sebanyak **{$data['mendatang']} kegiatan** masih dalam tahap rencana dan pelaksanaan, yang menunjukkan adanya pipeline program kerja yang perlu dipantau dan dikelola agar dapat terlaksana sesuai jadwal.";
         }
 
         if ($data['total_peserta'] > 0) {
             $tingkatPartisipasi = round(($data['konfirmasi_hadir'] / $data['total_peserta']) * 100, 1);
-            $lines[] = "**Partisipasi Masyarakat**";
+            $lines[] = '**Partisipasi Masyarakat**';
             $lines[] = "Total partisipasi warga dalam kegiatan desa mencapai **{$data['total_peserta']} orang**, dengan **{$data['konfirmasi_hadir']} orang ({$tingkatPartisipasi}%)** dikonfirmasi hadir. Tingkat partisipasi ini merupakan indikator kunci keberhasilan program pemberdayaan masyarakat dan efektivitas komunikasi pemerintah desa dalam menghimpun partisipasi warga.";
         }
 
-        if (!empty($data['per_jenis'])) {
-            $lines[] = "**Klasifikasi Berdasarkan Jenis**";
+        if (! empty($data['per_jenis'])) {
+            $lines[] = '**Klasifikasi Berdasarkan Jenis**';
             $rincian = [];
             foreach ($data['per_jenis'] as $jenis => $jml) {
                 $pct = round(($jml / $data['total']) * 100, 1);
-                $rincian[] = ucfirst(str_replace('_', ' ', $jenis)) . ": {$jml} kegiatan ({$pct}%)";
+                $rincian[] = ucfirst(str_replace('_', ' ', $jenis)).": {$jml} kegiatan ({$pct}%)";
             }
-            $lines[] = "Kegiatan desa terbagi menjadi beberapa kategori: " . implode('; ', $rincian) . ".";
+            $lines[] = 'Kegiatan desa terbagi menjadi beberapa kategori: '.implode('; ', $rincian).'.';
         }
 
-        $lines[] = "**Penilaian**";
-        $lines[] = "Penyelenggaraan kegiatan desa perlu terus dievaluasi dari aspek partisipasi, efektivitas, dan dampak terhadap masyarakat. Kegiatan dengan tingkat partisipasi tinggi menunjukkan keberhasilan mobilisasi masyarakat, sementara kegiatan dengan partisipasi rendah perlu dievaluasi dari aspek sosialisasi dan relevansi terhadap kebutuhan warga.";
+        $lines[] = '**Penilaian**';
+        $lines[] = 'Penyelenggaraan kegiatan desa perlu terus dievaluasi dari aspek partisipasi, efektivitas, dan dampak terhadap masyarakat. Kegiatan dengan tingkat partisipasi tinggi menunjukkan keberhasilan mobilisasi masyarakat, sementara kegiatan dengan partisipasi rendah perlu dievaluasi dari aspek sosialisasi dan relevansi terhadap kebutuhan warga.';
 
         return implode("\n\n", $lines);
     }
@@ -666,30 +667,30 @@ class LaporanService
     {
         $lines = [];
 
-        $lines[] = "**Gambaran Umum Informasi Desa**";
+        $lines[] = '**Gambaran Umum Informasi Desa**';
         $lines[] = "Pemerintahan desa berperan aktif dalam menyampaikan informasi kepada masyarakat melalui publikasi berita dan pengelolaan portal informasi desa. Pada periode pelaporan ini, tercatat **{$data['total']} artikel/berita** yang dikelola oleh unit terkait.";
 
         if ($data['published'] > 0) {
-            $lines[] = "**Publikasi dan Diseminasi**";
+            $lines[] = '**Publikasi dan Diseminasi**';
             $lines[] = "Sebanyak **{$data['published']} berita** telah berhasil dipublikasikan dan dapat diakses oleh seluruh warga melalui portal informasi desa. Publikasi informasi secara berkala dan transparan merupakan wujud komitmen pemerintahan desa terhadap keterbukaan informasi publik (public disclosure) sebagaimana diamanatkan oleh peraturan perundang-undangan.";
         }
         if ($data['draft'] > 0) {
-            $lines[] = "**Pipeline Konten**";
+            $lines[] = '**Pipeline Konten**';
             $lines[] = "Selain itu, terdapat **{$data['draft']} berita** yang masih dalam tahap draf dan belum dipublikasikan. Draf-draf ini perlu dievaluasi dan diselesaikan agar informasi yang relevan dapat segera disampaikan kepada masyarakat.";
         }
 
-        if (!empty($data['terbaru'])) {
-            $lines[] = "**Daftar Publikasi Terbaru**";
+        if (! empty($data['terbaru'])) {
+            $lines[] = '**Daftar Publikasi Terbaru**';
             $daftarItems = [];
             foreach ($data['terbaru'] as $berita) {
                 $statusLabel = $berita['status'] === 'published' ? 'Diterbitkan' : 'Draf';
                 $daftarItems[] = "\"{$berita['judul']}\" ({$statusLabel}, {$berita['tanggal']})";
             }
-            $lines[] = "Berita terbaru yang dikelola: " . implode('. ', $daftarItems) . ".";
+            $lines[] = 'Berita terbaru yang dikelola: '.implode('. ', $daftarItems).'.';
         }
 
-        $lines[] = "**Penilaian**";
-        $lines[] = "Kecepatan dan akurasi diseminasi informasi merupakan kunci dalam membangun kepercayaan masyarakat terhadap pemerintahan desa. Rasio publikasi terhadap draf menunjukkan efisiensi alur kerja pengelolaan konten informasi desa.";
+        $lines[] = '**Penilaian**';
+        $lines[] = 'Kecepatan dan akurasi diseminasi informasi merupakan kunci dalam membangun kepercayaan masyarakat terhadap pemerintahan desa. Rasio publikasi terhadap draf menunjukkan efisiensi alur kerja pengelolaan konten informasi desa.';
 
         return implode("\n\n", $lines);
     }
@@ -697,7 +698,7 @@ class LaporanService
     private function gatherKesimpulan(Carbon $start, Carbon $end): array
     {
         $allData = $this->gatherAllData(
-            array_filter(self::MODULES, fn($m) => $m !== 'kesimpulan'),
+            array_filter(self::MODULES, fn ($m) => $m !== 'kesimpulan'),
             $start,
             $end
         );
@@ -733,7 +734,7 @@ class LaporanService
         if (isset($allData['inventaris_aset'])) {
             $inv = $allData['inventaris_aset'];
             $temuan[] = "Inventaris desa mencakup {$inv['total_barang']} item dengan total nilai {$inv['formatted_nilai']}.";
-            if (!empty($inv['per_kondisi']) && isset($inv['per_kondisi']['rusak'])) {
+            if (! empty($inv['per_kondisi']) && isset($inv['per_kondisi']['rusak'])) {
                 $rekomendasi[] = 'Segera lakukan penggantian atau perbaikan inventaris dalam kondisi rusak untuk menjaga kualitas aset desa.';
             }
         }
@@ -776,32 +777,32 @@ class LaporanService
     private function narrateKesimpulan(array $data, Carbon $start, Carbon $end): string
     {
         $lines = [];
-        $periode = $start->format('d F Y') . ' hingga ' . $end->format('d F Y');
+        $periode = $start->format('d F Y').' hingga '.$end->format('d F Y');
 
-        $lines[] = "**Rangkuman Temuan**";
+        $lines[] = '**Rangkuman Temuan**';
         $lines[] = "Berdasarkan analisis kuantitatif terhadap **{$data['total_data_modul']} modul** data selama periode **{$periode}**, berikut merupakan rangkuman temuan utama:";
 
-        if (!empty($data['temuan'])) {
+        if (! empty($data['temuan'])) {
             $temuanLines = [];
             foreach ($data['temuan'] as $idx => $temuan) {
-                $temuanLines[] = ($idx + 1) . ". {$temuan}";
+                $temuanLines[] = ($idx + 1).". {$temuan}";
             }
             $lines[] = implode("\n", $temuanLines);
         }
 
-        $lines[] = "**Rekomendasi**";
-        $lines[] = "Berdasarkan temuan di atas, disusun rekomendasi kebijakan sebagai berikut:";
+        $lines[] = '**Rekomendasi**';
+        $lines[] = 'Berdasarkan temuan di atas, disusun rekomendasi kebijakan sebagai berikut:';
 
-        if (!empty($data['rekomendasi'])) {
+        if (! empty($data['rekomendasi'])) {
             $rekLines = [];
             foreach ($data['rekomendasi'] as $idx => $rek) {
-                $rekLines[] = ($idx + 1) . ". {$rek}";
+                $rekLines[] = ($idx + 1).". {$rek}";
             }
             $lines[] = implode("\n", $rekLines);
         }
 
-        $lines[] = "**Penutup**";
-        $lines[] = "Rekomendasi di atas merupakan masukan konstruktif bagi pemerintahan desa dalam menyusun perencanaan strategis periode berikutnya. Pelaksanaannya memerlukan koordinasi lintas sektoral dan partisipasi aktif seluruh pemangku kepentingan (stakeholder) desa.";
+        $lines[] = '**Penutup**';
+        $lines[] = 'Rekomendasi di atas merupakan masukan konstruktif bagi pemerintahan desa dalam menyusun perencanaan strategis periode berikutnya. Pelaksanaannya memerlukan koordinasi lintas sektoral dan partisipasi aktif seluruh pemangku kepentingan (stakeholder) desa.';
 
         return implode("\n\n", $lines);
     }

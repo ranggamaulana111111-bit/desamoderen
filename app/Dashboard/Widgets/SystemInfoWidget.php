@@ -106,7 +106,7 @@ class SystemInfoWidget implements WidgetInterface
         try {
             $pdfPath = storage_path('app/public/pdfs');
             if (is_dir($pdfPath)) {
-                $files = glob($pdfPath . '/*.pdf');
+                $files = glob($pdfPath.'/*.pdf');
                 $pdfCount = count($files);
                 foreach ($files as $file) {
                     $pdfSize += filesize($file);

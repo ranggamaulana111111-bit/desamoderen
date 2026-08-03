@@ -21,5 +21,12 @@ return [
     'antrean_jam_mulai' => env('VILLAGE_ANTREAN_JAM_MULAI', '09:00'),
     'antrean_jam_selesai' => env('VILLAGE_ANTREAN_JAM_SELESAI', '12:00'),
     'antrean_kuota_per_slot' => env('VILLAGE_ANTREAN_KUOTA_PER_SLOT', 1),
-    'format_nomor_surat' => env('VILLAGE_FORMAT_NOMOR_SURAT', '470 / {id} / DS-KP / {tahun}'),
+    'antrean_durasi_slot' => env('VILLAGE_ANTREAN_DURASI_SLOT', 15),
+
+    // ─── Penomoran Surat Otomatis ───
+    'format_nomor_surat' => env('VILLAGE_FORMAT_NOMOR_SURAT', '{prefix} / {no} / {suffix} / {tahun}'),
+    'nomor_prefix' => env('VILLAGE_NOMOR_PREFIX', '470'),
+    'nomor_suffix' => env('VILLAGE_NOMOR_SUFFIX', 'DS-KP'),
+    'nomor_padding' => env('VILLAGE_NOMOR_PADDING', 4),
+    'nomor_reset' => env('VILLAGE_NOMOR_RESET', 'tahunan'),
 ];

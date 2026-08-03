@@ -6,6 +6,7 @@ use App\Models\ApprovalHistory;
 use App\Models\PengajuanSurat;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AnalyticsService
 {
@@ -33,7 +34,7 @@ class AnalyticsService
 
     public function getMonthlyTrends(int $months = 12): array
     {
-        $raw = PengajuanSurat::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as bulan")
+        $raw = PengajuanSurat::selectRaw($this->monthExpr().' as bulan')
             ->selectRaw('COUNT(*) as total')
             ->selectRaw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as selesai")
             ->selectRaw("SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as ditolak")
@@ -91,7 +92,7 @@ class AnalyticsService
     {
         $results = PengajuanSurat::where('status', 'completed')
             ->selectRaw('jenis_surat')
-            ->selectRaw('AVG(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as avg_seconds')
+            ->selectRaw('AVG('.$this->diffSecondsExpr().') as avg_seconds')
             ->selectRaw('COUNT(*) as sample_count')
             ->groupBy('jenis_surat')
             ->get();
@@ -114,7 +115,7 @@ class AnalyticsService
 
     public function getUserGrowth(int $months = 12): array
     {
-        $raw = User::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as bulan")
+        $raw = User::selectRaw($this->monthExpr().' as bulan')
             ->selectRaw('COUNT(*) as total_baru')
             ->where('created_at', '>=', now()->subMonths($months)->startOfMonth())
             ->groupBy('bulan')
@@ -248,7 +249,9 @@ class AnalyticsService
 
     public function getFilteredStats(?Carbon $start = null, ?Carbon $end = null): array
     {
-        return [
+        $ttl = (int) config('village.analytics_cache_ttl', 3600);
+
+        $build = fn () => [
             'overview' => $this->getOverviewStats($start, $end),
             'popularTypes' => $this->getPopularLetterTypes($start, $end),
             'statusDistribution' => $this->getStatusDistribution(),
@@ -257,5 +260,29 @@ class AnalyticsService
             'userGrowth' => $this->getUserGrowth(),
             'operatorPerformance' => $this->getOperatorPerformance(),
         ];
+
+        if ($ttl <= 0) {
+            return $build();
+        }
+
+        $key = 'analytics.stats.'
+            .($start?->toDateString() ?? 'none').'.'
+            .($end?->toDateString() ?? 'none');
+
+        return cache()->remember($key, $ttl, $build);
+    }
+
+    private function monthExpr(string $column = 'created_at'): string
+    {
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "strftime('%Y-%m', {$column})"
+            : "DATE_FORMAT({$column}, '%Y-%m')";
+    }
+
+    private function diffSecondsExpr(string $a = 'created_at', string $b = 'updated_at'): string
+    {
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "((julianday({$b}) - julianday({$a})) * 86400)"
+            : "TIMESTAMPDIFF(SECOND, {$a}, {$b})";
     }
 }

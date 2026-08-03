@@ -1,3 +1,4 @@
+@include('admin.setting.partials._reserved_note')
 <form x-show="activeTab === 'keamanan'" x-cloak
       action="{{ route('admin.setting.update', 'keamanan') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

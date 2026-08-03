@@ -15,15 +15,6 @@ class ApprovalService
         private readonly DocumentVersionService $documentVersionService,
     ) {}
 
-    private const STEP_MAP = [
-        0 => 'submitted',
-        1 => 'verified',
-        2 => 'approved_operator',
-        3 => 'approved_sekdes',
-        4 => 'approved_kades',
-        5 => 'completed',
-    ];
-
     private const APPROVAL_PERMISSIONS = [
         'verified' => 'letter.review',
         'approved_operator' => 'letter.review',
@@ -40,33 +31,7 @@ class ApprovalService
             return [];
         }
 
-        $transitions = match ($surat->status) {
-            'submitted' => [
-                'verified' => 'Verifikasi',
-                'rejected' => 'Tolak',
-            ],
-            'verified' => [
-                'approved_operator' => 'Setujui',
-                'revision' => 'Minta Perbaikan',
-                'rejected' => 'Tolak',
-            ],
-            'revision' => [
-                'submitted' => 'Kirim Ulang',
-            ],
-            'approved_operator' => [
-                'approved_sekdes' => 'Setujui',
-                'rejected' => 'Tolak',
-            ],
-            'approved_sekdes' => [
-                'approved_kades' => 'Setujui',
-                'rejected' => 'Tolak',
-            ],
-            'approved_kades' => [
-                'completed' => 'Selesaikan',
-                'rejected' => 'Tolak',
-            ],
-            default => [],
-        };
+        $transitions = $this->buildTransitions($surat->status);
 
         if ($surat->status === 'revision') {
             if ($user->id === $surat->submitted_by && $user->can('letter.create')) {
@@ -164,14 +129,14 @@ class ApprovalService
 
     public function getNextStatus(string $currentStatus): ?string
     {
-        return match ($currentStatus) {
-            'submitted' => 'verified',
-            'verified' => 'approved_operator',
-            'approved_operator' => 'approved_sekdes',
-            'approved_sekdes' => 'approved_kades',
-            'approved_kades' => 'completed',
-            default => null,
-        };
+        $chain = $this->activeChain();
+        $index = array_search($currentStatus, $chain, true);
+
+        if ($index === false) {
+            return null;
+        }
+
+        return $chain[$index + 1] ?? null;
     }
 
     public function getTimeline(PengajuanSurat $surat): Collection
@@ -184,14 +149,31 @@ class ApprovalService
 
     public function getWorkflowSteps(): array
     {
-        return [
-            ['key' => 'submitted', 'label' => 'Diajukan', 'step' => 0, 'permission' => null],
-            ['key' => 'verified', 'label' => 'Verifikasi Operator', 'step' => 1, 'permission' => 'letter.review'],
-            ['key' => 'approved_operator', 'label' => 'Disetujui Operator', 'step' => 2, 'permission' => 'letter.review'],
-            ['key' => 'approved_sekdes', 'label' => 'Disetujui Sekdes', 'step' => 3, 'permission' => 'letter.verify'],
-            ['key' => 'approved_kades', 'label' => 'Disetujui Kades', 'step' => 4, 'permission' => 'letter.final_approve'],
-            ['key' => 'completed', 'label' => 'Selesai', 'step' => 5, 'permission' => 'letter.sign'],
+        $meta = [
+            'submitted' => ['label' => 'Diajukan', 'permission' => null],
+            'verified' => ['label' => 'Verifikasi Operator', 'permission' => 'letter.review'],
+            'approved_operator' => ['label' => 'Disetujui Operator', 'permission' => 'letter.review'],
+            'approved_sekdes' => ['label' => 'Disetujui Sekdes', 'permission' => 'letter.verify'],
+            'approved_kades' => ['label' => 'Disetujui Kades', 'permission' => 'letter.final_approve'],
+            'completed' => ['label' => 'Selesai', 'permission' => 'letter.sign'],
         ];
+
+        $steps = [];
+        foreach ($this->activeChain() as $step => $key) {
+            $current = $meta[$key] ?? [
+                'label' => ucfirst(str_replace('_', ' ', $key)),
+                'permission' => null,
+            ];
+
+            $steps[] = [
+                'key' => $key,
+                'label' => $current['label'],
+                'step' => $step,
+                'permission' => $current['permission'],
+            ];
+        }
+
+        return $steps;
     }
 
     public function getStepProgress(PengajuanSurat $surat): array
@@ -215,16 +197,84 @@ class ApprovalService
 
     private function calculateNewStep(string $newStatus, int $currentStep): int
     {
+        $index = array_search($newStatus, $this->activeChain(), true);
+
+        if ($index !== false) {
+            return $index;
+        }
+
         return match ($newStatus) {
-            'submitted' => 0,
-            'verified' => 1,
-            'approved_operator' => 2,
-            'approved_sekdes' => 3,
-            'approved_kades' => 4,
-            'completed' => 5,
-            'revision' => $currentStep,
-            'rejected' => $currentStep,
+            'revision', 'rejected' => $currentStep,
             default => $currentStep,
         };
+    }
+
+    private function buildTransitions(string $status): array
+    {
+        if ($status === 'revision') {
+            return ['submitted' => 'Kirim Ulang'];
+        }
+
+        $chain = $this->activeChain();
+        $index = array_search($status, $chain, true);
+
+        if ($status === 'submitted') {
+            $transitions = [];
+            $next = $chain[$index + 1] ?? null;
+
+            if ($next) {
+                $transitions[$next] = $next === 'verified' ? 'Verifikasi' : 'Setujui';
+            }
+
+            $transitions['rejected'] = 'Tolak';
+
+            return $transitions;
+        }
+
+        if ($index === false || $status === 'completed' || $status === 'rejected') {
+            return [];
+        }
+
+        $transitions = [];
+        $next = $chain[$index + 1] ?? null;
+
+        if ($next) {
+            $transitions[$next] = $next === 'completed' ? 'Selesaikan' : 'Setujui';
+        }
+
+        if ($status === 'verified') {
+            $transitions['revision'] = 'Minta Perbaikan';
+        }
+
+        $transitions['rejected'] = 'Tolak';
+
+        return $transitions;
+    }
+
+    private function activeChain(): array
+    {
+        $chain = ['submitted'];
+
+        if ($this->workflowEnabled('workflow_operator')) {
+            $chain[] = 'verified';
+            $chain[] = 'approved_operator';
+        }
+
+        if ($this->workflowEnabled('workflow_sekdes')) {
+            $chain[] = 'approved_sekdes';
+        }
+
+        if ($this->workflowEnabled('workflow_kades')) {
+            $chain[] = 'approved_kades';
+        }
+
+        $chain[] = 'completed';
+
+        return $chain;
+    }
+
+    private function workflowEnabled(string $key): bool
+    {
+        return (string) (config("village.{$key}") ?? '1') === '1';
     }
 }

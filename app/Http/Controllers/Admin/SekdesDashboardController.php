@@ -120,6 +120,7 @@ class SekdesDashboardController extends Controller
                 $op->approval_rate = $op->total_reviewed > 0
                     ? round(($op->total_approved / $op->total_reviewed) * 100)
                     : 0;
+
                 return $op;
             });
 
@@ -236,10 +237,10 @@ class SekdesDashboardController extends Controller
         $wargaLabels = $wargaSorted->map(fn ($m) => $bulanMap[$m] ?? $m)->values()->all();
         $wargaValues = $wargaSorted->map(fn ($m) => $wargaGrowthChart[$m] ?? 0)->values()->all();
 
-        $rtLabels = $rtStats->pluck('rt')->map(fn ($r) => 'RT ' . $r)->values()->all();
+        $rtLabels = $rtStats->pluck('rt')->map(fn ($r) => 'RT '.$r)->values()->all();
         $rtValues = $rtStats->pluck('total')->values()->all();
 
-        $rwLabels = $rwStats->pluck('rw')->map(fn ($r) => 'RW ' . $r)->values()->all();
+        $rwLabels = $rwStats->pluck('rw')->map(fn ($r) => 'RW '.$r)->values()->all();
         $rwValues = $rwStats->pluck('total')->values()->all();
 
         $operatorNames = $operatorStats->pluck('name')->values()->all();

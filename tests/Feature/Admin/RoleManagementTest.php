@@ -5,12 +5,13 @@ namespace Tests\Feature\Admin;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class RoleManagementTest extends TestCase
 {
-    use \Illuminate\Foundation\Testing\WithoutMiddleware, RefreshDatabase;
+    use RefreshDatabase, WithoutMiddleware;
 
     public function test_super_admin_can_create_new_role()
     {

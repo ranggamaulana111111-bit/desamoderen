@@ -73,7 +73,7 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'qr_verifikasi_aktif', 'value' => '1', 'group' => 'signature'],
 
             // ─── Nomor Surat (letter_number) ───
-            ['key' => 'format_nomor_surat', 'value' => '470 / {id} / DS-KP / {tahun}', 'group' => 'letter_number'],
+            ['key' => 'format_nomor_surat', 'value' => '{prefix} / {no} / {suffix} / {tahun}', 'group' => 'letter_number'],
             ['key' => 'nomor_prefix', 'value' => '470', 'group' => 'letter_number'],
             ['key' => 'nomor_padding', 'value' => '4', 'group' => 'letter_number'],
             ['key' => 'nomor_reset', 'value' => 'tahunan', 'group' => 'letter_number'],

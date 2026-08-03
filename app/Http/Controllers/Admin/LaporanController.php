@@ -9,7 +9,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -32,7 +31,7 @@ class LaporanController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('nomor_laporan', 'like', "%{$search}%");
+                    ->orWhere('nomor_laporan', 'like', "%{$search}%");
             });
         }
 
@@ -64,14 +63,14 @@ class LaporanController extends Controller
             'periode_akhir' => 'required|date|after_or_equal:periode_mulai',
             'tipe_periode' => 'required|in:bulanan,kuartal,tahunan,khusus',
             'modul_yang_dipilih' => 'required|array|min:1',
-            'modul_yang_dipilih.*' => 'in:' . implode(',', LaporanService::MODULES),
+            'modul_yang_dipilih.*' => 'in:'.implode(',', LaporanService::MODULES),
             'format_pdf' => 'required|in:surat_resmi,laporan_institusional',
             'konten_naratif' => 'nullable|array',
         ]);
 
         $validated['created_by'] = Auth::id();
 
-        if (!isset($validated['konten_naratif']) || empty($validated['konten_naratif'])) {
+        if (! isset($validated['konten_naratif']) || empty($validated['konten_naratif'])) {
             $start = Carbon::parse($validated['periode_mulai']);
             $end = Carbon::parse($validated['periode_akhir']);
             $validated['konten_naratif'] = $this->laporanService->generateAllNarratives(
@@ -156,7 +155,7 @@ class LaporanController extends Controller
     {
         $validated = $request->validate([
             'modul_yang_dipilih' => 'required|array|min:1',
-            'modul_yang_dipilih.*' => 'in:' . implode(',', LaporanService::MODULES),
+            'modul_yang_dipilih.*' => 'in:'.implode(',', LaporanService::MODULES),
             'periode_mulai' => 'required|date',
             'periode_akhir' => 'required|date|after_or_equal:periode_mulai',
         ]);
@@ -195,7 +194,7 @@ class LaporanController extends Controller
             'konten' => $laporan->konten_naratif,
         ]);
 
-        $filename = 'laporan-desa-' . $laporan->slugifyJudul() . '-' . $laporan->periode_mulai->format('Y-m') . '.pdf';
+        $filename = 'laporan-desa-'.$laporan->slugifyJudul().'-'.$laporan->periode_mulai->format('Y-m').'.pdf';
 
         return $pdf->download($filename);
     }

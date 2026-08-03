@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class InventarisController extends Controller
 {
@@ -60,17 +59,17 @@ class InventarisController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_barang'       => 'required|string|max:255',
-            'kategori'          => 'required|in:Peralatan,Kendaraan,Gedung,Tanah,Furniture,Elektronik,Lainnya',
-            'nomor_inventaris'  => 'nullable|string|max:255',
-            'kondisi'           => 'required|in:Baik,Rusak Ringan,Rusak Berat,Perawatan',
-            'jumlah'            => 'required|integer|min:1',
-            'lokasi'            => 'nullable|string|max:255',
-            'tahun_perolehan'   => 'nullable|digits:4|integer|min:1900|max:' . (date('Y') + 1),
-            'nilai_perolehan'   => 'nullable|numeric|min:0',
-            'foto'              => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
-            'keterangan'        => 'nullable|string',
-            'status'            => 'required|in:Digunakan,Tersedia,Disimpan,Dihapus',
+            'nama_barang' => 'required|string|max:255',
+            'kategori' => 'required|in:Peralatan,Kendaraan,Gedung,Tanah,Furniture,Elektronik,Lainnya',
+            'nomor_inventaris' => 'nullable|string|max:255',
+            'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat,Perawatan',
+            'jumlah' => 'required|integer|min:1',
+            'lokasi' => 'nullable|string|max:255',
+            'tahun_perolehan' => 'nullable|digits:4|integer|min:1900|max:'.(date('Y') + 1),
+            'nilai_perolehan' => 'nullable|numeric|min:0',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|in:Digunakan,Tersedia,Disimpan,Dihapus',
         ]);
 
         $validated['kode_inventaris'] = $this->generateKodeInventaris();
@@ -100,17 +99,17 @@ class InventarisController extends Controller
     public function update(Request $request, Inventaris $inventaris)
     {
         $validated = $request->validate([
-            'nama_barang'       => 'required|string|max:255',
-            'kategori'          => 'required|in:Peralatan,Kendaraan,Gedung,Tanah,Furniture,Elektronik,Lainnya',
-            'nomor_inventaris'  => 'nullable|string|max:255',
-            'kondisi'           => 'required|in:Baik,Rusak Ringan,Rusak Berat,Perawatan',
-            'jumlah'            => 'required|integer|min:1',
-            'lokasi'            => 'nullable|string|max:255',
-            'tahun_perolehan'   => 'nullable|digits:4|integer|min:1900|max:' . (date('Y') + 1),
-            'nilai_perolehan'   => 'nullable|numeric|min:0',
-            'foto'              => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
-            'keterangan'        => 'nullable|string',
-            'status'            => 'required|in:Digunakan,Tersedia,Disimpan,Dihapus',
+            'nama_barang' => 'required|string|max:255',
+            'kategori' => 'required|in:Peralatan,Kendaraan,Gedung,Tanah,Furniture,Elektronik,Lainnya',
+            'nomor_inventaris' => 'nullable|string|max:255',
+            'kondisi' => 'required|in:Baik,Rusak Ringan,Rusak Berat,Perawatan',
+            'jumlah' => 'required|integer|min:1',
+            'lokasi' => 'nullable|string|max:255',
+            'tahun_perolehan' => 'nullable|digits:4|integer|min:1900|max:'.(date('Y') + 1),
+            'nilai_perolehan' => 'nullable|numeric|min:0',
+            'foto' => 'nullable|file|mimes:jpg,jpeg,png|max:5120',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|in:Digunakan,Tersedia,Disimpan,Dihapus',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -142,11 +141,11 @@ class InventarisController extends Controller
         $prefix = "INV-{$year}-";
 
         $lastSequence = Inventaris::where('kode_inventaris', 'like', "{$prefix}%")
-            ->orderByRaw("CAST(SUBSTRING(kode_inventaris, " . (strlen($prefix) + 1) . ") AS UNSIGNED) DESC")
-            ->value(DB::raw("SUBSTRING(kode_inventaris, " . (strlen($prefix) + 1) . ")"));
+            ->orderByRaw('CAST(SUBSTRING(kode_inventaris, '.(strlen($prefix) + 1).') AS UNSIGNED) DESC')
+            ->value(DB::raw('SUBSTRING(kode_inventaris, '.(strlen($prefix) + 1).')'));
 
         $nextSequence = $lastSequence ? (int) $lastSequence + 1 : 1;
 
-        return $prefix . str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
     }
 }

@@ -17,8 +17,8 @@ class SuratKeluarController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('nomor_agenda', 'like', "%{$search}%")
-                  ->orWhere('tujuan', 'like', "%{$search}%")
-                  ->orWhere('perihal', 'like', "%{$search}%");
+                    ->orWhere('tujuan', 'like', "%{$search}%")
+                    ->orWhere('perihal', 'like', "%{$search}%");
             });
         }
 
@@ -48,12 +48,12 @@ class SuratKeluarController extends Controller
     {
         $validated = $request->validate([
             'tanggal_kirim' => 'required|date',
-            'tujuan'        => 'required|string|max:255',
-            'perihal'       => 'required|string|max:255',
-            'jenis_surat'   => 'required|in:Masuk,Keluar,Internal',
-            'sifat_surat'   => 'required|in:Biasa,Segera,Rahasia,Penting',
-            'file'          => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'status'        => 'required|in:dikirim,diproses,selesai,ditolak',
+            'tujuan' => 'required|string|max:255',
+            'perihal' => 'required|string|max:255',
+            'jenis_surat' => 'required|in:Masuk,Keluar,Internal',
+            'sifat_surat' => 'required|in:Biasa,Segera,Rahasia,Penting',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'status' => 'required|in:dikirim,diproses,selesai,ditolak',
         ]);
 
         $validated['nomor_agenda'] = $this->generateNomorAgenda();
@@ -87,12 +87,12 @@ class SuratKeluarController extends Controller
     {
         $validated = $request->validate([
             'tanggal_kirim' => 'required|date',
-            'tujuan'        => 'required|string|max:255',
-            'perihal'       => 'required|string|max:255',
-            'jenis_surat'   => 'required|in:Masuk,Keluar,Internal',
-            'sifat_surat'   => 'required|in:Biasa,Segera,Rahasia,Penting',
-            'file'          => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'status'        => 'required|in:dikirim,diproses,selesai,ditolak',
+            'tujuan' => 'required|string|max:255',
+            'perihal' => 'required|string|max:255',
+            'jenis_surat' => 'required|in:Masuk,Keluar,Internal',
+            'sifat_surat' => 'required|in:Biasa,Segera,Rahasia,Penting',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'status' => 'required|in:dikirim,diproses,selesai,ditolak',
         ]);
 
         if ($request->hasFile('file')) {

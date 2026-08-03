@@ -80,13 +80,14 @@ class LaporanDesa extends Model
 
     public function getPeriodeLabelAttribute(): string
     {
-        return $this->periode_mulai->format('d M Y') . ' — ' . $this->periode_akhir->format('d M Y');
+        return $this->periode_mulai->format('d M Y').' — '.$this->periode_akhir->format('d M Y');
     }
 
     public function getModuleLabelsAttribute(): array
     {
         $labels = LaporanService::MODULE_LABELS;
-        return array_map(fn($key) => $labels[$key] ?? $key, $this->modul_yang_dipilih ?? []);
+
+        return array_map(fn ($key) => $labels[$key] ?? $key, $this->modul_yang_dipilih ?? []);
     }
 
     public function slugifyJudul(): string

@@ -15,18 +15,19 @@ class AnalyticsController extends Controller
 
     public function index(Request $request)
     {
-        $start = $request->filled('start') ? Carbon::parse($request->start) : null;
-        $end = $request->filled('end') ? Carbon::parse($request->end) : null;
+        [$start, $end] = $this->resolveRange($request);
 
         $stats = $this->analyticsService->getFilteredStats($start, $end);
 
-        return view('admin.analytics.index', compact('stats', 'start', 'end'));
+        $activeWidgets = $this->activeWidgets();
+        $refreshInterval = $this->refreshInterval();
+
+        return view('admin.analytics.index', compact('stats', 'start', 'end', 'activeWidgets', 'refreshInterval'));
     }
 
     public function chartData(Request $request)
     {
-        $start = $request->filled('start') ? Carbon::parse($request->start) : null;
-        $end = $request->filled('end') ? Carbon::parse($request->end) : null;
+        [$start, $end] = $this->resolveRange($request);
 
         $stats = $this->analyticsService->getFilteredStats($start, $end);
 
@@ -35,8 +36,7 @@ class AnalyticsController extends Controller
 
     public function exportCsv(Request $request)
     {
-        $start = $request->filled('start') ? Carbon::parse($request->start) : null;
-        $end = $request->filled('end') ? Carbon::parse($request->end) : null;
+        [$start, $end] = $this->resolveRange($request);
 
         $data = $this->analyticsService->getExportData($start, $end);
 
@@ -62,5 +62,30 @@ class AnalyticsController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    private function resolveRange(Request $request): array
+    {
+        $start = $request->filled('start') ? Carbon::parse($request->start) : null;
+        $end = $request->filled('end') ? Carbon::parse($request->end) : null;
+
+        if (! $start) {
+            $defaultDays = (int) config('village.analytics_default_filter', 30);
+            $start = now()->subDays($defaultDays)->startOfDay();
+        }
+
+        return [$start, $end];
+    }
+
+    private function activeWidgets(): array
+    {
+        $raw = array_filter(array_map('trim', explode(',', (string) config('village.analytics_widget_aktif', ''))));
+
+        return $raw ?: ['overview', 'trends', 'popular', 'processing', 'users', 'status'];
+    }
+
+    private function refreshInterval(): int
+    {
+        return max(0, (int) config('village.analytics_refresh_interval', 300));
     }
 }

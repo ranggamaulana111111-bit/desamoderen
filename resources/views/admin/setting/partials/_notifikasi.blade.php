@@ -1,3 +1,6 @@
+@include('admin.setting.partials._active_note', [
+    'message' => 'Notifikasi pengajuan surat baru aktif: dikirim otomatis ke Telegram admin desa. Isi Bot Token & Chat ID di bawah untuk mengaktifkan pengiriman.',
+])
 <form x-show="activeTab === 'notifikasi'" x-cloak
       action="{{ route('admin.setting.update', 'notifikasi') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

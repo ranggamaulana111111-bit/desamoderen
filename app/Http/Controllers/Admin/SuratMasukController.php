@@ -54,15 +54,15 @@ class SuratMasukController extends Controller
     {
         $validated = $request->validate([
             'tanggal_terima' => 'required|date',
-            'tanggal_surat'  => 'required|date',
-            'nomor_surat'    => 'required|string|max:255',
-            'pengirim'       => 'required|string|max:255',
-            'perihal'        => 'required|string|max:500',
-            'jenis_surat'    => 'required|in:Masuk,Keluar,Internal',
-            'sifat_surat'    => 'required|in:Biasa,Segera,Rahasia,Penting',
-            'file'           => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'keterangan'     => 'nullable|string',
-            'status'         => 'required|in:diterima,diproses,selesai,ditolak',
+            'tanggal_surat' => 'required|date',
+            'nomor_surat' => 'required|string|max:255',
+            'pengirim' => 'required|string|max:255',
+            'perihal' => 'required|string|max:500',
+            'jenis_surat' => 'required|in:Masuk,Keluar,Internal',
+            'sifat_surat' => 'required|in:Biasa,Segera,Rahasia,Penting',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|in:diterima,diproses,selesai,ditolak',
         ]);
 
         $validated['nomor_agenda'] = $this->generateNomorAgenda();
@@ -93,15 +93,15 @@ class SuratMasukController extends Controller
     {
         $validated = $request->validate([
             'tanggal_terima' => 'required|date',
-            'tanggal_surat'  => 'required|date',
-            'nomor_surat'    => 'required|string|max:255',
-            'pengirim'       => 'required|string|max:255',
-            'perihal'        => 'required|string|max:500',
-            'jenis_surat'    => 'required|in:Masuk,Keluar,Internal',
-            'sifat_surat'    => 'required|in:Biasa,Segera,Rahasia,Penting',
-            'file'           => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'keterangan'     => 'nullable|string',
-            'status'         => 'required|in:diterima,diproses,selesai,ditolak',
+            'tanggal_surat' => 'required|date',
+            'nomor_surat' => 'required|string|max:255',
+            'pengirim' => 'required|string|max:255',
+            'perihal' => 'required|string|max:500',
+            'jenis_surat' => 'required|in:Masuk,Keluar,Internal',
+            'sifat_surat' => 'required|in:Biasa,Segera,Rahasia,Penting',
+            'file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'keterangan' => 'nullable|string',
+            'status' => 'required|in:diterima,diproses,selesai,ditolak',
         ]);
 
         if ($request->hasFile('file')) {
@@ -133,11 +133,11 @@ class SuratMasukController extends Controller
         $prefix = "SM-{$year}-";
 
         $lastSequence = SuratMasuk::where('nomor_agenda', 'like', "{$prefix}%")
-            ->orderByRaw("CAST(SUBSTRING(nomor_agenda, " . (strlen($prefix) + 1) . ") AS UNSIGNED) DESC")
-            ->value(DB::raw("SUBSTRING(nomor_agenda, " . (strlen($prefix) + 1) . ")"));
+            ->orderByRaw('CAST(SUBSTRING(nomor_agenda, '.(strlen($prefix) + 1).') AS UNSIGNED) DESC')
+            ->value(DB::raw('SUBSTRING(nomor_agenda, '.(strlen($prefix) + 1).')'));
 
         $nextSequence = $lastSequence ? (int) $lastSequence + 1 : 1;
 
-        return $prefix . str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
+        return $prefix.str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
     }
 }

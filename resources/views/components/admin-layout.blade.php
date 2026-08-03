@@ -52,6 +52,7 @@
     @include('components.favicon')
     @include('components.fonts')
     <style>
+        [x-cloak] { display: none !important; }
         :root {
             --brand-50:#ecfdf5; --brand-100:#d1fae5; --brand-200:#a7f3d0; --brand-300:#6ee7b7;
             --brand-400:#34d399; --brand-500:#10b981; --brand-600:#059669; --brand-700:#047857;

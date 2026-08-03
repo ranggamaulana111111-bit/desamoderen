@@ -1,3 +1,6 @@
+@include('admin.setting.partials._active_note', [
+    'message' => 'Pengaturan ini sudah terhubung ke dashboard Analitik & Laporan (default filter, widget aktif, refresh interval, dan cache).',
+])
 <form x-show="activeTab === 'analytics'" x-cloak
       action="{{ route('admin.setting.update', 'analytics') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

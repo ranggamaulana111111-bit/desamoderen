@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apbdesa;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ApbdesaController extends Controller
@@ -62,7 +60,7 @@ class ApbdesaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'tahun' => 'required|digits:4|integer|min:2020|max:' . (date('Y') + 2),
+            'tahun' => 'required|digits:4|integer|min:2020|max:'.(date('Y') + 2),
             'kategori' => 'required|in:Pendapatan,Belanja',
             'bidang' => 'required|string|max:255',
             'uraian' => 'required|string|max:500',
@@ -97,7 +95,7 @@ class ApbdesaController extends Controller
     public function update(Request $request, Apbdesa $apbdesa)
     {
         $validated = $request->validate([
-            'tahun' => 'required|digits:4|integer|min:2020|max:' . (date('Y') + 2),
+            'tahun' => 'required|digits:4|integer|min:2020|max:'.(date('Y') + 2),
             'kategori' => 'required|in:Pendapatan,Belanja',
             'bidang' => 'required|string|max:255',
             'uraian' => 'required|string|max:500',

@@ -8,7 +8,6 @@ use App\Dashboard\Widgets\ChartWidget;
 use App\Dashboard\Widgets\EventWidget;
 use App\Dashboard\Widgets\HeaderWidget;
 use App\Dashboard\Widgets\HealthWidget;
-use App\Dashboard\Widgets\NotificationWidget;
 use App\Dashboard\Widgets\QueueWidget;
 use App\Dashboard\Widgets\QuickActionsWidget;
 use App\Dashboard\Widgets\ShortcutWidget;

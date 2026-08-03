@@ -35,7 +35,7 @@
                     <span class="text-[10px] text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full font-medium">Live</span>
                 </div>
                 <p class="text-lg font-mono font-bold text-amber-700" x-text="previewNumber"></p>
-                <p class="text-[10px] text-gray-400 mt-1">Variabel: <code>{kode_surat}</code> <code>{id}</code> <code>{tahun}</code> <code>{bulan}</code></p>
+                <p class="text-[10px] text-gray-400 mt-1">Variabel: <code>{kode_surat}</code> <code>{no}</code> <code>{id}</code> <code>{prefix}</code> <code>{suffix}</code> <code>{tahun}</code> <code>{bulan}</code> <code>{hari}</code></p>
             </div>
         </div>
         <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
