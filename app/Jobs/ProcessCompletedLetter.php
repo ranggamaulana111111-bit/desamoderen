@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\PengajuanSurat;
 use App\Services\PdfGenerationService;
+use App\Services\TelegramNotifier;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -38,7 +39,7 @@ class ProcessCompletedLetter implements ShouldQueue
                 $pdfService->generateAndStore($surat);
             }
 
-            $this->sendWhatsAppNotification($surat);
+            $this->sendTelegramNotification($surat);
         } catch (\Throwable $e) {
             Log::error("ProcessCompletedLetter: gagal memproses pengajuan #{$this->pengajuanId}: {$e->getMessage()}", [
                 'exception' => $e,
@@ -48,32 +49,20 @@ class ProcessCompletedLetter implements ShouldQueue
         }
     }
 
-    private function sendWhatsAppNotification(PengajuanSurat $surat): void
+    private function sendTelegramNotification(PengajuanSurat $surat): void
     {
-        $noHp = $surat->user->no_hp;
-
-        if (! $noHp) {
-            Log::info("ProcessCompletedLetter: pengajuan #{$surat->id} — no_hp warga tidak tersedia, lewati notifikasi.");
-
-            return;
-        }
-
         $antrean = $surat->antrean;
-        $pesan = sprintf(
-            "Yth. %s,\n\nSurat %s Anda telah selesai diproses.\nNomor surat: %s\nSilakan ambil di kantor desa pada %s pukul %s-%s.\n\nTerima kasih.\n- Pemerintah Desa %s",
+
+        $message = sprintf(
+            "Surat Selesai Diproses\n\nPemohon: %s\nJenis: %s\nNomor surat: %s\nJadwal ambil: %s pukul %s-%s",
             $surat->user->name,
             str_replace('_', ' ', ucfirst($surat->jenis_surat)),
             $surat->nomor_surat ?? '-',
             $antrean ? $antrean->tanggal_ambil->format('d/m/Y') : '-',
             $antrean ? substr($antrean->jam_mulai, 0, 5) : '-',
             $antrean ? substr($antrean->jam_selesai, 0, 5) : '-',
-            config('village.nama_desa', 'Desa')
         );
 
-        Log::info("ProcessCompletedLetter: simulasi WA ke {$noHp} untuk pengajuan #{$surat->id}", [
-            'pengajuan_id' => $surat->id,
-            'no_hp' => $noHp,
-            'pesan' => $pesan,
-        ]);
+        app(TelegramNotifier::class)->send($message);
     }
 }

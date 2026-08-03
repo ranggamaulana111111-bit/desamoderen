@@ -51,8 +51,11 @@
                     </form>
                     <p x-show="manualError" x-cloak x-text="manualError" class="text-[11px] text-red-500 mt-2"></p>
                     <div class="mt-3 pt-3 border-t border-gray-100">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Atau pilih dari antrean hari ini</p>
-                        <template x-for="a in menunggu" :key="a.id">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                            Pilih dari antrean menunggu
+                            <template x-if="manualQuery.trim()"><span class="normal-case text-gray-500">— hasil untuk "<span x-text="manualQuery"></span>"</span></template>
+                        </p>
+                        <template x-for="a in filteredList" :key="a.id">
                             <button type="button" @@click="pilihAntrean(a)" class="w-full text-left flex items-center justify-between gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 border border-gray-100 mb-1.5 transition-colors group">
                                 <div class="min-w-0">
                                     <p class="text-xs font-bold text-gray-800 truncate" x-text="a.nomor_antrean"></p>
@@ -61,7 +64,8 @@
                                 <svg class="w-3.5 h-3.5 text-gray-300 group-hover:text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </button>
                         </template>
-                        <p x-show="menunggu.length === 0" class="text-xs text-gray-400 text-center py-3">Tidak ada antrean menunggu hari ini.</p>
+                        <p x-show="filteredList.length === 0 && manualQuery.trim() === ''" class="text-xs text-gray-400 text-center py-3">Tidak ada antrean menunggu hari ini.</p>
+                        <p x-show="filteredList.length === 0 && manualQuery.trim() !== ''" class="text-xs text-gray-400 text-center py-3">Tidak ditemukan antrean yang cocok dengan "<span x-text="manualQuery"></span>".</p>
                     </div>
                 </div>
             </div>
@@ -261,6 +265,15 @@
                 get mergedList() {
                     return [...this.menunggu, ...this.diambil, ...this.lewat]
                         .sort((a, b) => (a.jam_mulai || '').localeCompare(b.jam_mulai || ''));
+                },
+
+                get filteredList() {
+                    const q = this.manualQuery.trim().toLowerCase();
+                    if (!q) return this.menunggu;
+                    return this.menunggu.filter(a => {
+                        return [a.nomor_antrean, a.kode_qr, a.pemohon, a.nik, a.jenis_surat]
+                            .some(v => String(v || '').toLowerCase().includes(q));
+                    });
                 },
 
                 init() {
