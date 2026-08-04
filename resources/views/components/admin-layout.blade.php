@@ -51,6 +51,7 @@
 
     @include('components.favicon')
     @include('components.fonts')
+    <x-pwa-assets />
     <style>
         [x-cloak] { display: none !important; }
         :root {

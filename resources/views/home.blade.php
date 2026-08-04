@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Portal pelayanan desa digital - Cepat, mudah, dan transparan.">
     <title>{{ config('village.nama_desa', 'Prodesa') }} — Portal Desa Digital</title>
+    <x-pwa-assets />
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="preconnect" href="https://api.fontshare.com">

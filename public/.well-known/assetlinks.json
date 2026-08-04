@@ -1,0 +1,10 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+        "namespace": "android_app",
+        "package_name": "id.my.ranggamrw.desa",
+        "sha256_cert_fingerprints": [
+            "67:79:16:E6:BE:CE:41:C4:3B:0F:4F:4E:5C:0B:8C:A0:BF:C0:8E:A7:B9:6D:EA:CC:C6:2E:38:01:47:87:52:5F"
+        ]
+    }
+}]
