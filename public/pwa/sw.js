@@ -1,9 +1,9 @@
 /* Prodesa Service Worker */
-const VERSION = 'prodesa-v1';
+const VERSION = 'prodesa-v2';
 
 const PRECACHE = [
   '/',
-  '/pwa/manifest.webmanifest',
+  '/pwa/manifest.json',
   '/pwa/icon-192.png',
   '/pwa/icon-512.png',
   '/pwa/icon-maskable-512.png',

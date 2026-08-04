@@ -1,5 +1,5 @@
 {{-- Aset PWA: manifest, theme-color, apple touch icon, dan registrasi service worker. --}}
-<link rel="manifest" href="/pwa/manifest.webmanifest">
+<link rel="manifest" href="/pwa/manifest.json">
 <meta name="theme-color" content="#065f46">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
