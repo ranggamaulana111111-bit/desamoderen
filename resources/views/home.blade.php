@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -554,7 +554,7 @@
     </section>
 
     {{-- LAYANAN --}}
-    <section id="layanan" class="py-20 md:py-28 bg-white relative">
+    <section id="layanan" class="py-20 md:py-28 bg-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-96 h-96 bg-brand-50 rounded-full opacity-50 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-50 rounded-full opacity-40 translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -976,7 +976,7 @@
     </section>
 
     {{-- KELEMBAGAAN DESA --}}
-    <section id="kelembagaan" class="py-20 md:py-28 bg-white relative">
+    <section id="kelembagaan" class="py-20 md:py-28 bg-white relative overflow-hidden">
         <div class="absolute top-0 left-0 w-80 h-80 bg-brand-50 rounded-full opacity-30 -translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">

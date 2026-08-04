@@ -253,6 +253,11 @@
                                 $oldVal = old($field['key'], auth()->user()->{$field['key']} ?? '');
                                 $isRequired = $field['required'] ?? false;
                                 $options = isset($field['options']) ? explode(',', $field['options']) : [];
+                                $fieldType = $field['type'];
+                                if ($field['key'] === 'kewarganegaraan') {
+                                    $fieldType = 'select';
+                                    $options = ['WNI', 'WNA'];
+                                }
                             @endphp
                             <div class="field-group {{ $hasError ? 'has-error' : '' }}" x-data="{ focused: false }">
                                 <label for="{{ $field['key'] }}">
@@ -260,18 +265,18 @@
                                     @if($isRequired)<span class="required">*</span>@endif
                                 </label>
 
-                                @if($field['type'] === 'select')
+                                @if($fieldType === 'select')
                                     <select name="{{ $field['key'] }}" id="{{ $field['key'] }}" @if($isRequired) required @endif>
                                         <option value="">Pilih {{ $field['label'] }}</option>
                                         @foreach($options as $opt)
                                             <option value="{{ trim($opt) }}" {{ old($field['key']) === trim($opt) ? 'selected' : '' }}>{{ trim($opt) }}</option>
                                         @endforeach
                                     </select>
-                                @elseif($field['type'] === 'textarea')
+                                @elseif($fieldType === 'textarea')
                                     <textarea name="{{ $field['key'] }}" id="{{ $field['key'] }}" rows="3" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif>{{ old($field['key']) }}</textarea>
-                                @elseif($field['type'] === 'date')
+                                @elseif($fieldType === 'date')
                                     <input type="date" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" @if($isRequired) required @endif>
-                                @elseif($field['type'] === 'number')
+                                @elseif($fieldType === 'number')
                                     <input type="number" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif>
                                 @else
                                     <input type="text" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif
@@ -317,6 +322,11 @@
                                 $hasError = $errors->has($field['key']);
                                 $isRequired = $field['required'] ?? false;
                                 $options = isset($field['options']) ? explode(',', $field['options']) : [];
+                                $fieldType = $field['type'];
+                                if ($field['key'] === 'kewarganegaraan') {
+                                    $fieldType = 'select';
+                                    $options = ['WNI', 'WNA'];
+                                }
                             @endphp
                             <div class="field-group {{ $hasError ? 'has-error' : '' }}">
                                 <label for="{{ $field['key'] }}">
@@ -324,20 +334,20 @@
                                     @if($isRequired)<span class="required">*</span>@endif
                                 </label>
 
-                                @if($field['type'] === 'select')
+                                @if($fieldType === 'select')
                                     <select name="{{ $field['key'] }}" id="{{ $field['key'] }}" @if($isRequired) required @endif>
                                         <option value="">Pilih {{ $field['label'] }}</option>
                                         @foreach($options as $opt)
                                             <option value="{{ trim($opt) }}" {{ old($field['key']) === trim($opt) ? 'selected' : '' }}>{{ trim($opt) }}</option>
                                         @endforeach
                                     </select>
-                                @elseif($field['type'] === 'textarea')
+                                @elseif($fieldType === 'textarea')
                                     <textarea name="{{ $field['key'] }}" id="{{ $field['key'] }}" rows="3" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif>{{ old($field['key']) }}</textarea>
-                                @elseif($field['type'] === 'date')
+                                @elseif($fieldType === 'date')
                                     <input type="date" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" @if($isRequired) required @endif>
-                                @elseif($field['type'] === 'time')
+                                @elseif($fieldType === 'time')
                                     <input type="time" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" @if($isRequired) required @endif>
-                                @elseif($field['type'] === 'number')
+                                @elseif($fieldType === 'number')
                                     <input type="number" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif>
                                 @else
                                     <input type="text" name="{{ $field['key'] }}" id="{{ $field['key'] }}" value="{{ old($field['key']) }}" placeholder="Masukkan {{ strtolower($field['label']) }}" @if($isRequired) required @endif>
@@ -511,7 +521,7 @@
                             @foreach($identityFields as $field)
                             <div class="flex items-start justify-between px-4 py-3 gap-4">
                                 <span class="text-xs text-slate-400 flex-shrink-0">{{ $field['label'] }}</span>
-                                <span class="text-sm font-semibold text-slate-800 text-right" x-text="getReviewValue('{{ $field['key'] }}') || '-'"></span>
+                                <span class="text-sm font-semibold text-slate-800 text-right" x-text="step === {{ $totalSteps }} ? (getReviewValue('{{ $field['key'] }}') || '-') : '-'"></span>
                             </div>
                             @endforeach
                         </div>
@@ -529,7 +539,7 @@
                             @foreach($letterFields as $field)
                             <div class="flex items-start justify-between px-4 py-3 gap-4">
                                 <span class="text-xs text-slate-400 flex-shrink-0">{{ $field['label'] }}</span>
-                                <span class="text-sm font-semibold text-slate-800 text-right" x-text="getReviewValue('{{ $field['key'] }}') || '-'"></span>
+                                <span class="text-sm font-semibold text-slate-800 text-right" x-text="step === {{ $totalSteps }} ? (getReviewValue('{{ $field['key'] }}') || '-') : '-'"></span>
                             </div>
                             @endforeach
                         </div>

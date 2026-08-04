@@ -140,8 +140,9 @@
                             </div>
                             <div>
                                 <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">NIK (16 digit)</label>
-                                <input type="text" name="nik" x-model="form.nik" required maxlength="16"
+                                <input type="text" name="nik" x-model="form.nik" required maxlength="16" minlength="16"
                                        class="form-input font-mono tracking-wider" placeholder="0000000000000000"
+                                       pattern="[0-9]{16}" title="NIK harus 16 digit angka"
                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 <p class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>

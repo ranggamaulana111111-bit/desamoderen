@@ -5,7 +5,7 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="id" x-data="themeManager()" x-init="init()" :class="{ 'dark': resolvedTheme === 'dark' }">
+<html lang="id" class="overflow-x-hidden" x-data="themeManager()" x-init="init()" :class="{ 'dark': resolvedTheme === 'dark' }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

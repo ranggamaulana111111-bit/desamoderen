@@ -845,8 +845,15 @@
                     window.scrollTo({top:0,behavior:'smooth'});
                 },
 
+                getActiveForm(){
+                    const desktop = document.getElementById('registerForm');
+                    const mobile = document.getElementById('registerFormMobile');
+                    if(desktop && desktop.offsetParent !== null) return desktop;
+                    return mobile;
+                },
+
                 validateCurrentStep(){
-                    const form = document.getElementById('registerForm') || document.getElementById('registerFormMobile');
+                    const form = this.getActiveForm();
                     if(!form)return true;
                     const steps = form.querySelectorAll('.wizard-step');
                     const current = steps[this.step-1];
@@ -873,7 +880,9 @@
                 },
 
                 getVal(key){
-                    const el = document.querySelector('#registerForm [name="'+key+'"]') || document.querySelector('#registerFormMobile [name="'+key+'"]');
+                    const form = this.getActiveForm();
+                    if(!form)return '';
+                    const el = form.querySelector('[name="'+key+'"]');
                     return el ? el.value : '';
                 },
 

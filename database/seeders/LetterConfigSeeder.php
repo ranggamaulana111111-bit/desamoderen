@@ -30,7 +30,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'alasan_sktm', 'label' => 'Keperluan / Alasan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'agama', 'label' => 'Agama', 'type' => 'select', 'required' => false, 'options' => 'Islam,Kristen,Katolik,Hindu,Buddha,Konghucu', 'rules' => 'string|max:20'],
                     ['key' => 'status_perkawinan', 'label' => 'Status Perkawinan', 'type' => 'select', 'required' => false, 'options' => 'Belum Kawin,Kawin,Cerai Hidup,Cerai Mati', 'rules' => 'string|max:20'],
-                    ['key' => 'kewarganegaraan', 'label' => 'Kewarganegaraan', 'type' => 'text', 'required' => false, 'rules' => 'string|max:50'],
+                    ['key' => 'kewarganegaraan', 'label' => 'Kewarganegaraan', 'type' => 'select', 'required' => false, 'options' => 'WNI,WNA', 'rules' => 'in:WNI,WNA'],
                 ],
             ],
             [

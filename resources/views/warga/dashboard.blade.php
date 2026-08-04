@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="overflow-x-hidden">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -144,7 +144,7 @@
     <nav class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 transition-all duration-500">
         <div class="max-w-6xl mx-auto py-3">
             <div class="flex items-center justify-between rounded-2xl px-4 md:px-5 transition-all duration-300" :class="scrolled ? 'bg-white/80 backdrop-blur-2xl shadow-[0_1px_3px_rgba(0,0,0,.04),0_8px_24px_rgba(0,0,0,.06)] py-3 border border-white/60' : 'py-3'">
-                <a href="{{ route('warga.dashboard') }}" class="flex items-center gap-2.5 group">
+                <a href="{{ route('warga.dashboard') }}" @click.prevent="window.scrollTo({top:0,behavior:'smooth'})" class="flex items-center gap-2.5 group">
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/25 group-hover:shadow-brand-500/40 transition-all duration-300 group-hover:scale-105">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     </div>
@@ -172,7 +172,7 @@
                                 </div>
                             </div>
                             <div class="p-2">
-                                <a href="{{ route('warga.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-brand-50 transition group text-sm font-medium text-slate-600 hover:text-brand-700">
+                                <a href="{{ route('warga.dashboard') }}" @click="open = false; window.scrollTo({top:0,behavior:'smooth'})" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-brand-50 transition group text-sm font-medium text-slate-600 hover:text-brand-700">
                                     <svg class="w-4 h-4 text-slate-400 group-hover:text-brand-600 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                                     Dashboard
                                 </a>
@@ -660,7 +660,7 @@
     <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bottom-nav">
         <div class="mx-3 mb-3 rounded-2xl bg-white/90 backdrop-blur-2xl shadow-[0_-2px_12px_rgba(0,0,0,.06),0_4px_24px_rgba(0,0,0,.08)] border border-white/60 px-2 py-2">
             <div class="grid grid-cols-5 gap-1">
-                <a href="{{ route('warga.dashboard') }}" class="flex flex-col items-center gap-0.5 py-2 rounded-xl text-brand-600 bg-brand-50/80">
+                <a href="{{ route('warga.dashboard') }}" @click.prevent="window.scrollTo({top:0,behavior:'smooth'})" class="flex flex-col items-center gap-0.5 py-2 rounded-xl text-brand-600 bg-brand-50/80">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span class="text-[10px] font-bold">Beranda</span>
                 </a>
