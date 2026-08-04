@@ -8,7 +8,7 @@ return [
     'kode_pos' => env('VILLAGE_KODE_POS', '41256'),
     'alamat_kantor' => env('VILLAGE_ALAMAT', 'Kp. Kumpay, RT 01 RW 01, Kec. Ciasem, Kab. Subang'),
     'email_desa' => env('VILLAGE_EMAIL', 'desakumpay@subang.go.id'),
-    'logo_desa' => null,
+    'logo_desa' => 'uploads/identity/pwa-icon-source.png',
 
     // ─── Manajemen Pejabat & Penandatangan ───
     'nama_kades' => env('VILLAGE_NAMA_KADES', 'Ade Komara'),

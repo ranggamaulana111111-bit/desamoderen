@@ -1,5 +1,5 @@
 /* Prodesa Service Worker */
-const VERSION = 'prodesa-v2';
+const VERSION = 'prodesa-v3';
 
 const PRECACHE = [
   '/',
