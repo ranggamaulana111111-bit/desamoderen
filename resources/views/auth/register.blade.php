@@ -87,7 +87,7 @@
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:9999px}
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased overflow-x-hidden" x-data="registerPage()" x-init="init()">
+<body class="min-h-screen font-sans antialiased overflow-x-clip" x-data="registerPage()" x-init="init()">
 
     {{-- ═══════ DESKTOP: TWO-COLUMN LAYOUT ═══════ --}}
     <div class="hidden lg:flex min-h-screen">
@@ -368,6 +368,20 @@
                                 </div>
                             </div>
 
+                            <div class="mt-4">
+                                <label class="block text-xs font-semibold text-white/50 mb-1.5 ml-1">Alamat Lengkap <span class="text-red-400">*</span></label>
+                                <div class="input-group {{ $errors->has('alamat') ? 'has-error' : '' }}">
+                                    <input type="text" name="alamat" value="{{ old('alamat') }}"
+                                        placeholder="Nama jalan, nomor rumah, kelurahan/desa, kecamatan, kota/kabupaten"
+                                        maxlength="255"
+                                        autocomplete="street-address">
+                                    <div class="input-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+                                    </div>
+                                </div>
+                                @error('alamat')<p class="text-[11px] text-red-400 font-medium mt-1 ml-1">{{ $message }}</p>@enderror
+                            </div>
+
                             <div class="mt-4 rounded-xl p-3 bg-white/5 border border-white/8">
                                 <div class="flex items-start gap-2">
                                     <svg class="w-4 h-4 text-white/30 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -510,6 +524,10 @@
                                     <div class="review-row">
                                         <span class="review-label">RT / RW</span>
                                         <span class="review-value" x-text="(getVal('rt') || '-') + ' / ' + (getVal('rw') || '-')"></span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span class="review-label">Alamat Lengkap</span>
+                                        <span class="review-value text-right text-xs" x-text="getVal('alamat') || '-'"></span>
                                     </div>
                                 </div>
                             </div>
@@ -702,6 +720,14 @@
                                 @error('rw')<p class="text-[10px] text-red-400 font-medium mt-1 ml-1">{{ $message }}</p>@enderror
                             </div>
                         </div>
+                        <div class="mt-3">
+                            <label class="block text-[11px] font-semibold text-white/50 mb-1 ml-1">Alamat Lengkap <span class="text-red-400">*</span></label>
+                            <div class="input-group {{ $errors->has('alamat') ? 'has-error' : '' }}">
+                                <input type="text" name="alamat" value="{{ old('alamat') }}" placeholder="Nama jalan, no. rumah, kelurahan, kecamatan, kota" maxlength="255" autocomplete="street-address" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)">
+                                <div class="input-icon"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg></div>
+                            </div>
+                            @error('alamat')<p class="text-[10px] text-red-400 font-medium mt-1 ml-1">{{ $message }}</p>@enderror
+                        </div>
                         <p class="text-[10px] text-white/30 mt-3 ml-1">RT dan RW bersifat opsional.</p>
                     </div>
 
@@ -757,6 +783,7 @@
                                 <div class="review-row"><span class="review-label">Nama</span><span class="review-value text-xs" x-text="getVal('nama_lengkap') || '-'"></span></div>
                                 <div class="review-row"><span class="review-label">NIK</span><span class="review-value text-xs font-mono" x-text="getVal('nik') || '-'"></span></div>
                                 <div class="review-row"><span class="review-label">RT/RW</span><span class="review-value text-xs" x-text="(getVal('rt') || '-') + ' / ' + (getVal('rw') || '-')"></span></div>
+                                <div class="review-row"><span class="review-label">Alamat</span><span class="review-value text-xs" x-text="getVal('alamat') || '-'"></span></div>
                                 <div class="review-row"><span class="review-label">HP</span><span class="review-value text-xs" x-text="getVal('no_hp') || '-'"></span></div>
                                 <div class="review-row"><span class="review-label">Password</span><span class="review-value text-xs">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</span></div>
                             </div>
@@ -880,6 +907,7 @@
                 },
 
                 getVal(key){
+                    this.step;
                     const form = this.getActiveForm();
                     if(!form)return '';
                     const el = form.querySelector('[name="'+key+'"]');
