@@ -22,6 +22,8 @@
                 @auth
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.dashboard') }}" class="text-sm text-teal-600 hover:text-teal-700 font-medium">Admin</a>
+                    @elseif(auth()->user()->isLembaga())
+                        <a href="{{ route('lembaga.dashboard') }}" class="text-sm text-teal-600 hover:text-teal-700 font-medium">Dashboard Lembaga</a>
                     @else
                         <a href="{{ route('warga.dashboard') }}" class="text-sm text-teal-600 hover:text-teal-700 font-medium">Dashboard</a>
                     @endif

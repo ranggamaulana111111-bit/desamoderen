@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="id" class="scroll-smooth overflow-x-hidden">
+<html lang="id" class="scroll-smooth overflow-x-clip">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -152,7 +152,7 @@
     </style>
     @include('components.favicon')
 </head>
-<body class="bg-white font-sans antialiased text-slate-700 overflow-x-hidden" x-data="{ mobileOpen:false }">
+<body class="bg-white font-sans antialiased text-slate-700 overflow-x-clip" x-data="{ mobileOpen:false }">
 
     <div id="scrollProgress" style="width:0%"></div>
 
@@ -182,7 +182,7 @@
                         <a href="{{ route('register') }}" class="text-sm font-semibold text-brand-700 bg-white px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition-all shadow-lg shadow-black/10 nav-btn-daftar">Daftar Gratis</a>
                     @endguest
                     @auth
-                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('warga.dashboard') }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
+                        <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
                         <form action="{{ route('logout') }}" method="POST" class="inline">@csrf
                             <button type="submit" class="text-sm font-medium text-white/60 hover:text-white px-3 py-2 rounded-xl transition-colors nav-btn-keluar">Keluar</button>
                         </form>
@@ -205,7 +205,7 @@
                         <a href="{{ route('register') }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-500 to-brand-600 shadow-lg shadow-brand-500/25">Daftar Gratis</a>
                     @endguest
                     @auth
-                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('warga.dashboard') }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-brand-600 bg-brand-50 transition">Dashboard</a>
+                        <a href="{{ auth()->user()->dashboardRoute() }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-brand-600 bg-brand-50 transition">Dashboard</a>
                     @endauth
                 </div>
             </div>

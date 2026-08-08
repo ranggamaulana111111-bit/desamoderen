@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,7 +23,9 @@ class User extends Authenticatable
         'no_kk',
         'rt',
         'rw',
+        'alamat',
         'no_hp',
+        'lembaga_id',
     ];
 
     protected $appends = [
@@ -95,6 +98,11 @@ class User extends Authenticatable
         return $this->hasOne(UserSetting::class);
     }
 
+    public function lembaga(): BelongsTo
+    {
+        return $this->belongsTo(Lembaga::class);
+    }
+
     public function getRoleLabelAttribute(): ?string
     {
         $role = $this->roles()->first();
@@ -104,12 +112,30 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->roles()->where('name', '!=', 'Warga')->exists();
+        return $this->roles()->whereNotIn('name', ['Warga', 'Lembaga'])->exists();
     }
 
     public function isWarga(): bool
     {
         return $this->hasRole('Warga');
+    }
+
+    public function isLembaga(): bool
+    {
+        return $this->hasRole('Lembaga');
+    }
+
+    public function dashboardRoute(): string
+    {
+        if ($this->isLembaga()) {
+            return route('lembaga.dashboard');
+        }
+
+        if ($this->isAdmin()) {
+            return route('admin.dashboard');
+        }
+
+        return route('warga.dashboard');
     }
 
     public function getRoleNamesAttribute(): string

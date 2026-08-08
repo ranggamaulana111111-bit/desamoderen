@@ -19,6 +19,7 @@ class Event extends Model
         'rt_target',
         'rw_target',
         'user_id',
+        'lembaga_id',
         'status',
     ];
 
@@ -34,6 +35,11 @@ class Event extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function lembaga(): BelongsTo
+    {
+        return $this->belongsTo(Lembaga::class);
     }
 
     public function peserta(): HasMany

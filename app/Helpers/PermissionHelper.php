@@ -39,6 +39,9 @@ class PermissionHelper
         'anggaran.manage' => 'Mengelola APBDesa',
         'role.manage' => 'Mengelola Role',
         'permission.manage' => 'Mengelola Permission',
+        'lembaga.manage' => 'Mengelola Data Lembaga',
+        'lembaga.content' => 'Mengelola Konten Lembaga',
+        'lembaga.report' => 'Melihat Laporan Kinerja Lembaga',
     ];
 
     protected static array $groupLabels = [
@@ -57,6 +60,7 @@ class PermissionHelper
         'Anggaran' => 'Anggaran Desa (APBDesa)',
         'Role' => 'Role & Izin',
         'Permission' => 'Role & Izin',
+        'Lembaga' => 'Lembaga & Kelembagaan',
     ];
 
     public static function label(string $name): string

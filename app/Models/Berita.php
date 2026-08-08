@@ -15,11 +15,18 @@ class Berita extends Model
         'konten',
         'foto',
         'status',
+        'dilihat',
         'user_id',
+        'lembaga_id',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function lembaga(): BelongsTo
+    {
+        return $this->belongsTo(Lembaga::class);
     }
 }

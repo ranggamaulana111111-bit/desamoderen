@@ -13,6 +13,8 @@ class BeritaController extends Controller
             ->where('status', 'publish')
             ->firstOrFail();
 
+        $berita->increment('dilihat');
+
         return view('berita.show', compact('berita'));
     }
 }

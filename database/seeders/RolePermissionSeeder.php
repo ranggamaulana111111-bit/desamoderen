@@ -75,6 +75,11 @@ class RolePermissionSeeder extends Seeder
             // RBAC
             'role.manage',
             'permission.manage',
+
+            // Lembaga (Kelembagaan Desa)
+            'lembaga.manage',
+            'lembaga.content',
+            'lembaga.report',
         ];
 
         $guard = 'web';
@@ -108,6 +113,8 @@ class RolePermissionSeeder extends Seeder
                 'inventaris.manage',
                 'anggaran.view',
                 'anggaran.manage',
+                'lembaga.manage',
+                'lembaga.report',
             ])->get(),
 
             'Sekretaris Desa' => Permission::whereIn('name', [
@@ -129,6 +136,7 @@ class RolePermissionSeeder extends Seeder
                 'inventaris.manage',
                 'anggaran.view',
                 'anggaran.manage',
+                'lembaga.report',
             ])->get(),
 
             'Kepala Desa' => Permission::whereIn('name', [
@@ -152,6 +160,7 @@ class RolePermissionSeeder extends Seeder
                 'inventaris.manage',
                 'anggaran.view',
                 'anggaran.manage',
+                'lembaga.report',
             ])->get(),
 
             'RT' => Permission::whereIn('name', [
@@ -168,6 +177,10 @@ class RolePermissionSeeder extends Seeder
 
             'Warga' => Permission::whereIn('name', [
                 'letter.create',
+            ])->get(),
+
+            'Lembaga' => Permission::whereIn('name', [
+                'lembaga.content',
             ])->get(),
         ];
 

@@ -16,7 +16,7 @@ class AdminMiddleware
             abort(403, 'Akses ditolak.');
         }
 
-        if ($user->roles()->where('name', '!=', 'Warga')->exists()) {
+        if ($user->roles()->whereNotIn('name', ['Warga', 'Lembaga'])->exists()) {
             return $next($request);
         }
 

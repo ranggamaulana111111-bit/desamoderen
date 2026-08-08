@@ -24,6 +24,7 @@ class AuthController extends Controller
             'nik' => ['required', 'string', 'digits:16'],
             'rt' => ['nullable', 'string', 'max:3'],
             'rw' => ['nullable', 'string', 'max:3'],
+            'alamat' => ['nullable', 'string', 'max:255'],
             'no_hp' => ['nullable', 'string', 'max:15'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
@@ -39,6 +40,7 @@ class AuthController extends Controller
             'nik' => $validated['nik'],
             'rt' => $validated['rt'] ?? null,
             'rw' => $validated['rw'] ?? null,
+            'alamat' => $validated['alamat'] ?? null,
             'no_hp' => $validated['no_hp'] ?? null,
             'password' => Hash::make($validated['password']),
         ]);
@@ -70,6 +72,10 @@ class AuthController extends Controller
         if ($user && Hash::check($credentials['password'], $user->password)) {
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
+
+            if ($user->hasRole('Lembaga')) {
+                return redirect()->route('lembaga.dashboard');
+            }
 
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');

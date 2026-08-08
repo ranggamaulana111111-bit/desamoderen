@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\InventarisController;
 use App\Http\Controllers\Admin\KadesDashboardController;
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\LembagaController;
+use App\Http\Controllers\Admin\LembagaReportController;
 use App\Http\Controllers\Admin\LetterConfigController;
 use App\Http\Controllers\Admin\PengajuanSuratController;
 use App\Http\Controllers\Admin\QueueController;
@@ -29,6 +31,10 @@ use App\Http\Controllers\Debug\QrTestController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\General\CetakSuratController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Lembaga\BeritaController as LembagaBeritaController;
+use App\Http\Controllers\Lembaga\DashboardController as LembagaDashboardController;
+use App\Http\Controllers\Lembaga\EventController as LembagaEventController;
+use App\Http\Controllers\Lembaga\ProfilController as LembagaProfilController;
 use App\Http\Controllers\PublicVerificationController;
 use App\Http\Controllers\Warga\DashboardController;
 use App\Http\Controllers\Warga\EventController as WargaEventController;
@@ -120,6 +126,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('berita', BeritaController::class)->middleware('permission:news.manage');
     Route::resource('events', AdminEventController::class)->middleware('permission:event.manage');
 
+    // ── Lembaga (Kelembagaan Desa) ──
+    Route::resource('lembaga', LembagaController::class)->middleware('permission:lembaga.manage');
+    Route::get('laporan-lembaga', [LembagaReportController::class, 'index'])->middleware('permission:lembaga.report')->name('lembaga-report.index');
+
     // ── Queue Monitoring ──
     Route::get('queue', [QueueController::class, 'index'])->middleware('permission:queue.view')->name('queue.index');
     Route::get('queue/chart-data', [QueueController::class, 'chartData'])->middleware('permission:queue.view')->name('queue.chart');
@@ -192,4 +202,12 @@ Route::middleware(['auth'])->prefix('warga')->name('warga.')->group(function () 
     Route::delete('surat/{pengajuan}', [SuratController::class, 'destroy'])->name('surat.destroy');
 
     Route::post('events/{undangan}/konfirmasi', [WargaEventController::class, 'konfirmasi'])->name('events.konfirmasi');
+});
+
+Route::middleware(['auth', 'permission:lembaga.content'])->prefix('lembaga')->name('lembaga.')->group(function () {
+    Route::get('dashboard', [LembagaDashboardController::class, 'index'])->name('dashboard');
+    Route::get('profil', [LembagaProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('profil', [LembagaProfilController::class, 'update'])->name('profil.update');
+    Route::resource('berita', LembagaBeritaController::class);
+    Route::resource('events', LembagaEventController::class);
 });
