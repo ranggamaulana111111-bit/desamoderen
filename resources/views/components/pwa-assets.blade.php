@@ -10,6 +10,7 @@
     @media (display-mode: standalone) {
         html, body { -webkit-tap-highlight-color: transparent; }
         body { overscroll-behavior-y: none; }
+        html, body { overflow-x: clip !important; }
     }
 </style>
 <script>

@@ -22,6 +22,7 @@
                 </div>
                 <div class="widget-card-body">
                     <div id="qr-reader" class="rounded-xl overflow-hidden bg-slate-900" style="min-height:200px"></div>
+                    <p x-show="scanError" x-cloak x-transition.opacity class="mt-2 text-center text-[11px] font-medium" :class="scanErrorType === 'warning' ? 'text-amber-500' : 'text-red-500'" x-text="scanError"></p>
                     <p class="text-[11px] text-gray-400 mt-2 text-center">Arahkan kamera ke QR Code di layar HP warga</p>
                     <div class="flex items-center justify-center gap-2 mt-2">
                         <button type="button" @click="startScan()" class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg transition-colors">
@@ -239,7 +240,7 @@
     </div>
 
     @push('scripts')
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="{{ asset('vendor/html5-qrcode/html5-qrcode.min.js') }}"></script>
     <script>
         function pickupApp() {
             return {
@@ -249,6 +250,8 @@
 
                 scanner: null,
                 scanning: false,
+                scanError: '',
+                scanErrorType: 'error',
 
                 manualQuery: '',
                 manualError: '',
@@ -291,12 +294,23 @@
                 async startScan() {
                     if (this.scanning) return;
                     if (typeof Html5Qrcode === 'undefined') {
-                        this.showToast('error', 'Library pemindai QR belum termuat. Periksa koneksi internet.');
+                        this.scanError = 'Library pemindai QR belum termuat. Coba muat ulang halaman.';
+                        this.scanErrorType = 'error';
+                        this.showToast('error', 'Library pemindai QR belum termuat. Muat ulang halaman.');
                         return;
                     }
+                    if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                        this.scanError = 'Akses kamera hanya berjalan di HTTPS (atau localhost). Pastikan situs diakses melalui https://.';
+                        this.scanErrorType = 'warning';
+                        this.showToast('warning', 'Kamera membutuhkan HTTPS. Gunakan tautan https:// atau cari manual.');
+                        return;
+                    }
+                    this.scanError = '';
+                    this.scanErrorType = 'error';
                     try {
                         const cameras = await Html5Qrcode.getCameras();
                         if (!cameras || cameras.length === 0) {
+                            this.scanError = 'Kamera tidak ditemukan. Gunakan pencarian manual.';
                             this.showToast('error', 'Kamera tidak ditemukan. Gunakan pencarian manual.');
                             return;
                         }
@@ -308,7 +322,10 @@
                         });
                         this.scanning = true;
                     } catch (e) {
-                        this.showToast('error', 'Gagal mengakses kamera: ' + (e?.message || 'izin kamera ditolak.'));
+                        const msg = e?.message || 'izin kamera ditolak.';
+                        this.scanError = 'Gagal mengakses kamera: ' + msg;
+                        this.scanErrorType = 'error';
+                        this.showToast('error', 'Gagal mengakses kamera: ' + msg);
                     }
                 },
 
@@ -327,8 +344,21 @@
                     this.stopScan(true);
                     this.loading = true;
                     this.manualError = '';
-                    await this.cari(text);
-                    this.loading = false;
+                    this.scanError = '';
+                    try {
+                        await this.cari(text);
+                    } finally {
+                        this.loading = false;
+                    }
+                    if (this.antrean) {
+                        this.scanError = 'QR terdeteksi. Antrean berhasil dipilih.';
+                        this.scanErrorType = 'warning';
+                    } else if (this.manualError) {
+                        this.scanError = this.manualError;
+                        this.manualError = '';
+                        this.showToast('error', this.scanError);
+                        setTimeout(() => this.startScan(), 1500);
+                    }
                 },
 
                 async cariManual() {

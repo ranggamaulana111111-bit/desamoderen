@@ -93,7 +93,7 @@
         .section-header .shimmer-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,0,0,.06),transparent)}
     </style>
 </head>
-<body class="bg-[#f5f5f0] font-sans antialiased text-slate-700 overflow-x-hidden">
+<body class="bg-[#f5f5f0] font-sans antialiased text-slate-700 overflow-x-clip">
 
     @include('admin.components.sidebar')
 

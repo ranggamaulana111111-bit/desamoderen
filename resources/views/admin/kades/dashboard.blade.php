@@ -78,7 +78,7 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-700 overflow-x-hidden">
+<body class="font-sans antialiased text-slate-700 overflow-x-clip">
 
     @include('admin.components.sidebar')
 

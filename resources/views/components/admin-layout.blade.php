@@ -5,7 +5,7 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="id" class="overflow-x-hidden" x-data="themeManager()" x-init="init()" :class="{ 'dark': resolvedTheme === 'dark' }">
+<html lang="id" class="overflow-x-clip" x-data="themeManager()" x-init="init()" :class="{ 'dark': resolvedTheme === 'dark' }">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -510,7 +510,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="bg-[#f5f5f0] dark:bg-slate-900 font-sans antialiased text-slate-700 overflow-x-hidden transition-colors duration-300"
+<body class="bg-[#f5f5f0] dark:bg-slate-900 font-sans antialiased text-slate-700 overflow-x-clip transition-colors duration-300"
       :class="{ 'density-compact': density === 'compact', 'density-loose': density === 'loose' }">
 
     @include('admin.components.sidebar')

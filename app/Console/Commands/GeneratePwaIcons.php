@@ -36,7 +36,7 @@ class GeneratePwaIcons extends Command
         ];
 
         foreach ($outputs as $filename => $size) {
-            $path = $targetDir . DIRECTORY_SEPARATOR . $filename;
+            $path = $targetDir.DIRECTORY_SEPARATOR.$filename;
 
             if (file_exists($path) && ! $this->option('force')) {
                 $this->line("  [skip] {$filename} sudah ada.");
@@ -75,7 +75,7 @@ class GeneratePwaIcons extends Command
 
         $dir = Storage::disk('public')->path('uploads/identity');
 
-        foreach (glob($dir . DIRECTORY_SEPARATOR . '*.{jpg,jpeg,png,webp,gif}', GLOB_BRACE) ?: [] as $file) {
+        foreach (glob($dir.DIRECTORY_SEPARATOR.'*.{jpg,jpeg,png,webp,gif}', GLOB_BRACE) ?: [] as $file) {
             return $file;
         }
 

@@ -80,7 +80,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased overflow-x-hidden" x-data="loginPage()" x-init="init()">
+<body class="min-h-screen font-sans antialiased overflow-x-clip" x-data="loginPage()" x-init="init()">
 
     {{-- ═══════ DESKTOP: TWO-COLUMN LAYOUT ═══════ --}}
     <div class="hidden lg:flex min-h-screen">

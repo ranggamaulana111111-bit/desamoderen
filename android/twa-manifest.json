@@ -1,0 +1,42 @@
+{
+  "packageId": "id.my.ranggamrw.desa",
+  "host": "desa.ranggamrw.my.id",
+  "name": "Prodesa Ranggamrw",
+  "launcherName": "Prodesa",
+  "display": "standalone",
+  "themeColor": "#065F46",
+  "themeColorDark": "#065F46",
+  "navigationColor": "#FFFFFF",
+  "navigationColorDark": "#FFFFFF",
+  "navigationDividerColor": "#E5E7EB",
+  "navigationDividerColorDark": "#065F46",
+  "backgroundColor": "#FFFFFF",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "http://127.0.0.1:8090/pwa/icon-512.png",
+  "maskableIconUrl": "http://127.0.0.1:8090/pwa/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "upload-keystore.jks",
+    "alias": "prodesa"
+  },
+  "appVersionName": "3",
+  "appVersionCode": 3,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": [],
+  "appVersion": "3"
+}

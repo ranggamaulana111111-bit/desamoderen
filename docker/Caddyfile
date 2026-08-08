@@ -1,0 +1,21 @@
+# Prodesa Caddyfile
+# Reverse proxy + HTTPS otomatis via Let's Encrypt.
+# Domain diambil dari variabel APP_DOMAIN di .env (compose meninject ke container).
+# Contoh: APP_DOMAIN=prodesa.desa.id
+
+{$APP_DOMAIN} {
+    encode zstd gzip
+
+    # Kirim header yang benar ke Laravel (trusted proxy)
+    reverse_proxy web:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    # Batasi ukuran body agar konsisten dengan nginx (20M)
+    request_body {
+        max_size 20MB
+    }
+}

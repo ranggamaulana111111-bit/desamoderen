@@ -56,7 +56,7 @@
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px}
     </style>
 </head>
-<body class="bg-[#f0f0eb] font-sans antialiased text-slate-700 overflow-x-hidden"
+<body class="bg-[#f0f0eb] font-sans antialiased text-slate-700 overflow-x-clip"
       style="background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(16,185,129,.04),transparent),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(99,102,241,.03),transparent)">
 
     @include('admin.components.sidebar')
