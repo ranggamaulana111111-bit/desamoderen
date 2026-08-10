@@ -1,4 +1,4 @@
-<x-admin-layout title="Edit Laporan Desa" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Edit Laporan Desa" maxWidth="max-w-[1440px]">
 
     <div x-data="{
         judul: @js(old('judul', $laporan->judul)),

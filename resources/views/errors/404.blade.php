@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @include('components.favicon')
     @include('components.fonts')
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center">
     <div class="text-center px-6 max-w-lg">
@@ -14,7 +15,7 @@
         <h1 class="text-2xl font-semibold text-gray-800 mb-2">Halaman Tidak Ditemukan</h1>
         <p class="text-gray-500 mb-8">Halaman yang Anda cari mungkin telah dipindahkan, dihapus, atau URL yang dimasukkan salah.</p>
         <div class="flex gap-4 justify-center">
-            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : '/' }}" class="inline-block px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition font-medium">&larr; Kembali</a>
+            <a href="{{ url()->previous() !== url()->current() ? url()->previous() : '/' }}" class="inline-block px-6 py-3 bg-[#0068BD] text-white rounded-full hover:bg-[#0070CC] transition font-medium">&larr; Kembali</a>
             <a href="/" class="inline-block px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-medium">Beranda</a>
         </div>
     </div>

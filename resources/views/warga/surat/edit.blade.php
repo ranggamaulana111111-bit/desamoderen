@@ -65,6 +65,7 @@
 
         ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#94a3b8}
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased" x-data="editForm()">
     <div class="scroll-progress" id="scrollProgress" style="width:0%"></div>

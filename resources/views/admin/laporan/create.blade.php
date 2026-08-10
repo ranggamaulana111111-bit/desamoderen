@@ -1,4 +1,4 @@
-<x-admin-layout title="Buat Laporan Desa Baru" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Buat Laporan Desa Baru" maxWidth="max-w-[1440px]">
 
     <div x-data="laporanCreate({{ json_encode($modules) }}, {{ json_encode($moduleLabels) }}, {{ json_encode($moduleIcons) }})">
 

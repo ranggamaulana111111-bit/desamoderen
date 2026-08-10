@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Debug QR Code - Prodesa</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full">

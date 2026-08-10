@@ -1,4 +1,4 @@
-<x-admin-layout title="Detail Laporan Desa" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Detail Laporan Desa" maxWidth="max-w-[1440px]">
 
     @php
         $statusBadge = $laporan->isFinalized()

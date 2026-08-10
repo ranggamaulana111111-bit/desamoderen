@@ -1,4 +1,4 @@
-<x-admin-layout title="Pelayanan Surat" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Pelayanan Surat" maxWidth="max-w-[1440px]">
     {{-- Quick Stats --}}
     @php
         $statusConfig = [

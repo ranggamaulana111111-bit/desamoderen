@@ -1,4 +1,4 @@
-<x-admin-layout title="Monitoring Antrean" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Monitoring Antrean" maxWidth="max-w-[1440px]">
     @if (session('success'))
         <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-center gap-2">
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

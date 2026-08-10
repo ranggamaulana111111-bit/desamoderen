@@ -85,6 +85,7 @@
         .float-icon { animation: float 4s ease-in-out infinite; }
         [x-cloak] { display: none !important; }
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-gray-50 to-emerald-50/30 min-h-screen font-sans antialiased">
 

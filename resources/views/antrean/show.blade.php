@@ -81,6 +81,7 @@
         @keyframes countPulse { 0%,100% { opacity:1; } 50% { opacity:.5; } }
         .count-pulse { animation: countPulse 2s ease-in-out infinite; }
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 min-h-screen font-sans antialiased" x-data="antreanApp()" x-init="init()">
 

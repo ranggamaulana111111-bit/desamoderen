@@ -65,6 +65,9 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:5,1');
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('register', [AuthController::class, 'register'])->middleware('throttle:5,1');
+    Route::get('password/lupa', [AuthController::class, 'showForgot'])->name('password.request');
+    Route::post('password/lupa', [AuthController::class, 'forgot'])->middleware('throttle:5,1')->name('password.forgot');
+    Route::post('captcha/refresh', [AuthController::class, 'refreshCaptcha'])->name('captcha.refresh');
 });
 
 Route::middleware('auth')->post('logout', [AuthController::class, 'logout'])->name('logout');

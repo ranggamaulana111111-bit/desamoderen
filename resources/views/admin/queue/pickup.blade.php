@@ -1,4 +1,4 @@
-<x-admin-layout title="Pengambilan Surat" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Pengambilan Surat" maxWidth="max-w-[1440px]">
     <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
             <h1 class="text-2xl font-bold text-gray-800 mb-1">Pengambilan Surat</h1>

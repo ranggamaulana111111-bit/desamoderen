@@ -1,4 +1,4 @@
-<x-admin-layout title="Data Warga" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Data Warga" maxWidth="max-w-[1440px]">
     {{-- Quick Stats --}}
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div class="stat-micro bg-white rounded-2xl border border-gray-200/60 p-4 shadow-sm">

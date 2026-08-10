@@ -139,6 +139,7 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
     </style>
     @stack('styles')
+    @include('components.design-tokens')
 </head>
 <body class="bg-[#f5f5f0] font-sans antialiased text-slate-700 overflow-x-clip">
 

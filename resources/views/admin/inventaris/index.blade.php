@@ -1,4 +1,4 @@
-<x-admin-layout title="Inventaris & Aset" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Inventaris & Aset" maxWidth="max-w-[1440px]">
 
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

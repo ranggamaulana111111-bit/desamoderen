@@ -12,6 +12,7 @@
         .splash-loader { animation: pulse 1.5s ease-in-out infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased flex items-center justify-center min-h-screen">
     <div class="text-center">

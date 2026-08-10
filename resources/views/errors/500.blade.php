@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @include('components.favicon')
     @include('components.fonts')
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased min-h-screen flex items-center justify-center">
     <div class="text-center px-6 max-w-lg">
@@ -14,7 +15,7 @@
         <h1 class="text-2xl font-semibold text-gray-800 mb-2">Terjadi Kesalahan Server</h1>
         <p class="text-gray-500 mb-8">Maaf, terjadi gangguan pada server. Silakan coba beberapa saat lagi atau hubungi perangkat desa.</p>
         <div class="flex gap-4 justify-center">
-            <a href="/" class="inline-block px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition font-medium">&larr; Kembali ke Beranda</a>
+            <a href="/" class="inline-block px-6 py-3 bg-[#0068BD] text-white rounded-full hover:bg-[#0070CC] transition font-medium">&larr; Kembali ke Beranda</a>
         </div>
     </div>
 </body>

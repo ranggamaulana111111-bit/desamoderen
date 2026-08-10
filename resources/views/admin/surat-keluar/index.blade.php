@@ -1,4 +1,4 @@
-<x-admin-layout title="Surat Keluar" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Surat Keluar" maxWidth="max-w-[1440px]">
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>

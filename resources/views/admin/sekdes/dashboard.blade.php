@@ -92,6 +92,7 @@
         .section-header h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#475569}
         .section-header .shimmer-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,0,0,.06),transparent)}
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-[#f5f5f0] font-sans antialiased text-slate-700 overflow-x-clip">
 
@@ -99,7 +100,7 @@
 
     <main class="flex-1 overflow-y-auto pt-16 md:pt-0 min-h-screen">
         <div class="p-4 sm:p-6 lg:p-8">
-            <div class="max-w-[1600px] mx-auto" x-data="sekdesDashboard()" x-init="init()">
+            <div class="max-w-[1440px] mx-auto" x-data="sekdesDashboard()" x-init="init()">
 
                 @if (session('success'))
                     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"

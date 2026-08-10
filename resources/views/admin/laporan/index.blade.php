@@ -1,4 +1,4 @@
-<x-admin-layout title="Laporan Desa Kuantitatif" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Laporan Desa Kuantitatif" maxWidth="max-w-[1440px]">
     @push('styles')
     <style>
         .stat-micro .stat-icon { transition: transform .3s cubic-bezier(.16,1,.3,1); }

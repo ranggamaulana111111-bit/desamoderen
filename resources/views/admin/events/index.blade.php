@@ -1,4 +1,4 @@
-<x-admin-layout title="Kalender Event" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Kalender Event" maxWidth="max-w-[1440px]">
     @push('styles')
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <style>

@@ -77,6 +77,7 @@
                 radial-gradient(ellipse 60% 40% at 80% 100%,rgba(99,102,241,.03),transparent);
         }
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="font-sans antialiased text-slate-700 overflow-x-clip">
 
@@ -84,7 +85,7 @@
 
     <main class="flex-1 overflow-y-auto pt-16 md:pt-0 min-h-screen">
         <div class="p-4 sm:p-6 lg:p-8">
-            <div class="max-w-[1600px] mx-auto" x-data="kadesDashboard()" x-init="init()">
+            <div class="max-w-[1440px] mx-auto" x-data="kadesDashboard()" x-init="init()">
 
                 {{-- ═══════════════════════════════════════════════════════════ --}}
                 {{-- FLASH SUCCESS                                            --}}

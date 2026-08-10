@@ -64,6 +64,7 @@
         .prose-berita a { color: #059669; text-decoration: underline; text-underline-offset: 2px; }
         .prose-berita a:hover { color: #047857; }
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased">
 

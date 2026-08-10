@@ -1,4 +1,4 @@
-<x-admin-layout title="Analitik & Laporan" maxWidth="max-w-[1600px]">
+<x-admin-layout title="Analitik & Laporan" maxWidth="max-w-[1440px]">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Analitik &amp; Laporan</h1>

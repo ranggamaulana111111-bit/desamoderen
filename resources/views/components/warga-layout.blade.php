@@ -11,6 +11,7 @@
     @include('components.favicon')
     @include('components.fonts')
     <x-pwa-assets />
+    @include('components.design-tokens')
 </head>
 <body class="bg-gray-50 font-sans antialiased">
 

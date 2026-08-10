@@ -133,6 +133,7 @@
         ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:9999px}
         .scroll-x-fade{mask-image:linear-gradient(to right,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%)}
     </style>
+    @include('components.design-tokens')
 </head>
 <body class="bg-[#f5f5f0] font-sans antialiased text-slate-700 overflow-x-clip" x-data="dashboard()" @open-letter-picker.window="showLetterPicker = true" @keydown.escape.window="showLetterPicker = false">
 
@@ -305,11 +306,11 @@
                         </div>
                     </div>
                     <div class="flex gap-2 mt-4">
-                        <button type="button" @click="$dispatch('open-letter-picker')" class="btn-primary flex-1 text-sm !py-2.5 !px-4 !rounded-xl">
+                        <button type="button" @click="$dispatch('open-letter-picker')" class="btn-primary flex-1 text-sm !py-2.5 !px-4 !rounded-full">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                             Ajukan Surat
                         </button>
-                        <a href="{{ route('warga.surat.index') }}" class="btn-ghost !px-3 !py-2.5 !rounded-xl">
+                        <a href="{{ route('warga.surat.index') }}" class="btn-ghost !px-3 !py-2.5 !rounded-full">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                         </a>
                     </div>
@@ -701,7 +702,7 @@
             <div class="p-3 border-t border-slate-100">
                 <form @submit.prevent="send(input)" class="flex items-center gap-2">
                     <input x-model="input" type="text" placeholder="Ketik pertanyaan..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition">
-                    <button type="submit" class="w-10 h-10 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-500/20 hover:shadow-brand-500/30 transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+                    <button type="submit" class="w-10 h-10 rounded-full bg-[#0068BD] text-white flex items-center justify-center shadow-md shadow-blue-500/20 hover:bg-[#0070CC] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
                 </form>
             </div>
         </div>

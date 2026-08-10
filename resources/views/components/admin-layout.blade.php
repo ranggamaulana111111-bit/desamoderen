@@ -1,4 +1,4 @@
-@props(['title' => 'Dashboard', 'maxWidth' => 'max-w-[1600px]'])
+@props(['title' => 'Dashboard', 'maxWidth' => 'max-w-[1440px]'])
 
 @php
     $themeSettings = app(\App\Services\ThemeSettingsService::class)->getForUser();
@@ -188,9 +188,9 @@
         .section-bar .count-badge {
             margin-left: auto;
             font-size: 10px; font-weight: 700;
-            color: var(--brand-600); background: var(--brand-50);
+            color: var(--gold-700, #a9882e); background: var(--gold-300, #efdda3);
             padding: 2px 8px; border-radius: 9999px;
-            border: 1px solid var(--brand-100);
+            border: 1px solid var(--gold-400, #e7cd78);
         }
 
         /* ── Progress ── */
@@ -375,7 +375,7 @@
             padding: 2px 8px; border-radius: 9999px;
             font-size: 10px; font-weight: 600; white-space: nowrap;
         }
-        .chip-brand { background: var(--brand-50); color: var(--brand-700); border: 1px solid var(--brand-100); }
+        .chip-brand { background: var(--gold-300, #efdda3); color: var(--gold-700, #a9882e); border: 1px solid var(--gold-400, #e7cd78); }
 
         /* ── Table Enhanced ── */
         .table-enhanced { width: 100%; font-size: 13px; }
@@ -509,6 +509,7 @@
         .density-loose .bento-card-static { padding: 1.75rem; }
     </style>
     @stack('styles')
+    @include('components.design-tokens')
 </head>
 <body class="bg-[#f5f5f0] dark:bg-slate-900 font-sans antialiased text-slate-700 overflow-x-clip transition-colors duration-300"
       :class="{ 'density-compact': density === 'compact', 'density-loose': density === 'loose' }">

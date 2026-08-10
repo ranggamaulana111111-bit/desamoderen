@@ -19,6 +19,7 @@
     </script>
     @include('components.favicon')
     @include('components.fonts')
+    @include('components.design-tokens')
 </head>
 <body class="bg-slate-50 font-sans antialiased">
     @include('admin.components.sidebar')
