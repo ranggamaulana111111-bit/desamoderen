@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libicu-dev \
         libonig-dev \
         libxml2-dev \
+        libsqlite3-dev \
         libgmp-dev \
         default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
