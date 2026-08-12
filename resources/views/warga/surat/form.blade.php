@@ -233,6 +233,11 @@
             @csrf
             <input type="hidden" name="jenis_surat" value="{{ $config->jenis_surat }}">
 
+            {{-- Input lampiran harus selalu ada di DOM (di luar step x-if) agar file terkirim saat submit --}}
+            <input type="file" name="lampiran[]" id="lampiran" x-ref="fileInput" class="hidden" multiple
+                   accept=".pdf,.jpg,.jpeg,.png"
+                   @change="handleSelect($event)">
+
             {{-- ═══════ STEP 1: DATA DIRI ═══════ --}}
             <div class="wizard-step" :class="{ 'active': step === 1 }">
                 <div class="bento-card p-5 md:p-7 a-fade-up d4" style="animation:successPop .5s var(--ease-out-expo)">
@@ -435,10 +440,6 @@
                         <p class="text-xs text-slate-400 mt-1">atau <span class="text-brand-600 font-semibold">klik untuk memilih</span></p>
                         <p class="text-[10px] text-slate-400 mt-2">PDF, JPG, JPEG, PNG &middot; Maks 2MB per file</p>
                     </div>
-
-                    <input type="file" name="lampiran[]" id="lampiran" x-ref="fileInput" class="hidden" multiple
-                           accept=".pdf,.jpg,.jpeg,.png"
-                           @change="handleSelect($event)">
 
                     {{-- FILE LIST --}}
                     <div x-show="files.length" x-cloak class="space-y-2.5">
