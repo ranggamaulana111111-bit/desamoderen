@@ -14,15 +14,17 @@ class StorePengajuanRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [
-            'jenis_surat' => 'required|string|max:50',
-            'lampiran' => 'required|array|min:1',
-            'lampiran.*' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:image/jpeg,image/png,application/pdf|max:2048',
-        ];
-
         $jenis = $this->input('jenis_surat');
 
         $config = LetterConfig::where('jenis_surat', $jenis)->first();
+
+        $requiresAttachment = $config && ! empty($config->requirements);
+
+        $rules = [
+            'jenis_surat' => 'required|string|max:50',
+            'lampiran' => $requiresAttachment ? 'required|array|min:1' : 'nullable|array',
+            'lampiran.*' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:image/jpeg,image/png,application/pdf|max:2048',
+        ];
 
         if ($config) {
             foreach ($config->getValidationRules() as $key => $rule) {
