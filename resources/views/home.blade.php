@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth overflow-x-clip">
 <head>
     <meta charset="utf-8">
@@ -99,6 +99,10 @@
         .nav-scrolled .nav-btn-keluar:hover{color:#ef4444}
         .nav-scrolled .mobile-toggle{color:#334155}
         .nav-scrolled .mobile-toggle:hover{background:#f1f5f9}
+
+        /* Link aktif saat navbar sudah scroll: harus tetap kontras (bukan putih di atas background putih) */
+        .nav-scrolled .nav-link.active{color:#059669}
+        .nav-scrolled .nav-link.active::after{background:var(--brand-600);width:100%}
 
         .nav-link{position:relative;color:rgba(255,255,255,.7);font-weight:500;font-size:.875rem;transition:color .25s ease}
         .nav-link::after{content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;background:var(--accent-500,#0068bd);border-radius:9999px;transition:all .3s ease;transform:translateX(-50%)}
@@ -212,6 +216,10 @@
             </div>
         </div>
     </nav>
+    <script>
+        // Setel status navbar secepatnya (sebelum paint) agar background konsisten saat reload di posisi scroll.
+        (function(){var n=document.getElementById('navbar');if(n){n.classList.toggle('nav-scrolled',(window.scrollY||window.pageYOffset||0)>40);}})();
+    </script>
     {{-- HERO --}}
     <section class="hero-gradient relative min-h-[92vh] flex items-center overflow-hidden">
         <div class="hero-mesh absolute inset-0"></div>
