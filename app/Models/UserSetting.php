@@ -26,11 +26,14 @@ class UserSetting extends Model
 
     public static function defaults(): array
     {
+        $villageAccent = (string) config('village.tampilan_accent_color', 'emerald');
+        $villageAccent = array_key_exists($villageAccent, static::validAccentColors()) ? $villageAccent : 'emerald';
+
         return [
-            'theme' => 'light',
+            'theme' => (string) config('village.tampilan_dark_mode', '0') === '1' ? 'dark' : 'light',
             'density' => 'comfortable',
-            'accent_color' => 'emerald',
-            'sidebar_collapsed' => false,
+            'accent_color' => $villageAccent,
+            'sidebar_collapsed' => (string) config('village.tampilan_sidebar_style', 'default') === 'icon-only',
         ];
     }
 

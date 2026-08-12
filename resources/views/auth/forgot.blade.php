@@ -138,7 +138,7 @@
                         <div class="mb-6">
                             <div class="flex items-center gap-3 mb-5">
                                 <a href="{{ route('login') }}" class="w-10 h-10 rounded-xl border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all">
-                                    <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
                                 </a>
                                 <div>
                                     <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Atur Ulang <span class="bg-gradient-to-r from-brand-600 to-teal-600 bg-clip-text text-transparent">Password</span></h1>
@@ -204,6 +204,27 @@
                                 </div>
                             </div>
 
+                            @if($captchaMode === 'turnstile')
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                    <div class="cf-turnstile" data-sitekey="{{ config('village.integrasi_turnstile_site_key') }}"></div>
+                                </div>
+                                @error('cf-turnstile-response')
+                                <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            @elseif($captchaMode === 'recaptcha')
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                    <div class="g-recaptcha" data-sitekey="{{ config('village.integrasi_recaptcha_key') }}"></div>
+                                </div>
+                                @error('g-recaptcha-response')
+                                <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            @elseif($captchaMode === 'math')
                             <div>
                                 <div class="flex items-center justify-between mb-2 ml-1">
                                     <label class="block text-xs font-semibold text-slate-600">Captcha</label>
@@ -227,6 +248,7 @@
                                 <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>
+                            @endif
 
                             <button type="submit" class="btn-primary" :disabled="submitting">
                                 <template x-if="submitting">
@@ -250,6 +272,19 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const els = document.querySelectorAll('.a-fade-up');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((e) => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('v');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            els.forEach((el) => io.observe(el));
+        });
+
         function refreshCaptcha() {
             fetch('{{ route('captcha.refresh') }}', {
                 method: 'POST',
@@ -267,5 +302,10 @@
             .catch(() => {});
         }
     </script>
+    @if($captchaMode === 'recaptcha')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @elseif($captchaMode === 'turnstile')
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
 </body>
 </html>

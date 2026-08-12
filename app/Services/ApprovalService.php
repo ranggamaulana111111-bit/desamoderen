@@ -74,8 +74,9 @@ class ApprovalService
             throw new \InvalidArgumentException("Transisi dari '{$surat->status}' ke '{$newStatus}' tidak valid.");
         }
 
-        DB::transaction(function () use ($surat, $newStatus, $user, $catatan) {
-            $previousStatus = $surat->status;
+        $previousStatus = $surat->status;
+
+        DB::transaction(function () use ($surat, $newStatus, $user, $catatan, $previousStatus) {
             $newStep = $this->calculateNewStep($newStatus, $surat->current_step);
 
             $surat->update([
@@ -103,6 +104,23 @@ class ApprovalService
                 "Status berubah dari {$previousStatus} ke {$newStatus}"
             );
         });
+
+        $this->notifyWebhook($surat, $previousStatus, $newStatus, $user);
+    }
+
+    private function notifyWebhook(PengajuanSurat $surat, string $from, string $to, User $user): void
+    {
+        app(WebhookNotifier::class)->send([
+            'event' => 'pengajuan.updated',
+            'pengajuan_id' => $surat->id,
+            'from_status' => $from,
+            'to_status' => $to,
+            'updated_by' => $user->name,
+            'nomor' => $surat->nomor_surat,
+            'jenis_surat' => $surat->jenis_surat,
+            'url' => route('admin.pengajuan.show', $surat),
+            'occurred_at' => now()->toIso8601String(),
+        ]);
     }
 
     public function reject(PengajuanSurat $surat, User $user, ?string $catatan = null): void

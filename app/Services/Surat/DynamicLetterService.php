@@ -20,14 +20,18 @@ class DynamicLetterService implements LetterGeneratorInterface
             $dt ?? [],
         );
 
+        $renderedBody = $this->config->renderBody($dt);
+
         $data = [
             'jenis_label' => $this->config->label,
             'view' => 'pdf.template_dynamic',
             'data' => [
-                'rendered_body' => $this->config->renderBody($dt),
+                'rendered_body' => $renderedBody,
+                'body_sections' => (new LetterBodyParser)->parse($renderedBody),
+                'masa_berlaku_bulan' => $this->config->masa_berlaku_bulan,
                 'nama_lengkap' => $dt['nama_lengkap'] ?? $surat->user->name,
                 'nik' => $dt['nik'] ?? $surat->user->nik,
-                'alamat_lengkap' => $dt['alamat_lengkap'] ?? sprintf(
+                'alamat_lengkap' => $dt['alamat_lengkap'] ?? $surat->user->alamat ?? sprintf(
                     'RT %s / RW %s',
                     $surat->user->rt ?? '-',
                     $surat->user->rw ?? '-'

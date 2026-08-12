@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminIpWhitelist;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CheckPermission;
 use Illuminate\Foundation\Application;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'permission' => CheckPermission::class,
             'role' => RoleMiddleware::class,
+            'ip.whitelist' => AdminIpWhitelist::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -1,9 +1,13 @@
+@php
+    $editUser = $user ?? null;
+    $editRole = $editUser ? ($editUser->roles->first()->name ?? '') : '';
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tambah Pengguna — {{ config('village.nama_desa', 'Prodesa') }}</title>
+    <title>@if($editUser) Edit Pengguna @else Tambah Pengguna @endif — {{ config('village.nama_desa', 'Prodesa') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -79,12 +83,12 @@
                             <div class="flex items-center gap-1.5 text-emerald-200/60 text-[11px] font-medium mb-3">
                                 <a href="{{ route('admin.users.index') }}" class="hover:text-white transition-colors">Pengguna</a>
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-                                <span class="text-emerald-100">Tambah Baru</span>
+                                <span class="text-emerald-100">{{ isset($user) ? 'Edit Pengguna' : 'Tambah Baru' }}</span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div>
-                                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">Tambah Pengguna Baru</h1>
-                                    <p class="text-emerald-200/70 text-sm mt-1">Daftarkan pengguna baru ke dalam sistem Prodesa</p>
+                                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">{{ isset($user) ? 'Edit Pengguna' : 'Tambah Pengguna Baru' }}</h1>
+                                    <p class="text-emerald-200/70 text-sm mt-1">{{ isset($user) ? 'Perbarui data pengguna di dalam sistem Prodesa' : 'Daftarkan pengguna baru ke dalam sistem Prodesa' }}</p>
                                 </div>
                                 <a href="{{ route('admin.users.index') }}"
                                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm text-xs font-semibold hover:bg-white/20 transition-all border border-white/10 self-start">
@@ -97,8 +101,9 @@
                 </div>
 
                 {{-- ═══ TWO-COLUMN LAYOUT ═══ --}}
-                <form action="{{ route('admin.users.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <form action="{{ isset($user) ? route('admin.users.update', $user) : route('admin.users.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     @csrf
+                    @if(isset($user)) @method('PUT') @endif
 
                     {{-- ── LEFT: FORM COLUMNS (7 cols) ── --}}
                     <div class="lg:col-span-7 space-y-5">
@@ -118,12 +123,12 @@
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
                                     <input type="text" name="name" x-model="form.name" required
-                                           class="form-input" placeholder="Masukkan nama lengkap">
+                                           class="form-input" placeholder="Masukkan nama lengkap" value="{{ old('name', $user->name ?? '') }}">
                                 </div>
                                 <div>
                                     <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Email Address</label>
                                     <input type="email" name="email" x-model="form.email" required
-                                           class="form-input" placeholder="nama@domain.com">
+                                           class="form-input" placeholder="nama@domain.com" value="{{ old('email', $user->email ?? '') }}">
                                 </div>
                             </div>
                         </div>
@@ -144,11 +149,24 @@
                                 <input type="text" name="nik" x-model="form.nik" required maxlength="16" minlength="16"
                                        class="form-input font-mono tracking-wider" placeholder="0000000000000000"
                                        pattern="[0-9]{16}" title="NIK harus 16 digit angka"
+                                       value="{{ old('nik', $user->nik ?? '') }}"
                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 <p class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg>
                                     Harus unik. NIK sudah terdaftar tidak dapat digunakan kembali.
                                 </p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">No. HP</label>
+                                <input type="tel" name="no_hp" x-model="form.no_hp" maxlength="15"
+                                       class="form-input" placeholder="08xxxxxxxxxx" value="{{ old('no_hp', $editUser->no_hp ?? '') }}"
+                                       oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                                <p class="text-[10px] text-gray-400 mt-1.5">Digunakan untuk verifikasi reset password (lupa password).</p>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Alamat</label>
+                                <textarea name="alamat" x-model="form.alamat" rows="2"
+                                          class="form-input" placeholder="Alamat lengkap tempat tinggal">{{ old('alamat', $editUser->alamat ?? '') }}</textarea>
                             </div>
                         </div>
 
@@ -164,10 +182,12 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Password</label>
+                                <label class="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                                    Password @if(isset($user)) <span class="text-amber-500 normal-case font-medium">(kosongkan jika tidak diubah)</span> @endif
+                                </label>
                                 <div class="relative">
-                                    <input :type="showPassword ? 'text' : 'password'" name="password" x-model="form.password" required
-                                           class="form-input pr-24 font-mono text-sm" placeholder="Masukkan password" autocomplete="new-password">
+                                    <input :type="showPassword ? 'text' : 'password'" name="password" x-model="form.password" @if(!isset($user)) required @endif
+                                           class="form-input pr-24 font-mono text-sm" placeholder="{{ isset($user) ? 'Kosongkan untuk tetap memakai password lama' : 'Masukkan password' }}" autocomplete="new-password">
                                     <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
                                         <button type="button" @click="showPassword = !showPassword"
                                                 class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors" :title="showPassword ? 'Sembunyikan' : 'Tampilkan'">
@@ -263,10 +283,10 @@
                         {{-- SUBMIT --}}
                         <div class="reveal reveal-d5">
                             <button type="submit" class="btn-submit flex items-center justify-center gap-2"
-                                    :disabled="!form.role || !form.name || !form.email || !form.nik || !form.password"
-                                    :class="(!form.role || !form.name || !form.email || !form.nik || !form.password) && 'opacity-50 cursor-not-allowed'">
+                                    :disabled="!form.role || !form.name || !form.email || !form.nik || ({{ isset($user) ? 'false' : '!form.password' }})"
+                                    :class="(!form.role || !form.name || !form.email || !form.nik || ({{ isset($user) ? 'false' : '!form.password' }})) && 'opacity-50 cursor-not-allowed'">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                                Simpan Pengguna
+                                {{ isset($user) ? 'Simpan Perubahan' : 'Simpan Pengguna' }}
                             </button>
                         </div>
                     </div>
@@ -374,7 +394,15 @@
     <script>
         function userForm() {
             return {
-                form: { name: '', email: '', nik: '', password: '', role: '' },
+                form: @json([
+                    'name' => $editUser->name ?? '',
+                    'email' => $editUser->email ?? '',
+                    'nik' => $editUser->nik ?? '',
+                    'password' => '',
+                    'role' => $editRole,
+                    'no_hp' => $editUser->no_hp ?? '',
+                    'alamat' => $editUser->alamat ?? '',
+                ]),
                 showPassword: false,
                 copied: false,
 

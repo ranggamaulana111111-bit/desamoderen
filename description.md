@@ -10,7 +10,7 @@
   <a href="https://github.com/ranggamaulana111111-bit"><img src="https://img.shields.io/badge/GitHub-ranggamaulana111111_bit-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
 </p>
 
-**Prodesa** adalah aplikasi web desa digital (Web Desa) berbasis **Laravel 11** dan **PHP 8.2**, dirancang untuk memberikan layanan administrasi kependudukan secara online bagi warga **Desa Kumpay, Kecamatan Ciasem, Kabupaten Subang, Jawa Barat**. Aplikasi ini menggantikan proses birokrasi konvensional dengan sistem pengajuan surat secara daring yang cepat, transparan, dan terintegrasi, dilengkapi RBAC multi-level, workflow approval, manajemen dokumen, monitoring antrean, pengambilan surat via scan QR, notifikasi Telegram, analitik, ketatausahaan desa, inventaris & aset, APBDesa, serta laporan desa kuantitatif.
+**Prodesa** adalah aplikasi web desa digital (Web Desa) berbasis **Laravel 11** dan **PHP 8.2**, dirancang untuk memberikan layanan administrasi kependudukan secara online bagi warga **Desa Kumpay, Kecamatan Ciasem, Kabupaten Subang, Jawa Barat**. Aplikasi ini menggantikan proses birokrasi konvensional dengan sistem pengajuan surat secara daring yang cepat, transparan, dan terintegrasi, dilengkapi RBAC multi-level, workflow approval, manajemen dokumen, monitoring antrean, pengambilan surat via scan QR, notifikasi Telegram, analitik, ketatausahaan desa, inventaris & aset, APBDesa, laporan desa kuantitatif, kelembagaan desa (Lembaga), template surat dinamis, log aktivitas, backup database, hingga fitur update aplikasi via git.
 
 ---
 
@@ -32,7 +32,7 @@
 | **Notifikasi** | Telegram Bot API (HTTP) | Pengajuan baru & surat selesai via bot |
 | **RBAC** | spatie/laravel-permission | Role & permission management |
 | **Auth** | Kustom (tanpa Breeze/Jetstream) | Login berbasis NIK |
-| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test (41 test) |
+| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test (74 test) |
 | **Code Style** | Laravel Pint ^1.13 | PSR-12 berbasis Laravel |
 
 ---
@@ -48,6 +48,16 @@
 | FAQ Chatbot | POST `/faq/ask` | Chatbot keyword-matching untuk pertanyaan layanan desa |
 | Verifikasi Surat | `/verifikasi/{hash}` | Verifikasi keaslian surat via QR Code |
 | Cek Antrean | `/antrean/{kodeQr}` | Info jadwal pengambilan surat via QR |
+
+### Fitur Auth (Login/Register/Lupa Password)
+
+| Fitur | Endpoint | Deskripsi |
+|---|---|---|
+| Login/Register Terpadu | `/login` · `/register` | Satu halaman `auth/index.blade.php` dengan segmented toggle Masuk/Daftar, wizard register 5 langkah (Identitas → Alamat → Kontak → Keamanan → Review) |
+| Captcha | `/captcha/refresh` | Soal matematika (default), Cloudflare Turnstile (`village.integrasi_turnstile_*`), atau Google reCAPTCHA (`village.integrasi_recaptcha_key`). Prioritas: Turnstile → reCAPTCHA → math. Diaktifkan via pengaturan keamanan |
+| Lupa Password | `/password/lupa` | Reset password dengan verifikasi NIK + No. HP terdaftar (dilewati jika user tidak punya No HP) |
+| Demo Account | — | Kartu "Akun Demo" (NIK 3216010101010001 / demo1234) untuk mencoba login |
+| Rate Limit | `throttle:auth` | Limit percobaan login/register/lupa per IP (default 5/menit, dapat diatur) |
 
 ### Fitur Warga (Terautentikasi)
 
@@ -103,6 +113,17 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | **Berita Desa** | `/admin/berita` | `news.manage` | CRUD berita (draft/publish) |
 | **Kalender Event** | `/admin/events` | `event.manage` | CRUD event + undangan massal per RT/RW |
 
+#### Kelembagaan, Template Surat & Log Aktivitas
+
+| Fitur | Endpoint | Permission | Deskripsi |
+|---|---|---|---|
+| **Lembaga Desa** | `/admin/lembaga` | `lembaga.manage` | CRUD lembaga desa (karang taruna, PKK, BUMDes, dll.) + status aktif |
+| **Laporan Kinerja Lembaga** | `/admin/laporan-lembaga` | `lembaga.report` | Laporan kinerja lembaga + export |
+| **Template Surat (LetterConfig)** | `/admin/template-surat` | `setting.manage` | CRUD 14 template surat dinamis (fields JSON, body template, kode klasifikasi, masa berlaku, requirements) |
+| **Log Aktivitas** | `/admin/activity-log` | `audit.view` | Audit trail semua aksi admin (filter, paginate, hapus) |
+| **Backup Database** | `/admin/pengaturan/backup*` | `setting.manage` | Buat / unduh / hapus backup database (MySQL dump via mysqldump) |
+| **Update Aplikasi** | `/admin/pengaturan/update*` | `setting.manage` (Super Admin) | Cek status git + jalankan update (`git pull`, composer, migrate, build) |
+
 #### Monitoring & Analitik
 
 | Fitur | Endpoint | Permission | Deskripsi |
@@ -110,20 +131,20 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | **Monitoring Antrean** | `/admin/queue` | `queue.view` | Statistik queue + Chart.js chart + failed jobs (retry/delete) |
 | **Pengambilan Surat** | `/admin/queue/pickup` | `queue.view` / `queue.manage` | Scan QR antrean via kamera, cari manual (live filter), serahkan dokumen / tandai lewat |
 | **Analitik & Laporan** | `/admin/analytics` | `analytics.view` | 8 metrik + 4 Chart.js chart + CSV export |
-| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | Identitas desa, kades, stempel, ttd, jam antrean, konfigurasi notifikasi Telegram |
+| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | 16 tab: profil desa, pemerintahan, ttd digital, template surat, nomor surat, workflow, queue driver, antrean, notifikasi, analytics, backup, keamanan, integrasi, tampilan, maintenance, audit log |
 
 #### Laporan Desa Kuantitatif
 
 | Fitur | Endpoint | Permission | Deskripsi |
 |---|---|---|---|
-| **Daftar Laporan** | `/admin/laporan` | `laporan.view` | List laporan dengan filter status/tipe |
-| **Buat Laporan** | `/admin/laporan/create` | `laporan.manage` | 3-step wizard: pilih modul → preview data → generate |
-| **Detail Laporan** | `/admin/laporan/{id}` | `laporan.view` | Lihat konten naratif + data per modul |
-| **Edit Laporan** | `/admin/laporan/{id}/edit` | `laporan.manage` | Edit narasi per modul (section-based editor) |
-| **Preview Data** | POST `/admin/laporan/preview` | `laporan.manage` | AJAX preview data modul tanpa simpan |
-| **Generate PDF** | GET `/admin/laporan/{id}/pdf` | `laporan.download` | Download PDF (format surat resmi atau institusional) |
-| **Finalisasi** | POST `/admin/laporan/{id}/finalize` | `laporan.finalize` | Kades/Super Admin finalisasi laporan |
-| **Restore Draft** | POST `/admin/laporan/{id}/restore` | `laporan.finalize` | Kembalikan ke status draf |
+| **Daftar Laporan** | `/admin/laporan` | `dashboard.view` | List laporan dengan filter status/tipe |
+| **Buat Laporan** | `/admin/laporan/create` | `dashboard.view` | 3-step wizard: pilih modul → preview data → generate |
+| **Detail Laporan** | `/admin/laporan/{id}` | `dashboard.view` | Lihat konten naratif + data per modul |
+| **Edit Laporan** | `/admin/laporan/{id}/edit` | `dashboard.view` | Edit narasi per modul (section-based editor) |
+| **Preview Data** | POST `/admin/laporan/preview` | `dashboard.view` | AJAX preview data modul tanpa simpan |
+| **Generate PDF** | GET `/admin/laporan/{id}/pdf` | `dashboard.view` | Download PDF (format surat resmi atau institusional) |
+| **Finalisasi** | POST `/admin/laporan/{id}/finalize` | `letter.final_approve` | Kades/Super Admin finalisasi laporan |
+| **Restore Draft** | POST `/admin/laporan/{id}/restore` | `letter.final_approve` | Kembalikan ke status draf |
 
 **Modul Laporan (9 modul):**
 
@@ -147,6 +168,8 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 
 ## Roles & Permissions (RBAC)
 
+8 role (Spatie Permission), 37 permission, dibuat via `RolePermissionSeeder`.
+
 | Role | Login redirect | Menu sidebar yang terlihat |
 |---|---|---|
 | **Super Admin** | `/admin/dashboard` | Semua menu |
@@ -154,43 +177,23 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | **Sekretaris Desa** | `/admin/dashboard` | Dashboard, **Panel Sekdes**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, **Pengambilan Surat**, Laporan, Pengaturan |
 | **Kepala Desa** | `/admin/dashboard` | Dashboard, **Panel Kades**, Pelayanan Surat, Ketatausahaan, Inventaris, APBDesa, Manajemen Pengguna, Analitik, Monitoring Antrean, **Pengambilan Surat**, Laporan, Pengaturan |
 | **RT / RW** | `/admin/dashboard` | Dashboard, Pelayanan Surat, Analitik |
+| **Lembaga** | `/lembaga/dashboard` | Panel lembaga (bukan admin) — profil, berita, events |
 | **Warga** | `/warga/dashboard` | Panel warga (bukan admin) |
 
-Permission key yang digunakan:
+Semua 37 permission:
 
-| Permission | Pemilik |
+| Grup | Permission |
 |---|---|
-| `dashboard.view` | Semua non-Warga |
-| `user.view` | Operator, Sekdes, Kades |
-| `user.assign_role` | Super Admin |
-| `letter.view` | Semua non-Warga |
-| `letter.create` | Warga |
-| `letter.review` | Operator |
-| `letter.verify` | Sekdes |
-| `letter.final_approve` | Kepala Desa, Super Admin |
-| `letter.reject` | Sekdes, Kades |
-| `letter.sign` | Kades |
-| `letter.print` | Operator, Sekdes, Kades |
-| `letter.download` | Operator, Sekdes, Kades |
-| `letter.version.view` | Operator, Sekdes, Kades |
-| `letter.version.restore` | Sekdes, Kades |
-| `office.view` | Operator, Sekdes, Kades |
-| `office.manage` | Operator |
-| `inventaris.view` | Operator, Sekdes, Kades |
-| `inventaris.manage` | Operator |
-| `anggaran.view` | Operator, Sekdes, Kades |
-| `anggaran.manage` | Operator |
-| `queue.view` | Operator, Sekdes, Kades |
-| `queue.manage` | Operator |
-| `analytics.view` | Semua non-Warga |
-| `setting.manage` | Operator, Sekdes, Kades |
-| `role.manage` | Super Admin |
-| `news.manage` | Super Admin |
-| `event.manage` | Super Admin |
-| `laporan.view` | Operator, Sekdes, Kades |
-| `laporan.manage` | Operator, Sekdes, Kades |
-| `laporan.download` | Operator, Sekdes, Kades |
-| `laporan.finalize` | Kepala Desa, Super Admin |
+| **Dashboard & Analitik** | `dashboard.view`, `analytics.view` |
+| **User & RBAC** | `user.view`, `user.create`, `user.edit`, `user.delete`, `user.assign_role`, `role.manage`, `permission.manage` |
+| **Surat / Workflow** | `letter.view`, `letter.create`, `letter.review`, `letter.verify`, `letter.final_approve`, `letter.reject`, `letter.sign`, `letter.print`, `letter.download`, `letter.cancel`, `letter.version.view`, `letter.version.restore` |
+| **Ketatausahaan & Aset** | `office.view`, `inventaris.view`, `inventaris.manage`, `anggaran.view`, `anggaran.manage` |
+| **Antrean** | `queue.view`, `queue.manage` |
+| **Pengaturan & Backup** | `setting.view`, `setting.manage`, `backup.manage`, `audit.view` |
+| **Konten** | `news.manage`, `event.manage` |
+| **Laporan & Lembaga** | `lembaga.manage`, `lembaga.report`, `lembaga.content` |
+
+> Catatan: fitur **Laporan Desa Kuantitatif** tidak memakai permission khusus `laporan.*` — aksesnya memakai `dashboard.view` untuk seluruh operasi, dan finalisasi/restore memakai `letter.final_approve` (khusus Kepala Desa / Super Admin).
 
 ---
 
@@ -368,6 +371,10 @@ Kades/Super Admin → Restore (jika perlu koreksi)
 | `inventaris` | Inventaris & aset desa (kode, nama, kategori, kondisi, nilai perolehan) |
 | `apbdesa` | Anggaran Pendapatan dan Belanja Desa (tahun, kategori, bidang, anggaran, realisasi) |
 | `laporan_desas` | Laporan Desa Kuantitatif (judul, periode, modul, konten_naratif JSON, status) |
+| `lembagas` | Kelembagaan desa (nama, jenis, ketua, kontak, deskripsi, status aktif) |
+| `setting_versions` | Snapshot versi konfigurasi pengaturan (restore point) |
+| `user_settings` | Preferensi per-user (tema, notifikasi) |
+| `dashboard_layouts` | Layout dashboard per user (widget posisi) |
 | `permissions` | Spatie Permission |
 | `roles` | Spatie Role |
 | `model_has_roles` | Spatie Pivot |
@@ -392,6 +399,10 @@ pengajuan_surats (1) ———< (1) antrean_pengambilan
 pengajuan_surats (1) ———< (N) document_versions
 pengajuan_surats (1) ———< (N) approval_histories
 disposisis (N) ———> (1) surat_masuks
+lembagas (1) ———< (N) users  (role Lembaga)
+setting_versions (N) ———> (1) village_settings
+user_settings (1) ———> (1) users
+dashboard_layouts (1) ———> (1) users
 letter_configs (independen — lookup oleh jenis_surat)
 village_settings (key-value store)
 ```
@@ -409,7 +420,19 @@ village_settings (key-value store)
 | `QueueMonitoringService` | Queue stats + failed jobs |
 | `DocumentVersionService` | Auto-create version, diff, restore |
 | `DynamicLetterService` | Render body surat dari LetterConfig (14 jenis surat) |
+| `LetterBodyParser` | Parse placeholder `[field]` dalam body template surat |
+| `LetterNumberService` | Auto-generate & format nomor surat per kode klasifikasi |
 | `LaporanService` | Gather data 9 modul + narasi akademis + kesimpulan otomatis |
+| `LembagaKinerjaService` | Statistik kinerja lembaga (berita, events, partisipasi) |
+| `SettingService` | Get/set pengaturan desa (key-value) dengan cache |
+| `SettingVersionService` | Versioning konfigurasi pengaturan (snapshot + restore) |
+| `DashboardService` | Data statistik dashboard admin/warga/lembaga |
+| `ThemeSettingsService` | Pengaturan tampilan (logo, warna aksen, hero) |
+| `BackupService` | Backup/restore database via `mysqldump` |
+| `GitUpdateService` | Cek status & update aplikasi via git + composer + migrate + build |
+| `TelegramNotifier` | Kirim notifikasi Telegram (pengajuan baru, surat selesai) |
+| `WebhookNotifier` | Notifikasi webhook (n8n/integrasi) |
+| `PdfGenerationService` | Generate PDF surat via DomPDF + strategy pattern |
 
 ### Strategy / Factory Pattern
 
@@ -433,7 +456,7 @@ Kolom sensitif dienkripsi AES-256-CBC via `encrypted` cast, dengan blind index u
 
 ### Audit Trail
 
-Semua aksi penting dicatat via `ActivityLog::catat()`: create/approve/reject/revision pengajuan, CRUD berita, update pengaturan, CRUD inventaris, CRUD APBDesa, CRUD surat masuk/keluar, CRUD disposisi, laporan desa.
+Semua aksi penting dicatat via `ActivityLog::catat()`: create/approve/reject/revision pengajuan, CRUD berita, update pengaturan, CRUD inventaris, CRUD APBDesa, CRUD surat masuk/keluar, CRUD disposisi, laporan desa, antrean (diambil/lewat), backup, update aplikasi. Log dapat dilihat di `/admin/activity-log` dan dibersihkan otomatis oleh command `PruneAuditLogs` (sesuai durasi di pengaturan).
 
 ### Queue (Async PDF Generation)
 
@@ -455,13 +478,15 @@ Slot antrean menggunakan `lockForUpdate()` untuk mencegah over-capacity pada kon
 resources/views/
 ├── home.blade.php
 ├── components/{favicon,fonts}.blade.php
-├── auth/{login,register}.blade.php
+├── auth/{index,forgot}.blade.php
 ├── berita/show.blade.php
 ├── verifikasi/show.blade.php
 ├── antrean/show.blade.php
 ├── warga/
 │   ├── dashboard.blade.php
 │   └── surat/{index,show,form,edit}.blade.php
+├── lembaga/
+│   └── {dashboard,profil,berita/{index,create,edit},events/{index,create,edit}}.blade.php
 ├── admin/
 │   ├── components/sidebar.blade.php
 │   ├── {dashboard, kades/dashboard, sekdes/dashboard}.blade.php
@@ -471,6 +496,8 @@ resources/views/
 │   ├── roles/{index,create,edit}.blade.php
 │   ├── berita/{index,show,create,edit}.blade.php
 │   ├── events/{index,create,edit,show}.blade.php
+│   ├── lembaga/{index,create,edit,show}.blade.php
+│   ├── lembaga-report/index.blade.php
 │   ├── surat-masuk/{index,create,show,edit}.blade.php
 │   ├── surat-keluar/{index,create,show,edit}.blade.php
 │   ├── disposisi/{index,create,show,edit}.blade.php
@@ -479,7 +506,9 @@ resources/views/
 │   ├── laporan/{index,create,show,edit}.blade.php
 │   ├── queue/{index,pickup}.blade.php
 │   ├── analytics/index.blade.php
-│   └── setting/index.blade.php
+│   ├── letter-config/{index,create,edit,show}.blade.php
+│   ├── activity-log/index.blade.php
+│   └── setting/index.blade.php (16 tab)
 ├── pdf/
 │   ├── template_{sktm,ktp_sementara,akta,dynamic}.blade.php
 │   ├── laporan_surat_resmi.blade.php
@@ -494,13 +523,16 @@ resources/views/
 `/` → Home, `/berita/{slug}`, POST `/faq/ask`, `/verifikasi/{hash}`, `/antrean/{kodeQr}`
 
 ### Guest
-`/login` GET/POST, `/register` GET/POST
+`/login` GET/POST, `/register` GET/POST, `/password/lupa`, POST `/captcha/refresh`
 
 ### Auth
 POST `/logout`
 
-### Admin — middleware: auth + admin (role != Warga)
-`/admin/dashboard` • `/admin/kades` • `/admin/sekdes` • `/admin/pengajuan/*` • `/admin/warga` • `/admin/users/*` • `/admin/roles/*` • `/admin/berita/*` • `/admin/events/*` • `/admin/surat-masuk/*` • `/admin/surat-keluar/*` • `/admin/disposisi/*` • `/admin/inventaris/*` • `/admin/apbdesa/*` • `/admin/laporan/*` • `/admin/queue/*` (termasuk `/admin/queue/pickup`) • `/admin/analytics/*` • `/admin/pengaturan`
+### Admin — middleware: auth + admin (role != Warga) + ip.whitelist
+`/admin/dashboard` • `/admin/kades` • `/admin/sekdes` • `/admin/pengajuan/*` • `/admin/warga` • `/admin/users/*` • `/admin/roles/*` • `/admin/berita/*` • `/admin/events/*` • `/admin/lembaga/*` • `/admin/laporan-lembaga` • `/admin/surat-masuk/*` • `/admin/surat-keluar/*` • `/admin/disposisi/*` • `/admin/inventaris/*` • `/admin/apbdesa/*` • `/admin/laporan/*` • `/admin/queue/*` (termasuk `/admin/queue/pickup`) • `/admin/analytics/*` • `/admin/template-surat` • `/admin/activity-log` • `/admin/pengaturan` (+ `/backup*`, `/update*`, `/versions`)
+
+### Lembaga — middleware: auth + permission:lembaga.content
+`/lembaga/dashboard` • `/lembaga/profil` • `/lembaga/berita/*` • `/lembaga/events/*`
 
 ### Warga — middleware: auth
 `/warga/dashboard` • `/warga/surat/*` • `/warga/events/{undangan}/konfirmasi`
@@ -510,18 +542,19 @@ POST `/logout`
 ## Migrasi
 
 | File | Tujuan |
-|---|---|
-| 26 migrasi dari `0001_01_01_000000` sampai `2026_07_11_000006` | Users, cache, jobs, berita, pengajuan_surats (+6 alter), village_settings, antrean, events, peserta, activity_logs, nik_hash, pdf_path, permissions (spatie), approval_histories, letter_configs, document_versions, jenis_surat string |
-| `2026_07_13_160000_create_inventaris_table` | Inventaris & aset desa (16 kolom, SoftDeletes, uuid) |
-| `2026_07_13_160100_create_apbdesa_table` | APBDesa (13 kolom, SoftDeletes, uuid) |
-| `2026_07_14_170000_create_laporan_desas_table` | Laporan Desa Kuantitatif (20 kolom, index, SoftDeletes, uuid) |
+|---|---|---|
+| Migrasi dasar `0001_01_01_000000` – `2026_07_11_000006` | Users, cache, jobs, berita, pengajuan_surats (+alter), village_settings, antrean, events, peserta, activity_logs, nik_hash, pdf_path, permissions (spatie), approval_histories, letter_configs, document_versions, surat masuk/keluar/disposisi, jenis_surat string |
+| `2026_07_11_000007` – `2026_07_11_090000` | setting_versions, dashboard performance indexes, dashboard_layouts, user_settings |
+| `2026_07_13_160000` – `2026_07_14_170000` | inventaris, apbdesa, laporan_desas |
+| `2026_08_08_*` | lembagas + kolom `lembaga_id` pada users/berita/events |
+| `2026_08_09_*` | Alamat users, no_hp diperlebar, kolom `dilihat` pada berita |
 
 ## Seeder
 
 | Seeder | Fungsi |
-|---|---|
-| `VillageSettingSeeder` | Pengaturan default desa (profil, officials, signature, nomor surat, workflow, antrean, notifikasi Telegram, backup, keamanan, integrasi, analytics, queue, tampilan) |
-| `RolePermissionSeeder` | 30 permission + 7 role + sync |
+|---|---|---|
+| `VillageSettingSeeder` | Pengaturan default desa (profil, officials, signature, nomor surat, workflow, antrean, notifikasi Telegram, backup, keamanan, integrasi, analytics, queue, tampilan, maintenance, audit log) |
+| `RolePermissionSeeder` | 37 permission + 8 role (Super Admin, Operator, Sekdes, Kades, RT, RW, Warga, Lembaga) + sync |
 | `AdminUserSeeder` | User admin (NIK 0000000000000000) |
 | `LetterConfigSeeder` | 14 konfigurasi jenis surat (termasuk `requirements` dokumen wajib) |
 
@@ -535,15 +568,20 @@ vendor/bin/phpunit tests/Feature/QrVerificationTest.php
 vendor/bin/phpunit tests/Feature/AntreanPickupTest.php
 ```
 
-Konfigurasi test menggunakan SQLite `:memory:` (`DB_CONNECTION=sqlite`, `DB_DATABASE=:memory:`) dengan `CACHE_STORE=array`, `SESSION_DRIVER=array`, dan `QUEUE_CONNECTION=sync`. Total **41 test / 109 assertions**.
+Konfigurasi test menggunakan SQLite `:memory:` (`DB_CONNECTION=sqlite`, `DB_DATABASE=:memory:`) dengan `CACHE_STORE=array`, `SESSION_DRIVER=array`, dan `QUEUE_CONNECTION=sync`. Total **74 test / 194 assertions**.
 
 ---
 
 ## Keamanan
 
-- **Rate limit:** Login (5/menit/IP), FAQ (10/menit/IP)
+- **Rate limit:** Login (5/menit/IP, dapat diatur), FAQ (10/menit/IP)
+- **Captcha:** Soal matematika (default), Cloudflare Turnstile, atau Google reCAPTCHA — dapat diaktifkan/dinonaktifkan via pengaturan keamanan. Prioritas Turnstile → reCAPTCHA → math.
+- **IP Whitelist:** Middleware `ip.whitelist` membatasi akses area `/admin/*` hanya dari IP yang diizinkan (dapat dikosongkan untuk semua IP)
+- **Enkripsi data sensitif (UU PDP):** `nik`, `no_kk`, `no_hp` dienkripsi AES-256-CBC + blind index `nik_hash` (SHA-256 + APP_KEY) untuk login
 - **File upload:** MIME double-check (mimes + mimetypes), max 2MB, nama tersanitasi
 - **Transaction + lock:** Setiap operasi multi-step dibungkus `DB::transaction` + `lockForUpdate`
 - **Policy:** `PengajuanSuratPolicy`, `DocumentVersionPolicy`
 - **Auth:** NIK sebagai identitas + bcrypt password
+- **Audit trail:** Semua aksi penting tercatat di `activity_logs` dan dilihat di `/admin/activity-log`
+- **Backup:** Backup database terjadwal (mysqldump) dengan penyimpanan lokal, unduh, dan hapus
 - **Error pages:** 403, 404, 500 dengan branding desa

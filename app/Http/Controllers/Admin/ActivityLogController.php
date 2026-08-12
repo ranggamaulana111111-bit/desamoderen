@@ -32,4 +32,35 @@ class ActivityLogController extends Controller
 
         return view('admin.activity-log.index', compact('logs', 'types'));
     }
+
+    public function destroy(ActivityLog $activityLog)
+    {
+        ActivityLog::catat(
+            'delete_log',
+            "Menghapus log aktivitas '".($activityLog->aksi ?? '-')."'.",
+            'sistem',
+            $activityLog->id
+        );
+
+        $activityLog->delete();
+
+        return back()->with('success', 'Log aktivitas berhasil dihapus.');
+    }
+
+    public function destroyAll(Request $request)
+    {
+        $query = ActivityLog::query();
+
+        if ($tipe = $request->input('tipe')) {
+            $query->where('tipe', $tipe);
+        }
+
+        $count = $query->count();
+
+        if ($count > 0) {
+            $query->delete();
+        }
+
+        return back()->with('success', "{$count} log aktivitas berhasil dihapus.");
+    }
 }

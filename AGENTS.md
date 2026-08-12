@@ -20,6 +20,16 @@ $env:Path = "C:\laragon\bin\php\php-8.2.31-Win32-vs16-x64\;C:\laragon\bin\compos
 php -d memory_limit=-1 C:\laragon\bin\composer\composer.phar require <package>
 ```
 
+## Server prerequisites for the Update Aplikasi feature
+
+The "Update Aplikasi" card (Admin → Pengaturan → Maintenance) uses `git` via Symfony Process.
+- `git` must be on the PATH of the process serving the app (`php artisan serve` / Laragon Apache). On Windows, prepend `C:\Program Files\Git\cmd` to PATH before starting the server.
+- The app folder must be a `git clone` of the project repo (a plain copy/folder is not detected as a repository).
+- The server must have internet access to `origin` for `git fetch`.
+- The card runs `git pull --ff-only`, `composer install`, `php artisan migrate`, `npm ci`, `npm run build`, `php artisan optimize:clear` (requires Node + Composer on PATH).
+- Important (Windows): the service uses array-form `Process(['git', ...])`, NOT `Process::fromShellCommandline()`. Shell-form commands (`cmd.exe /c`) fail to resolve executables inside Laravel web requests on Windows even when `git` is on PATH — array-form is reliable.
+```
+
 ## Users & Auth
 
 | Role | Login | Register |
@@ -27,7 +37,7 @@ php -d memory_limit=-1 C:\laragon\bin\composer\composer.phar require <package>
 | Warga | NIK + password via `/login` | Self-register via `/register` |
 | Admin (any role != Warga) | NIK + password via `/login` | Only created manually via tinker |
 
-**Roles available:** Super Admin, Operator Pelayanan, Sekretaris Desa, Kepala Desa, RT, RW, Warga.
+**Roles available:** Super Admin, Operator Pelayanan, Sekretaris Desa, Kepala Desa, RT, RW, Warga, Lembaga.
 
 Admin user created via:
 ```powershell
@@ -63,19 +73,22 @@ php artisan tinker --execute="\App\Models\User::create(['name'=>'Admin','nik'=>'
 ### Guest
 | Route | Function |
 |-------|----------|
-| `/login` GET/POST | Login with NIK |
-| `/register` GET/POST | Self-register warga |
+| `/login` GET/POST | Login with NIK (captcha: math, Cloudflare Turnstile, or reCAPTCHA) |
+| `/register` GET/POST | Self-register warga (wizard + captcha) |
+| `/password/lupa` GET/POST | Reset password via NIK + no HP |
+| `/captcha/refresh` POST | Refresh math captcha question |
 
 ### Auth (shared)
 | Route | Function |
 |-------|----------|
 | `/logout` POST | Logout |
 
-### Admin (`/admin/*`, middleware: auth + admin)
+### Admin (`/admin/*`, middleware: auth + admin + ip.whitelist)
 | Route | Permission | Function |
 |-------|------------|----------|
 | `/admin/dashboard` | `dashboard.view` | Admin dashboard with stats & recent submissions |
 | `/admin/kades` | `letter.final_approve` | Panel Kepala Desa — pending approvals, quick approve/reject |
+| `/admin/sekdes` | `letter.verify` | Panel Sekretaris Desa — approvals, monitoring pelayanan |
 | `/admin/pengajuan` | `letter.view` | Pelayanan Surat — list with filter/search/pagination |
 | `/admin/pengajuan/{id}` | `letter.view` | Detail berkas + workflow actions |
 | `/admin/pengajuan/{id}/approve` POST | — | Approve (auto-transition based on role) |
@@ -85,15 +98,30 @@ php artisan tinker --execute="\App\Models\User::create(['name'=>'Admin','nik'=>'
 | `/admin/pengajuan/{id}/versions/*` | `letter.version.view` | Document version history |
 | `/admin/warga` | `user.view` | Daftar warga |
 | `/admin/users` | `user.view` | Manajemen pengguna |
+| `/admin/users/create` POST | `user.create` | Buat pengguna baru |
+| `/admin/users/{id}/edit` PUT | `user.edit` | Edit pengguna |
+| `/admin/users/{id}` DELETE | `user.delete` | Hapus pengguna |
 | `/admin/users/{id}` | `user.view` | Detail pengguna |
 | `/admin/users/{id}/role` PATCH | `user.assign_role` | Assign role |
 | `/admin/roles` | `role.manage` | CRUD roles & permissions |
 | `/admin/berita` | `news.manage` | CRUD berita |
 | `/admin/events` | `event.manage` | CRUD events |
+| `/admin/lembaga` | `lembaga.manage` | CRUD Lembaga (kelembagaan desa) |
+| `/admin/laporan-lembaga` | `lembaga.report` | Laporan kinerja lembaga |
+| `/admin/surat-masuk` / `surat-keluar` / `disposisi` | `office.view` | Ketatausahaan (CRUD) |
+| `/admin/inventaris` | `inventaris.view` | Inventaris & aset desa |
+| `/admin/apbdesa` | `anggaran.view` | APBDesa |
+| `/admin/laporan` | `dashboard.view` | Laporan Desa Kuantitatif (finalize: `letter.final_approve`) |
 | `/admin/queue` | `queue.view` | Queue monitoring with charts |
+| `/admin/queue/pickup` | `queue.view` / `queue.manage` | Pengambilan surat (scan QR / cari / serahkan) |
 | `/admin/queue/*` POST/DELETE | `queue.manage` | Retry/delete failed jobs |
 | `/admin/analytics` | `analytics.view` | Analytics dashboard with CSV export |
-| `/admin/pengaturan` | `setting.manage` | Village settings (nama desa, kecamatan, kades, etc.) |
+| `/admin/template-surat` | `setting.manage` | CRUD LetterConfig (template surat dinamis) |
+| `/admin/activity-log` | `audit.view` | Log aktivitas (view + delete) |
+| `/admin/pengaturan` | `setting.manage` | Village settings (profil, ttd, notifikasi, backup, keamanan, dll.) |
+| `/admin/pengaturan/backup*` | `setting.manage` | Buat / unduh / hapus backup database |
+| `/admin/pengaturan/update-status` / `update` | `setting.manage` + `role:Super Admin` | Cek status & jalankan Update Aplikasi |
+| `/admin/pengaturan/versions` | `setting.manage` | Versioning konfigurasi pengaturan |
 
 ### Warga (`/warga/*`, middleware: auth)
 | Route | Function |
@@ -109,21 +137,30 @@ php artisan tinker --execute="\App\Models\User::create(['name'=>'Admin','nik'=>'
 | `/warga/surat/{id}` DELETE | Batalkan pengajuan (only submitted) |
 | `/warga/events/{undangan}/konfirmasi` POST | Confirm event attendance |
 
+### Lembaga (`/lembaga/*`, middleware: auth + permission:lembaga.content)
+| Route | Function |
+|-------|----------|
+| `/lembaga/dashboard` | Dashboard lembaga (statistik, berita, events) |
+| `/lembaga/profil` GET/PUT | Edit profil lembaga |
+| `/lembaga/berita` | CRUD berita lembaga |
+| `/lembaga/events` | CRUD event lembaga |
+
 ## Roles & Permissions
 
 | Role | Key Permissions |
 |------|----------------|
 | **Super Admin** | All permissions |
-| **Operator Pelayanan** | `dashboard.view`, `user.view`, `letter.view`, `letter.create`, `letter.review`, `letter.cancel`, `letter.print`, `letter.download`, `letter.version.view`, `queue.view`, `queue.manage`, `setting.view`, `analytics.view` |
-| **Sekretaris Desa** | `dashboard.view`, `user.view`, `letter.view`, `letter.verify`, `letter.reject`, `letter.print`, `letter.download`, `letter.version.view`, `letter.version.restore`, `analytics.view`, `queue.view`, `setting.view` |
-| **Kepala Desa** | `dashboard.view`, `user.view`, `letter.view`, `letter.final_approve`, `letter.reject`, `letter.sign`, `letter.print`, `letter.download`, `letter.version.view`, `letter.version.restore`, `analytics.view`, `queue.view`, `setting.view` |
+| **Operator Pelayanan** | `dashboard.view`, `user.view`, `letter.view`, `letter.create`, `letter.review`, `letter.cancel`, `letter.print`, `letter.download`, `letter.version.view`, `queue.view`, `queue.manage`, `setting.view`, `setting.manage`, `analytics.view`, `news.manage`, `event.manage`, `office.view`, `inventaris.*`, `anggaran.*`, `lembaga.manage`, `lembaga.report` |
+| **Sekretaris Desa** | `dashboard.view`, `user.view`, `letter.view`, `letter.verify`, `letter.reject`, `letter.print`, `letter.download`, `letter.version.view`, `letter.version.restore`, `analytics.view`, `queue.view`, `setting.view`, `setting.manage`, `office.view`, `inventaris.*`, `anggaran.*`, `lembaga.report` |
+| **Kepala Desa** | `dashboard.view`, `user.view`, `letter.view`, `letter.final_approve`, `letter.reject`, `letter.sign`, `letter.print`, `letter.download`, `letter.version.view`, `letter.version.restore`, `analytics.view`, `queue.view`, `setting.view`, `setting.manage`, `office.view`, `audit.view`, `inventaris.*`, `anggaran.*`, `lembaga.report` |
 | **RT / RW** | `dashboard.view`, `letter.view`, `analytics.view` |
 | **Warga** | `letter.create` |
+| **Lembaga** | `lembaga.content` |
 
 ## Database
 
 - MySQL: database `prodesa`, user `root`, no password
-- Key tables: `users`, `pengajuan_surats`, `approval_histories`, `document_versions`, `letter_configs`, `antrean_pengambilan`, `events`, `event_pesertas`, `berita`, `activity_logs`, `village_settings`, `permissions`, `roles`, `model_has_roles`, `model_has_permissions`
+- Key tables: `users`, `pengajuan_surats`, `approval_histories`, `document_versions`, `letter_configs`, `antrean_pengambilan`, `events`, `event_pesertas`, `berita`, `activity_logs`, `village_settings`, `setting_versions`, `user_settings`, `dashboard_layouts`, `lembagas`, `permissions`, `roles`, `model_has_roles`, `model_has_permissions`
 - `pengajuan_surats.data_tambahan` stores per-type form fields as JSON
 
 ## Architecture

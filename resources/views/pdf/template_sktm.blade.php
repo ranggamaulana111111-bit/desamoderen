@@ -57,11 +57,7 @@
 </head>
 <body>
 
-    <div class="kop">
-        <h1>Pemerintah {{ config('village.nama_kabupaten', 'Kabupaten') }}</h1>
-        <p><strong>Kecamatan {{ config('village.nama_kecamatan', 'Kecamatan') }}, Desa {{ config('village.nama_desa', 'Desa') }}</strong></p>
-        <p class="alamat">{{ config('village.alamat_kantor', 'Alamat Kantor') }} &mdash; Email: {{ config('village.email_desa', 'email@desa.id') }}</p>
-    </div>
+    @include('pdf._kop')
     <hr class="garis-tebal">
     <hr class="garis-tipis">
 

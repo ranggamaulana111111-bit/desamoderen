@@ -15,7 +15,9 @@ use App\Policies\DocumentVersionPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\PengajuanSuratPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,5 +36,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Berita::class, BeritaPolicy::class);
         Gate::policy(Event::class, EventPolicy::class);
         Gate::policy(DocumentVersion::class, DocumentVersionPolicy::class);
+
+        RateLimiter::for('auth', function () {
+            return Limit::perMinute((int) config('village.security_rate_limit', 5))->by(request()->ip());
+        });
     }
 }

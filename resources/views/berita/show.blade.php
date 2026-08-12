@@ -73,7 +73,7 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                    <svg class="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 </div>
                 <span class="text-lg font-bold text-gray-800">Pro<span class="text-brand-600">desa</span></span>
             </a>
@@ -110,7 +110,7 @@
                         <div class="flex flex-wrap items-center gap-3 text-white/70 text-sm">
                             <div class="flex items-center gap-1.5">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
-                                <span>{{ $berita->created_at->locale('id')->translatedFormat('d MMMM Y') }}</span>
+                                <span>{{ $berita->created_at->locale('id')->translatedFormat('d F Y') }}</span>
                             </div>
                             <span class="text-white/30">|</span>
                             <div class="flex items-center gap-1.5">
@@ -138,7 +138,7 @@
                         <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div class="flex items-center gap-2 text-xs text-gray-400">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                Dipublikasikan {{ $berita->created_at->locale('id')->translatedFormat('d MMMM Y, H:i') }} WIB
+                                Dipublikasikan {{ $berita->created_at->locale('id')->translatedFormat('d F Y, H:i') }} WIB
                             </div>
                             <a href="{{ route('home') }}#berita"
                                 class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700 transition">
@@ -165,7 +165,7 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Tanggal</p>
-                                    <p class="text-xs font-bold text-gray-800">{{ $berita->created_at->locale('id')->translatedFormat('d MMMM Y') }}</p>
+                                    <p class="text-xs font-bold text-gray-800">{{ $berita->created_at->locale('id')->translatedFormat('d F Y') }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3 rounded-xl bg-gray-50 p-3">

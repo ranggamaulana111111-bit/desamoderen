@@ -177,7 +177,7 @@ class SettingService
         $changes = $this->diffChanges($oldValues, $newValues);
 
         if (! empty($changes)) {
-            $categoryLabel = self::CATEGORIES[$group]['label'] ?? $group;
+            $categoryLabel = self::CATEGORIES[$this->getCategoryKeyByGroup($group)]['label'] ?? $group;
             $userName = auth()->user()->name ?? 'System';
 
             ActivityLog::catat(
@@ -236,5 +236,16 @@ class SettingService
     public function getGroupFromCategory(string $category): ?string
     {
         return self::CATEGORIES[$category]['group'] ?? null;
+    }
+
+    public function getCategoryKeyByGroup(string $group): ?string
+    {
+        foreach (self::CATEGORIES as $key => $category) {
+            if (($category['group'] ?? null) === $group) {
+                return $key;
+            }
+        }
+
+        return null;
     }
 }

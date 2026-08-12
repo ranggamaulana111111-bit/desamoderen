@@ -232,7 +232,7 @@
 
             {{-- SUBMITTED DATA --}}
             @php $dt = $pengajuan->data_tambahan ?? []; @endphp
-            @if (!empty($dt) && count(array_filter($dt, fn($v) => !is_string($v) || $v !== 'lampiran')))
+            @if (!empty(array_filter($dt, fn($v, $k) => $k !== 'lampiran' && !is_array($v), ARRAY_FILTER_USE_BOTH)))
             <div class="mt-5">
                 <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
                     <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>

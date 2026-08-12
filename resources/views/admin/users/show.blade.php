@@ -97,6 +97,10 @@
                                     <dt class="text-gray-500">No. KK</dt>
                                     <dd class="font-medium text-gray-900">{{ $user->no_kk ?? '-' }}</dd>
                                 </div>
+                                <div class="sm:col-span-2">
+                                    <dt class="text-gray-500">Alamat</dt>
+                                    <dd class="font-medium text-gray-900">{{ $user->alamat ?? '-' }}</dd>
+                                </div>
                                 <div>
                                     <dt class="text-gray-500">Bergabung</dt>
                                     <dd class="font-medium text-gray-900">{{ $user->created_at->locale('id')->translatedFormat('d F Y') }}</dd>

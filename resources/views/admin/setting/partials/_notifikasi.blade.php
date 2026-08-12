@@ -1,6 +1,15 @@
-@include('admin.setting.partials._active_note', [
-    'message' => 'Notifikasi pengajuan surat baru aktif: dikirim otomatis ke Telegram admin desa. Isi Bot Token & Chat ID di bawah untuk mengaktifkan pengiriman.',
-])
+@if($telegramConfigured)
+    @include('admin.setting.partials._active_note', [
+        'message' => 'Telegram sudah terkonfigurasi. Pengajuan surat baru dan perubahan status dikirim otomatis ke admin desa.',
+    ])
+@else
+    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-5">
+        <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+            <p class="text-sm text-amber-700 font-medium">Telegram belum terkonfigurasi. Isi <strong>Bot Token</strong> dan <strong>Chat ID</strong> di bawah, lalu simpan untuk mengaktifkan notifikasi.</p>
+        </div>
+    </div>
+@endif
 <form x-show="activeTab === 'notifikasi'" x-cloak
       action="{{ route('admin.setting.update', 'notifikasi') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">
@@ -30,6 +39,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <x-setting-input name="notif_telegram_token" label="Bot Token" :value="$settings['notif_telegram_token'] ?? ''" placeholder="123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" />
                         <x-setting-input name="notif_telegram_chat_id" label="Chat ID" :value="$settings['notif_telegram_chat_id'] ?? ''" placeholder="-1001234567890" />
+                    </div>
+                    <div class="mt-4">
+                        <form action="{{ route('admin.setting.notifyTest') }}" method="POST" class="flex items-center gap-3">
+                            @csrf
+                            <button type="submit" class="inline-flex items-center gap-2 text-sm font-medium text-sky-700 bg-sky-100 hover:bg-sky-200 px-4 py-2 rounded-xl transition" {{ $telegramConfigured ? '' : 'disabled title="Konfigurasi Telegram terlebih dahulu"' }}>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                                Kirim Pesan Uji
+                            </button>
+                            <span class="text-xs text-gray-500">Mengirim pesan tes ke chat ID Telegram yang dikonfigurasi.</span>
+                        </form>
                     </div>
                 </div>
             </div>

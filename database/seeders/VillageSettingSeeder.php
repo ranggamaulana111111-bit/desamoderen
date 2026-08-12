@@ -125,6 +125,8 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'integrasi_maps_api_key', 'value' => '', 'group' => 'integration'],
             ['key' => 'integrasi_recaptcha_key', 'value' => '', 'group' => 'integration'],
             ['key' => 'integrasi_recaptcha_secret', 'value' => '', 'group' => 'integration'],
+            ['key' => 'integrasi_turnstile_site_key', 'value' => '', 'group' => 'integration'],
+            ['key' => 'integrasi_turnstile_secret_key', 'value' => '', 'group' => 'integration'],
             ['key' => 'integrasi_midtrans_server_key', 'value' => '', 'group' => 'integration'],
             ['key' => 'integrasi_midtrans_client_key', 'value' => '', 'group' => 'integration'],
             ['key' => 'integrasi_midtrans_environment', 'value' => 'sandbox', 'group' => 'integration'],

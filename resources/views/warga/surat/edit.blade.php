@@ -214,15 +214,18 @@
                     </div>
                 </div>
 
-                @if($errors->has('lampiran'))
+                @if($errors->has('lampiran') || $errors->has('lampiran.*'))
                 <div class="rounded-xl p-3 mb-4 bg-red-50 border border-red-200/60 flex items-center gap-2">
                     <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    <span class="text-xs text-red-600 font-semibold">{{ $errors->first('lampiran') }}</span>
+                    <span class="text-xs text-red-600 font-semibold">{{ $errors->first('lampiran') ?: $errors->first('lampiran.*') }}</span>
                 </div>
                 @endif
 
-                @php $hasExistingFile = isset($dt['lampiran']); @endphp
-                <div x-show="!fileName" class="upload-zone"
+                @php
+                    $existingLampiran = $dt['lampiran'] ?? null;
+                    $hasExistingFile = !empty($existingLampiran);
+                @endphp
+                <div x-show="!files.length" class="upload-zone"
                      @click="$refs.fileInput.click()"
                      @dragover.prevent="dragover = true"
                      @dragleave.prevent="dragover = false"
@@ -241,38 +244,46 @@
                     <p class="text-sm font-bold text-slate-700">Seret & lepas file di sini</p>
                     <p class="text-xs text-slate-400 mt-1">atau <span class="text-brand-600 font-semibold">klik untuk memilih</span></p>
                     @endif
-                    <p class="text-[10px] text-slate-400 mt-2">PDF, JPG, JPEG, PNG &middot; Maks 2MB</p>
+                    <p class="text-[10px] text-slate-400 mt-2">PDF, JPG, JPEG, PNG &middot; Maks 2MB per file</p>
                 </div>
 
-                <input type="file" name="lampiran" id="lampiran" x-ref="fileInput" class="hidden"
+                <input type="file" name="lampiran[]" id="lampiran" x-ref="fileInput" class="hidden" multiple
                        accept=".pdf,.jpg,.jpeg,.png"
                        @change="handleSelect($event)">
 
-                <div x-show="fileName" x-cloak class="rounded-2xl border border-slate-200 bg-white p-4">
-                    <div class="flex items-start gap-4">
-                        <template x-if="fileType === 'image'">
-                            <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
-                                <img :src="filePreview" alt="Preview" class="w-full h-full object-cover">
+                <div x-show="files.length" x-cloak class="space-y-2.5">
+                    <template x-for="(f, i) in files" :key="i">
+                        <div class="rounded-2xl border border-slate-200 bg-white p-3.5 flex items-start gap-3">
+                            <template x-if="f.type === 'image'">
+                                <div class="w-14 h-14 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
+                                    <img :src="f.preview" alt="Preview" class="w-full h-full object-cover">
+                                </div>
+                            </template>
+                            <template x-if="f.type === 'pdf'">
+                                <div class="w-14 h-14 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 border border-red-200/60">
+                                    <div class="text-center">
+                                        <svg class="w-7 h-7 text-red-500 mx-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        <span class="text-[8px] font-bold text-red-500 block">PDF</span>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-slate-800 truncate" x-text="f.name"></p>
+                                <p class="text-xs text-slate-400 mt-0.5" x-text="f.size"></p>
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-100 mt-1.5">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    Siap diunggah
+                                </span>
                             </div>
-                        </template>
-                        <template x-if="fileType === 'pdf'">
-                            <div class="w-16 h-16 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0 border border-red-200/60">
-                                <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                            </div>
-                        </template>
-                        <div class="flex-1 min-w-0">
-                            <p class="text-sm font-bold text-slate-800 truncate" x-text="fileName"></p>
-                            <p class="text-xs text-slate-400 mt-0.5" x-text="fileSize"></p>
-                            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-100 mt-2">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                                Siap diunggah
-                            </span>
+                            <button type="button" @click="removeFileAt(i)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-red-50 flex items-center justify-center transition group flex-shrink-0">
+                                <svg class="w-4 h-4 text-slate-400 group-hover:text-red-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
                         </div>
-                        <button type="button" @click="removeFile()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-red-50 flex items-center justify-center transition group flex-shrink-0">
-                            <svg class="w-4 h-4 text-slate-400 group-hover:text-red-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
-                    </div>
-                    <button type="button" @click="$refs.fileInput.click()" class="mt-3 text-xs font-semibold text-brand-600 hover:text-brand-700 transition">Ganti file lain</button>
+                    </template>
+                    <button type="button" @click="$refs.fileInput.click()" class="w-full mt-1 flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 hover:border-brand-400 hover:bg-brand-50/30 py-3.5 text-sm font-semibold text-slate-500 hover:text-brand-600 transition-all interact">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        Tambah Lampiran Lain
+                    </button>
                 </div>
             </div>
 
@@ -359,22 +370,33 @@
     {{-- SCRIPTS --}}
     <script>
         function editForm(){return{
-            submitting:false,dragover:false,fileName:'',fileSize:'',fileType:'',filePreview:null,
+            submitting:false,dragover:false,files:[],
             init(){
                 window.addEventListener('scroll',()=>{const b=document.getElementById('scrollProgress');if(b){const h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(window.scrollY/h*100)+'%'}});
                 this.initReveal();
             },
-            handleSelect(e){const file=e.target.files[0];if(file)this.setFile(file)},
-            handleDrop(e){this.dragover=false;const file=e.dataTransfer.files[0];if(file)this.setFile(file)},
-            setFile(file){
-                const allowed=['application/pdf','image/jpeg','image/png'];
-                if(!allowed.includes(file.type)){alert('Format file tidak didukung. Gunakan PDF, JPG, atau PNG.');return}
-                if(file.size>2*1024*1024){alert('Ukuran file maksimal 2MB.');return}
-                this.fileName=file.name;this.fileSize=this.formatSize(file.size);
-                this.fileType=file.type==='application/pdf'?'pdf':'image';
-                if(this.fileType==='image'){const r=new FileReader();r.onload=e=>{this.filePreview=e.target.result};r.readAsDataURL(file)}else{this.filePreview=null}
+            handleSelect(e){this.addFiles([...e.target.files]);e.target.value=''},
+            handleDrop(e){this.dragover=false;this.addFiles([...e.dataTransfer.files])},
+            addFiles(list){
+                list.forEach(f=>{
+                    const allowed=['application/pdf','image/jpeg','image/png'];
+                    if(!allowed.includes(f.type)){alert('Format file tidak didukung. Gunakan PDF, JPG, atau PNG.');return}
+                    if(f.size>2*1024*1024){alert('Ukuran file maksimal 2MB per file.');return}
+                    const item={name:f.name,size:this.formatSize(f.size),type:f.type==='application/pdf'?'pdf':'image',preview:null,object:f};
+                    if(item.type==='image'){const r=new FileReader();r.onload=e=>{item.preview=e.target.result};r.readAsDataURL(f)}else{item.preview=null}
+                    this.files.push(item);
+                });
+                this.syncFileInput();
             },
-            removeFile(){this.fileName='';this.fileSize='';this.fileType='';this.filePreview=null;const inp=this.$refs.fileInput||document.querySelector('[x-ref=fileInput]');if(inp)inp.value=''},
+            removeFileAt(i){this.files.splice(i,1);this.syncFileInput()},
+            syncFileInput(){
+                const inp=this.$refs.fileInput;
+                if(!inp)return;
+                if(this.files.length===0){inp.value='';return}
+                const dt=new DataTransfer();
+                this.files.forEach(f=>dt.items.add(f.object));
+                inp.files=dt.files;
+            },
             formatSize(bytes){if(bytes===0)return'0 B';const k=1024,s=['B','KB','MB','GB'];const i=Math.floor(Math.log(bytes)/Math.log(k));return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+s[i]},
             initReveal(){const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');o.unobserve(x.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});document.querySelectorAll('.a-fade-up,.a-fade-in,.a-slide-l,.a-slide-r,.a-scale').forEach(e=>o.observe(e))}
         }}

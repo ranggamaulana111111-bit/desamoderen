@@ -108,6 +108,28 @@
                                     class="text-[10px] font-mono bg-purple-50 text-purple-600 hover:bg-purple-100 px-1.5 py-0.5 rounded transition cursor-pointer" x-text="'{'+f.key+'}'"></button>
                         </template>
                     </div>
+                    <div class="mt-3 p-3 rounded-xl bg-gray-50 border border-gray-200">
+                        <span class="text-[10px] text-gray-400 mr-1">Dari Pengaturan Desa:</span>
+                        <div class="flex flex-wrap gap-1.5 mt-1.5">
+                            @foreach ([
+                                'nama_desa' => 'Nama Desa',
+                                'nama_kecamatan' => 'Nama Kecamatan',
+                                'nama_kabupaten' => 'Nama Kabupaten',
+                                'kecamatan' => 'Alias Kecamatan',
+                                'kabupaten' => 'Alias Kabupaten',
+                                'jabatan_kades' => 'Jabatan Kepala Desa',
+                                'nama_kades' => 'Nama Kepala Desa',
+                                'nip_kades' => 'NIP Kepala Desa',
+                                'jenis_kelamin_label' => 'JK (label)',
+                                'status_janda_label' => 'Status Janda/Duda',
+                                'jenis_akta_label' => 'Akta (label)',
+                            ] as $key => $label)
+                                <button type="button" @click="insertPlaceholder('{{ $key }}')"
+                                        title="{{ $label }}"
+                                        class="text-[10px] font-mono bg-blue-50 text-blue-600 hover:bg-blue-100 px-1.5 py-0.5 rounded transition cursor-pointer">{'{{ $key }}'}</button>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
 

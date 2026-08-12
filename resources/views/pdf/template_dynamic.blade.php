@@ -20,8 +20,12 @@
         .garis-tipis { border: none; border-top: 1px solid #000; margin: 0 0 25px 0; }
         .judul-surat { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin-bottom: 4px; }
         .nomor-surat { text-align: center; font-size: 11pt; margin-bottom: 20px; }
-        .body-content { text-align: justify; white-space: pre-line; margin: 12px 0; }
-        .body-content p { text-indent: 40px; margin-bottom: 8px; }
+        .body-content { margin: 12px 0; }
+        .body-paragraph { text-align: justify; text-indent: 40px; margin-bottom: 8px; }
+        table.data { margin: 8px 0 8px 40px; border-collapse: collapse; font-size: 11.5pt; }
+        table.data td { padding: 1.5px 6px; vertical-align: top; }
+        table.data td.label { width: 180px; }
+        table.data td.titik { width: 18px; text-align: center; }
         .penutup { text-align: justify; text-indent: 40px; margin-top: 8px; }
         .berlaku { text-align: center; font-size: 10pt; font-style: italic; margin-top: 6px; color: #444; }
         .ttd-wrapper { margin-top: 35px; width: 100%; position: relative; }
@@ -53,11 +57,7 @@
 </head>
 <body>
 
-    <div class="kop">
-        <h1>Pemerintah {{ config('village.nama_kabupaten', 'Kabupaten') }}</h1>
-        <p><strong>Kecamatan {{ config('village.nama_kecamatan', 'Kecamatan') }}, Desa {{ config('village.nama_desa', 'Desa') }}</strong></p>
-        <p class="alamat">{{ config('village.alamat_kantor', 'Alamat Kantor') }} &mdash; Email: {{ config('village.email_desa', 'email@desa.id') }}</p>
-    </div>
+    @include('pdf._kop')
     <hr class="garis-tebal">
     <hr class="garis-tipis">
 
@@ -65,16 +65,36 @@
     <div class="nomor-surat">Nomor: {{ $nomor_surat }}</div>
 
     <div class="body-content">
-        {{ $rendered_body }}
+        @if (! empty($body_sections))
+            @foreach ($body_sections as $section)
+                @if ($section['type'] === 'table')
+                    <table class="data">
+                        @foreach ($section['rows'] as $row)
+                            <tr>
+                                <td class="label">{{ $row['label'] }}</td>
+                                <td class="titik">:</td>
+                                <td>{{ $row['value'] }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                @else
+                    <p class="body-paragraph">{{ $section['text'] }}</p>
+                @endif
+            @endforeach
+        @else
+            <p class="body-paragraph">{{ $rendered_body }}</p>
+        @endif
     </div>
 
     <div class="penutup">
         Demikian surat keterangan ini dibuat dengan sebenarnya untuk dipergunakan sebagaimana mestinya.
     </div>
 
-    <div class="berlaku">
-        Berlaku sampai dengan {{ $tgl_berlaku_sampai }}
-    </div>
+    @if (($masa_berlaku_bulan ?? 0) > 0)
+        <div class="berlaku">
+            Berlaku sampai dengan {{ $tgl_berlaku_sampai }}
+        </div>
+    @endif
 
     <div class="ttd-wrapper">
         <div class="ttd-left">

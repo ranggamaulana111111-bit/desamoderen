@@ -38,6 +38,10 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 - **Cek Antrean** — Info jadwal pengambilan surat via QR
 - **FAQ Chatbot** — Chatbot keyword-matching
 
+### Auth
+- **Login/Register terpadu** — Wizard register 5 langkah, captcha matematika, Cloudflare Turnstile, atau reCAPTCHA
+- **Lupa Password** — Reset via NIK + No. HP terdaftar
+
 ### Warga
 - Dashboard dengan kartu identitas digital & 14 layanan surat
 - Pengajuan surat via form dinamis (14 jenis surat)
@@ -53,12 +57,17 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 - **APBDesa** — Anggaran vs realisasi per kategori/bidang
 - **Laporan Desa Kuantitatif** — 9 modul, narasi akademis, 2 format PDF (surat resmi + LPPD)
 - **Berita & Event** — CRUD + undangan massal per RT/RW
+- **Lembaga Desa** — CRUD lembaga + role Lembaga (dashboard, berita, event, profil) + laporan kinerja
 - **Manajemen Pengguna** — CRUD + role assignment
+- **Template Surat** — CRUD LetterConfig (14 jenis surat dinamis) dari panel admin
+- **Log Aktivitas** — Audit trail lengkap (view + hapus)
 - **Monitoring Antrean** — Queue stats + Chart.js + retry/hapus failed job
 - **Pengambilan Surat** — Scan QR antrean via kamera, cari manual, serahkan/tandai lewat
 - **Notifikasi Telegram** — Pengajuan baru & surat selesai dikirim otomatis via Telegram Bot
 - **Analitik** — 8 metrik + 4 chart + CSV export
-- **Pengaturan Desa** — Key-value store (termasuk konfigurasi Telegram)
+- **Backup Database** — Snapshot SQL + storage (manual/jadwal, download/hapus)
+- **Update Aplikasi** — Git pull + composer + migrate + npm build (khusus Super Admin)
+- **Pengaturan Desa** — 16 tab key-value store (profil, ttd, nomor surat, workflow, keamanan, integrasi, maintenance, dll.)
 
 ---
 
@@ -75,7 +84,7 @@ Sistem informasi pemerintahan desa berbasis web untuk digitalisasi pelayanan adm
 | Notifikasi | Telegram Bot API (HTTP) |
 | RBAC | spatie/laravel-permission |
 | Auth | Kustom (login berbasis NIK) |
-| Testing | PHPUnit 10.5 (41 test) |
+| Testing | PHPUnit 10.5 (74 test) |
 
 ---
 
@@ -114,11 +123,12 @@ npm run dev
 | Role | Akses Utama |
 |---|---|
 | **Super Admin** | Semua menu + role management |
-| **Operator Pelayanan** | Pelayanan surat, ketatausahaan, inventaris, APBDesa, queue, analytics |
+| **Operator Pelayanan** | Pelayanan surat, ketatausahaan, inventaris, APBDesa, queue, analytics, lembaga |
 | **Sekretaris Desa** | Panel Sekdes, approval surat, ketatausahaan, inventaris, APBDesa |
-| **Kepala Desa** | Panel Kades, final approve, inventaris, APBDesa |
+| **Kepala Desa** | Panel Kades, final approve, inventaris, APBDesa, audit log |
 | **RT / RW** | Dashboard, pelayanan surat, analytics |
 | **Warga** | Dashboard warga, pengajuan surat |
+| **Lembaga** | Dashboard lembaga, CRUD berita/event/profil lembaga |
 
 ---
 
@@ -132,6 +142,14 @@ npm run dev
 | POST | `/faq/ask` | FAQ chatbot |
 | GET | `/verifikasi/{hash}` | Verifikasi surat via QR |
 | GET | `/antrean/{kodeQr}` | Info antrean |
+
+### Guest
+| Method | URI | Deskripsi |
+|---|---|---|
+| GET/POST | `/login` | Login NIK (captcha) |
+| GET/POST | `/register` | Register warga (wizard + captcha) |
+| GET/POST | `/password/lupa` | Reset password via NIK + No HP |
+| POST | `/captcha/refresh` | Ganti soal captcha |
 
 ### Admin
 | Prefix | Deskripsi |
@@ -150,10 +168,14 @@ npm run dev
 | `/admin/roles` | Role & permission |
 | `/admin/berita` | CRUD Berita |
 | `/admin/events` | CRUD Event |
+| `/admin/lembaga` | CRUD Lembaga desa |
+| `/admin/laporan-lembaga` | Laporan kinerja lembaga |
 | `/admin/queue` | Monitoring antrean |
 | `/admin/queue/pickup` | Pengambilan surat (scan QR + serahkan dokumen) |
 | `/admin/analytics` | Analitik & laporan |
-| `/admin/pengaturan` | Pengaturan desa |
+| `/admin/template-surat` | CRUD template surat (LetterConfig) |
+| `/admin/activity-log` | Log aktivitas |
+| `/admin/pengaturan` | Pengaturan desa (16 tab, backup, update aplikasi) |
 
 ### Warga
 | Prefix | Deskripsi |
@@ -161,11 +183,19 @@ npm run dev
 | `/warga/dashboard` | Dashboard warga |
 | `/warga/surat` | Riwayat & pengajuan surat |
 
+### Lembaga
+| Prefix | Deskripsi |
+|---|---|
+| `/lembaga/dashboard` | Dashboard lembaga |
+| `/lembaga/profil` | Edit profil lembaga |
+| `/lembaga/berita` | CRUD berita lembaga |
+| `/lembaga/events` | CRUD event lembaga |
+
 ---
 
 ## Database
 
-29 tabel utama meliputi: `users`, `pengajuan_surats`, `surat_masuks`, `surat_keluars`, `disposisis`, `approval_histories`, `document_versions`, `letter_configs`, `antrean_pengambilan`, `events`, `event_pesertas`, `berita`, `activity_logs`, `village_settings`, `inventaris`, `apbdesa`, `laporan_desas`, dan tabel Spatie Permission.
+34 tabel meliputi: `users`, `pengajuan_surats`, `surat_masuks`, `surat_keluars`, `disposisis`, `approval_histories`, `document_versions`, `letter_configs`, `antrean_pengambilan`, `events`, `event_pesertas`, `berita`, `activity_logs`, `village_settings`, `setting_versions`, `user_settings`, `dashboard_layouts`, `lembagas`, `inventaris`, `apbdesa`, `laporan_desas`, dan tabel Spatie Permission.
 
 ---
 
@@ -180,9 +210,11 @@ vendor/bin/phpunit tests/Feature/QrVerificationTest.php
 
 ## Security
 
-- **Rate Limiting** — Login & FAQ endpoint
+- **Rate Limiting** — Login & FAQ endpoint (konfigurasi per pengaturan)
+- **Captcha** — Matematika (default), Cloudflare Turnstile, atau Google reCAPTCHA di login/register/lupa password (prioritas Turnstile → reCAPTCHA → math)
+- **IP Whitelist** — Middleware `ip.whitelist` di seluruh route admin
 - **Encrypted Fields** — NIK, No KK, No HP (AES-256-CBC) + blind index (SHA-256)
-- **RBAC** — Spatie Permission dengan 30 permission
+- **RBAC** — Spatie Permission dengan 37 permission & 8 role
 - **Audit Trail** — Semua aksi penting tercatat
 - **Transaction + Lock** — Operasi multi-step dengan `DB::transaction` + `lockForUpdate`
 

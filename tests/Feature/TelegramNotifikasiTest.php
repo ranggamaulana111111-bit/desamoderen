@@ -45,7 +45,7 @@ class TelegramNotifikasiTest extends TestCase
     {
         return array_merge([
             'jenis_surat' => 'sktm',
-            'lampiran' => UploadedFile::fake()->create('lampiran.pdf', 100, 'application/pdf'),
+            'lampiran' => [UploadedFile::fake()->create('lampiran.pdf', 100, 'application/pdf')],
             'nama_lengkap' => 'Budi Santoso',
             'nik' => '3201010101010001',
             'tempat_lahir' => 'Bandung',

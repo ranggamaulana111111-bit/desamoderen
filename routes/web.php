@@ -62,17 +62,17 @@ Route::get('antrean/{kodeQr}', function (string $kodeQr) {
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:5,1');
+    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:auth');
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('register', [AuthController::class, 'register'])->middleware('throttle:5,1');
+    Route::post('register', [AuthController::class, 'register'])->middleware('throttle:auth');
     Route::get('password/lupa', [AuthController::class, 'showForgot'])->name('password.request');
-    Route::post('password/lupa', [AuthController::class, 'forgot'])->middleware('throttle:5,1')->name('password.forgot');
+    Route::post('password/lupa', [AuthController::class, 'forgot'])->middleware('throttle:auth')->name('password.forgot');
     Route::post('captcha/refresh', [AuthController::class, 'refreshCaptcha'])->name('captcha.refresh');
 });
 
 Route::middleware('auth')->post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('dashboard', function () {
         return view('admin.dashboard');
@@ -102,6 +102,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('users', [UserManagementController::class, 'index'])->middleware('permission:user.view')->name('users.index');
     Route::get('users/create', [UserManagementController::class, 'create'])->middleware('permission:user.create')->name('users.create');
     Route::post('users', [UserManagementController::class, 'store'])->middleware('permission:user.create')->name('users.store');
+    Route::get('users/{user}/edit', [UserManagementController::class, 'edit'])->middleware('permission:user.edit')->name('users.edit');
+    Route::put('users/{user}', [UserManagementController::class, 'update'])->middleware('permission:user.edit')->name('users.update');
+    Route::delete('users/{user}', [UserManagementController::class, 'destroy'])->middleware('permission:user.delete')->name('users.destroy');
     Route::get('users/{user}', [UserManagementController::class, 'show'])->middleware('permission:user.view')->name('users.show');
     Route::patch('users/{user}/role', [UserManagementController::class, 'updateRole'])->middleware('permission:user.assign_role')->name('users.updateRole');
 
@@ -167,6 +170,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // ── Activity Log ──
     Route::get('activity-log', [ActivityLogController::class, 'index'])->middleware('permission:audit.view')->name('activity-log.index');
+    Route::delete('activity-log/delete-all', [ActivityLogController::class, 'destroyAll'])->middleware('permission:audit.view')->name('activity-log.destroyAll');
+    Route::delete('activity-log/{activityLog}', [ActivityLogController::class, 'destroy'])->middleware('permission:audit.view')->name('activity-log.destroy');
 
     // ── Letter Template Management ──
     Route::get('template-surat/{letterConfig}/toggle', [LetterConfigController::class, 'toggle'])->middleware('permission:setting.manage')->name('letter-config.toggle');
@@ -182,9 +187,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // ── Settings ──
     Route::get('pengaturan', [SettingController::class, 'index'])->middleware('permission:setting.manage')->name('setting.index');
-    Route::post('pengaturan/{category}', [SettingController::class, 'update'])->middleware('permission:setting.manage')->name('setting.update');
     Route::post('pengaturan/clear-cache', [SettingController::class, 'clearCache'])->middleware('permission:setting.manage')->name('setting.clearCache');
     Route::post('pengaturan/maintenance/{action}', [SettingController::class, 'maintenance'])->middleware('permission:setting.manage')->name('setting.maintenance');
+    Route::post('pengaturan/notify-test', [SettingController::class, 'notifyTest'])->middleware('permission:setting.manage')->name('setting.notifyTest');
+    Route::post('pengaturan/backup', [SettingController::class, 'backupRun'])->middleware('permission:setting.manage')->name('setting.backupRun');
+    Route::get('pengaturan/backup/{filename}/download', [SettingController::class, 'backupDownload'])->middleware('permission:setting.manage')->name('setting.backupDownload');
+    Route::delete('pengaturan/backup/{filename}', [SettingController::class, 'backupDelete'])->middleware('permission:setting.manage')->name('setting.backupDelete');
+    Route::get('pengaturan/update-status', [SettingController::class, 'updateStatus'])->middleware(['permission:setting.manage', 'role:Super Admin'])->name('setting.updateStatus');
+    Route::post('pengaturan/update', [SettingController::class, 'updateApp'])->middleware(['permission:setting.manage', 'role:Super Admin'])->name('setting.updateApp');
+    Route::post('pengaturan/{category}', [SettingController::class, 'update'])->middleware('permission:setting.manage')->name('setting.update');
 
     // ── Configuration Versioning ──
     Route::get('pengaturan/versions', [SettingVersionController::class, 'index'])->middleware('permission:setting.manage')->name('setting.versions.index');

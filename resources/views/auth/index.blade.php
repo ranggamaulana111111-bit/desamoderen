@@ -308,6 +308,27 @@
                                     @enderror
                                 </div>
 
+                                @if($captchaMode === 'turnstile')
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                    <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                        <div class="cf-turnstile" data-sitekey="{{ config('village.integrasi_turnstile_site_key') }}"></div>
+                                    </div>
+                                    @error('cf-turnstile-response')
+                                    <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                @elseif($captchaMode === 'recaptcha')
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                    <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                        <div class="g-recaptcha" data-sitekey="{{ config('village.integrasi_recaptcha_key') }}"></div>
+                                    </div>
+                                    @error('g-recaptcha-response')
+                                    <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                @elseif($captchaMode === 'math')
                                 <div>
                                     <div class="flex items-center justify-between mb-2 ml-1">
                                         <label class="block text-xs font-semibold text-slate-600">Captcha</label>
@@ -331,6 +352,7 @@
                                     <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
+                                @endif
 
                                 @if ($errors->any())
                                 <div class="rounded-2xl border border-red-200 bg-red-50 p-4">
@@ -571,6 +593,27 @@
                                             <span class="review-value" x-text="getVal('alamat')"></span>
                                         </div>
                                     </div>
+                                    @if($captchaMode === 'turnstile')
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                        <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                            <div class="cf-turnstile" data-sitekey="{{ config('village.integrasi_turnstile_site_key') }}"></div>
+                                        </div>
+                                        @error('cf-turnstile-response')
+                                        <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    @elseif($captchaMode === 'recaptcha')
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Verifikasi Keamanan</label>
+                                        <div class="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+                                            <div class="g-recaptcha" data-sitekey="{{ config('village.integrasi_recaptcha_key') }}"></div>
+                                        </div>
+                                        @error('g-recaptcha-response')
+                                        <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    @elseif($captchaMode === 'math')
                                     <div>
                                         <div class="flex items-center justify-between mb-2 ml-1">
                                             <label class="block text-xs font-semibold text-slate-600">Captcha</label>
@@ -594,6 +637,7 @@
                                         <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    @endif
                                     <label class="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 cursor-pointer">
                                         <input type="checkbox" name="confirmed" @change="confirmed = $el.checked" class="w-4 h-4 mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500">
                                         <span class="text-xs text-slate-500 leading-relaxed">Saya menyatakan data di atas benar dan bersedia mempertanggungjawabkan. Dengan mendaftar, saya setuju dengan <span class="font-semibold text-slate-700">Ketentuan Layanan</span> Prodesa.</span>
@@ -790,5 +834,10 @@
             };
         }
     </script>
+    @if($captchaMode === 'recaptcha')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @elseif($captchaMode === 'turnstile')
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
 </body>
 </html>

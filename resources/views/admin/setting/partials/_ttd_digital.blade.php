@@ -42,9 +42,6 @@
                         </label>
                     </div>
                 </div>
-                <div>
-                    @include('admin.setting.partials._preview_panel')
-                </div>
             </div>
         </div>
         <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">

@@ -1,4 +1,6 @@
-@include('admin.setting.partials._reserved_note')
+@include('admin.setting.partials._active_note', [
+    'message' => 'Pengaturan keamanan aktif dan diterapkan: masa sesi login, batas percobaan login, captcha, kebijakan password, whitelist IP admin, dan retensi log aktivitas.',
+])
 <form x-show="activeTab === 'keamanan'" x-cloak
       action="{{ route('admin.setting.update', 'keamanan') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">
@@ -18,17 +20,17 @@
         <div class="p-6 space-y-5">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <x-setting-input name="security_session_timeout" label="Session Timeout (menit)" type="number" :value="$settings['security_session_timeout'] ?? '120'" />
-                <x-setting-input name="security_rate_limit" label="Rate Limit (per menit)" type="number" :value="$settings['security_rate_limit'] ?? '60'" />
+                <x-setting-input name="security_rate_limit" label="Rate Limit Login (per menit)" type="number" :value="$settings['security_rate_limit'] ?? '5'" />
                 <x-setting-input name="security_audit_log_retensi" label="Retensi Audit Log (hari)" type="number" :value="$settings['security_audit_log_retensi'] ?? '365'" />
                 <x-setting-input name="security_password_min_length" label="Min. Panjang Password" type="number" :value="$settings['security_password_min_length'] ?? '8'" />
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
                     <input type="hidden" name="security_captcha_aktif" value="0">
-                    <input type="checkbox" name="security_captcha_aktif" value="1" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" {{ ($settings['security_captcha_aktif'] ?? '0') == '1' ? 'checked' : '' }}>
+                    <input type="checkbox" name="security_captcha_aktif" value="1" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" {{ ($settings['security_captcha_aktif'] ?? '1') == '1' ? 'checked' : '' }}>
                     <div>
-                        <p class="text-sm font-medium text-gray-800">reCAPTCHA</p>
-                        <p class="text-xs text-gray-500">Captcha pada login</p>
+                        <p class="text-sm font-medium text-gray-800">Captcha Login</p>
+                        <p class="text-xs text-gray-500">Soal keamanan pada halaman login, daftar & lupa password</p>
                     </div>
                 </label>
                 <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
@@ -44,11 +46,14 @@
                     <input type="checkbox" name="security_password_policy" value="1" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" {{ ($settings['security_password_policy'] ?? '1') == '1' ? 'checked' : '' }}>
                     <div>
                         <p class="text-sm font-medium text-gray-800">Password Policy</p>
-                        <p class="text-xs text-gray-500">Validasi kekuatan password</p>
+                        <p class="text-xs text-gray-500">Password wajib kombinasi huruf & angka</p>
                     </div>
                 </label>
             </div>
-            <x-setting-textarea name="security_ip_whitelist" label="IP Whitelist (satu per baris)" :value="$settings['security_ip_whitelist'] ?? ''" rows="3" />
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                <p class="text-xs text-amber-700 leading-relaxed"><strong>Catatan:</strong> Modul 2FA akan tersedia pada rilis berikutnya. Pengaturan IP Whitelist berlaku untuk seluruh halaman admin &mdash; pastikan alamat IP Anda sendiri disertakan agar tidak terkunci.</p>
+            </div>
+            <x-setting-textarea name="security_ip_whitelist" label="IP Whitelist (satu per baris atau dipisah koma)" :value="$settings['security_ip_whitelist'] ?? ''" rows="3" />
         </div>
         <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
             <button type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition shadow-sm hover:shadow" :disabled="saving">

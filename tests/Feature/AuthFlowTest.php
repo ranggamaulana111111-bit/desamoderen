@@ -142,14 +142,14 @@ class AuthFlowTest extends TestCase
         $this->post('/password/lupa', [
             'nik' => '3216010101010001',
             'no_hp' => '081234567890',
-            'password' => 'passwordbaru',
-            'password_confirmation' => 'passwordbaru',
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
         ])->assertRedirect('/login')->assertSessionHas('status');
 
         $user = User::findByNik('3216010101010001');
 
-        $this->assertTrue(password_verify('passwordbaru', $user->password));
+        $this->assertTrue(password_verify('passwordbaru1', $user->password));
     }
 
     public function test_forgot_password_rejects_wrong_no_hp(): void
@@ -161,10 +161,29 @@ class AuthFlowTest extends TestCase
         $this->post('/password/lupa', [
             'nik' => '3216010101010001',
             'no_hp' => '081111111111',
-            'password' => 'passwordbaru',
-            'password_confirmation' => 'passwordbaru',
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
         ])->assertSessionHasErrors('no_hp');
+    }
+
+    public function test_forgot_password_works_when_user_has_no_no_hp(): void
+    {
+        User::findByNik('3216010101010001')->update(['no_hp' => null]);
+
+        $this->get('/password/lupa');
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/lupa', [
+            'nik' => '3216010101010001',
+            'no_hp' => '081234567890',
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
+            'captcha' => '7',
+        ])->assertRedirect('/login')->assertSessionHas('status');
+
+        $this->assertTrue(password_verify('passwordbaru1', User::findByNik('3216010101010001')->password));
     }
 
     public function test_captcha_check_helper(): void

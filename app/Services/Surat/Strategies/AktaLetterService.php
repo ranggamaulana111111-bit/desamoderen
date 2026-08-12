@@ -31,7 +31,7 @@ class AktaLetterService implements LetterGeneratorInterface
                 'tgl_lahir' => $dt['tgl_lahir'] ?? null,
                 'jenis_kelamin' => $dt['jenis_kelamin'] ?? '-',
                 'pekerjaan' => $dt['pekerjaan'] ?? '-',
-                'alamat_lengkap' => $dt['alamat_lengkap'] ?? sprintf(
+                'alamat_lengkap' => $dt['alamat_lengkap'] ?? $surat->user->alamat ?? sprintf(
                     'RT %s / RW %s',
                     $surat->user->rt ?? '-',
                     $surat->user->rw ?? '-'

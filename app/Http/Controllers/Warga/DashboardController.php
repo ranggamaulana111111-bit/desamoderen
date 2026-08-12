@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Warga;
 
 use App\Http\Controllers\Controller;
+use App\Models\Berita;
+use App\Models\Event;
 use App\Models\LetterConfig;
 use App\Models\PengajuanSurat;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -48,11 +50,25 @@ class DashboardController extends Controller
             ->latest()
             ->get();
 
+        $berita = Berita::with(['user', 'lembaga'])
+            ->where('status', 'publish')
+            ->orderByDesc('created_at')
+            ->take(4)
+            ->get();
+
+        $agenda = Event::with('lembaga')
+            ->where('status', 'akan_datang')
+            ->whereDate('tanggal', '>=', now()->toDateString())
+            ->orderBy('tanggal')
+            ->orderBy('waktu_mulai')
+            ->take(5)
+            ->get();
+
         $letterConfigs = LetterConfig::active()->get();
 
         return view('warga.dashboard', compact(
             'total', 'pending', 'selesai', 'ditolak', 'revisi', 'terbaru',
-            'antreanAktif', 'undanganAktif', 'letterConfigs'
+            'antreanAktif', 'undanganAktif', 'letterConfigs', 'berita', 'agenda'
         ));
     }
 }

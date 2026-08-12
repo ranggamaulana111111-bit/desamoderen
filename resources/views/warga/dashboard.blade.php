@@ -286,13 +286,13 @@
                             </div>
                             <p class="text-sm text-slate-500 font-mono tracking-wide mt-0.5">NIK {{ substr(auth()->user()->nik, 0, 4) }}****{{ substr(auth()->user()->nik, -4) }}</p>
                             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-slate-400">
-                                <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>RT {{ auth()->user()->rt ?? '-' }} / RW {{ auth()->user()->rw ?? '-' }}</span>
+                                <span class="flex items-center gap-1"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg><span class="truncate">{{ auth()->user()->alamat ?: 'RT '.auth()->user()->rt.' / RW '.auth()->user()->rw }}</span></span>
                                 <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>{{ \Carbon\Carbon::parse(auth()->user()->created_at)->locale('id')->translatedFormat('M Y') }}</span>
                             </div>
                         </div>
                     </div>
                     @php
-                        $fields = [auth()->user()->name, auth()->user()->nik, auth()->user()->rt, auth()->user()->rw, auth()->user()->no_hp, auth()->user()->email];
+                        $fields = [auth()->user()->name, auth()->user()->nik, auth()->user()->rt, auth()->user()->rw, auth()->user()->alamat, auth()->user()->no_hp, auth()->user()->email];
                         $filled = count(array_filter($fields, fn($f) => !empty($f)));
                         $pct = round(($filled / count($fields)) * 100);
                     @endphp
@@ -321,7 +321,7 @@
                                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-brand-500/20"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>
                                 <h3 class="font-bold text-slate-900">Identitas Digital</h3>
                                 <p class="text-xs text-slate-400 mt-1">Tunjukkan ke petugas jika diperlukan</p>
-                                <div class="mt-4 p-4 bg-slate-50 rounded-2xl"><p class="text-sm font-bold text-slate-800">{{ auth()->user()->name }}</p><p class="text-xs text-slate-500 font-mono mt-1">{{ auth()->user()->nik }}</p><p class="text-xs text-slate-400 mt-1">RT {{ auth()->user()->rt ?? '-' }} / RW {{ auth()->user()->rw ?? '-' }}</p></div>
+                                <div class="mt-4 p-4 bg-slate-50 rounded-2xl"><p class="text-sm font-bold text-slate-800">{{ auth()->user()->name }}</p><p class="text-xs text-slate-500 font-mono mt-1">{{ auth()->user()->nik }}</p><p class="text-xs text-slate-400 mt-1">{{ auth()->user()->alamat ?: 'RT '.auth()->user()->rt.' / RW '.auth()->user()->rw }}</p></div>
                                 <button @click="showQr=false" class="mt-4 w-full text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 px-4 py-2.5 rounded-2xl transition">Tutup</button>
                             </div>
                         </div>
@@ -526,6 +526,75 @@
                         </div>
                     </div>
                     @endforeach
+                </div>
+            </div>
+            @endif
+            {{-- ROW 3B: BERITA & AGENDA --}}
+            @if ($berita->isNotEmpty() || $agenda->isNotEmpty())
+            <div class="md:col-span-12 a-fade-up d4">
+                <div class="flex items-center gap-2 mb-3 px-1">
+                    <div class="w-1 h-4 rounded-full bg-gradient-to-b from-cyan-400 to-blue-400"></div>
+                    <h3 class="text-xs font-bold text-slate-800 tracking-wide uppercase">Berita &amp; Agenda Desa</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                    @if ($berita->isNotEmpty())
+                    <div class="bento-card p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-cyan-500/20">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z"/></svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800">Berita Terbaru</h4>
+                            <a href="{{ route('home') }}#berita" class="ml-auto text-[11px] font-semibold text-brand-600 hover:text-brand-700 transition">Lihat Semua &rarr;</a>
+                        </div>
+                        <div class="space-y-2.5">
+                            @foreach ($berita as $b)
+                            <a href="{{ route('berita.show', $b->slug) }}" class="event-row group">
+                                <div class="w-20 sm:w-24 h-full min-h-[64px] flex-shrink-0 relative overflow-hidden" style="background:{{ $b->foto ? 'url('.asset('storage/'.$b->foto).') center/cover no-repeat' : 'linear-gradient(135deg,#0f172a,#1e293b)' }}">
+                                    @if(!$b->foto)<div class="absolute inset-0 flex items-center justify-center"><svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg></div>@endif
+                                </div>
+                                <div class="flex-1 p-3 min-w-0">
+                                    <p class="text-[10px] font-semibold text-cyan-600 uppercase tracking-wide">{{ $b->lembaga?->nama ?? 'Pemerintah Desa' }}</p>
+                                    <h5 class="font-bold text-slate-900 text-sm leading-snug line-clamp-2 mt-0.5 group-hover:text-brand-600 transition">{{ $b->judul }}</h5>
+                                    <p class="text-[11px] text-slate-400 mt-1">{{ $b->created_at->locale('id')->translatedFormat('d M Y') }}</p>
+                                </div>
+                            </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                    @if ($agenda->isNotEmpty())
+                    <div class="bento-card p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-500/20">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800">Agenda Mendatang</h4>
+                        </div>
+                        <div class="space-y-2.5">
+                            @foreach ($agenda as $ev)
+                            @php
+                                $evDate = \Carbon\Carbon::parse($ev->tanggal);
+                                $daysLeft = max(0, (int)\Carbon\Carbon::now()->diffInDays($evDate, false));
+                            @endphp
+                            <div class="event-row items-stretch">
+                                <div class="w-14 sm:w-16 flex-shrink-0 flex flex-col items-center justify-center text-white p-2 relative overflow-hidden" style="background:linear-gradient(160deg,#1d4ed8,#2563eb 50%,#0ea5e9)">
+                                    <div class="text-[9px] font-semibold uppercase tracking-[.15em] opacity-70 relative">{{ $evDate->locale('id')->translatedFormat('M') }}</div>
+                                    <div class="text-xl font-black leading-none mt-0.5 relative" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">{{ $evDate->format('d') }}</div>
+                                    <div class="mt-1 bg-white/20 backdrop-blur-sm rounded-full px-2 py-0.5 text-[8px] font-bold relative">{{ $daysLeft > 0 ? $daysLeft.'h lagi' : 'Hari Ini' }}</div>
+                                </div>
+                                <div class="flex-1 p-3 min-w-0">
+                                    <p class="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">{{ $ev->jenis }}</p>
+                                    <h5 class="font-bold text-slate-900 text-sm leading-snug line-clamp-1 mt-0.5">{{ $ev->judul }}</h5>
+                                    <div class="flex flex-col gap-0.5 mt-1 text-xs text-slate-500">
+                                        <span class="flex items-center gap-1"><svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ \Carbon\Carbon::parse($ev->waktu_mulai)->format('H:i') }} WIB</span>
+                                        @if ($ev->tempat)<span class="flex items-center gap-1 truncate"><svg class="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg><span class="truncate">{{ $ev->tempat }}</span></span>@endif
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             @endif

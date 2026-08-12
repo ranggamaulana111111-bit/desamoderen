@@ -3,13 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('user.create');
+        return $this->user()->can('user.edit');
     }
 
     public function rules(): array
@@ -23,9 +24,9 @@ class StoreUserRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'nik' => ['required', 'string', 'digits:16', 'unique:users,nik'],
-            'password' => ['required', 'string', $password],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user ?? $this->route('user'))],
+            'nik' => ['required', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($this->user ?? $this->route('user'))],
+            'password' => ['nullable', 'string', $password],
             'role' => ['required', 'string', 'exists:roles,name'],
             'no_hp' => ['nullable', 'string', 'max:15'],
             'alamat' => ['nullable', 'string', 'max:500'],

@@ -16,7 +16,8 @@ class StorePengajuanRequest extends FormRequest
     {
         $rules = [
             'jenis_surat' => 'required|string|max:50',
-            'lampiran' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:image/jpeg,image/png,application/pdf|max:2048',
+            'lampiran' => 'required|array|min:1',
+            'lampiran.*' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:image/jpeg,image/png,application/pdf|max:2048',
         ];
 
         $jenis = $this->input('jenis_surat');
@@ -36,8 +37,9 @@ class StorePengajuanRequest extends FormRequest
     {
         return [
             'lampiran.required' => 'File lampiran wajib diunggah.',
-            'lampiran.mimes' => 'Lampiran harus berupa PDF, JPG, JPEG, atau PNG.',
-            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+            'lampiran.min' => 'Minimal satu file lampiran wajib diunggah.',
+            'lampiran.*.mimes' => 'Lampiran harus berupa PDF, JPG, JPEG, atau PNG.',
+            'lampiran.*.max' => 'Ukuran lampiran maksimal 2MB per file.',
         ];
     }
 }

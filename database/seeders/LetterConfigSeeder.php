@@ -81,7 +81,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '473',
                 'masa_berlaku_bulan' => 6,
                 'requirements' => ['Fotokopi KTP', 'Pas Foto 3x4 (2 lembar)', 'Foto / Dokumentasi Usaha (jika ada)'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nAlamat: {alamat_lengkap}\n\nBenar memiliki usaha: {nama_usaha}\nBidang/Jenis Usaha: {bidang_usaha}\nBerlokasi di: {lokasi_usaha}\nSejak Tahun: {tahun_mulai}\n\nSurat keterangan ini dibuat untuk keperluan {keperluan_sku}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nAlamat: {alamat_lengkap}\n\nBenar memiliki dan mengelola usaha sebagai berikut:\n\nNama Usaha: {nama_usaha}\nBidang / Jenis Usaha: {bidang_usaha}\nLokasi Usaha: {lokasi_usaha}\nUsaha Berjalan Sejak Tahun: {tahun_mulai}\n\nUsaha tersebut adalah milik yang bersangkutan dan berjalan dengan baik sampai dengan saat ini. Surat keterangan ini dibuat untuk keperluan {keperluan_sku}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -101,7 +101,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '474',
                 'masa_berlaku_bulan' => 12,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi Kartu Keluarga (KK)', 'Surat Pengantar RT / RW'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\n\nBenar berdomisili di alamat: {alamat_domisili}\nRT {rt_domisili} / RW {rw_domisili}, Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}.\n\nSurat keterangan domisili ini dibuat untuk keperluan: {keperluan_domisili}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\n\nBenar berdomisili di:\n\nAlamat: {alamat_domisili}\nRT / RW: {rt_domisili} / {rw_domisili}\nDesa: {nama_desa}\nKecamatan: {kecamatan}\nKabupaten: {kabupaten}\n\nSurat keterangan domisili ini dibuat untuk keperluan {keperluan_domisili}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -119,7 +119,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '475',
                 'masa_berlaku_bulan' => 6,
                 'requirements' => ['Fotokopi KTP', 'Pas Foto 3x4 (2 lembar)', 'Surat Pengantar RT / RW'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nAlamat: {alamat_lengkap}\n\nBerdasarkan data dan informasi yang kami ketahui, nama tersebut di atas selama berdomisili di wilayah Desa {nama_desa} berkelakuan baik, tidak pernah terlibat tindak pidana, dan tidak tercatat dalam daftar gangguan keamanan dan ketertiban masyarakat.\n\nSurat keterangan ini dibuat untuk keperluan: {keperluan_skkb}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nAlamat: {alamat_lengkap}\n\nBerdasarkan data dan keterangan yang kami ketahui, yang bersangkutan selama berdomisili di wilayah Desa {nama_desa} berkelakuan baik, tidak pernah terlibat dalam perbuatan pidana, dan tidak tercatat dalam daftar gangguan keamanan dan ketertiban masyarakat.\n\nSurat keterangan ini dibuat untuk keperluan {keperluan_skkb}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -137,7 +137,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '476',
                 'masa_berlaku_bulan' => 3,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi Kartu Keluarga (KK)', 'Surat Pengantar RT / RW'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nPekerjaan: {pekerjaan}\nAlamat: {alamat_lengkap}\n\nBerdasarkan data dan keterangan yang kami peroleh, bahwa nama tersebut di atas benar-benar belum pernah menikah / masih lajang menurut catatan kami.\n\nSurat keterangan ini dibuat untuk keperluan: {keperluan_belum_menikah}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nAlamat: {alamat_lengkap}\n\nBerdasarkan data dan keterangan yang kami peroleh, yang bersangkutan benar-benar belum pernah menikah dan berstatus lajang menurut catatan kami.\n\nSurat keterangan ini dibuat untuk keperluan {keperluan_belum_menikah}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -155,7 +155,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '477',
                 'masa_berlaku_bulan' => 0,
                 'requirements' => ['Fotokopi KTP', 'Surat Permohonan / Proposal Kegiatan'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, memberikan izin kepada:\n\nNama: {nama_lengkap}\nNIK: {nik}\nAlamat: {alamat_lengkap}\n\nUntuk menyelenggarakan kegiatan:\nNama Kegiatan: {nama_kegiatan}\nJenis Kegiatan: {jenis_kegiatan}\nTanggal Pelaksanaan: {tgl_kegiatan}\nLokasi: {lokasi_kegiatan}\nJumlah Peserta: {jumlah_peserta} orang\n\nDengan ketentuan wajib menjaga ketertiban dan keamanan serta bertanggung jawab penuh atas kelancaran kegiatan.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, dengan ini memberikan izin kepada:\n\nNama: {nama_lengkap}\nNIK: {nik}\nAlamat: {alamat_lengkap}\n\nUntuk menyelenggarakan kegiatan:\n\nNama Kegiatan: {nama_kegiatan}\nJenis Kegiatan: {jenis_kegiatan}\nTanggal Pelaksanaan: {tgl_kegiatan}\nLokasi: {lokasi_kegiatan}\nJumlah Peserta: {jumlah_peserta} orang\n\nDengan ketentuan yang bersangkutan wajib menjaga ketertiban, keamanan, dan ketentraman masyarakat serta bertanggung jawab penuh atas kelancaran dan keamanan kegiatan tersebut.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap (Penanggung Jawab)', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -175,7 +175,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '478',
                 'masa_berlaku_bulan' => 0,
                 'requirements' => ['Fotokopi KTP Ahli Waris', 'Fotokopi Kartu Keluarga (KK)', 'Fotokopi KTP Pewaris', 'Surat Keterangan Kematian (jika ada)'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nAhli waris dari almarhum/almarhumah:\nNama Pewaris: {nama_pewaris}\nNIK Pewaris: {nik_pewaris}\nAlamat Pewaris: {alamat_pewaris}\nMeninggal pada: {tgl_meninggal}\n\nAdalah:\n\nNama: {nama_lengkap}\nNIK: {nik}\nHubungan: {hubungan_ahli_waris}\nAlamat: {alamat_lengkap}\n\nSurat keterangan ini dibuat untuk keperluan: {keperluan_ahli_waris}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nAhli waris dari almarhum/almarhumah:\n\nNama Pewaris: {nama_pewaris}\nNIK Pewaris: {nik_pewaris}\nAlamat Pewaris: {alamat_pewaris}\nMeninggal pada: {tgl_meninggal}\n\nYang menurut hukum menjadi ahli warisnya adalah:\n\nNama: {nama_lengkap}\nNIK: {nik}\nHubungan: {hubungan_ahli_waris}\nAlamat: {alamat_lengkap}\n\nSurat keterangan ini dibuat untuk keperluan {keperluan_ahli_waris}.",
                 'fields' => [
                     ['key' => 'nama_pewaris', 'label' => 'Nama Pewaris (Almarhum)', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik_pewaris', 'label' => 'NIK Pewaris', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -194,7 +194,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '479',
                 'masa_berlaku_bulan' => 0,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi SPPT PBB / bukti kepemilikan tanah (jika ada)', 'Surat Pernyataan Kepemilikan Tanah'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nAlamat: {alamat_lengkap}\n\nBenar memiliki sebidang tanah yang terletak di:\nLokasi: {lokasi_tanah}\nLuas: {luas_tanah} m²\nBatas Utara: {batas_utara}\nBatas Selatan: {batas_selatan}\nBatas Timur: {batas_timur}\nBatas Barat: {batas_barat}\n\nTanah tersebut dikuasai secara sah dan tidak dalam sengketa dengan pihak lain. Surat ini dibuat untuk keperluan: {keperluan_tanah}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nAlamat: {alamat_lengkap}\n\nBenar memiliki sebidang tanah yang terletak di:\n\nLokasi: {lokasi_tanah}\nLuas: {luas_tanah} m²\nBatas Utara: {batas_utara}\nBatas Selatan: {batas_selatan}\nBatas Timur: {batas_timur}\nBatas Barat: {batas_barat}\n\nTanah tersebut dikuasai secara sah oleh yang bersangkutan dan tidak sedang dalam sengketa dengan pihak lain. Surat keterangan ini dibuat untuk keperluan {keperluan_tanah}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap (Pemilik)', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -214,7 +214,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '480',
                 'masa_berlaku_bulan' => 3,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi Kartu Keluarga (KK)', 'Pas Foto 3x4 (2 lembar)'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nPekerjaan: {pekerjaan}\nAlamat: {alamat_lengkap}\n\nBahwa yang bersangkutan berkelakuan baik dan tidak pernah tersangkut perkara pidana. Surat pengantar ini dibuat untuk keperluan pembuatan SKCK di Kepolisian Sektor {kecamatan}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nAlamat: {alamat_lengkap}\n\nBerdasarkan data yang kami ketahui, yang bersangkutan berkelakuan baik dan tidak pernah tersangkut perkara pidana.\n\nSurat pengantar ini dibuat untuk keperluan pembuatan Surat Keterangan Catatan Kepolisian (SKCK) di Polsek {kecamatan}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -232,7 +232,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '481',
                 'masa_berlaku_bulan' => 3,
                 'requirements' => ['Fotokopi KTP', 'Slip Gaji / Surat Keterangan Penghasilan (jika ada)'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nPekerjaan: {pekerjaan}\nAlamat: {alamat_lengkap}\n\nBenar memiliki penghasilan tetap sebesar Rp {jumlah_penghasilan} per {periode_penghasilan} sebagai {sumber_penghasilan}.\n\nSurat keterangan penghasilan ini dibuat untuk keperluan: {keperluan_penghasilan}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nPekerjaan: {pekerjaan}\nAlamat: {alamat_lengkap}\n\nBahwa yang bersangkutan benar memiliki penghasilan sebesar Rp {jumlah_penghasilan} per {periode_penghasilan} yang diperoleh dari {sumber_penghasilan}.\n\nSurat keterangan penghasilan ini dibuat untuk keperluan {keperluan_penghasilan}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -252,7 +252,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '482',
                 'masa_berlaku_bulan' => 6,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi Kartu Keluarga (KK)', 'Surat Keterangan Kematian / Akta Cerai'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nAlamat: {alamat_lengkap}\n\nBenar berstatus {status_janda_label} karena {penyebab_janda} pada tanggal {tgl_janda} dan sampai saat ini belum menikah lagi.\n\nSurat keterangan ini dibuat untuk keperluan: {keperluan_janda}.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nJenis Kelamin: {jenis_kelamin_label}\nAlamat: {alamat_lengkap}\n\nBahwa yang bersangkutan benar berstatus {status_janda_label} karena {penyebab_janda} pada tanggal {tgl_janda} dan sampai dengan saat ini belum menikah lagi.\n\nSurat keterangan ini dibuat untuk keperluan {keperluan_janda}.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
@@ -271,7 +271,7 @@ class LetterConfigSeeder extends Seeder
                 'kode_klasifikasi' => '483',
                 'masa_berlaku_bulan' => 1,
                 'requirements' => ['Fotokopi KTP', 'Fotokopi Kartu Keluarga (KK)', 'Surat Pengantar RT / RW'],
-                'body_template' => "Yang bertanda tangan di bawah ini, {jabatan_kades}, Kepala Desa {nama_desa}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nAlamat Asal: {alamat_lengkap}\n\nBenar akan pindah ke:\nAlamat Tujuan: {alamat_tujuan}\nDesa/Kelurahan: {desa_tujuan}\nKecamatan: {kecamatan_tujuan}\nKabupaten/Kota: {kabupaten_tujuan}\nProvinsi: {provinsi_tujuan}\n\nAlasan pindah: {alasan_pindah}.\n\nSurat keterangan pindah ini dibuat untuk keperluan administrasi kependudukan.",
+                'body_template' => "Yang bertanda tangan di bawah ini, {nama_kades}, {jabatan_kades}, Kecamatan {kecamatan}, Kabupaten {kabupaten}, menerangkan dengan sebenarnya bahwa:\n\nNama: {nama_lengkap}\nNIK: {nik}\nTempat, Tgl Lahir: {tempat_lahir}, {tgl_lahir}\nAlamat Asal: {alamat_lengkap}\n\nBenar akan pindah tempat tinggal ke:\n\nAlamat: {alamat_tujuan}\nDesa / Kelurahan: {desa_tujuan}\nKecamatan: {kecamatan_tujuan}\nKabupaten / Kota: {kabupaten_tujuan}\nProvinsi: {provinsi_tujuan}\n\nAlasan pindah: {alasan_pindah}.\n\nSurat keterangan pindah ini dibuat untuk keperluan administrasi kependudukan.",
                 'fields' => [
                     ['key' => 'nama_lengkap', 'label' => 'Nama Lengkap', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'nik', 'label' => 'NIK', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],

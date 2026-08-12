@@ -1,4 +1,6 @@
-@include('admin.setting.partials._reserved_note')
+@include('admin.setting.partials._active_note', [
+    'message' => 'Driver antrean aktif: '.($settings['queue_driver'] ?? 'database').' (nilai default dari .env bila belum diatur). Perubahan berlaku pada request berikutnya.',
+])
 <form x-show="activeTab === 'queue-driver'" x-cloak
       action="{{ route('admin.setting.update', 'queue-driver') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

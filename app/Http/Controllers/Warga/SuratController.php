@@ -9,6 +9,7 @@ use App\Models\LetterConfig;
 use App\Models\PengajuanSurat;
 use App\Services\ApprovalService;
 use App\Services\TelegramNotifier;
+use App\Services\WebhookNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -83,7 +84,8 @@ class SuratController extends Controller
         $config = LetterConfig::where('jenis_surat', $pengajuan->jenis_surat)->first();
 
         $rules = [
-            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'lampiran' => 'nullable|array',
+            'lampiran.*' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
 
         if ($config) {
@@ -96,6 +98,10 @@ class SuratController extends Controller
 
         $dataTambahan = $pengajuan->data_tambahan ?? [];
 
+        if (isset($dataTambahan['lampiran']) && ! is_array($dataTambahan['lampiran'])) {
+            $dataTambahan['lampiran'] = [$dataTambahan['lampiran']];
+        }
+
         foreach ($validated as $key => $value) {
             if ($key !== 'lampiran') {
                 $dataTambahan[$key] = $value;
@@ -103,14 +109,23 @@ class SuratController extends Controller
         }
 
         if ($request->hasFile('lampiran')) {
-            if (isset($dataTambahan['lampiran']) && Storage::exists($dataTambahan['lampiran'])) {
-                Storage::delete($dataTambahan['lampiran']);
+            foreach (($dataTambahan['lampiran'] ?? []) as $old) {
+                if ($old && Storage::exists($old)) {
+                    Storage::delete($old);
+                }
             }
-            $file = $request->file('lampiran');
-            $extension = $file->getClientOriginalExtension();
+
             $hash = substr(hash('sha256', auth()->id().now()->timestamp), 0, 12);
-            $filename = "{$pengajuan->jenis_surat}_{$hash}_".now()->timestamp.".{$extension}";
-            $dataTambahan['lampiran'] = $file->storeAs('private/lampiran', $filename);
+            $timestamp = now()->timestamp;
+            $paths = [];
+
+            foreach ($request->file('lampiran') as $i => $file) {
+                $extension = $file->getClientOriginalExtension();
+                $filename = "{$pengajuan->jenis_surat}_{$hash}_{$timestamp}_{$i}.{$extension}";
+                $paths[] = $file->storeAs('private/lampiran', $filename);
+            }
+
+            $dataTambahan['lampiran'] = $paths;
         }
 
         $pengajuan->update([
@@ -149,16 +164,20 @@ class SuratController extends Controller
     {
         $validated = $request->validated();
 
-        $file = $request->file('lampiran');
-        $extension = $file->getClientOriginalExtension();
+        $files = $request->file('lampiran', []);
         $hash = substr(hash('sha256', auth()->id().now()->timestamp), 0, 12);
         $timestamp = now()->timestamp;
-        $filename = "{$validated['jenis_surat']}_{$hash}_{$timestamp}.{$extension}";
-        $path = $file->storeAs('private/lampiran', $filename);
+        $paths = [];
+
+        foreach (is_array($files) ? $files : [$files] as $i => $file) {
+            $extension = $file->getClientOriginalExtension();
+            $filename = "{$validated['jenis_surat']}_{$hash}_{$timestamp}_{$i}.{$extension}";
+            $paths[] = $file->storeAs('private/lampiran', $filename);
+        }
 
         $dataTambahan = collect($validated)
             ->except('jenis_surat', 'lampiran')
-            ->put('lampiran', $path)
+            ->put('lampiran', $paths)
             ->toArray();
 
         $pengajuan = PengajuanSurat::create([
@@ -178,6 +197,16 @@ class SuratController extends Controller
         );
 
         $this->sendTelegramNotification($pengajuan);
+
+        app(WebhookNotifier::class)->send([
+            'event' => 'pengajuan.created',
+            'pengajuan_id' => $pengajuan->id,
+            'pemohon' => $request->user()->name,
+            'jenis_surat' => $pengajuan->jenis_surat,
+            'status' => $pengajuan->status,
+            'url' => route('admin.pengajuan.show', $pengajuan),
+            'occurred_at' => now()->toIso8601String(),
+        ]);
 
         return redirect()
             ->route('warga.surat.show', $pengajuan)

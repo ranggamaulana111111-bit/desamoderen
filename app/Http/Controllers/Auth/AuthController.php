@@ -5,20 +5,98 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Support\Captcha;
+use App\Support\Recaptcha;
+use App\Support\Turnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
+    private function captchaEnabled(): bool
+    {
+        return (string) config('village.security_captcha_aktif', '1') === '1';
+    }
+
+    private function captchaMode(): string
+    {
+        if (! $this->captchaEnabled()) {
+            return 'none';
+        }
+
+        if (app(Turnstile::class)->configured()) {
+            return 'turnstile';
+        }
+
+        if (app(Recaptcha::class)->configured()) {
+            return 'recaptcha';
+        }
+
+        return 'math';
+    }
+
+    private function captchaFieldRules(): array
+    {
+        if ($this->captchaMode() === 'turnstile') {
+            return ['cf-turnstile-response' => ['required', 'string']];
+        }
+
+        if ($this->captchaMode() === 'recaptcha') {
+            return ['g-recaptcha-response' => ['required', 'string']];
+        }
+
+        return ['captcha' => $this->captchaEnabled() ? ['required', 'string'] : ['nullable', 'string']];
+    }
+
+    private function passwordRules(): array
+    {
+        $min = (int) config('village.security_password_min_length', 8);
+        $base = Password::min($min);
+
+        if ((string) config('village.security_password_policy', '1') === '1') {
+            $base = $base->letters()->numbers();
+        }
+
+        return ['required', 'string', $base, 'confirmed'];
+    }
+
+    private function checkCaptcha(Request $request): bool
+    {
+        if ($this->captchaMode() === 'none') {
+            return true;
+        }
+
+        if ($this->captchaMode() === 'turnstile') {
+            return app(Turnstile::class)->verify($request->input('cf-turnstile-response'));
+        }
+
+        if ($this->captchaMode() === 'recaptcha') {
+            return app(Recaptcha::class)->verify($request->input('g-recaptcha-response'));
+        }
+
+        return Captcha::check($request->input('captcha'));
+    }
+
+    private function captchaErrorField(): string
+    {
+        if ($this->captchaMode() === 'turnstile') {
+            return 'cf-turnstile-response';
+        }
+
+        return $this->captchaMode() === 'recaptcha' ? 'g-recaptcha-response' : 'captcha';
+    }
+
     public function showRegister()
     {
         $captcha = Captcha::question();
         $mode = 'register';
+        $captchaEnabled = $this->captchaEnabled();
+        $captchaMode = $this->captchaMode();
 
-        return view('auth.index', compact('mode', 'captcha'));
+        return view('auth.index', compact('mode', 'captcha', 'captchaEnabled', 'captchaMode'));
     }
 
     public function register(Request $request)
@@ -30,16 +108,18 @@ class AuthController extends Controller
             'rw' => ['nullable', 'string', 'max:3'],
             'alamat' => ['nullable', 'string', 'max:255'],
             'no_hp' => ['nullable', 'string', 'max:15'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'captcha' => ['required', 'string'],
+            'password' => $this->passwordRules(),
+            ...$this->captchaFieldRules(),
         ], [], [
             'captcha' => 'jawaban keamanan',
+            'g-recaptcha-response' => 'verifikasi keamanan',
+            'cf-turnstile-response' => 'verifikasi keamanan',
         ]);
 
-        if (! Captcha::check($validated['captcha'])) {
+        if (! $this->checkCaptcha($request)) {
             Captcha::question();
 
-            return back()->withInput()->withErrors(['captcha' => 'Jawaban keamanan salah. Silakan coba lagi.']);
+            return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
         $request->validate([
@@ -70,8 +150,10 @@ class AuthController extends Controller
     {
         $captcha = Captcha::question();
         $mode = 'login';
+        $captchaEnabled = $this->captchaEnabled();
+        $captchaMode = $this->captchaMode();
 
-        return view('auth.index', compact('mode', 'captcha'));
+        return view('auth.index', compact('mode', 'captcha', 'captchaEnabled', 'captchaMode'));
     }
 
     public function login(Request $request)
@@ -79,15 +161,17 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'nik' => ['required', 'string', 'digits:16'],
             'password' => ['required', 'string'],
-            'captcha' => ['required', 'string'],
+            ...$this->captchaFieldRules(),
         ], [], [
             'captcha' => 'jawaban keamanan',
+            'g-recaptcha-response' => 'verifikasi keamanan',
+            'cf-turnstile-response' => 'verifikasi keamanan',
         ]);
 
-        if (! Captcha::check($credentials['captcha'])) {
+        if (! $this->checkCaptcha($request)) {
             Captcha::question();
 
-            return back()->withInput()->withErrors(['captcha' => 'Jawaban keamanan salah. Silakan coba lagi.']);
+            return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
         $user = User::findByNik($credentials['nik']);
@@ -117,8 +201,10 @@ class AuthController extends Controller
     public function showForgot()
     {
         $captcha = Captcha::question();
+        $captchaEnabled = $this->captchaEnabled();
+        $captchaMode = $this->captchaMode();
 
-        return view('auth.forgot', compact('captcha'));
+        return view('auth.forgot', compact('captcha', 'captchaEnabled', 'captchaMode'));
     }
 
     public function forgot(Request $request)
@@ -126,17 +212,19 @@ class AuthController extends Controller
         $validated = $request->validate([
             'nik' => ['required', 'string', 'digits:16'],
             'no_hp' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'captcha' => ['required', 'string'],
+            'password' => $this->passwordRules(),
+            ...$this->captchaFieldRules(),
         ], [], [
             'no_hp' => 'nomor HP',
             'captcha' => 'jawaban keamanan',
+            'g-recaptcha-response' => 'verifikasi keamanan',
+            'cf-turnstile-response' => 'verifikasi keamanan',
         ]);
 
-        if (! Captcha::check($validated['captcha'])) {
+        if (! $this->checkCaptcha($request)) {
             Captcha::question();
 
-            return back()->withInput()->withErrors(['captcha' => 'Jawaban keamanan salah. Silakan coba lagi.']);
+            return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
         $user = User::findByNik($validated['nik']);
@@ -150,7 +238,7 @@ class AuthController extends Controller
         $normalizedHp = preg_replace('/[^0-9]/', '', $validated['no_hp']);
         $userHp = preg_replace('/[^0-9]/', '', (string) $user->no_hp);
 
-        if ($normalizedHp !== $userHp) {
+        if ($userHp !== '' && $normalizedHp !== $userHp) {
             Captcha::question();
 
             return back()->withInput()->withErrors(['no_hp' => 'Nomor HP tidak cocok dengan data terdaftar.']);

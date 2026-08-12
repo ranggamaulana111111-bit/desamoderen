@@ -17,7 +17,6 @@
     @endpush
 
     <div x-data="settingApp()" x-init="initApp()">
-        @php $reservedTabs = ['integrasi', 'keamanan', 'backup', 'queue-driver']; @endphp
 
         {{-- ═══ TOAST NOTIFICATION ═══ --}}
         <div x-show="showToast" x-cloak class="fixed top-4 right-4 z-50 toast-enter" x-transition>
@@ -63,7 +62,7 @@
             <select x-model="activeTab" @change="switchTab($event.target.value)"
                     class="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 bg-white">
                 @foreach ($categories as $key => $menu)
-                <option value="{{ $key }}">{{ $menu['label'] }}@if (in_array($key, $reservedTabs)) (nanti)@endif</option>
+                <option value="{{ $key }}">{{ $menu['label'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -82,9 +81,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="{{ $menu['icon'] }}"/>
                         </svg>
                         <span class="truncate">{{ $menu['label'] }}</span>
-                        @if (in_array($key, $reservedTabs))
-                        <span class="ml-auto text-[10px] font-medium text-amber-600 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full">nanti</span>
-                        @elseif ($key === 'audit-log')
+                        @if ($key === 'audit-log')
                         <span class="ml-auto text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">{{ $auditLogs->count() }}</span>
                         @endif
                     </button>
@@ -226,6 +223,131 @@
                         const reader = new FileReader();
                         reader.onload = (e) => { this.preview.ttdKadesPreview = e.target.result; };
                         reader.readAsDataURL(ref.files[0]);
+                    }
+                },
+            }
+        }
+
+        function updateApp() {
+            return {
+                busy: false,
+                checking: false,
+                updating: false,
+                statusLoaded: false,
+                hasUpdate: false,
+                isUpToDate: false,
+                statusError: '',
+                current: {},
+                behindCount: 0,
+                latestHash: '',
+                latestMessage: '',
+                latestDate: '',
+                logVisible: false,
+                logText: '',
+
+                initUpdate() {
+                    this.check();
+                },
+
+                formatDate(iso) {
+                    try {
+                        return new Date(iso).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+                    } catch (e) {
+                        return iso;
+                    }
+                },
+
+                async check() {
+                    if (this.busy) return;
+                    this.busy = true;
+                    this.checking = true;
+                    this.statusError = '';
+                    this.hasUpdate = false;
+                    this.isUpToDate = false;
+                    this.statusLoaded = false;
+
+                    try {
+                        const res = await fetch('{{ route('admin.setting.updateStatus') }}', {
+                            headers: { 'Accept': 'application/json' },
+                        });
+                        const data = await res.json();
+
+                        if (!data.success) {
+                            this.statusError = data.message || 'Gagal memeriksa update.';
+                            this.statusLoaded = true;
+                            return;
+                        }
+
+                        this.current = data.current || {};
+                        const update = data.update || {};
+                        this.behindCount = update.behindCount || 0;
+                        this.latestHash = update.latestHash || '';
+                        this.latestMessage = update.latestMessage || '';
+                        this.latestDate = update.latestDate || '';
+                        this.hasUpdate = !!update.hasUpdate;
+                        if (update.error) {
+                            this.statusError = update.error;
+                            this.isUpToDate = false;
+                        } else {
+                            this.isUpToDate = !this.hasUpdate;
+                        }
+                        this.statusLoaded = true;
+                    } catch (e) {
+                        this.statusError = 'Terjadi kesalahan jaringan saat memeriksa update.';
+                        this.statusLoaded = true;
+                    } finally {
+                        this.busy = false;
+                        this.checking = false;
+                    }
+                },
+
+                async updateNow() {
+                    if (this.busy) return;
+
+                    if (!confirm('Yakin ingin memperbarui aplikasi ke versi terbaru?\n\nProses berjalan beberapa menit (pull, composer, migrate, npm build).')) {
+                        return;
+                    }
+
+                    this.busy = true;
+                    this.updating = true;
+                    this.logVisible = true;
+                    this.logText = 'Memulai update...\n';
+
+                    try {
+                        const res = await fetch('{{ route('admin.setting.updateApp') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: '{}',
+                        });
+                        const data = await res.json();
+
+                        if (!data.success) {
+                            this.logText += 'Update gagal.\n';
+                        } else {
+                            this.logText += 'Update berhasil.\n';
+                        }
+
+                        if (data.steps && data.steps.length) {
+                            data.steps.forEach(step => {
+                                this.logText += `\n── [${step.step}] ${step.success ? 'OK' : 'GAGAL'}\n`;
+                                if (step.output) this.logText += step.output + '\n';
+                            });
+                        } else if (data.message) {
+                            this.logText += data.message + '\n';
+                        }
+
+                        if (data.success) {
+                            setTimeout(() => this.check(), 500);
+                        }
+                    } catch (e) {
+                        this.logText += 'Terjadi kesalahan jaringan saat update.\n';
+                    } finally {
+                        this.busy = false;
+                        this.updating = false;
                     }
                 },
             }

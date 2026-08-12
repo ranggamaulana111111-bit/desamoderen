@@ -100,14 +100,19 @@ Urutan section (atas → bawah):
 14. **CTA band** gradien brand-900→cyan + **Footer** `bg-slate-900` 4 kolom + kartu kredit developer (border conic berputar).
 15. **Back-to-top** tombol melingkar.
 
-### 4.2 Login (`auth/login.blade.php`)
-**Split screen `lg:grid-cols-2`:**
-- Kiri (desktop): panel gradien hero, mesh conic animasi, noise SVG, 3 orb blur, **ilustrasi SVG desa** (gedung, dokumen melayang, QR, perisai, gelombang sinyal), 3 `stat-pill` (Surat Diproses, Layanan, Enkripsi SHA-256).
-- Kanan: navy gelap `#0f172a→#0a2540`, kartu `max-w-[420px]`: heading "Selamat Datang **Kembali**", error alert (dismissible), form NIK (input glass, filter 16 digit, counter `n/16`, state sukses/error), Password (eye toggle), checkbox "Ingat saya", tombol `.btn-login` gradien + spinner "Memproses...", link "Daftar di sini", pill "Koneksi aman & terenkripsi".
-- Mobile: single-column gradien, form dalam `.glass-card`.
+### 4.2 Login & Register Terpadu (`auth/index.blade.php`)
+Satu halaman `auth/index.blade.php` dengan **mode** (Masuk/Daftar) ditentukan query string dan **segmented toggle** di kanan atas. Backing state `authPage('{{ $mode }}', captchaConfig)`:
+- **Segmented toggle** Masuk | Daftar (pindah mode via Alpine `mode = 'login'` / `'register'`).
+- **Kiri (desktop):** panel gradien hero, mesh conic animasi, noise SVG, 3 orb blur, **ilustrasi SVG desa** (gedung, dokumen melayang, QR, perisai, gelombang sinyal), 3 `stat-pill` (Surat Diproses, Layanan, Enkripsi SHA-256).
+- **Kanan:** navy gelap `#0f172a→#0a2540`, kartu `max-w-[420px]`:
 
-### 4.3 Register (`auth/register.blade.php`)
-Split screen sama seperti login, kanan `max-w-[480px]` dengan **wizard 5 langkah** (`registerPage()`, `step` 1–5):
+**Mode Login (`mode === 'login'`):**
+- Heading "Selamat Datang **Kembali**", error alert (dismissible).
+- Form NIK (input glass, filter 16 digit, counter `n/16`, state sukses/error), Password (eye toggle), checkbox "Ingat saya", tombol `.btn-login` gradien + spinner "Memproses...", link "Daftar di sini" (switch mode), link "Lupa password?".
+- Pill "Koneksi aman & terenkripsi".
+- Kartu **Akun Demo** (NIK demo & password demo1234) + info captcha.
+
+**Mode Register (`mode === 'register'`):** `max-w-[480px]` dengan **wizard 5 langkah** (`registerPage()`, `step` 1–5):
 1. **Identitas** (Nama + NIK dengan counter 16 digit)
 2. **Alamat** (RT/RW opsional + alamat lengkap)
 3. **Kontak** (No. HP opsional)
@@ -115,6 +120,11 @@ Split screen sama seperti login, kanan `max-w-[480px]` dengan **wizard 5 langkah
 5. **Review & Daftar** (ringkasan read-only + checkbox konfirmasi)
 
 Stepper 5 titik bernomor dengan garis penghubung; tombol Kembali/Selanjutnya/Daftar Sekarang (disabled sampai `confirmed`). Sukses → overlay penuh `z-[100]` dengan animasi `successRing` + `checkPop` + auto-redirect.
+
+Captcha (soal matematika, Cloudflare Turnstile, atau reCAPTCHA) tampil di kedua mode sesuai konfigurasi `village` security. Prioritas: Turnstile → reCAPTCHA → math.
+
+### 4.3 Lupa Password (`auth/forgot.blade.php`)
+Kartu terpusat `max-w-[420px]`: form NIK + No. HP (keduanya harus cocok dengan akun), tombol "Reset Password", validasi error per field, link kembali ke login. Jika akun tidak punya No HP, verifikasi No HP dilewati.
 
 ### 4.4 Detail Berita (`berita/show.blade.php`)
 Navbar glass sticky → hero `rounded-3xl` gradien emerald dengan foto (opacity 40% + scrim) → artikel `prose-berita` (h2/h3, ul/ol, blockquote border kiri emerald, link `#059669`) → sidebar "Informasi Berita" + "Desa Info" + "Kembali ke Beranda" → footer PRODESA.
@@ -217,7 +227,7 @@ Grid `lg:grid-cols-5` di bawah `pickupApp()`:
 Filter tanggal (start/end) + tombol Filter gradien + link Reset + **Export CSV**. 4 Chart.js: line (tren), bar (jenis populer), donut (status), line (pertumbuhan pengguna) + KPI dari `AnalyticsService` (8 metrik).
 
 ### 6.9 Modul CRUD (pola umum)
-Pola yang konsisten di semua modul (users, warga, roles, berita, events, surat masuk/keluar, disposisi, inventaris, apbdesa, laporan):
+Pola yang konsisten di semua modul (users, warga, roles, berita, events, **lembaga**, surat masuk/keluar, disposisi, inventaris, apbdesa, laporan, **template-surat/letter-config**, **activity-log**):
 
 - **List page:** header (`text-2xl md:text-3xl font-bold` + subtitle + CTA kanan) → baris stat-micro → filter bar → tabel dengan pagination. Kolom tersembunyi responsif (`hidden md:table-cell`). Tombol aksi ikon kecil (view blue, edit emerald, hapus merah, PDF violet) dengan hover tint.
 - **Form create/edit:** grid `lg:grid-cols-12`, kiri `col-span-8/9` (widget-card per seksi), kanan `col-span-4/3` **sticky** (preview/ringkasan/aksi), **sticky footer action bar** (`fixed bottom-0` desktop `lg:static`). Input uniform: `rounded-xl border-gray-200 focus:ring-emerald-500`. Required `*` merah. Error `text-red-500 text-xs` dengan ikon `!`.
