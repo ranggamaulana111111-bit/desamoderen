@@ -604,6 +604,36 @@
         }
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const KEYS = { desktop: 'prodesa_sidebar_scroll', mobile: 'prodesa_mobile_sidebar_scroll' };
+            const desktopNav = document.querySelector('#sidebar > nav');
+            const mobileNav = document.querySelector('#mobile-sidebar > nav');
+
+            const restore = (nav, key) => {
+                if (!nav) return;
+                const saved = sessionStorage.getItem(key);
+                if (saved !== null) nav.scrollTop = parseInt(saved, 10) || 0;
+            };
+            const persist = (nav, key) => {
+                if (nav) sessionStorage.setItem(key, String(nav.scrollTop));
+            };
+
+            restore(desktopNav, KEYS.desktop);
+            restore(mobileNav, KEYS.mobile);
+
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('#sidebar a[href], #mobile-sidebar a[href]');
+                if (!link) return;
+                const nav = link.closest('#sidebar > nav, #mobile-sidebar > nav');
+                if (nav) persist(nav, nav === desktopNav ? KEYS.desktop : KEYS.mobile);
+            });
+
+            const active = document.querySelector('#sidebar a[class*="bg-accent-500/"], #mobile-sidebar a[class*="bg-accent-500/"]');
+            if (active) active.scrollIntoView({ block: 'nearest' });
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>

@@ -1,7 +1,7 @@
 # Prodesa (Portal Desa) — Digitalisasi Pelayanan Desa
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Developer-Rangga_Maulana-0ea5e9?style=for-the-badge&logo=laravel&logoColor=white" alt="Developer">
+  <img src="https://img.shields.io/badge/Developer-Rangga_Maulana-14b8a6?style=for-the-badge&logo=laravel&logoColor=white" alt="Developer">
 </p>
 
 <p align="center">
@@ -21,7 +21,7 @@
 | **Framework** | Laravel 11 | Tanpa `Http/Kernel.php`, tanpa `Exceptions/Handler.php` |
 | **PHP** | ^8.2 | Berjalan di PHP 8.2.31 |
 | **Database** | MySQL 8 | database `prodesa`, user `root` tanpa password |
-| **CSS Framework** | Tailwind CSS | CDN (`cdn.tailwindcss.com`) |
+| **CSS Framework** | Tailwind CSS | CDN (`cdn.tailwindcss.com`), tema emerald/teal |
 | **Frontend JS** | Alpine.js 3.x | Dropdown interaktif, modal, teleport, form reaktif |
 | **Font** | Montserrat | via fontshare CDN (`components/fonts.blade.php`) |
 | **Chart** | Chart.js | Chart pada dashboard admin, kades, sekdes, queue, analytics |
@@ -129,7 +129,7 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | Fitur | Endpoint | Permission | Deskripsi |
 |---|---|---|---|
 | **Monitoring Antrean** | `/admin/queue` | `queue.view` | Statistik queue + Chart.js chart + failed jobs (retry/delete) |
-| **Pengambilan Surat** | `/admin/queue/pickup` | `queue.view` / `queue.manage` | Scan QR antrean via kamera, cari manual (live filter), serahkan dokumen / tandai lewat |
+| **Pengambilan Surat** | `/admin/queue/pickup` | `queue.view` / `queue.manage` | Scan QR antrean via kamera (preferensi kamera belakang), cari manual (cocok tepat `nomor_antrean` / `kode_qr`), serahkan dokumen / tandai lewat |
 | **Analitik & Laporan** | `/admin/analytics` | `analytics.view` | 8 metrik + 4 Chart.js chart + CSV export |
 | **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | 16 tab: profil desa, pemerintahan, ttd digital, template surat, nomor surat, workflow, queue driver, antrean, notifikasi, analytics, backup, keamanan, integrasi, tampilan, maintenance, audit log |
 
@@ -161,7 +161,7 @@ Akses dibagi berdasarkan role & permission. Menu sidebar menyesuaikan otomatis.
 | `kesimpulan` | Kesimpulan & Rekomendasi | Auto-generated dari data modul lain |
 
 **Format PDF:**
-- **Surat Resmi** — Kop surat pemerintah desa, nomor surat, format formal
+- **Surat Resmi** — Kop surat pemerintah desa (dua logo: Pemda kiri + Pemdes kanan), nomor surat, format formal
 - **Laporan Institusional (LPPD)** — Cover page, kata pengantar, daftar isi, lampiran data
 
 ---
@@ -248,6 +248,8 @@ Service: `ApprovalService` — menangani step map, permission check, transisi, t
 - Form warga: render field dinamis (text, select, textarea, number, date, time) dari `LetterConfig.fields` + kotak "Dokumen yang Wajib Dilampirkan" dari `requirements`
 - Validasi: `LetterConfig::getValidationRules()` generate rules otomatis
 - PDF: `pdf/template_dynamic.blade.php` dengan `{{ $rendered_body }}` hasil `LetterConfig::renderBody()`
+- Editor template (`admin/letter-config/form.blade.php`): syntax highlighting overlay + live preview isi sampel + peringatan placeholder tidak dikenal & field tidak terpakai + daftar referensi placeholder (dari field formulir, pengaturan desa, dan sistem)
+- Kop surat dua logo: `pdf/_kop.blade.php` menampilkan **Logo Pemda (kiri)** dan **Logo Pemdes (kanan)** dengan teks identitas desa di tengah (base64 data URI); dipakai oleh seluruh surat (sktm/ktp_sementara/akta/dynamic) dan laporan surat resmi. Logo dikelola via Pengaturan → Profil Desa (`logo_desa`, `logo_pemda`, `banner_desa`)
 
 ---
 
@@ -281,8 +283,8 @@ Alur pengambilan dokumen selesai diproses oleh petugas:
 - **Antrean dibuat otomatis** saat surat `completed` — `nomor_antrean`, slot jadwal, `kode_qr` (unik)
 - **Halaman publik** `/antrean/{kodeQr}` — warga melihat nomor antrean & jadwal pengambilan
 - **Halaman admin** `/admin/queue/pickup` (`AntreanController`):
-  - **Scan kamera** via html5-qrcode (getCameras + start/stop)
-  - **Cari manual** dengan live filter (nomor antrean / kode QR / nama / NIK / jenis surat)
+  - **Scan kamera** via html5-qrcode — memilih kamera belakang/environment terlebih dahulu (fallback kamera pertama), config `fps:10`, `qrbox:240×240`, `aspectRatio:1.0`
+  - **Cari manual** — cocok tepat (case-insensitive) hanya pada `nomor_antrean` atau `kode_qr`; hasil tidak muncul untuk pencarian parsial, query kosong menampilkan semua antrean hari ini
   - **Detail antrean** — pemohon, NIK, jenis surat, jadwal, nomor surat
   - **Serahkan Dokumen** (`proses`) → status `diambil`
   - **Tandai Lewat** (`lewat`) → status `lewat`
