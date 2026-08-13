@@ -17,6 +17,11 @@ class SuratMasuk extends Model
         'sifat_surat', 'file_path', 'keterangan', 'status', 'created_by',
     ];
 
+    protected $casts = [
+        'tanggal_terima' => 'datetime',
+        'tanggal_surat' => 'datetime',
+    ];
+
     protected static function boot()
     {
         parent::boot();

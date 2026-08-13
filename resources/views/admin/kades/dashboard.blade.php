@@ -499,7 +499,7 @@
                                                     <div class="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></div>
                                                     <div class="flex-1 min-w-0">
                                                         <p class="text-[12px] font-semibold text-gray-700 truncate">{{ $sm->perihal }}</p>
-                                                        <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima?->format('d M Y') }}</p>
+                                                        <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima ? \Carbon\Carbon::parse($sm->tanggal_terima)->format('d M Y') : '-' }}</p>
                                                     </div>
                                                 </div>
                                             @endforeach
