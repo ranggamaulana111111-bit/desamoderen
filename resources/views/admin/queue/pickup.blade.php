@@ -274,8 +274,8 @@
                     const q = this.manualQuery.trim().toLowerCase();
                     if (!q) return this.menunggu;
                     return this.menunggu.filter(a => {
-                        return [a.nomor_antrean, a.kode_qr, a.pemohon, a.nik, a.jenis_surat]
-                            .some(v => String(v || '').toLowerCase().includes(q));
+                        return [a.nomor_antrean, a.kode_qr]
+                            .some(v => String(v || '').toLowerCase() === q);
                     });
                 },
 
@@ -314,10 +314,15 @@
                             this.showToast('error', 'Kamera tidak ditemukan. Gunakan pencarian manual.');
                             return;
                         }
-                        this.stopScan(true);
+                        await this.stopScan(true);
+                        const backCam = cameras.find(c => /back|environment|rear|belakang/i.test(c.label || ''));
+                        const camId = (backCam || cameras[0]).id;
                         this.scanner = new Html5Qrcode('qr-reader');
-                        const camId = cameras[cameras.length - 1].id;
-                        await this.scanner.start(camId, { fps: 10, qrbox: { width: 220, height: 220 } }, (text) => {
+                        await this.scanner.start(camId, {
+                            fps: 10,
+                            qrbox: { width: 240, height: 240 },
+                            aspectRatio: 1.0,
+                        }, (text) => {
                             this.handleScanResult(text);
                         });
                         this.scanning = true;
@@ -329,10 +334,10 @@
                     }
                 },
 
-                stopScan(silent = false) {
+                async stopScan(silent = false) {
                     if (this.scanner) {
-                        try { this.scanner.stop().catch(() => {}); } catch (e) {}
-                        this.scanner.clear();
+                        try { await this.scanner.stop(); } catch (e) {}
+                        try { this.scanner.clear(); } catch (e) {}
                         this.scanner = null;
                     }
                     this.scanning = false;
@@ -341,7 +346,7 @@
 
                 async handleScanResult(text) {
                     if (this.loading || this.processing) return;
-                    this.stopScan(true);
+                    await this.stopScan(true);
                     this.loading = true;
                     this.manualError = '';
                     this.scanError = '';
