@@ -17,8 +17,8 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="stat-micro bg-white border border-gray-200/80 rounded-2xl p-4 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                    <svg class="w-5 h-5 text-blue-600 fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+                <div class="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5 text-teal-600 fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
@@ -131,7 +131,7 @@
                     @forelse ($inventaris as $item)
                         <tr class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-5 py-4">
-                                <span class="font-mono text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg">{{ $item->kode }}</span>
+                                <span class="font-mono text-xs font-semibold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg">{{ $item->kode }}</span>
                             </td>
                             <td class="px-5 py-4">
                                 <p class="font-semibold text-gray-900 group-hover:text-emerald-700 transition max-w-[200px] truncate">{{ $item->nama_barang }}</p>
@@ -139,12 +139,12 @@
                             <td class="px-5 py-4 text-center">
                                 @php
                                     $kategoriBadge = match($item->kategori) {
-                                        'Peralatan' => 'bg-blue-50 text-blue-700 border border-blue-100',
+                                        'Peralatan' => 'bg-teal-50 text-teal-700 border border-teal-100',
                                         'Kendaraan' => 'bg-violet-50 text-violet-700 border border-violet-100',
                                         'Gedung' => 'bg-amber-50 text-amber-700 border border-amber-100',
                                         'Tanah' => 'bg-emerald-50 text-emerald-700 border border-emerald-100',
                                         'Furniture' => 'bg-cyan-50 text-cyan-700 border border-cyan-100',
-                                        'Elektronik' => 'bg-indigo-50 text-indigo-700 border border-indigo-100',
+                                        'Elektronik' => 'bg-cyan-50 text-cyan-700 border border-cyan-100',
                                         'Lainnya' => 'bg-gray-50 text-gray-600 border border-gray-100',
                                         default => 'bg-gray-50 text-gray-600 border border-gray-100',
                                     };
@@ -173,7 +173,7 @@
                             <td class="px-5 py-4 text-center">
                                 @php
                                     $statusBadge = match($item->status) {
-                                        'Digunakan' => 'bg-blue-50 text-blue-700 border border-blue-100',
+                                        'Digunakan' => 'bg-teal-50 text-teal-700 border border-teal-100',
                                         'Tersedia' => 'bg-emerald-50 text-emerald-700 border border-emerald-100',
                                         'Disimpan' => 'bg-gray-100 text-gray-600 border border-gray-200',
                                         'Dihapus' => 'bg-red-50 text-red-700 border border-red-100',
@@ -188,7 +188,7 @@
                             <td class="px-5 py-4">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <a href="{{ route('admin.inventaris.show', $item) }}"
-                                        class="inline-flex items-center gap-1 text-blue-600 hover:text-white text-xs font-semibold bg-blue-50 hover:bg-blue-600 px-2.5 py-1.5 rounded-lg transition-all duration-200"
+                                        class="inline-flex items-center gap-1 text-teal-600 hover:text-white text-xs font-semibold bg-teal-50 hover:bg-teal-600 px-2.5 py-1.5 rounded-lg transition-all duration-200"
                                         title="Detail">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                     </a>

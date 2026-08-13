@@ -30,7 +30,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="stat-micro bg-white rounded-2xl border border-gray-200/60 p-4 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="stat-icon w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+                <div class="stat-icon w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                 </div>
                 <div>
@@ -134,12 +134,12 @@
                                         default => 'bg-gray-400',
                                     };
                                     $statusChip = match($d->status) {
-                                        'Diproses' => 'bg-blue-50 text-blue-700 border border-blue-100',
+                                        'Diproses' => 'bg-teal-50 text-teal-700 border border-teal-100',
                                         'Selesai' => 'bg-emerald-50 text-emerald-700 border border-emerald-100',
                                         default => 'bg-gray-50 text-gray-600 border border-gray-200',
                                     };
                                     $statusDot = match($d->status) {
-                                        'Diproses' => 'bg-blue-500',
+                                        'Diproses' => 'bg-teal-500',
                                         'Selesai' => 'bg-emerald-500',
                                         default => 'bg-gray-400',
                                     };
@@ -148,8 +148,8 @@
                                 <tr class="group hover:bg-gray-50/50 transition-colors">
                                     <td>
                                         <a href="{{ route('admin.disposisi.show', $d) }}" class="flex items-center gap-3 group/link">
-                                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center flex-shrink-0">
-                                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                                             </div>
                                             <div class="min-w-0">
                                                 <p class="text-sm font-semibold text-gray-900 truncate group-hover/link:text-emerald-600 transition-colors">{{ $d->suratMasuk->pengirim ?? '-' }}</p>

@@ -1,6 +1,3 @@
-@include('admin.setting.partials._active_note', [
-    'message' => 'Pengaturan keamanan aktif dan diterapkan: masa sesi login, batas percobaan login, captcha, kebijakan password, whitelist IP admin, dan retensi log aktivitas.',
-])
 <form x-show="activeTab === 'keamanan'" x-cloak
       action="{{ route('admin.setting.update', 'keamanan') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

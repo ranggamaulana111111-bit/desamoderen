@@ -53,7 +53,7 @@
                                     'Biasa' => 'bg-gray-100 text-gray-600',
                                     'Segera' => 'bg-amber-100 text-amber-700',
                                     'Rahasia' => 'bg-red-100 text-red-700',
-                                    'Penting' => 'bg-blue-100 text-blue-700',
+                                    'Penting' => 'bg-teal-100 text-teal-700',
                                 ];
                             @endphp
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold {{ $sifatColors[$surat->sifat_surat] ?? 'bg-gray-100 text-gray-600' }}">
@@ -94,7 +94,7 @@
             <div class="widget-card lg:sticky lg:top-6">
                 <div class="widget-card-header">
                     <h3 class="section-header">
-                        <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                        <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                         Status
                     </h3>
                 </div>
@@ -102,7 +102,7 @@
                     @php
                         $statusConfig = [
                             'dikirim' => ['bg-emerald-50 text-emerald-700 border-emerald-100', 'bg-emerald-500', 'Surat telah dikirim dan menunggu proses'],
-                            'diproses' => ['bg-blue-50 text-blue-700 border-blue-100', 'bg-blue-500', 'Surat sedang dalam proses'],
+                            'diproses' => ['bg-teal-50 text-teal-700 border-teal-100', 'bg-teal-500', 'Surat sedang dalam proses'],
                             'selesai' => ['bg-violet-50 text-violet-700 border-violet-100', 'bg-violet-500', 'Surat telah selesai diproses'],
                             'ditolak' => ['bg-red-50 text-red-700 border-red-100', 'bg-red-500', 'Surat telah ditolak'],
                         ];
@@ -134,8 +134,8 @@
 
                     {{-- Timestamps --}}
                     <div class="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-                        <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+                        <div class="w-9 h-9 rounded-lg bg-teal-100 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
                         </div>
                         <div>
                             <p class="text-[10px] font-medium text-gray-500 uppercase tracking-wide">Dibuat</p>

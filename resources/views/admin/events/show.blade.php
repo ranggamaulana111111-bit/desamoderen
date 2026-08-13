@@ -39,7 +39,7 @@
             <div class="shrink-0">
                 @php
                     $heroBadge = match($event->status) {
-                        'akan_datang' => ['bg-blue-500/20 text-blue-300 border-blue-500/30', 'Akan Datang'],
+                        'akan_datang' => ['bg-teal-500/20 text-teal-300 border-teal-500/30', 'Akan Datang'],
                         'berlangsung' => ['bg-emerald-500/20 text-emerald-300 border-emerald-500/30', 'Berlangsung'],
                         'selesai' => ['bg-gray-500/20 text-gray-300 border-gray-500/30', 'Selesai'],
                         default => ['bg-gray-500/20 text-gray-300 border-gray-500/30', $event->status],
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <div class="icon-box bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                            <div class="icon-box bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             </div>
                             <div class="flex-1 min-w-0 flex items-center justify-between">
@@ -157,14 +157,14 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <div class="icon-box bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+                            <div class="icon-box bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <div class="flex-1 min-w-0 flex items-center justify-between">
                                 <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</span>
                                 @php
                                     $statusBadge = match($event->status) {
-                                        'akan_datang' => 'bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-300',
+                                        'akan_datang' => 'bg-teal-100 text-teal-800 dark:bg-teal-500/20 dark:text-teal-300',
                                         'berlangsung' => 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-300',
                                         'selesai' => 'bg-gray-100 text-gray-800 dark:bg-gray-500/20 dark:text-gray-300',
                                         default => 'bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-300',
@@ -281,7 +281,7 @@
                             <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                             {{ $targetLabel }}
                         </span>
-                        <span class="chip bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-500/20 px-3 py-1.5 text-sm">
+                        <span class="chip bg-teal-50 dark:bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-100 dark:border-teal-500/20 px-3 py-1.5 text-sm">
                             <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                             {{ $event->peserta->count() }} Peserta
                         </span>
@@ -330,7 +330,7 @@
                                     default => 'Belum Respon',
                                 };
                                 $initials = strtoupper(substr($p->user->name, 0, 2));
-                                $avatarColors = ['bg-emerald-500', 'bg-blue-500', 'bg-purple-500', 'bg-amber-500', 'bg-rose-500', 'bg-cyan-500', 'bg-indigo-500'];
+                                $avatarColors = ['bg-emerald-500', 'bg-teal-500', 'bg-purple-500', 'bg-amber-500', 'bg-rose-500', 'bg-cyan-500', 'bg-cyan-500'];
                                 $avatarColor = $avatarColors[crc32($p->user->id) % count($avatarColors)];
                             @endphp
                             <div class="participant-item"
@@ -511,7 +511,7 @@
                         </div>
                     </div>
                     <div class="info-row !py-2.5">
-                        <div class="icon-box bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 widget-icon-sm">
+                        <div class="icon-box bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 widget-icon-sm">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857"/></svg>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -520,7 +520,7 @@
                         </div>
                     </div>
                     <div class="info-row !py-2.5">
-                        <div class="icon-box bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 widget-icon-sm">
+                        <div class="icon-box bg-cyan-50 dark:bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 widget-icon-sm">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div class="flex-1 min-w-0">

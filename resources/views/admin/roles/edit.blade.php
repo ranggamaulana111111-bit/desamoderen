@@ -11,8 +11,8 @@
             theme: {
                 extend: {
                     colors: {
-                        sidebar: '#1e3a5f',
-                        'sidebar-hover': '#2a4a7f',
+                        sidebar: '#064e3b',
+                        'sidebar-hover': '#047857',
                     }
                 }
             }

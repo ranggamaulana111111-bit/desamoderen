@@ -30,9 +30,13 @@
                 <x-setting-input name="telepon_desa" label="Telepon" type="tel" :value="$settings['telepon_desa'] ?? ''" required />
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <x-setting-upload name="logo_desa" label="Logo Desa" :value="$settings['logo_desa'] ?? ''" accept="image/png,image/jpeg"
+                <x-setting-upload name="logo_desa" label="Logo Desa (Pemdes)" :value="$settings['logo_desa'] ?? ''" accept="image/png,image/jpeg"
                     x-ref="logo_desa" @change="updatePreviewLogo($refs.logo_desa)" />
+                <x-setting-upload name="logo_pemda" label="Logo Pemda (Kabupaten)" :value="$settings['logo_pemda'] ?? ''" accept="image/png,image/jpeg"
+                    x-ref="logo_pemda" @change="updatePreviewLogoPemda($refs.logo_pemda)" />
                 <x-setting-upload name="banner_desa" label="Banner Desa" :value="$settings['banner_desa'] ?? ''" accept="image/png,image/jpeg" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <x-setting-upload name="foto_kantor" label="Foto Kantor" :value="$settings['foto_kantor'] ?? ''" accept="image/png,image/jpeg" />
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">

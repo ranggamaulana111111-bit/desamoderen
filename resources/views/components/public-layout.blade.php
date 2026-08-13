@@ -18,18 +18,18 @@
     @if($showNav)
     <nav class="bg-white shadow-sm border-b sticky top-0 z-40">
         <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="text-lg font-bold text-[#0068BD]">Prodesa</a>
+            <a href="{{ route('home') }}" class="text-lg font-bold text-[#10b981]">Prodesa</a>
             <div class="flex items-center gap-4">
                 @auth
                     @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="text-sm text-[#0068BD] hover:text-[#005AA6] font-medium">Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="text-sm text-[#10b981] hover:text-[#047857] font-medium">Admin</a>
                     @elseif(auth()->user()->isLembaga())
-                        <a href="{{ route('lembaga.dashboard') }}" class="text-sm text-[#0068BD] hover:text-[#005AA6] font-medium">Dashboard Lembaga</a>
+                        <a href="{{ route('lembaga.dashboard') }}" class="text-sm text-[#10b981] hover:text-[#047857] font-medium">Dashboard Lembaga</a>
                     @else
-                        <a href="{{ route('warga.dashboard') }}" class="text-sm text-[#0068BD] hover:text-[#005AA6] font-medium">Dashboard</a>
+                        <a href="{{ route('warga.dashboard') }}" class="text-sm text-[#10b981] hover:text-[#047857] font-medium">Dashboard</a>
                     @endif
                 @else
-                    <a href="{{ route('login') }}" class="text-sm text-[#0068BD] hover:text-[#005AA6] font-medium">Masuk</a>
+                    <a href="{{ route('login') }}" class="text-sm text-[#10b981] hover:text-[#047857] font-medium">Masuk</a>
                 @endauth
             </div>
         </div>

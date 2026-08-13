@@ -151,7 +151,7 @@
             @if ($config)
             <div class="bento-card p-5 md:p-7 a-fade-up d3">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     </div>
                     <div>
@@ -324,8 +324,8 @@
                     <p class="text-[11px] text-slate-600 leading-relaxed">Baca catatan petugas dengan teliti sebelum memperbaiki data.</p>
                 </div>
                 <div class="flex items-start gap-2.5">
-                    <div class="w-6 h-6 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <div class="w-6 h-6 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-3 h-3 text-teal-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                     </div>
                     <p class="text-[11px] text-slate-600 leading-relaxed">Pastikan semua kolom wajib (<span class="text-red-500">*</span>) sudah terisi dengan benar.</p>
                 </div>
@@ -375,7 +375,7 @@
                 window.addEventListener('scroll',()=>{const b=document.getElementById('scrollProgress');if(b){const h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(window.scrollY/h*100)+'%'}});
                 this.initReveal();
             },
-            handleSelect(e){this.addFiles([...e.target.files]);e.target.value=''},
+            handleSelect(e){const selected=[...e.target.files];e.target.value='';this.addFiles(selected)},
             handleDrop(e){this.dragover=false;this.addFiles([...e.dataTransfer.files])},
             addFiles(list){
                 list.forEach(f=>{

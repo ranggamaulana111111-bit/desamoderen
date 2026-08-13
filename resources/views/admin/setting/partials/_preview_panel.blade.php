@@ -11,6 +11,12 @@
             {{-- Kop Surat --}}
             <div class="p-4 text-center border-b border-dashed border-gray-200">
                 <div class="flex items-center justify-center gap-3 mb-2">
+                    <template x-if="preview.logoPemdaPreview">
+                        <img :src="preview.logoPemdaPreview" class="h-10 w-auto">
+                    </template>
+                    <template x-if="!preview.logoPemdaPreview && '{{ data_get($settings, 'logo_pemda') ?? '' }}' && '{{ Storage::disk('public')->exists(data_get($settings, 'logo_pemda') ?? '') }}'">
+                        <img src="{{ data_get($settings, 'logo_pemda') ? asset('storage/' . data_get($settings, 'logo_pemda')) : '' }}" class="h-10 w-auto">
+                    </template>
                     <template x-if="preview.logoPreview">
                         <img :src="preview.logoPreview" class="h-10 w-auto">
                     </template>

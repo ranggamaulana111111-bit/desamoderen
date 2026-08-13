@@ -1,6 +1,15 @@
 @php
     $editUser = $user ?? null;
     $editRole = $editUser ? ($editUser->roles->first()->name ?? '') : '';
+    $editFormData = [
+        'name' => $editUser->name ?? '',
+        'email' => $editUser->email ?? '',
+        'nik' => $editUser->nik ?? '',
+        'password' => '',
+        'role' => $editRole,
+        'no_hp' => $editUser->no_hp ?? '',
+        'alamat' => $editUser->alamat ?? '',
+    ];
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -15,7 +24,7 @@
                 extend: {
                     colors: {
                         brand: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b' },
-                        sidebar: '#1e3a5f', 'sidebar-hover': '#2a4a7f',
+                        sidebar: '#064e3b', 'sidebar-hover': '#047857',
                     }
                 }
             }
@@ -62,7 +71,7 @@
     @include('components.design-tokens')
 </head>
 <body class="bg-[#f0f0eb] font-sans antialiased text-slate-700 overflow-x-clip"
-      style="background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(16,185,129,.04),transparent),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(99,102,241,.03),transparent)">
+      style="background-image:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(16,185,129,.04),transparent),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(20,184,166,.03),transparent)">
 
     @include('admin.components.sidebar')
 
@@ -111,7 +120,7 @@
                         {{-- CARD: Informasi Akun --}}
                         <div class="card-surface p-5 sm:p-6 reveal reveal-d1">
                             <div class="flex items-center gap-3 mb-5">
-                                <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100/60">
+                                <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100/60">
                                     <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                 </div>
                                 <div>
@@ -250,7 +259,7 @@
                                     @php
                                         $roleIcons = match($role->name) {
                                             'Super Admin' => ['icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'color' => 'rose', 'desc' => 'Akses penuh ke seluruh sistem'],
-                                            'Operator Pelayanan' => ['icon' => 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0', 'color' => 'blue', 'desc' => 'Mengelola pelayanan surat'],
+                                            'Operator Pelayanan' => ['icon' => 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0', 'color' => 'teal', 'desc' => 'Mengelola pelayanan surat'],
                                             'Sekretaris Desa' => ['icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z', 'color' => 'violet', 'desc' => 'Verifikasi & administrasi'],
                                             'Kepala Desa' => ['icon' => 'M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z', 'color' => 'amber', 'desc' => 'Persetujuan akhir surat'],
                                             'RT' => ['icon' => 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21', 'color' => 'teal', 'desc' => 'Ketua Rukun Tetangga'],
@@ -394,15 +403,7 @@
     <script>
         function userForm() {
             return {
-                form: @json([
-                    'name' => $editUser->name ?? '',
-                    'email' => $editUser->email ?? '',
-                    'nik' => $editUser->nik ?? '',
-                    'password' => '',
-                    'role' => $editRole,
-                    'no_hp' => $editUser->no_hp ?? '',
-                    'alamat' => $editUser->alamat ?? '',
-                ]),
+                form: @json($editFormData),
                 showPassword: false,
                 copied: false,
 
@@ -424,7 +425,7 @@
 
                 getAvatarColor() {
                     const colors = [
-                        ['#10b981','#059669'],['#3b82f6','#2563eb'],['#8b5cf6','#7c3aed'],
+                        ['#10b981','#059669'],['#14b8a6','#0d9488'],['#8b5cf6','#7c3aed'],
                         ['#f59e0b','#d97706'],['#ef4444','#dc2626'],['#ec4899','#db2777'],
                         ['#06b6d4','#0891b2'],['#14b8a6','#0d9488'],
                     ];
@@ -435,7 +436,7 @@
                 getRoleBadgeClass() {
                     const map = {
                         'Super Admin': 'bg-rose-50 text-rose-600 border-rose-100',
-                        'Operator Pelayanan': 'bg-blue-50 text-blue-600 border-blue-100',
+                        'Operator Pelayanan': 'bg-teal-50 text-teal-600 border-teal-100',
                         'Sekretaris Desa': 'bg-violet-50 text-violet-600 border-violet-100',
                         'Kepala Desa': 'bg-amber-50 text-amber-600 border-amber-100',
                         'RT': 'bg-teal-50 text-teal-600 border-teal-100',
@@ -448,7 +449,7 @@
                 getRoleDescription() {
                     const desc = {
                         'Super Admin': '<div class="flex items-center gap-2 p-2 rounded-lg bg-rose-50/80 border border-rose-100/50"><div class="w-6 h-6 rounded-md bg-rose-100 text-rose-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-rose-700">Super Admin</p><p class="text-[10px] text-rose-500">Akses penuh ke seluruh fitur sistem</p></div></div>',
-                        'Operator Pelayanan': '<div class="flex items-center gap-2 p-2 rounded-lg bg-blue-50/80 border border-blue-100/50"><div class="w-6 h-6 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-blue-700">Operator Pelayanan</p><p class="text-[10px] text-blue-500">Review & proses pengajuan surat</p></div></div>',
+                        'Operator Pelayanan': '<div class="flex items-center gap-2 p-2 rounded-lg bg-teal-50/80 border border-teal-100/50"><div class="w-6 h-6 rounded-md bg-teal-100 text-teal-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-teal-700">Operator Pelayanan</p><p class="text-[10px] text-teal-500">Review & proses pengajuan surat</p></div></div>',
                         'Sekretaris Desa': '<div class="flex items-center gap-2 p-2 rounded-lg bg-violet-50/80 border border-violet-100/50"><div class="w-6 h-6 rounded-md bg-violet-100 text-violet-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-violet-700">Sekretaris Desa</p><p class="text-[10px] text-violet-500">Verifikasi surat sebelum ke Kades</p></div></div>',
                         'Kepala Desa': '<div class="flex items-center gap-2 p-2 rounded-lg bg-amber-50/80 border border-amber-100/50"><div class="w-6 h-6 rounded-md bg-amber-100 text-amber-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-amber-700">Kepala Desa</p><p class="text-[10px] text-amber-500">Persetujuan akhir & tanda tangan</p></div></div>',
                         'RT': '<div class="flex items-center gap-2 p-2 rounded-lg bg-teal-50/80 border border-teal-100/50"><div class="w-6 h-6 rounded-md bg-teal-100 text-teal-600 flex items-center justify-center shrink-0"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><p class="text-[11px] font-bold text-teal-700">Ketua RT</p><p class="text-[10px] text-teal-500">Melihat pengajuan warga di wilayahnya</p></div></div>',
@@ -476,11 +477,11 @@
                 },
 
                 get strengthColor() {
-                    return ['', 'text-red-500', 'text-amber-500', 'text-blue-500', 'text-emerald-500'][this.strengthLevel];
+                    return ['', 'text-red-500', 'text-amber-500', 'text-teal-500', 'text-emerald-500'][this.strengthLevel];
                 },
 
                 get strengthBarClass() {
-                    return ['', 'bg-red-400', 'bg-amber-400', 'bg-blue-400', 'bg-emerald-400'][this.strengthLevel];
+                    return ['', 'bg-red-400', 'bg-amber-400', 'bg-teal-400', 'bg-emerald-400'][this.strengthLevel];
                 },
 
                 get strengthTips() {

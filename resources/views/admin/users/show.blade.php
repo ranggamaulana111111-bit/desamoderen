@@ -10,8 +10,8 @@
             theme: {
                 extend: {
                     colors: {
-                        sidebar: '#1e3a5f',
-                        'sidebar-hover': '#2a4a7f',
+                        sidebar: '#064e3b',
+                        'sidebar-hover': '#047857',
                     }
                 }
             }
@@ -62,7 +62,7 @@
                                     @php
                                         $roleBadge = match($user->roles()->first()?->name ?? '') {
                                             'Super Admin' => 'bg-red-100 text-red-800',
-                                            'Operator Pelayanan' => 'bg-blue-100 text-blue-800',
+                                            'Operator Pelayanan' => 'bg-teal-100 text-teal-800',
                                             'Sekretaris Desa' => 'bg-purple-100 text-purple-800',
                                             'Kepala Desa' => 'bg-amber-100 text-amber-800',
                                             'RT' => 'bg-teal-100 text-teal-800',
@@ -118,8 +118,8 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 @php
                                     $statColors = [
-                                        'submitted' => ['bg-blue-50', 'text-blue-700', 'Diajukan'],
-                                        'verified' => ['bg-indigo-50', 'text-indigo-700', 'Diverifikasi'],
+                                        'submitted' => ['bg-teal-50', 'text-teal-700', 'Diajukan'],
+                                        'verified' => ['bg-cyan-50', 'text-cyan-700', 'Diverifikasi'],
                                         'approved_operator' => ['bg-purple-50', 'text-purple-700', 'Disetujui Operator'],
                                         'approved_sekdes' => ['bg-cyan-50', 'text-cyan-700', 'Disetujui Sekdes'],
                                         'approved_kades' => ['bg-emerald-50', 'text-emerald-700', 'Disetujui Kades'],

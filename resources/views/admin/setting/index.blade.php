@@ -149,6 +149,7 @@
 
                 preview: Object.assign({
                     logoPreview: null,
+                    logoPemdaPreview: null,
                     stempelPreview: null,
                     ttdKadesPreview: null,
                     ttd_digital_aktif: {{ ($settings['ttd_digital_aktif'] ?? '1') == '1' ? 'true' : 'false' }},
@@ -206,6 +207,14 @@
                     if (ref && ref.files && ref.files[0]) {
                         const reader = new FileReader();
                         reader.onload = (e) => { this.preview.logoPreview = e.target.result; };
+                        reader.readAsDataURL(ref.files[0]);
+                    }
+                },
+
+                updatePreviewLogoPemda(ref) {
+                    if (ref && ref.files && ref.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => { this.preview.logoPemdaPreview = e.target.result; };
                         reader.readAsDataURL(ref.files[0]);
                     }
                 },

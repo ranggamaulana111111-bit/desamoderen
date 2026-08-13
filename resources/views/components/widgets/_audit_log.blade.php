@@ -21,9 +21,9 @@
                 <p class="text-[10px] text-amber-600 font-semibold">Menunggu Anda</p>
             </div>
             @endif
-            <div class="stat-micro bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 text-center border border-blue-100/40">
-                <p class="text-lg font-extrabold text-blue-900">{{ $todaySubmissions }}</p>
-                <p class="text-[10px] text-blue-600 font-semibold">Pengajuan Baru</p>
+            <div class="stat-micro bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-3 text-center border border-teal-100/40">
+                <p class="text-lg font-extrabold text-teal-900">{{ $todaySubmissions }}</p>
+                <p class="text-[10px] text-teal-600 font-semibold">Pengajuan Baru</p>
             </div>
             <div class="stat-micro bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-3 text-center border border-emerald-100/40">
                 <p class="text-lg font-extrabold text-emerald-700">{{ $completedToday }}</p>
@@ -42,7 +42,7 @@
                     $color = match(true) {
                         str_contains($aksi, 'approve') => 'emerald',
                         str_contains($aksi, 'reject') => 'red',
-                        str_contains($aksi, 'create') => 'blue',
+                        str_contains($aksi, 'create') => 'teal',
                         str_contains($aksi, 'delete') || str_contains($aksi, 'cancel') => 'red',
                         str_contains($aksi, 'login') => 'purple',
                         default => 'gray',

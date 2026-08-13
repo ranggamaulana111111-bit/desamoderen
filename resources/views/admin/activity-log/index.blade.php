@@ -64,7 +64,7 @@
                         @php
                             $aksiColor = match(true) {
                                 str_contains($log->aksi, 'create') => 'emerald',
-                                str_contains($log->aksi, 'approve') || str_contains($log->aksi, 'update') => 'blue',
+                                str_contains($log->aksi, 'approve') || str_contains($log->aksi, 'update') => 'teal',
                                 str_contains($log->aksi, 'delete') || str_contains($log->aksi, 'reject') => 'red',
                                 str_contains($log->aksi, 'login') => 'purple',
                                 default => 'gray',

@@ -17,9 +17,9 @@
 
     <nav class="bg-white shadow-sm border-b sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="{{ route('warga.dashboard') }}" class="text-lg font-bold text-indigo-700">Prodesa</a>
+            <a href="{{ route('warga.dashboard') }}" class="text-lg font-bold text-emerald-700">Prodesa</a>
             <div class="flex items-center gap-3">
-                <a href="{{ route('warga.surat.index') }}" class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Riwayat</a>
+                <a href="{{ route('warga.surat.index') }}" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium">Riwayat</a>
                 <form action="{{ route('logout') }}" method="POST" class="inline">
                     @csrf
                     <button type="submit" class="text-sm text-red-600 hover:text-red-700 font-medium">Keluar</button>

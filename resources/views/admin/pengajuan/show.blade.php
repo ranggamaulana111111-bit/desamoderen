@@ -10,8 +10,8 @@
             theme: {
                 extend: {
                     colors: {
-                        sidebar: '#1e3a5f',
-                        'sidebar-hover': '#2a4a7f',
+                        sidebar: '#064e3b',
+                        'sidebar-hover': '#047857',
                     }
                 }
             }
@@ -322,7 +322,7 @@
 
                     @can('letter.version.view')
                     <a href="{{ route('admin.pengajuan.versions.index', $pengajuan) }}"
-                        class="flex items-center justify-center gap-2 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-4 py-3 rounded-lg transition">
+                        class="flex items-center justify-center gap-2 text-sm font-semibold text-cyan-700 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 px-4 py-3 rounded-lg transition">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                         Riwayat Versi ({{ $pengajuan->documentVersions()->count() }})
                     </a>

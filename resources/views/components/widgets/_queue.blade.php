@@ -2,7 +2,7 @@
 <div class="widget-card h-full">
     <div class="widget-card-header">
         <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white shadow-sm">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L12 12.75 6.429 9.75m11.142 0l4.179 2.25-9.75 5.25-9.75-5.25 4.179-2.25"/></svg>
             </div>
             <div>
@@ -21,12 +21,12 @@
                 </div>
                 <p class="text-2xl font-extrabold text-amber-900" x-data x-init="animateNumber($el, {{ $queue['waiting'] }})">0</p>
             </div>
-            <div class="stat-micro bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3.5 border border-blue-100/50">
+            <div class="stat-micro bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-3.5 border border-teal-100/50">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse"></span>
-                    <span class="text-[10px] font-semibold text-blue-700 uppercase tracking-wider">Berjalan</span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span class="text-[10px] font-semibold text-teal-700 uppercase tracking-wider">Berjalan</span>
                 </div>
-                <p class="text-2xl font-extrabold text-blue-900" x-data x-init="animateNumber($el, {{ $queue['running'] }})">0</p>
+                <p class="text-2xl font-extrabold text-teal-900" x-data x-init="animateNumber($el, {{ $queue['running'] }})">0</p>
             </div>
             <div class="stat-micro bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-3.5 border border-emerald-100/50">
                 <div class="flex items-center gap-2 mb-2">
@@ -53,12 +53,12 @@
         @endif
         @if ($canManage ?? false)
         <div class="mt-3 pt-3 border-t border-gray-100/60">
-            <a href="{{ route('admin.queue.index') }}" class="group flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-100 hover:border-indigo-200 transition-all text-xs font-medium text-gray-600 hover:text-indigo-700">
+            <a href="{{ route('admin.queue.index') }}" class="group flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50 hover:bg-cyan-50 border border-gray-100 hover:border-cyan-200 transition-all text-xs font-medium text-gray-600 hover:text-cyan-700">
                 <span class="flex items-center gap-2">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Kelola Antrean
                 </span>
-                <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <svg class="w-3.5 h-3.5 text-gray-400 group-hover:text-cyan-500 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
         </div>
         @endif

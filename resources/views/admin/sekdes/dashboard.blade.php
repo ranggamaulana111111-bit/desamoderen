@@ -126,8 +126,8 @@
                 {{-- ═══════════════════════════════════════════════════════════ --}}
                 @php
                     $kpis = [
-                        ['label' => 'Total Warga', 'value' => $totalWarga, 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z', 'color' => 'blue', 'subtitle' => 'Penduduk terdaftar', 'growth' => $wargaGrowth],
-                        ['label' => 'Total Surat', 'value' => $totalSurat, 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z', 'color' => 'indigo', 'subtitle' => 'Sepanjang masa', 'growth' => $suratGrowth],
+                        ['label' => 'Total Warga', 'value' => $totalWarga, 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z', 'color' => 'teal', 'subtitle' => 'Penduduk terdaftar', 'growth' => $wargaGrowth],
+                        ['label' => 'Total Surat', 'value' => $totalSurat, 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z', 'color' => 'cyan', 'subtitle' => 'Sepanjang masa', 'growth' => $suratGrowth],
                         ['label' => 'Menunggu', 'value' => $pendingCount, 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z', 'color' => 'amber', 'subtitle' => 'Perlu diverifikasi', 'pulse' => $pendingCount > 0],
                         ['label' => 'Selesai', 'value' => $selesai, 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'color' => 'emerald', 'subtitle' => 'Total selesai'],
                         ['label' => 'Bulan Ini', 'value' => $selesaiBulanIni, 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5', 'color' => 'teal', 'subtitle' => 'Selesai bulan ini'],
@@ -168,10 +168,10 @@
                 {{-- SECTION 2: HERO HEADER                                    --}}
                 {{-- ═══════════════════════════════════════════════════════════ --}}
                 <div class="a-fade-up d1 mt-6">
-                    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#0a1a2e] via-[#0f2d4a] to-[#1e40af] p-6 sm:p-8 lg:p-10 text-white shadow-2xl shadow-blue-900/20">
+                    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#052e22] via-[#065f46] to-[#0e7490] p-6 sm:p-8 lg:p-10 text-white shadow-2xl shadow-teal-900/20">
                         <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" style="animation:orbFloat1 12s ease-in-out infinite"></div>
                         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4" style="animation:orbFloat2 14s ease-in-out infinite"></div>
-                        <div class="absolute top-1/2 right-1/4 w-32 h-32 bg-blue-400/5 rounded-full" style="animation:orbFloat1 10s ease-in-out infinite reverse"></div>
+                        <div class="absolute top-1/2 right-1/4 w-32 h-32 bg-teal-400/5 rounded-full" style="animation:orbFloat1 10s ease-in-out infinite reverse"></div>
 
                         <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                             <div class="flex items-start gap-5">
@@ -179,9 +179,9 @@
                                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                                 </div>
                                 <div>
-                                    <p class="text-blue-200/80 text-sm font-medium" x-text="greeting"></p>
+                                    <p class="text-teal-200/80 text-sm font-medium" x-text="greeting"></p>
                                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-1 tracking-tight">
-                                        Selamat Datang, <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-200">Sekretaris Desa</span>
+                                        Selamat Datang, <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-cyan-200">Sekretaris Desa</span>
                                     </h1>
                                     <div class="flex flex-wrap items-center gap-2.5 mt-3">
                                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-xs font-semibold border border-white/10">
@@ -207,7 +207,7 @@
                             <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center gap-4 lg:gap-5">
                                 <div class="text-left sm:text-right lg:text-left xl:text-right">
                                     <p class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" x-text="currentTime">--:--</p>
-                                    <p class="text-sm text-blue-200/70 mt-0.5" x-text="currentDate">--</p>
+                                    <p class="text-sm text-teal-200/70 mt-0.5" x-text="currentDate">--</p>
                                 </div>
                                 @if($pendingCount > 0)
                                     <a href="{{ route('admin.pengajuan.index', ['status' => 'approved_operator']) }}"
@@ -251,10 +251,10 @@
                                             $initials = collect(explode(' ', $item->user->name ?? 'U'))->map(fn($w) => strtoupper(substr($w, 0, 1)))->take(2)->implode('');
                                             $timeAgo = $item->created_at->diffForHumans();
                                         @endphp
-                                        <div class="rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-blue-200/60 hover:shadow-md transition-all duration-300" style="animation:slideUp .5s var(--ease-out-expo)">
+                                        <div class="rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-teal-200/60 hover:shadow-md transition-all duration-300" style="animation:slideUp .5s var(--ease-out-expo)">
                                             <div class="flex items-start justify-between mb-3">
                                                 <div class="flex items-center gap-3">
-                                                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-lg shadow-blue-500/20">
+                                                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-brand-400 to-cyan-500 flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-lg shadow-brand-500/20">
                                                         {{ $initials }}
                                                     </div>
                                                     <div>
@@ -301,7 +301,7 @@
 
                                             <div class="flex items-center gap-2 flex-wrap">
                                                 <a href="{{ route('admin.pengajuan.show', $item) }}"
-                                                   class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-50 text-indigo-600 text-xs font-semibold hover:bg-indigo-100 transition border border-indigo-100/50">
+                                                   class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-50 text-cyan-600 text-xs font-semibold hover:bg-cyan-100 transition border border-cyan-100/50">
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                                     Detail
                                                 </a>
@@ -309,7 +309,7 @@
                                                       onsubmit="return confirm('Verifikasi pengajuan ini? Surat akan dikirim ke Kepala Desa untuk persetujuan akhir.')">
                                                     @csrf
                                                     <button type="submit"
-                                                            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all">
+                                                            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-500 to-cyan-500 text-white text-xs font-semibold shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5 transition-all">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                                                         Verifikasi
                                                     </button>
@@ -344,8 +344,8 @@
                                 </div>
                             @else
                                 <div class="p-10 text-center">
-                                    <div class="w-20 h-20 rounded-3xl bg-blue-50 flex items-center justify-center mx-auto mb-4 border border-blue-100/50">
-                                        <svg class="w-10 h-10 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <div class="w-20 h-20 rounded-3xl bg-teal-50 flex items-center justify-center mx-auto mb-4 border border-teal-100/50">
+                                        <svg class="w-10 h-10 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Semua pengajuan sudah diverifikasi</p>
                                     <p class="text-xs text-gray-400">Tidak ada pengajuan yang menunggu verifikasi Anda.</p>
@@ -378,7 +378,7 @@
                                                 <p class="text-xs font-semibold text-gray-700 truncate">{{ $stuck->user->name ?? '-' }} — {{ str_replace('_', ' ', $stuck->jenis_surat) }}</p>
                                                 <p class="text-[10px] text-gray-400">{{ $stuck->updated_at->diffForHumans() }} &middot; Status: verified</p>
                                             </div>
-                                            <a href="{{ route('admin.pengajuan.show', $stuck) }}" class="text-[10px] font-semibold text-blue-600 hover:text-blue-700">Lihat</a>
+                                            <a href="{{ route('admin.pengajuan.show', $stuck) }}" class="text-[10px] font-semibold text-teal-600 hover:text-teal-700">Lihat</a>
                                         </div>
                                     @endforeach
                                 </div>
@@ -538,8 +538,8 @@
                                     </div>
                                     <span class="text-[11px] font-bold text-gray-700 text-center leading-tight">Verifikasi</span>
                                 </a>
-                                <a href="{{ route('admin.pengajuan.index') }}" class="quick-action flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-indigo-50/80 border border-indigo-100/50 hover:border-indigo-200">
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                                <a href="{{ route('admin.pengajuan.index') }}" class="quick-action flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-cyan-50/80 border border-cyan-100/50 hover:border-cyan-200">
+                                    <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </div>
                                     <span class="text-[11px] font-bold text-gray-700 text-center leading-tight">Riwayat</span>
@@ -597,7 +597,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80 border border-gray-100/50">
-                                    <div class="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                    <div class="w-9 h-9 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
                                     </div>
                                     <div class="flex-1">
@@ -618,7 +618,7 @@
                                 <div class="relative w-24 h-24 mx-auto">
                                     <svg class="w-24 h-24 -rotate-90" viewBox="0 0 36 36">
                                         <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="#e5e7eb" stroke-width="3"/>
-                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="{{ $quotaPercent >= 80 ? '#10b981' : ($quotaPercent >= 50 ? '#f59e0b' : '#3b82f6') }}" stroke-width="3" stroke-dasharray="{{ $quotaPercent }}, 100" stroke-linecap="round"/>
+                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="{{ $quotaPercent >= 80 ? '#10b981' : ($quotaPercent >= 50 ? '#f59e0b' : '#14b8a6') }}" stroke-width="3" stroke-dasharray="{{ $quotaPercent }}, 100" stroke-linecap="round"/>
                                     </svg>
                                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                                         <span class="text-lg font-extrabold text-gray-900">{{ $dailyQuotaUsed }}/{{ $dailyQuotaLimit }}</span>
@@ -730,12 +730,12 @@
                                         @if($berita->foto)
                                             <img src="{{ asset('storage/' . $berita->foto) }}" alt="{{ $berita->judul }}" class="w-14 h-14 rounded-lg object-cover shrink-0 border border-gray-100">
                                         @else
-                                            <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center shrink-0">
-                                                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+                                            <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-teal-100 to-cyan-100 flex items-center justify-center shrink-0">
+                                                <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
                                             </div>
                                         @endif
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-semibold text-gray-900 group-hover:text-blue-700 transition truncate">{{ $berita->judul }}</p>
+                                            <p class="text-sm font-semibold text-gray-900 group-hover:text-teal-700 transition truncate">{{ $berita->judul }}</p>
                                             <p class="text-[11px] text-gray-400 mt-0.5">{{ $berita->created_at->diffForHumans() }}</p>
                                         </div>
                                     </a>
@@ -768,7 +768,7 @@
                                 </div>
                                 <div class="flex-1 space-y-1.5">
                                     @php
-                                        $colors = ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+                                        $colors = ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
                                         $totalJenis = $distribusiJenis->sum('total');
                                     @endphp
                                     @foreach($distribusiJenis as $i => $dj)
@@ -836,7 +836,7 @@
                             </div>
                             <div class="space-y-3">
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21"/></svg>
                                     </div>
                                     <div>
@@ -854,7 +854,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                                     </div>
                                     <div>
@@ -888,8 +888,8 @@
                 <div class="mt-6 a-fade-up d12" style="animation:successPop .5s var(--ease-out-expo)">
                     <div class="rounded-2xl bg-gradient-to-r from-gray-50 to-white border border-gray-100 p-4 sm:p-5">
                         <div class="flex items-center gap-2 mb-3">
-                            <div class="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center">
-                                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+                            <div class="w-6 h-6 rounded-lg bg-teal-100 flex items-center justify-center">
+                                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
                             </div>
                             <p class="text-xs font-bold text-gray-600 uppercase tracking-wider">Insight Cepat</p>
                         </div>
@@ -912,7 +912,7 @@
                                     {{ $antreanLewat }} antrean lewat jadwal
                                 </span>
                             @endif
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-[11px] font-semibold border border-indigo-100/50">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-50 text-cyan-700 text-[11px] font-semibold border border-cyan-100/50">
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z"/></svg>
                                 Rate persetujuan {{ $ratePersetujuan }}%
                             </span>
@@ -1029,7 +1029,7 @@
                             type: 'doughnut',
                             data: {
                                 labels: jenisLabels,
-                                datasets: [{ data: jenisValues, backgroundColor: ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'], borderWidth: 0, hoverOffset: 4 }]
+                                datasets: [{ data: jenisValues, backgroundColor: ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'], borderWidth: 0, hoverOffset: 4 }]
                             },
                             options: {
                                 responsive: true, maintainAspectRatio: false, cutout: '65%',
@@ -1045,15 +1045,15 @@
                     const wargaCtx = document.getElementById('wargaChart');
                     if (wargaCtx) {
                         const wargaGradient = wargaCtx.getContext('2d').createLinearGradient(0, 0, 0, 160);
-                        wargaGradient.addColorStop(0, 'rgba(59,130,246,0.2)');
-                        wargaGradient.addColorStop(1, 'rgba(59,130,246,0.01)');
+                        wargaGradient.addColorStop(0, 'rgba(20,184,166,0.2)');
+                        wargaGradient.addColorStop(1, 'rgba(20,184,166,0.01)');
                         new Chart(wargaCtx, {
                             type: 'line',
                             data: {
                                 labels: wargaLabels,
                                 datasets: [{
                                     label: 'Warga Baru', data: wargaValues,
-                                    borderColor: '#3b82f6', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#3b82f6',
+                                    borderColor: '#14b8a6', borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#14b8a6',
                                     backgroundColor: wargaGradient, fill: true, tension: 0.4
                                 }]
                             },
@@ -1078,7 +1078,7 @@
                             type: 'bar',
                             data: {
                                 labels: rtLabels,
-                                datasets: [{ data: rtValues, backgroundColor: 'rgba(59,130,246,0.6)', borderRadius: 4, borderSkipped: false }]
+                                datasets: [{ data: rtValues, backgroundColor: 'rgba(20,184,166,0.6)', borderRadius: 4, borderSkipped: false }]
                             },
                             options: {
                                 responsive: true, maintainAspectRatio: false, indexAxis: 'y',

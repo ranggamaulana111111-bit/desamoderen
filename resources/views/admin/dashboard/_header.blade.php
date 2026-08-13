@@ -50,7 +50,7 @@
                         <a href="{{ $notif['url'] }}" class="flex items-start gap-3.5 px-5 py-3.5 hover:bg-gray-50/80 transition group">
                             <div class="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm
                                 @switch($notif['type'])
-                                    @case('approval') bg-gradient-to-br from-blue-500 to-blue-600 @break
+                                    @case('approval') bg-gradient-to-br from-teal-500 to-teal-600 @break
                                     @case('revision') bg-gradient-to-br from-amber-500 to-amber-600 @break
                                     @case('queue') bg-gradient-to-br from-red-500 to-red-600 @break
                                     @case('event') bg-gradient-to-br from-purple-500 to-purple-600 @break

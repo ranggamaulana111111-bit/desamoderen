@@ -32,7 +32,7 @@
                 <p class="text-xs text-gray-500 mt-0.5">Nonaktif</p>
             </div>
             <div class="bg-white rounded-xl border border-gray-200 p-4">
-                <p class="text-2xl font-bold text-blue-600">{{ $templates->sum(fn($t) => count($t->fields ?? [])) }}</p>
+                <p class="text-2xl font-bold text-teal-600">{{ $templates->sum(fn($t) => count($t->fields ?? [])) }}</p>
                 <p class="text-xs text-gray-500 mt-0.5">Total Field</p>
             </div>
         </div>
@@ -83,7 +83,7 @@
                         </button>
                     </form>
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('admin.letter-config.edit', $template) }}" class="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 hover:text-blue-700 transition">
+                        <a href="{{ route('admin.letter-config.edit', $template) }}" class="inline-flex items-center gap-1 text-[11px] font-medium text-teal-600 hover:text-teal-700 transition">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
                             Edit
                         </a>

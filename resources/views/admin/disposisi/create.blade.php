@@ -171,10 +171,10 @@
                                 </button>
                                 <button type="button" @click="status = 'Diproses'"
                                     :class="status === 'Diproses'
-                                        ? 'bg-blue-50 border-blue-300 text-blue-700 ring-2 ring-blue-500/20'
+                                        ? 'bg-teal-50 border-teal-300 text-teal-700 ring-2 ring-teal-500/20'
                                         : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'"
                                     class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold transition-all duration-200 text-left">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-teal-500 shrink-0"></span>
                                     Diproses
                                 </button>
                                 <button type="button" @click="status = 'Selesai'"
@@ -200,22 +200,22 @@
                 <div class="widget-card">
                     <div class="widget-card-header">
                         <h3 class="section-header">
-                            <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600 mr-2"></span>
+                            <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-cyan-500 to-teal-600 mr-2"></span>
                             Tips
                         </h3>
                     </div>
                     <div class="widget-card-body">
                         <ul class="space-y-3">
                             <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>Pilih surat masuk yang sesuai untuk didisposisikan</span>
                             </li>
                             <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>Tentukan deadline yang realistis untuk tindak lanjut</span>
                             </li>
                             <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>Isi disposisi harus jelas dan terukur</span>
                             </li>
                         </ul>

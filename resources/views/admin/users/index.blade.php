@@ -72,11 +72,11 @@
                             $role = $item->roles()->first()?->name ?? '';
                             $roleStyles = match($role) {
                                 'Super Admin' => ['bg' => 'red', 'gradient' => 'from-red-400 to-rose-500'],
-                                'Operator Pelayanan' => ['bg' => 'blue', 'gradient' => 'from-blue-400 to-indigo-500'],
+                                'Operator Pelayanan' => ['bg' => 'teal', 'gradient' => 'from-teal-400 to-cyan-500'],
                                 'Sekretaris Desa' => ['bg' => 'purple', 'gradient' => 'from-purple-400 to-violet-500'],
                                 'Kepala Desa' => ['bg' => 'amber', 'gradient' => 'from-amber-400 to-orange-500'],
                                 'RT' => ['bg' => 'teal', 'gradient' => 'from-teal-400 to-cyan-500'],
-                                'RW' => ['bg' => 'cyan', 'gradient' => 'from-cyan-400 to-blue-500'],
+                                'RW' => ['bg' => 'cyan', 'gradient' => 'from-cyan-400 to-teal-500'],
                                 default => ['bg' => 'gray', 'gradient' => 'from-gray-400 to-slate-500'],
                             };
                         @endphp
@@ -97,7 +97,7 @@
                             <td class="px-6 py-4 text-gray-700 font-mono text-xs">{{ $item->nik }}</td>
                             <td class="px-6 py-4">
                                 @if ($item->rt && $item->rw)
-                                    <span class="chip bg-indigo-50 text-indigo-700 border border-indigo-100">RT {{ $item->rt }}/RW {{ $item->rw }}</span>
+                                    <span class="chip bg-cyan-50 text-cyan-700 border border-cyan-100">RT {{ $item->rt }}/RW {{ $item->rw }}</span>
                                 @else
                                     <span class="text-gray-400">-</span>
                                 @endif
@@ -118,7 +118,7 @@
                                     </a>
                                     @can('user.edit')
                                         <a href="{{ route('admin.users.edit', $item) }}"
-                                            class="inline-flex items-center gap-1.5 text-blue-600 hover:text-white text-xs font-semibold bg-blue-50 hover:bg-blue-600 px-3 py-1.5 rounded-lg transition-all duration-200">
+                                            class="inline-flex items-center gap-1.5 text-teal-600 hover:text-white text-xs font-semibold bg-teal-50 hover:bg-teal-600 px-3 py-1.5 rounded-lg transition-all duration-200">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
                                             Edit
                                         </a>

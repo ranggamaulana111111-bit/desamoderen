@@ -15,7 +15,7 @@
                     colors: {
                         brand: { 50:'#ecfdf5', 100:'#d1fae5', 200:'#a7f3d0', 300:'#6ee7b7', 400:'#34d399', 500:'#10b981', 600:'#059669', 700:'#047857', 800:'#065f46', 900:'#064e3b' },
                         navy: { 800:'#1e293b', 900:'#0f172a', 950:'#020617' },
-                        sidebar: { DEFAULT: '#0f1a2e', hover: '#162544' },
+                        sidebar: { DEFAULT: '#052e22', hover: '#065f46' },
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.6s ease-out forwards',
@@ -98,7 +98,7 @@
         }
         .bg-publish { background: #ecfdf5; color: #059669; border-color: rgba(16,185,129,.2); }
         .bg-draft { background: #f1f5f9; color: #64748b; border-color: rgba(148,163,184,.2); }
-        .bg-akan_datang { background: #eff6ff; color: #1d4ed8; border-color: rgba(59,130,246,.2); }
+        .bg-akan_datang { background: #ccfbf1; color: #0f766e; border-color: rgba(20,184,166,.2); }
         .bg-berlangsung { background: #fef3c7; color: #b45309; border-color: rgba(245,158,11,.2); }
         .bg-selesai { background: #f0fdf4; color: #16a34a; border-color: rgba(34,197,94,.2); }
 

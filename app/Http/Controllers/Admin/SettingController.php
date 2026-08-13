@@ -86,7 +86,7 @@ class SettingController extends Controller
         }
 
         $files = [];
-        foreach (['logo_desa', 'banner_desa', 'foto_kantor', 'foto_kades', 'stempel_desa', 'ttd_kades', 'ttd_sekdes', 'logo_login', 'logo_sidebar', 'favicon', 'background_login'] as $field) {
+        foreach (['logo_desa', 'logo_pemda', 'banner_desa', 'foto_kantor', 'foto_kades', 'stempel_desa', 'ttd_kades', 'ttd_sekdes', 'logo_login', 'logo_sidebar', 'favicon', 'background_login'] as $field) {
             if ($request->hasFile($field)) {
                 $files[$field] = $request->file($field);
             }

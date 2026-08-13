@@ -58,7 +58,7 @@
 
         .timeline-item{position:relative;padding-left:32px;padding-bottom:24px}.timeline-item::before{content:'';position:absolute;left:7px;top:24px;bottom:0;width:2px;background:linear-gradient(to bottom,#e2e8f0,transparent)}.timeline-item:last-child::before{display:none}
         .timeline-dot{position:absolute;left:0;top:4px;width:16px;height:16px;border-radius:50%;border:2.5px solid;background:white;display:flex;align-items:center;justify-content:center}
-        .timeline-dot.t-submitted{border-color:#3b82f6}.timeline-dot.t-verified{border-color:#6366f1}.timeline-dot.t-approved_operator{border-color:#06b6d4}.timeline-dot.t-approved_sekdes{border-color:#8b5cf6}.timeline-dot.t-approved_kades{border-color:var(--brand-500)}.timeline-dot.t-completed{border-color:var(--brand-500);background:var(--brand-500)}.timeline-dot.t-rejected{border-color:#ef4444}.timeline-dot.t-revision{border-color:#f59e0b}
+        .timeline-dot.t-submitted{border-color:#14b8a6}.timeline-dot.t-verified{border-color:#6366f1}.timeline-dot.t-approved_operator{border-color:#06b6d4}.timeline-dot.t-approved_sekdes{border-color:#8b5cf6}.timeline-dot.t-approved_kades{border-color:var(--brand-500)}.timeline-dot.t-completed{border-color:var(--brand-500);background:var(--brand-500)}.timeline-dot.t-rejected{border-color:#ef4444}.timeline-dot.t-revision{border-color:#f59e0b}
 
         .chat-bubble{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5;animation:slideUp .3s ease}.chat-user{background:var(--gradient-brand);color:white;border-bottom-right-radius:4px}.chat-bot{background:#f1f5f9;color:#334155;border-bottom-left-radius:4px}.typing-dot{width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:dotPulse 1.4s ease-in-out infinite}.typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
 
@@ -104,8 +104,8 @@
                 <div class="flex flex-wrap items-center gap-2 mt-3">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold
                         {{ match($pengajuan->status) {
-                            'submitted' => 'bg-blue-500/20 text-blue-300 border border-blue-400/30',
-                            'verified' => 'bg-indigo-500/20 text-indigo-300 border border-indigo-400/30',
+                            'submitted' => 'bg-teal-500/20 text-teal-300 border border-teal-400/30',
+                            'verified' => 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30',
                             'approved_operator' => 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30',
                             'approved_sekdes' => 'bg-purple-500/20 text-purple-300 border border-purple-400/30',
                             'approved_kades' => 'bg-brand-500/20 text-brand-300 border border-brand-400/30',
@@ -235,7 +235,7 @@
             @if (!empty(array_filter($dt, fn($v, $k) => $k !== 'lampiran' && !is_array($v), ARRAY_FILTER_USE_BOTH)))
             <div class="mt-5">
                 <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
                     Data yang Disubmit
                 </h3>
                 <div class="rounded-2xl border border-slate-100 divide-y divide-slate-50">
@@ -292,7 +292,7 @@
         {{-- TIMELINE --}}
         <div class="bento-card p-5 md:p-7 mb-6 a-fade-up d5">
             <div class="flex items-center gap-3 mb-5">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div>
@@ -309,8 +309,8 @@
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold
                                     {{ match($log->status) {
-                                        'submitted' => 'bg-blue-50 text-blue-700 border border-blue-200/60',
-                                        'verified' => 'bg-indigo-50 text-indigo-700 border border-indigo-200/60',
+                                        'submitted' => 'bg-teal-50 text-teal-700 border border-teal-200/60',
+                                        'verified' => 'bg-cyan-50 text-cyan-700 border border-cyan-200/60',
                                         'approved_operator' => 'bg-cyan-50 text-cyan-700 border border-cyan-200/60',
                                         'approved_sekdes' => 'bg-purple-50 text-purple-700 border border-purple-200/60',
                                         'approved_kades' => 'bg-brand-50 text-brand-700 border border-brand-200/60',
@@ -411,7 +411,7 @@
             <div class="p-3 border-t border-slate-100">
                 <form @submit.prevent="send(input)" class="flex items-center gap-2">
                     <input x-model="input" type="text" placeholder="Ketik pertanyaan..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition">
-                    <button type="submit" class="w-10 h-10 rounded-full bg-[#0068BD] text-white flex items-center justify-center shadow-md shadow-blue-500/20 hover:bg-[#0070CC] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+                    <button type="submit" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center shadow-md shadow-emerald-500/20 hover:bg-[#059669] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
                 </form>
             </div>
         </div>

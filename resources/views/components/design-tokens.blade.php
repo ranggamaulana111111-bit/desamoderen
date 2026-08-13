@@ -1,9 +1,9 @@
 <style>
     :root {
-        /* ── PlayStation Blue accent scale (primary CTA) ── */
-        --accent-50:#f2f8fe; --accent-100:#e3f0fc; --accent-200:#bbdcf7; --accent-300:#85c2ef;
-        --accent-400:#3f9bdf; --accent-500:#0068bd; --accent-600:#0070cc; --accent-700:#005aa6;
-        --accent-800:#004a8c; --accent-900:#003c70; --accent-950:#00234a;
+        /* ── Brand Emerald accent scale (primary CTA) ── */
+        --accent-50:#ecfdf5; --accent-100:#d1fae5; --accent-200:#a7f3d0; --accent-300:#6ee7b7;
+        --accent-400:#34d399; --accent-500:#10b981; --accent-600:#059669; --accent-700:#047857;
+        --accent-800:#065f46; --accent-900:#064e3b; --accent-950:#022c22;
 
         /* ── Gold & amber accents (secondary actions, highlights) ── */
         --gold-300:#efdda3; --gold-400:#e7cd78; --gold-500:#dfbd4d; --gold-600:#c9a63c; --gold-700:#a9882e;
@@ -26,7 +26,7 @@
     body { font-weight: 400; }
     .btn-primary, .btn-ghost, .btn-secondary, .btn-login, .btn-register { font-weight: 500; }
 
-    /* ── Heading scale (PS design: 39→25→20). Fallback defaults only —
+    /* ── Heading scale (39→25→20). Fallback defaults only —
        explicit Tailwind size utilities still win via specificity.
        `body h1` beats Tailwind Preflight `h1 { font-size: inherit }`
        while losing to `.text-2xl`-style utilities. ── */
@@ -45,14 +45,14 @@
         body h4 { font-size: 18px; }
     }
 
-    /* ── Primary Button: PS Blue pill ── */
+    /* ── Primary Button: Brand Emerald pill ── */
     .btn-primary {
         position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        background: var(--accent-500, #0068bd);
+        background: var(--accent-500, #10b981);
         color: #ffffff;
         font-size: 13.3333px;
         padding: 16px 20px;
@@ -64,8 +64,8 @@
         transition: all .3s ease;
         overflow: hidden;
     }
-    .btn-primary:hover { background: var(--accent-600, #0070cc); transform: translateY(-1px); }
-    .btn-primary:active { background: var(--accent-700, #005aa6); transform: scale(.98); }
+    .btn-primary:hover { background: var(--accent-600, #059669); transform: translateY(-1px); }
+    .btn-primary:active { background: var(--accent-700, #047857); transform: scale(.98); }
     .btn-primary:disabled, .btn-primary[disabled] {
         background: #cccccc; color: #363636; opacity: .5; cursor: not-allowed; box-shadow: none;
     }
@@ -77,25 +77,25 @@
         justify-content: center;
         gap: 6px;
         background: #ffffff;
-        color: var(--accent-500, #0068bd);
+        color: var(--accent-500, #10b981);
         font-size: 13.3333px;
         padding: 16px 20px;
         line-height: 21px;
         border-radius: 999px;
-        border: 2px solid var(--accent-500, #0068bd);
+        border: 2px solid var(--accent-500, #10b981);
         box-shadow: none;
         cursor: pointer;
         transition: all .3s ease;
     }
-    .btn-ghost:hover { background: #f0f6ff; border-color: var(--accent-600, #0070cc); transform: translateY(-1px); }
-    .btn-ghost:active { background: #e0efff; border-color: var(--accent-700, #005aa6); transform: scale(.98); }
+    .btn-ghost:hover { background: #ecfdf5; border-color: var(--accent-600, #059669); transform: translateY(-1px); }
+    .btn-ghost:active { background: #d1fae5; border-color: var(--accent-700, #047857); transform: scale(.98); }
 
     .dark .btn-ghost { background: transparent; color: #e2e8f0; border-color: rgba(255,255,255,.3); }
     .dark .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.5); }
 
-    /* ── Login/Register submit: PS Blue pill (override emerald gradient) ── */
+    /* ── Login/Register submit: Brand Emerald pill (override emerald gradient) ── */
     .btn-login, .btn-register {
-        background: var(--accent-500, #0068bd);
+        background: var(--accent-500, #10b981);
         color: #ffffff;
         border: 2px solid transparent;
         border-radius: 999px;
@@ -105,17 +105,17 @@
         line-height: 21px;
     }
     .btn-login:hover, .btn-register:hover {
-        background: var(--accent-600, #0070cc);
-        box-shadow: 0 12px 32px rgba(0,104,189,.35);
+        background: var(--accent-600, #059669);
+        box-shadow: 0 12px 32px rgba(16,185,129,.35);
         transform: translateY(-1px);
     }
-    .btn-login:active, .btn-register:active { background: var(--accent-700, #005aa6); transform: scale(.98); }
+    .btn-login:active, .btn-register:active { background: var(--accent-700, #047857); transform: scale(.98); }
 
     /* ── Kill leftover gradient shimmer pseudo-elements from old styles ── */
     .btn-primary::after, .btn-login::after, .btn-register::after { content: none; }
     .btn-login .btn-ripple, .btn-register .btn-ripple { display: none; }
 
-    /* ── Form inputs: Arial 13.3333px, 4px radius, 1px #CCC border, PS Blue focus ── */
+    /* ── Form inputs: Arial 13.3333px, 4px radius, 1px #CCC border, Brand Emerald focus ── */
     input[type="text"], input[type="email"], input[type="password"], input[type="number"],
     input[type="tel"], input[type="url"], input[type="search"], input[type="date"],
     input[type="time"], input[type="datetime-local"], input[type="month"], select, textarea {
@@ -130,12 +130,21 @@
         background-color: #ffffff;
         min-height: 44px;
     }
-    /* Select: PS Blue dropdown icon (replaces native gray arrow) */
+    /* Search/inputs with a leading icon (magnifier, lock, etc.): the generic rule
+       above overrides Tailwind padding utilities, so carve out left room here. */
+    .relative > svg:first-child + input[type="text"],
+    .relative > svg:first-child + input[type="email"],
+    .relative > svg:first-child + input[type="password"],
+    .relative > svg:first-child + input[type="search"] {
+        padding-left: 40px;
+    }
+
+    /* Select: Brand Emerald dropdown icon (replaces native gray arrow) */
     select:not([multiple]) {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%230068bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 12px center;
         background-size: 14px 8px;
@@ -156,11 +165,11 @@
     input[type="search"]:focus, input[type="date"]:focus, input[type="time"]:focus,
     input[type="datetime-local"]:focus, input[type="month"]:focus, select:focus, textarea:focus {
         outline: none;
-        border-color: #0068bd !important;
+        border-color: #10b981 !important;
         border-width: 2px;
-        box-shadow: 0 0 0 3px rgba(0,104,189,.1);
+        box-shadow: 0 0 0 3px rgba(16,185,129,.1);
     }
-    /* Error state: PS Error Red border 2px + red ring (overrides Tailwind border-red-*) */
+    /* Error state: Error Red border 2px + red ring (overrides Tailwind border-red-*) */
     input.border-red-300, input.border-red-400, input.border-red-500, input[aria-invalid="true"],
     select.border-red-300, select.border-red-400, select.border-red-500, select[aria-invalid="true"],
     textarea.border-red-300, textarea.border-red-400, textarea.border-red-500, textarea[aria-invalid="true"] {
@@ -183,7 +192,7 @@
         color: #cccccc;
         opacity: .5;
     }
-    /* Checkbox: 18px, 2px #CCC border, 3px radius, checked PS Blue */
+    /* Checkbox: 18px, 2px #CCC border, 3px radius, checked Brand Emerald */
     input[type="checkbox"] {
         width: 18px;
         height: 18px;
@@ -198,8 +207,8 @@
         flex-shrink: 0;
     }
     input[type="checkbox"]:checked {
-        background-color: #0068bd;
-        border-color: #0068bd;
+        background-color: #10b981;
+        border-color: #10b981;
     }
     input[type="checkbox"]:checked::after {
         content: "";
@@ -213,10 +222,10 @@
         transform: rotate(45deg);
     }
     input[type="checkbox"]:focus {
-        outline: 2px solid rgba(0,104,189,.3);
+        outline: 2px solid rgba(16,185,129,.3);
         outline-offset: 1px;
     }
-    input[type="radio"] { accent-color: #0068bd; }
+    input[type="radio"] { accent-color: #10b981; }
 
     /* ── Touch targets: primary CTAs min 48px tall, inputs 44px (48px on mobile) ── */
     .btn-primary, .btn-ghost, .btn-login, .btn-register { min-height: 48px; }
@@ -228,7 +237,7 @@
         }
     }
 
-    /* ── Elevation: subtle PS shadows replace heavy emerald-tinted defaults ──
+    /* ── Elevation: subtle neutral shadows replace heavy defaults ──
        Raised (1)   rgba(0,0,0,.06) 0 4px 8px      → shadow-sm / shadow
        Elevated (2) rgba(0,0,0,.12) 0 8px 16px     → shadow-md / shadow-lg
        Floating (3) 0 12px 24px rgba(0,0,0,.15)    → shadow-xl
@@ -238,19 +247,14 @@
     .shadow-xl { box-shadow: 0 12px 24px rgba(0,0,0,.15) !important; }
     .shadow-2xl { box-shadow: 0 16px 40px rgba(0,0,0,.25) !important; }
     .shadow-none { box-shadow: none !important; }
-    /* Neutralize emerald tint from shadow-color utilities (shadow-brand-*/500 etc.) */
-    [class*="shadow-brand-"], [class*="shadow-teal-"], [class*="shadow-emerald-"],
-    [class*="shadow-cyan-"], [class*="shadow-green-"], [class*="shadow-amber-"] {
-        --tw-shadow-color: rgba(0,0,0,.08);
-    }
 </style>
 <script>
-    // Extend whatever tailwind.config each page sets with the PS accent palette.
+    // Extend whatever tailwind.config each page sets with the brand accent palette.
     // Must run after the page's own `tailwind.config = {...}` assignment.
     (function () {
         var accent = {
-            50:'#f2f8fe', 100:'#e3f0fc', 200:'#bbdcf7', 300:'#85c2ef', 400:'#3f9bdf',
-            500:'#0068bd', 600:'#0070cc', 700:'#005aa6', 800:'#004a8c', 900:'#003c70', 950:'#00234a',
+            50:'#ecfdf5', 100:'#d1fae5', 200:'#a7f3d0', 300:'#6ee7b7', 400:'#34d399',
+            500:'#10b981', 600:'#059669', 700:'#047857', 800:'#065f46', 900:'#064e3b', 950:'#022c22',
         };
         var gold = { 300:'#efdda3', 400:'#e7cd78', 500:'#dfbd4d', 600:'#c9a63c', 700:'#a9882e' };
         var amber = { 400:'#f6bd23', 500:'#f6bd23', 600:'#e0a81c' };

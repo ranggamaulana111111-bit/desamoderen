@@ -15,13 +15,13 @@
             return { 'akan_datang': 'Akan Datang', 'berlangsung': 'Berlangsung', 'selesai': 'Selesai' }[this.status] || 'Akan Datang';
         },
         get statusColor() {
-            return { 'akan_datang': 'bg-blue-100 text-blue-700', 'berlangsung': 'bg-emerald-100 text-emerald-700', 'selesai': 'bg-gray-100 text-gray-600' }[this.status] || 'bg-blue-100 text-blue-700';
+            return { 'akan_datang': 'bg-teal-100 text-teal-700', 'berlangsung': 'bg-emerald-100 text-emerald-700', 'selesai': 'bg-gray-100 text-gray-600' }[this.status] || 'bg-teal-100 text-teal-700';
         },
         get jenisLabel() {
             return { 'musrenbangdes': 'Musrenbangdes', 'rapat': 'Rapat', 'kegiatan': 'Kegiatan', 'sosialisasi': 'Sosialisasi' }[this.jenis] || 'Kegiatan';
         },
         get jenisColor() {
-            return { 'musrenbangdes': 'bg-purple-100 text-purple-700', 'rapat': 'bg-green-100 text-green-700', 'kegiatan': 'bg-blue-100 text-blue-700', 'sosialisasi': 'bg-amber-100 text-amber-700' }[this.jenis] || 'bg-blue-100 text-blue-700';
+            return { 'musrenbangdes': 'bg-purple-100 text-purple-700', 'rapat': 'bg-green-100 text-green-700', 'kegiatan': 'bg-teal-100 text-teal-700', 'sosialisasi': 'bg-amber-100 text-amber-700' }[this.jenis] || 'bg-teal-100 text-teal-700';
         },
         get formattedTanggal() {
             if (!this.tanggal) return 'Pilih tanggal';
@@ -131,11 +131,11 @@
                                             : 'border-gray-200 hover:border-gray-300 bg-white'"
                                         class="relative rounded-xl border p-3 text-center transition-all duration-200 cursor-pointer group">
                                         <div class="w-10 h-10 mx-auto rounded-xl flex items-center justify-center transition-all"
-                                            :class="jenis === 'kegiatan' ? 'bg-blue-100' : 'bg-blue-50 group-hover:bg-blue-100'">
-                                            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                                            :class="jenis === 'kegiatan' ? 'bg-teal-100' : 'bg-teal-50 group-hover:bg-teal-100'">
+                                            <svg class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                                         </div>
                                         <span class="block text-xs font-semibold mt-2"
-                                            :class="jenis === 'kegiatan' ? 'text-blue-700' : 'text-gray-600'">Kegiatan</span>
+                                            :class="jenis === 'kegiatan' ? 'text-teal-700' : 'text-gray-600'">Kegiatan</span>
                                     </button>
                                     <button type="button" @click="jenis = 'sosialisasi'"
                                         :class="jenis === 'sosialisasi'
@@ -165,10 +165,10 @@
                                 <div class="inline-flex rounded-xl border border-gray-200 bg-gray-50 p-1 gap-1">
                                     <button type="button" @click="status = 'akan_datang'"
                                         :class="status === 'akan_datang'
-                                            ? 'bg-white shadow-sm text-blue-700 ring-1 ring-blue-100'
+                                            ? 'bg-white shadow-sm text-teal-700 ring-1 ring-teal-100'
                                             : 'text-gray-500 hover:text-gray-700'"
                                         class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200">
-                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span class="w-2 h-2 rounded-full bg-teal-500"></span>
                                         Akan Datang
                                     </button>
                                     <button type="button" @click="status = 'berlangsung'"
@@ -202,7 +202,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Jadwal
                             </h3>
                         </div>
@@ -361,22 +361,22 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-cyan-500 to-teal-600 mr-2"></span>
                                 Tips
                             </h3>
                         </div>
                         <div class="widget-card-body">
                             <ul class="space-y-3">
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Pastikan jadwal tidak bentrok dengan event lain</span>
                                 </li>
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Pastikan lokasi dan waktu sudah benar</span>
                                 </li>
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Undangan akan dikirim otomatis ke peserta</span>
                                 </li>
                             </ul>

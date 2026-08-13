@@ -3,7 +3,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <div class="stat-micro bg-white rounded-2xl border border-gray-200/60 p-4 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
                 <div>
@@ -50,7 +50,7 @@
     <div class="widget-card">
         <div class="widget-card-header">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
                 </div>
                 <div>
@@ -77,17 +77,17 @@
                         <tr class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                                         {{ strtoupper(substr($item->name, 0, 1)) }}
                                     </div>
-                                    <span class="font-semibold text-gray-900 group-hover:text-indigo-700 transition">{{ $item->name }}</span>
+                                    <span class="font-semibold text-gray-900 group-hover:text-cyan-700 transition">{{ $item->name }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-gray-700 font-mono text-xs">{{ $item->nik }}</td>
                             <td class="px-6 py-4 text-gray-700 font-mono text-xs">{{ $item->no_kk ?? '-' }}</td>
                             <td class="px-6 py-4">
                                 @if ($item->rt && $item->rw)
-                                    <span class="chip bg-indigo-50 text-indigo-700 border border-indigo-100">RT {{ $item->rt }} / RW {{ $item->rw }}</span>
+                                    <span class="chip bg-cyan-50 text-cyan-700 border border-cyan-100">RT {{ $item->rt }} / RW {{ $item->rw }}</span>
                                 @else
                                     <span class="text-gray-400">-</span>
                                 @endif

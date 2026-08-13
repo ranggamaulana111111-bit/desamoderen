@@ -177,8 +177,8 @@
                 <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">{{ $config->label }} dari {{ config('village.nama_desa') }} untuk keperluan resmi Anda.</p>
             </div>
             <div class="rounded-2xl p-4 border border-slate-100 bg-white" style="box-shadow:var(--shadow-card)">
-                <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center mb-2">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <div class="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center mb-2">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
                 <p class="text-xs font-bold text-slate-800">Lampiran</p>
                 <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Unggah {{ !empty($config->requirements) ? count($config->requirements).' dokumen yang wajib dilampirkan' : 'dokumen pendukung' }}. Bisa unggah lebih dari satu file (PDF/JPG/PNG, maks 2MB per file).</p>
@@ -316,7 +316,7 @@
             <div class="wizard-step" :class="{ 'active': step === 2 }">
                 <div class="bento-card p-5 md:p-7 a-fade-up" style="animation:successPop .5s var(--ease-out-expo)">
                     <div class="flex items-center gap-3 mb-5">
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                         <div>
@@ -396,21 +396,21 @@
 
                     {{-- REQUIRED DOCUMENTS --}}
                     @if(!empty($config->requirements))
-                    <div class="rounded-xl p-4 mb-5 bg-sky-50/60 border border-sky-200/60">
+                    <div class="rounded-xl p-4 mb-5 bg-cyan-50/60 border border-cyan-200/60">
                         <div class="flex items-start gap-2.5">
-                            <svg class="w-4 h-4 text-sky-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <svg class="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             <div class="flex-1">
-                                <p class="text-xs font-bold text-sky-800">Dokumen yang Wajib Dilampirkan</p>
-                                <p class="text-[11px] text-sky-600/80 mt-0.5">Unggah seluruh dokumen berikut untuk {{ $config->label }}:</p>
+                                <p class="text-xs font-bold text-cyan-800">Dokumen yang Wajib Dilampirkan</p>
+                                <p class="text-[11px] text-cyan-600/80 mt-0.5">Unggah seluruh dokumen berikut untuk {{ $config->label }}:</p>
                                 <ul class="mt-2 space-y-1.5">
                                     @foreach($config->requirements as $req)
                                     <li class="flex items-start gap-2 text-[11px] text-slate-600">
-                                        <svg class="w-3.5 h-3.5 text-sky-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                        <svg class="w-3.5 h-3.5 text-cyan-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         {{ $req }}
                                     </li>
                                     @endforeach
                                 </ul>
-                                <p class="text-[10px] text-sky-500/70 mt-2 flex items-center gap-1">
+                                <p class="text-[10px] text-cyan-500/70 mt-2 flex items-center gap-1">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     Bisa digabung dalam satu file PDF/JPG/PNG (maks 2MB)
                                 </p>
@@ -543,7 +543,7 @@
                     @if($letterFields->isNotEmpty())
                     <div class="mb-5">
                         <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
                             Data Surat
                         </h3>
                         <div class="rounded-xl border border-slate-200 divide-y divide-slate-100">
@@ -641,8 +641,8 @@
                     <p class="text-[11px] text-slate-600 leading-relaxed">Isi semua kolom yang ditandai wajib (<span class="text-red-500">*</span>) dengan data yang benar.</p>
                 </div>
                 <div class="flex items-start gap-2.5">
-                    <div class="w-6 h-6 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <div class="w-6 h-6 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-3 h-3 text-teal-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                     </div>
                     <p class="text-[11px] text-slate-600 leading-relaxed">Pastikan NIK sesuai dengan KTP dan berjumlah 16 digit.</p>
                 </div>
@@ -695,7 +695,7 @@
             <div class="p-3 border-t border-slate-100">
                 <form @submit.prevent="send(input)" class="flex items-center gap-2">
                     <input x-model="input" type="text" placeholder="Ketik pertanyaan..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition">
-                    <button type="submit" class="w-10 h-10 rounded-full bg-[#0068BD] text-white flex items-center justify-center shadow-md shadow-blue-500/20 hover:bg-[#0070CC] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+                    <button type="submit" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center shadow-md shadow-emerald-500/20 hover:bg-[#059669] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
                 </form>
             </div>
         </div>
@@ -772,8 +772,9 @@
             },
 
             handleSelect(e){
-                this.addFiles([...e.target.files]);
+                const selected=[...e.target.files];
                 e.target.value='';
+                this.addFiles(selected);
             },
             handleDrop(e){
                 this.dragover=false;

@@ -41,7 +41,7 @@
             <div class="widget-card lg:sticky lg:top-6">
                 <div class="widget-card-header">
                     <h3 class="section-header">
-                        <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                        <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                         Informasi
                     </h3>
                 </div>
@@ -79,8 +79,8 @@
 
                     {{-- Tanggal Dibuat --}}
                     <div class="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-                        <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+                        <div class="w-9 h-9 rounded-lg bg-teal-100 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
                         </div>
                         <div>
                             <p class="text-[10px] font-medium text-gray-500 uppercase tracking-wide">Dibuat</p>

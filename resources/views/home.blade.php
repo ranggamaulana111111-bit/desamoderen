@@ -88,13 +88,13 @@
         .nav-scrolled{background:rgba(255,255,255,.95)!important;backdrop-filter:blur(20px)!important;box-shadow:0 1px 20px rgba(0,0,0,.06)!important;border-color:rgba(0,0,0,.04)!important}
         .nav-scrolled .nav-link{color:#475569}
         .nav-scrolled .nav-link:hover{color:#059669}
-        .nav-scrolled .nav-link::after{background:var(--accent-500,#0068bd)}
+        .nav-scrolled .nav-link::after{background:var(--accent-500,#10b981)}
         .nav-scrolled .logo-text{color:#1e293b!important}
         .nav-scrolled .logo-text .gradient-text{-webkit-text-fill-color:var(--brand-600)}
         .nav-scrolled .nav-btn-masuk{color:#475569}
         .nav-scrolled .nav-btn-masuk:hover{color:var(--brand-600)}
-        .nav-scrolled .nav-btn-daftar{background:#0068bd;color:#fff}
-        .nav-scrolled .nav-btn-daftar:hover{background:#0070cc}
+        .nav-scrolled .nav-btn-daftar{background:#10b981;color:#fff}
+        .nav-scrolled .nav-btn-daftar:hover{background:#059669}
         .nav-scrolled .nav-btn-keluar{color:#64748b}
         .nav-scrolled .nav-btn-keluar:hover{color:#ef4444}
         .nav-scrolled .mobile-toggle{color:#334155}
@@ -105,7 +105,7 @@
         .nav-scrolled .nav-link.active::after{background:var(--brand-600);width:100%}
 
         .nav-link{position:relative;color:rgba(255,255,255,.7);font-weight:500;font-size:.875rem;transition:color .25s ease}
-        .nav-link::after{content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;background:var(--accent-500,#0068bd);border-radius:9999px;transition:all .3s ease;transform:translateX(-50%)}
+        .nav-link::after{content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;background:var(--accent-500,#10b981);border-radius:9999px;transition:all .3s ease;transform:translateX(-50%)}
         .nav-link:hover{color:#fff}
         .nav-link:hover::after{width:100%}
         .nav-link.active{color:#fff}
@@ -184,7 +184,7 @@
                 <div class="hidden lg:flex items-center gap-3">
                     @guest
                         <a href="{{ route('login') }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Masuk</a>
-                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-[#0068BD] px-5 py-2.5 rounded-full hover:bg-[#0070CC] transition-all shadow-lg shadow-blue-500/30 nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
+                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-[#10b981] px-5 py-2.5 rounded-full hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/30 nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
                     @endguest
                     @auth
                         <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
@@ -207,7 +207,7 @@
                 <div class="border-t border-slate-100 mt-3 pt-3 flex flex-col gap-2">
                     @guest
                         <a href="{{ route('login') }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">Masuk</a>
-                        <a href="{{ route('register') }}" class="block text-center px-4 py-3 rounded-full text-sm font-semibold text-white bg-[#0068BD] shadow-lg shadow-blue-500/25 hover:bg-[#0070CC] transition">Daftar Gratis</a>
+                        <a href="{{ route('register') }}" class="block text-center px-4 py-3 rounded-full text-sm font-semibold text-white bg-[#10b981] shadow-lg shadow-brand-500/25 hover:bg-[#059669] transition">Daftar Gratis</a>
                     @endguest
                     @auth
                         <a href="{{ auth()->user()->dashboardRoute() }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-brand-600 bg-brand-50 transition">Dashboard</a>
@@ -232,22 +232,17 @@
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-28 md:py-32">
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <div>
-                    <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-6 anim-fade-up">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span class="text-xs font-medium text-white/85 tracking-wide uppercase">Sistem Pelayanan Digital {{ config('village.nama_desa', 'Desa') }}</span>
-                    </div>
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6 anim-fade-up stagger-1">
                         Pelayanan Desa<br>
                         <span class="relative inline-block">
-                            <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-cyan-200">Digital & Modern</span>
-                            <span class="absolute bottom-1 left-0 right-0 h-3 bg-white/10 rounded-full -skew-x-3"></span>
-                        </span>
+                        <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-cyan-200">Digital & Modern</span>
+                    </span>
                     </h1>
                     <p class="text-lg text-white/75 max-w-lg mb-8 leading-relaxed anim-fade-up stagger-2">
                         Urus surat desa kapan saja, di mana saja. Tanpa antre, tanpa ribet — transparan dan cepat untuk seluruh warga {{ config('village.nama_desa', 'Desa') }}.
                     </p>
                     <div class="flex flex-wrap gap-3 mb-10 anim-fade-up stagger-3">
-                        <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#0068BD] text-white px-7 py-3.5 rounded-full font-semibold hover:bg-[#0070CC] transition-all shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:-translate-y-0.5">
+                        <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#10b981] text-white px-7 py-3.5 rounded-full font-semibold hover:bg-[#059669] transition-all shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:-translate-y-0.5">
                             <span>Daftar Sekarang</span>
                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
@@ -493,9 +488,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 anim-fade-up">
                 <div>
-                    <div class="inline-flex items-center gap-2 bg-sky-50 rounded-full px-4 py-1.5 mb-4">
-                        <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                        <span class="text-xs font-semibold text-sky-700 uppercase tracking-wider">Berita Terbaru</span>
+                    <div class="inline-flex items-center gap-2 bg-cyan-50 rounded-full px-4 py-1.5 mb-4">
+                        <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                        <span class="text-xs font-semibold text-cyan-700 uppercase tracking-wider">Berita Terbaru</span>
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Informasi Desa</h2>
                     <p class="text-slate-500">Kabar terbaru dari {{ config('village.nama_desa', 'Desa') }} untuk seluruh warga.</p>
@@ -635,11 +630,11 @@
             @php
                 $services = [
                     ['jenis' => 'sktm', 'badge' => 'SKTM', 'title' => 'Surat Keterangan Tidak Mampu', 'tag' => 'Proses 1-3 hari kerja', 'desc' => 'Ajukan SKTM untuk berobat gratis, keringanan biaya, atau keperluan lainnya — semuanya dari rumah.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-emerald-500 to-teal-700', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
-                    ['jenis' => 'ktp_sementara', 'badge' => 'KTP Sementara', 'title' => 'KTP Sementara', 'tag' => 'KTP sementara', 'desc' => 'Surat keterangan pengganti KTP sementara dalam proses penerbitan.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-cyan-400 to-sky-600', 'icon' => 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2'],
+                    ['jenis' => 'ktp_sementara', 'badge' => 'KTP Sementara', 'title' => 'KTP Sementara', 'tag' => 'KTP sementara', 'desc' => 'Surat keterangan pengganti KTP sementara dalam proses penerbitan.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-cyan-400 to-cyan-600', 'icon' => 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2'],
                     ['jenis' => 'akta', 'badge' => 'Akta', 'title' => 'Akta Kelahiran / Kematian', 'tag' => 'Surat pengantar', 'desc' => 'Surat pengantar pembuatan akta kelahiran atau kematian resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-amber-400 to-orange-500', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
                     ['jenis' => 'domisili', 'badge' => 'Domisili', 'title' => 'Surat Domisili', 'tag' => 'Domisili resmi', 'desc' => 'Keterangan resmi tentang alamat dan tempat tinggal warga desa.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-violet-400 to-purple-600', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
                     ['jenis' => 'belum_menikah', 'badge' => 'Belum Menikah', 'title' => 'Belum Menikah / Janda Duda', 'tag' => 'Status pernikahan', 'desc' => 'Surat keterangan status pernikahan untuk berbagai keperluan resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-rose-400 to-pink-600', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-                    ['jenis' => null, 'badge' => 'Lainnya', 'title' => '14+ Jenis Surat Lainnya', 'tag' => 'SKU, SKKB, dan banyak lagi', 'desc' => 'SKU, SKKB, Ahli Waris, Kepemilikan Tanah, Penghasilan, dan banyak lagi — semuanya tersedia online.', 'cta' => 'Lihat semua layanan', 'gradient' => 'from-sky-400 to-blue-600', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
+                    ['jenis' => null, 'badge' => 'Lainnya', 'title' => '14+ Jenis Surat Lainnya', 'tag' => 'SKU, SKKB, dan banyak lagi', 'desc' => 'SKU, SKKB, Ahli Waris, Kepemilikan Tanah, Penghasilan, dan banyak lagi — semuanya tersedia online.', 'cta' => 'Lihat semua layanan', 'gradient' => 'from-cyan-400 to-teal-600', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
                 ];
                 $services = array_map(function ($s) {
                     $s['href'] = $s['jenis'] ? route('warga.surat.create', ['jenis' => $s['jenis']]) : route('login');
@@ -829,7 +824,7 @@
                         </ul>
                     </div>
                     <div class="anim-slide-right order-1 lg:order-2">
-                        <div class="bg-gradient-to-br from-cyan-50 to-sky-50 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                        <div class="bg-gradient-to-br from-cyan-50 to-cyan-50 rounded-3xl p-8 md:p-10 relative overflow-hidden">
                             <div class="absolute bottom-4 left-4 w-24 h-24 bg-cyan-100 rounded-full opacity-40"></div>
                             <div class="relative space-y-4">
                                 @php $timeline = [['status'=>'Dikirim','time'=>'Hari ini, 08:30','color'=>'bg-brand-500'],['status'=>'Diverifikasi','time'=>'Hari ini, 10:15','color'=>'bg-cyan-500'],['status'=>'Disetujui Operator','time'=>'Hari ini, 14:00','color'=>'bg-violet-500'],['status'=>'Selesai','time'=>'Besok, 09:00','color'=>'bg-emerald-500']]; @endphp
@@ -954,13 +949,13 @@
                     {{-- BPD --}}
                     <div class="flex flex-col items-center anim-fade-up">
                         <div class="card-premium px-8 py-6 text-center hover:shadow-xl w-full">
-                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-sky-500/20">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-cyan-500/20">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
                             <h3 class="font-bold text-slate-900 text-lg">BPD</h3>
                             <p class="text-sm text-slate-500">Badan Permusyawaratan Desa</p>
-                            <div class="mt-3 inline-flex items-center gap-1.5 bg-sky-50 text-sky-700 text-xs font-semibold px-3 py-1 rounded-full">
-                                <div class="w-1.5 h-1.5 rounded-full bg-sky-500"></div>
+                            <div class="mt-3 inline-flex items-center gap-1.5 bg-cyan-50 text-cyan-700 text-xs font-semibold px-3 py-1 rounded-full">
+                                <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
                                 Lembaga Legislatif
                             </div>
                         </div>
@@ -1080,7 +1075,7 @@
                         ['name'=>'BUMDes','icon'=>'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4','desc'=>'Badan Usaha Milik Desa untuk pengelolaan potensi ekonomi desa guna kesejahteraan masyarakat.','color'=>'from-amber-400 to-orange-500','border'=>'hover:border-amber-200'],
                         ['name'=>'PKK','icon'=>'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z','desc'=>'Pemberdayaan Kesejahteraan Keluarga — fokus pada kesehatan, pendidikan, dan ekonomi keluarga.','color'=>'from-brand-400 to-emerald-600','border'=>'hover:border-brand-200'],
                         ['name'=>'LPM','icon'=>'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z','desc'=>'Lembaga Pemberdayaan Masyarakat — mengadvokasi dan memberdayakan masyarakat desa.','color'=>'from-violet-400 to-purple-600','border'=>'hover:border-violet-200'],
-                        ['name'=>'Linmas','icon'=>'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z','desc'=>'Perlindungan Masyarakat — menjaga keamanan dan ketertiban serta membantu situasi darurat.','color'=>'from-sky-400 to-blue-600','border'=>'hover:border-sky-200'],
+                        ['name'=>'Linmas','icon'=>'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z','desc'=>'Perlindungan Masyarakat — menjaga keamanan dan ketertiban serta membantu situasi darurat.','color'=>'from-cyan-400 to-teal-600','border'=>'hover:border-cyan-200'],
                         ['name'=>'KWT','icon'=>'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z','desc'=>'Kelompok Wanita Tani — pemberdayaan perempuan di sektor pertanian dan ketahanan pangan.','color'=>'from-emerald-400 to-green-600','border'=>'hover:border-emerald-200'],
                         ['name'=>'BKM','icon'=>'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z','desc'=>'Badan Keswadayaan Masyarakat — mengelola program pengentasan kemiskinan desa.','color'=>'from-teal-400 to-cyan-600','border'=>'hover:border-teal-200'],
                         ['name'=>'Toga','icon'=>'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z','desc'=>'Tanaman Obat Keluarga — pengembangan tanaman obat tradisional untuk kesehatan warga.','color'=>'from-lime-400 to-green-600','border'=>'hover:border-lime-200'],
@@ -1181,7 +1176,7 @@
                         <div class="border-t border-slate-100 p-3">
                             <form @submit.prevent="sendMessage()" class="flex gap-2">
                                 <input type="text" x-model="question" placeholder="Ketik pertanyaan Anda..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none bg-slate-50 text-slate-700 placeholder-slate-400 transition">
-                                <button type="submit" :disabled="!question.trim() || sending" class="w-10 h-10 rounded-full bg-[#0068BD] text-white flex items-center justify-center hover:bg-[#0070CC] transition-all shadow-lg shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
+                                <button type="submit" :disabled="!question.trim() || sending" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
                                 </button>
                             </form>
@@ -1209,7 +1204,7 @@
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">Siap Merasakan<br>Kemudahan Prodesa?</h2>
             <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto leading-relaxed">Bergabung dengan ribuan warga {{ config('village.nama_desa', 'Desa') }} yang sudah merasakan kemudahan pelayanan desa digital.</p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#0068BD] text-white px-8 py-4 rounded-full font-bold hover:bg-[#0070CC] transition-all shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:-translate-y-0.5 text-lg">
+                <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#10b981] text-white px-8 py-4 rounded-full font-bold hover:bg-[#059669] transition-all shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:-translate-y-0.5 text-lg">
                     <span>Daftar Gratis Sekarang</span>
                     <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </a>

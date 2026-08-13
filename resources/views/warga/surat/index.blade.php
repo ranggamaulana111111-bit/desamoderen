@@ -63,7 +63,7 @@
 
         .activity-card{border-radius:20px;background:white;box-shadow:var(--shadow-card);transition:all .4s var(--ease-out-expo);overflow:hidden;border:1px solid rgba(0,0,0,.04)}.activity-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
 
-        .timeline-item{position:relative;padding-left:28px;padding-bottom:20px}.timeline-item::before{content:'';position:absolute;left:5px;top:22px;bottom:0;width:2px;background:linear-gradient(to bottom,#e2e8f0,transparent)}.timeline-item:last-child::before{display:none}.timeline-item::after{content:'';position:absolute;left:0;top:5px;width:12px;height:12px;border-radius:50%;border:2.5px solid;background:white}.timeline-item.t-submitted::after{border-color:#3b82f6}.timeline-item.t-verified::after{border-color:#6366f1}.timeline-item.t-approved_operator::after{border-color:#06b6d4}.timeline-item.t-approved_sekdes::after{border-color:#8b5cf6}.timeline-item.t-approved_kades::after{border-color:var(--brand-500)}.timeline-item.t-completed::after{border-color:var(--brand-500);background:var(--brand-500)}.timeline-item.t-rejected::after{border-color:#ef4444}.timeline-item.t-revision::after{border-color:#f59e0b}
+        .timeline-item{position:relative;padding-left:28px;padding-bottom:20px}.timeline-item::before{content:'';position:absolute;left:5px;top:22px;bottom:0;width:2px;background:linear-gradient(to bottom,#e2e8f0,transparent)}.timeline-item:last-child::before{display:none}.timeline-item::after{content:'';position:absolute;left:0;top:5px;width:12px;height:12px;border-radius:50%;border:2.5px solid;background:white}.timeline-item.t-submitted::after{border-color:#14b8a6}.timeline-item.t-verified::after{border-color:#6366f1}.timeline-item.t-approved_operator::after{border-color:#06b6d4}.timeline-item.t-approved_sekdes::after{border-color:#8b5cf6}.timeline-item.t-approved_kades::after{border-color:var(--brand-500)}.timeline-item.t-completed::after{border-color:var(--brand-500);background:var(--brand-500)}.timeline-item.t-rejected::after{border-color:#ef4444}.timeline-item.t-revision::after{border-color:#f59e0b}
 
         .chat-bubble{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.5;animation:slideUp .3s ease}.chat-user{background:var(--gradient-brand);color:white;border-bottom-right-radius:4px}.chat-bot{background:#f1f5f9;color:#334155;border-bottom-left-radius:4px}.typing-dot{width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:dotPulse 1.4s ease-in-out infinite}.typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
 
@@ -308,8 +308,8 @@
                                         <div class="flex items-center gap-2 flex-shrink-0">
                                             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold
                                                 {{ match($item->status) {
-                                                    'submitted' => 'bg-blue-50 text-blue-700 border border-blue-200/60',
-                                                    'verified' => 'bg-indigo-50 text-indigo-700 border border-indigo-200/60',
+                                                    'submitted' => 'bg-teal-50 text-teal-700 border border-teal-200/60',
+                                                    'verified' => 'bg-cyan-50 text-cyan-700 border border-cyan-200/60',
                                                     'approved_operator' => 'bg-cyan-50 text-cyan-700 border border-cyan-200/60',
                                                     'approved_sekdes' => 'bg-purple-50 text-purple-700 border border-purple-200/60',
                                                     'approved_kades' => 'bg-brand-50 text-brand-700 border border-brand-200/60',
@@ -479,7 +479,7 @@
             <div class="p-3 border-t border-slate-100">
                 <form @submit.prevent="send(input)" class="flex items-center gap-2">
                     <input x-model="input" type="text" placeholder="Ketik pertanyaan..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 bg-slate-50 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition">
-                    <button type="submit" class="w-10 h-10 rounded-full bg-[#0068BD] text-white flex items-center justify-center shadow-md shadow-blue-500/20 hover:bg-[#0070CC] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+                    <button type="submit" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center shadow-md shadow-emerald-500/20 hover:bg-[#059669] transition-all disabled:opacity-50" :disabled="!input.trim()||sending"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
                 </form>
             </div>
         </div>

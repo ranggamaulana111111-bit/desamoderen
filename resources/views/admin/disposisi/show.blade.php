@@ -23,7 +23,7 @@
             <div class="shrink-0 flex items-center gap-2">
                 @php
                     $heroStatus = match($disposisi->status) {
-                        'Diproses' => ['bg-blue-500/20 text-blue-300 border-blue-500/30', 'Diproses'],
+                        'Diproses' => ['bg-teal-500/20 text-teal-300 border-teal-500/30', 'Diproses'],
                         'Selesai' => ['bg-emerald-500/20 text-emerald-300 border-emerald-500/30', 'Selesai'],
                         default => ['bg-gray-500/20 text-gray-300 border-gray-500/30', 'Diteruskan'],
                     };
@@ -84,7 +84,7 @@
                 <div class="widget-card-body">
                     <div class="space-y-1">
                         <div class="info-row">
-                            <div class="icon-box bg-indigo-50 text-indigo-600">
+                            <div class="icon-box bg-cyan-50 text-cyan-600">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                             </div>
                             <div class="flex-1 min-w-0 flex items-center justify-between">
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="info-row">
-                            <div class="icon-box bg-blue-50 text-blue-600">
+                            <div class="icon-box bg-teal-50 text-teal-600">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                             </div>
                             <div class="flex-1 min-w-0 flex items-center justify-between">
@@ -152,7 +152,7 @@
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</span>
                                 @php
                                     $statusBadge = match($disposisi->status) {
-                                        'Diproses' => 'bg-blue-100 text-blue-700',
+                                        'Diproses' => 'bg-teal-100 text-teal-700',
                                         'Selesai' => 'bg-emerald-100 text-emerald-700',
                                         default => 'bg-gray-100 text-gray-600',
                                     };

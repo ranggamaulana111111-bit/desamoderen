@@ -19,7 +19,7 @@
 
         <div class="bg-gray-50 rounded-lg p-4 mb-4 space-y-2 text-sm">
             <p class="font-semibold text-gray-700">URL Verifikasi:</p>
-            <p class="text-blue-600 break-all bg-white p-2 rounded border text-xs font-mono">{{ $verifyUrl }}</p>
+            <p class="text-teal-600 break-all bg-white p-2 rounded border text-xs font-mono">{{ $verifyUrl }}</p>
         </div>
 
         <div class="border-t pt-4 space-y-3">
@@ -49,7 +49,7 @@
         <div class="mt-6 pt-4 border-t text-xs text-gray-400 space-y-1">
             <p><strong>Cara uji:</strong> Scan QR di atas atau buka URL verifikasi di browser.</p>
             <p>Halaman ini bersifat sementara dan hanya untuk debugging.</p>
-            <p class="mt-2"><a href="{{ route('home') }}" class="text-blue-500 hover:underline">&larr; Kembali ke Beranda</a></p>
+            <p class="mt-2"><a href="{{ route('home') }}" class="text-teal-500 hover:underline">&larr; Kembali ke Beranda</a></p>
         </div>
     </div>
 </body>

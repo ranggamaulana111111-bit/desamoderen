@@ -29,9 +29,9 @@
                 <p class="text-xl font-extrabold text-brand-900" x-data x-init="animateNumber($el, {{ $total_penduduk ?? 0 }})">0</p>
                 <p class="text-[10px] text-brand-600 font-semibold uppercase tracking-wider mt-0.5">Penduduk</p>
             </div>
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3.5 text-center border border-blue-100/40">
-                <p class="text-xl font-extrabold text-blue-900" x-data x-init="animateNumber($el, {{ $total_kk ?? 0 }})">0</p>
-                <p class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mt-0.5">Kartu Keluarga</p>
+            <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-3.5 text-center border border-teal-100/40">
+                <p class="text-xl font-extrabold text-teal-900" x-data x-init="animateNumber($el, {{ $total_kk ?? 0 }})">0</p>
+                <p class="text-[10px] text-teal-600 font-semibold uppercase tracking-wider mt-0.5">Kartu Keluarga</p>
             </div>
         </div>
 

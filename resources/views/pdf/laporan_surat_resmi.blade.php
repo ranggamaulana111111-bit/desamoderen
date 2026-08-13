@@ -107,15 +107,48 @@
 <body>
 
     {{-- ═══════════════ KOP SURAT ═══════════════ --}}
+    @php
+        use Illuminate\Support\Facades\Storage;
+
+        $kopMimeMap = fn (string $path) => in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['jpg', 'jpeg'], true)
+            ? 'jpeg'
+            : 'png';
+
+        $kopLogoPemda = null;
+        if (config('village.logo_pemda') && Storage::disk('public')->exists(config('village.logo_pemda'))) {
+            $kopLogoPemda = 'data:image/'.$kopMimeMap(config('village.logo_pemda')).';base64,'.base64_encode(Storage::disk('public')->get(config('village.logo_pemda')));
+        }
+
+        $kopLogoDesa = null;
+        if (config('village.logo_desa') && Storage::disk('public')->exists(config('village.logo_desa'))) {
+            $kopLogoDesa = 'data:image/'.$kopMimeMap(config('village.logo_desa')).';base64,'.base64_encode(Storage::disk('public')->get(config('village.logo_desa')));
+        }
+    @endphp
     <div class="kop">
-        <div class="gov-line large">PEMERINTAH {{ strtoupper(config('village.nama_kabupaten', 'KABUPATEN')) }}</div>
-        <div class="gov-line">KECAMATAN {{ strtoupper(config('village.nama_kecamatan', 'KECAMATAN')) }}</div>
-        <div class="gov-line large">PEMERINTAH DESA {{ strtoupper(config('village.nama_desa', 'DESA')) }}</div>
-        <div class="alamat">
-            {{ config('village.alamat_kantor', 'Alamat Kantor') }}
-            &mdash; Email: {{ config('village.email_desa', 'email@desa.id') }}
-            &mdash; Telp: {{ config('village.telepon_desa', '-') }}
-        </div>
+        <table style="width:100%; border-collapse:collapse;">
+            <tr>
+                <td style="width:24%; text-align:center; vertical-align:middle;">
+                    @if ($kopLogoPemda)
+                        <img src="{{ $kopLogoPemda }}" alt="Logo Pemda" style="height:60px; width:auto;">
+                    @endif
+                </td>
+                <td style="text-align:center; vertical-align:middle;">
+                    <div class="gov-line large">PEMERINTAH {{ strtoupper(config('village.nama_kabupaten', 'KABUPATEN')) }}</div>
+                    <div class="gov-line">KECAMATAN {{ strtoupper(config('village.nama_kecamatan', 'KECAMATAN')) }}</div>
+                    <div class="gov-line large">PEMERINTAH DESA {{ strtoupper(config('village.nama_desa', 'DESA')) }}</div>
+                    <div class="alamat">
+                        {{ config('village.alamat_kantor', 'Alamat Kantor') }}
+                        &mdash; Email: {{ config('village.email_desa', 'email@desa.id') }}
+                        &mdash; Telp: {{ config('village.telepon_desa', '-') }}
+                    </div>
+                </td>
+                <td style="width:24%; text-align:center; vertical-align:middle;">
+                    @if ($kopLogoDesa)
+                        <img src="{{ $kopLogoDesa }}" alt="Logo Desa" style="height:60px; width:auto;">
+                    @endif
+                </td>
+            </tr>
+        </table>
     </div>
     <hr class="garis-tebal">
     <hr class="garis-tipis">

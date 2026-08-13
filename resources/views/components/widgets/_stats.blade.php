@@ -18,7 +18,7 @@
                     @php
                         $subStats = [
                             ['label' => 'Menunggu', 'value' => $stats['pending']['value'], 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z', 'bg' => 'bg-amber-400/20'],
-                            ['label' => 'Diproses', 'value' => $stats['proses']['value'], 'icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182', 'bg' => 'bg-blue-400/20'],
+                            ['label' => 'Diproses', 'value' => $stats['proses']['value'], 'icon' => 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182', 'bg' => 'bg-teal-400/20'],
                             ['label' => 'Selesai', 'value' => $stats['selesai']['value'], 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'bg' => 'bg-green-400/20'],
                             ['label' => 'Ditolak', 'value' => $stats['ditolak']['value'], 'icon' => 'M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'bg' => 'bg-red-400/20'],
                         ];
@@ -61,7 +61,7 @@
     <div class="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-4">
         @php
             $sideStats = [
-                ['value' => $stats['totalWarga']['value'], 'growth' => $stats['totalWarga']['growth'], 'label' => 'Total Warga', 'color' => 'blue', 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z'],
+                ['value' => $stats['totalWarga']['value'], 'growth' => $stats['totalWarga']['growth'], 'label' => 'Total Warga', 'color' => 'emerald', 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z'],
                 ['value' => $stats['eventBulanIni']['value'], 'growth' => $stats['eventBulanIni']['growth'], 'label' => 'Event Bulan Ini', 'color' => 'pink', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5'],
                 ['value' => $stats['beritaAktif']['value'], 'growth' => $stats['beritaAktif']['growth'], 'label' => 'Berita Aktif', 'color' => 'teal', 'icon' => 'M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z'],
             ];
@@ -92,7 +92,7 @@
     <div class="widget-card">
         <div class="widget-card-header">
             <div class="flex items-center gap-2.5">
-                <div class="widget-icon bg-blue-50 text-blue-600 border border-blue-100/50">
+                <div class="widget-icon bg-emerald-50 text-emerald-600 border border-emerald-100/50">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg>
                 </div>
                 <h3 class="text-xs font-semibold text-gray-800">Top RT</h3>
@@ -102,14 +102,14 @@
             <div class="space-y-3">
                 @foreach ($topRtrw['rt'] as $i => $item)
                 <div class="flex items-center gap-2.5">
-                    <span class="w-5 h-5 rounded-full {{ $i === 0 ? 'bg-blue-500 text-white shadow-sm shadow-blue-200' : 'bg-blue-100 text-blue-700' }} text-[9px] font-bold flex items-center justify-center shrink-0">{{ $i + 1 }}</span>
+                    <span class="w-5 h-5 rounded-full {{ $i === 0 ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-200' : 'bg-emerald-100 text-emerald-700' }} text-[9px] font-bold flex items-center justify-center shrink-0">{{ $i + 1 }}</span>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-xs font-medium text-gray-700">{{ $item['label'] }}</span>
-                            <span class="text-[10px] font-bold text-blue-600">{{ $item['total'] }}</span>
+                            <span class="text-[10px] font-bold text-emerald-600">{{ $item['total'] }}</span>
                         </div>
                         <div class="progress-bar progress-bar-sm">
-                            <div class="progress-bar-fill !bg-blue-500" style="width: {{ $topRtrw['rt'][0]['total'] > 0 ? ($item['total'] / $topRtrw['rt'][0]['total']) * 100 : 0 }}%"></div>
+                            <div class="progress-bar-fill !bg-emerald-500" style="width: {{ $topRtrw['rt'][0]['total'] > 0 ? ($item['total'] / $topRtrw['rt'][0]['total']) * 100 : 0 }}%"></div>
                         </div>
                     </div>
                 </div>

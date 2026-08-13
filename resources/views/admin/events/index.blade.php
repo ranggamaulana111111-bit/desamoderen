@@ -45,7 +45,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="stat-micro bg-white rounded-2xl border border-gray-200/60 p-4 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
                 </div>
                 <div>
@@ -96,7 +96,7 @@
             <div class="flex items-center gap-3 text-[10px] font-semibold">
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span> Musrenbang</span>
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Rapat</span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Lainnya</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-500"></span> Lainnya</span>
             </div>
         </div>
         <div class="widget-card-body">
@@ -128,13 +128,13 @@
                             @foreach ($events as $event)
                                 @php
                                     $dot = match($event->status) {
-                                        'akan_datang' => 'bg-blue-500',
+                                        'akan_datang' => 'bg-teal-500',
                                         'berlangsung' => 'bg-emerald-500',
                                         'selesai' => 'bg-gray-400',
                                         default => 'bg-gray-400',
                                     };
                                     $chip = match($event->status) {
-                                        'akan_datang' => 'bg-blue-50 text-blue-700 border border-blue-100',
+                                        'akan_datang' => 'bg-teal-50 text-teal-700 border border-teal-100',
                                         'berlangsung' => 'bg-emerald-50 text-emerald-700 border border-emerald-100',
                                         'selesai' => 'bg-gray-50 text-gray-600 border border-gray-200',
                                         default => 'bg-gray-50 text-gray-600 border border-gray-200',
@@ -142,7 +142,7 @@
                                     $jenisIcon = match($event->jenis) {
                                         'musrenbangdes' => ['M3.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5', 'text-violet-600', 'bg-violet-50'],
                                         'rapat' => ['M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z', 'text-green-600', 'bg-green-50'],
-                                        'kegiatan' => ['M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z', 'text-blue-600', 'bg-blue-50'],
+                                        'kegiatan' => ['M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z', 'text-teal-600', 'bg-teal-50'],
                                         default => ['M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z', 'text-amber-600', 'bg-amber-50'],
                                     };
                                 @endphp

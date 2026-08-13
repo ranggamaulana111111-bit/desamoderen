@@ -178,8 +178,8 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
-                                <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+                                <div class="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Kategori</p>
@@ -192,7 +192,7 @@
                     {{-- Desa Info --}}
                     <div class="section-card p-6">
                         <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
-                            <span class="w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600"></span>
+                            <span class="w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600"></span>
                             {{ config('village.nama_desa', 'Desa Kumpay') }}
                         </h3>
                         <div class="space-y-3 text-xs text-gray-500">

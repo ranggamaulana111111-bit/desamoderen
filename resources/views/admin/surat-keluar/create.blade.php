@@ -10,7 +10,7 @@
         filePreview: null,
         fileName: '',
         get sifatColor() {
-            const colors = { 'Biasa': 'bg-gray-100 text-gray-600', 'Segera': 'bg-amber-100 text-amber-700', 'Rahasia': 'bg-red-100 text-red-700', 'Penting': 'bg-blue-100 text-blue-700' };
+            const colors = { 'Biasa': 'bg-gray-100 text-gray-600', 'Segera': 'bg-amber-100 text-amber-700', 'Rahasia': 'bg-red-100 text-red-700', 'Penting': 'bg-teal-100 text-teal-700' };
             return colors[this.sifatSurat] || 'bg-gray-100 text-gray-600';
         },
         get statusLabel() {
@@ -18,7 +18,7 @@
             return labels[this.status] || 'Dikirim';
         },
         get statusColor() {
-            const colors = { 'dikirim': 'bg-emerald-100 text-emerald-700', 'diproses': 'bg-blue-100 text-blue-700', 'selesai': 'bg-violet-100 text-violet-700', 'ditolak': 'bg-red-100 text-red-700' };
+            const colors = { 'dikirim': 'bg-emerald-100 text-emerald-700', 'diproses': 'bg-teal-100 text-teal-700', 'selesai': 'bg-violet-100 text-violet-700', 'ditolak': 'bg-red-100 text-red-700' };
             return colors[this.status] || 'bg-emerald-100 text-emerald-700';
         },
         previewFile(e) {
@@ -112,7 +112,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Klasifikasi
                             </h3>
                         </div>
@@ -272,22 +272,22 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-sky-500 to-blue-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-cyan-500 to-teal-600 mr-2"></span>
                                 Tips
                             </h3>
                         </div>
                         <div class="widget-card-body">
                             <ul class="space-y-3">
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Nomor agenda dihasilkan otomatis oleh sistem</span>
                                 </li>
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Lampiran bersifat opsional, dapat ditambahkan nanti</span>
                                 </li>
                                 <li class="flex items-start gap-2.5 text-xs text-gray-600">
-                                    <svg class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <svg class="w-4 h-4 text-teal-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     <span>Format file: PDF, JPG, PNG (maks. 5MB)</span>
                                 </li>
                             </ul>

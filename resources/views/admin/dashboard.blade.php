@@ -78,7 +78,7 @@
                                 </div>
                                 <p class="text-sm font-semibold text-slate-700 mb-1" x-text="errorMessage"></p>
                                 <p class="text-xs text-slate-400 mb-5">Error setelah <span x-text="maxRetries"></span>x percobaan ulang</p>
-                                <button @click="retries = 0; error = false; load()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0068BD] text-white text-sm font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300">
+                                <button @click="retries = 0; error = false; load()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#10b981] text-white text-sm font-semibold shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5 transition-all duration-300">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg>
                                     Muat Ulang
                                 </button>

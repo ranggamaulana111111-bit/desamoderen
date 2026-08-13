@@ -17,7 +17,7 @@
         get kategoriBadge() {
             return {
                 'Peralatan': 'bg-emerald-100 text-emerald-700',
-                'Kendaraan': 'bg-blue-100 text-blue-700',
+                'Kendaraan': 'bg-teal-100 text-teal-700',
                 'Gedung': 'bg-amber-100 text-amber-700',
                 'Tanah': 'bg-orange-100 text-orange-700',
                 'Furniture': 'bg-violet-100 text-violet-700',
@@ -30,12 +30,12 @@
                 'Baik': 'bg-emerald-100 text-emerald-700',
                 'Rusak Ringan': 'bg-amber-100 text-amber-700',
                 'Rusak Berat': 'bg-red-100 text-red-700',
-                'Perawatan': 'bg-blue-100 text-blue-700',
+                'Perawatan': 'bg-teal-100 text-teal-700',
             }[this.kondisi] || 'bg-gray-100 text-gray-700';
         },
         get statusBadge() {
             return {
-                'Digunakan': 'bg-blue-100 text-blue-700',
+                'Digunakan': 'bg-teal-100 text-teal-700',
                 'Tersedia': 'bg-emerald-100 text-emerald-700',
                 'Disimpan': 'bg-amber-100 text-amber-700',
                 'Dihapus': 'bg-red-100 text-red-700',
@@ -175,7 +175,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Kondisi & Status
                             </h3>
                         </div>

@@ -1,8 +1,4 @@
-@if($telegramConfigured)
-    @include('admin.setting.partials._active_note', [
-        'message' => 'Telegram sudah terkonfigurasi. Pengajuan surat baru dan perubahan status dikirim otomatis ke admin desa.',
-    ])
-@else
+@if(!$telegramConfigured)
     <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-5">
         <div class="flex items-start gap-3">
             <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
@@ -27,10 +23,10 @@
             </div>
         </div>
         <div class="p-6 space-y-5">
-            <div x-data="{ open: true }" class="bg-sky-50/50 rounded-xl border border-sky-100/60 overflow-hidden">
+            <div x-data="{ open: true }" class="bg-cyan-50/50 rounded-xl border border-cyan-100/60 overflow-hidden">
                 <button @@click="open = !open" type="button" class="w-full flex items-center justify-between p-4 text-left">
                     <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
+                        <svg class="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
                         <h3 class="text-sm font-semibold text-gray-800">Telegram</h3>
                     </div>
                     <svg class="w-4 h-4 text-gray-400 transition" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -43,7 +39,7 @@
                     <div class="mt-4">
                         <form action="{{ route('admin.setting.notifyTest') }}" method="POST" class="flex items-center gap-3">
                             @csrf
-                            <button type="submit" class="inline-flex items-center gap-2 text-sm font-medium text-sky-700 bg-sky-100 hover:bg-sky-200 px-4 py-2 rounded-xl transition" {{ $telegramConfigured ? '' : 'disabled title="Konfigurasi Telegram terlebih dahulu"' }}>
+                            <button type="submit" class="inline-flex items-center gap-2 text-sm font-medium text-cyan-700 bg-cyan-100 hover:bg-cyan-200 px-4 py-2 rounded-xl transition" {{ $telegramConfigured ? '' : 'disabled title="Konfigurasi Telegram terlebih dahulu"' }}>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
                                 Kirim Pesan Uji
                             </button>

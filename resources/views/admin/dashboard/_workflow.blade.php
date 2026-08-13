@@ -1,7 +1,7 @@
 <div class="bento-card bg-white rounded-2xl shadow-sm p-6 animate-slide-up" style="animation-delay: 0.15s">
     <div class="flex items-center justify-between mb-5">
         <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+            <div class="w-7 h-7 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
             </div>
             <h2 class="text-sm font-semibold text-gray-800">Workflow Pipeline</h2>

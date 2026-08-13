@@ -40,9 +40,9 @@
             @endforeach
         </div>
         <div class="mt-4 pt-3 border-t border-gray-100/60 grid grid-cols-2 gap-3">
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 text-center border border-blue-100/40">
-                <p class="text-lg font-extrabold text-blue-900">{{ $systemHealth['memory_usage'] }}<span class="text-xs font-medium text-blue-600">MB</span></p>
-                <p class="text-[10px] text-blue-600 font-medium mt-0.5">Memory</p>
+            <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-3 text-center border border-teal-100/40">
+                <p class="text-lg font-extrabold text-teal-900">{{ $systemHealth['memory_usage'] }}<span class="text-xs font-medium text-teal-600">MB</span></p>
+                <p class="text-[10px] text-teal-600 font-medium mt-0.5">Memory</p>
             </div>
             <div class="bg-gradient-to-br {{ $systemHealth['disk_usage'] > 80 ? 'from-red-50 to-rose-50 border-red-100/40' : 'from-emerald-50 to-green-50 border-emerald-100/40' }} rounded-xl p-3 text-center border">
                 <p class="text-lg font-extrabold {{ $systemHealth['disk_usage'] > 80 ? 'text-red-900' : 'text-emerald-900' }}">{{ $systemHealth['disk_usage'] }}<span class="text-xs font-medium {{ $systemHealth['disk_usage'] > 80 ? 'text-red-600' : 'text-emerald-600' }}">%</span></p>

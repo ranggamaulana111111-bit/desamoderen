@@ -296,7 +296,7 @@
                 data: {
                     labels: growthData.map(d => d.label.substring(0, 6)),
                     datasets: [
-                        { label: 'Pengguna Baru', data: growthData.map(d => d.baru), backgroundColor: 'rgba(59,130,246,0.2)', borderColor: '#3b82f6', tension: 0.3, fill: true },
+                        { label: 'Pengguna Baru', data: growthData.map(d => d.baru), backgroundColor: 'rgba(20,184,166,0.2)', borderColor: '#14b8a6', tension: 0.3, fill: true },
                         { label: 'Total Akumulasi', data: growthData.map(d => d.total_akumulasi), borderColor: '#8b5cf6', tension: 0.3, borderDash: [5, 3], pointRadius: 2 }
                     ]
                 },

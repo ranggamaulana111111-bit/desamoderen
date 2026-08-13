@@ -47,6 +47,7 @@ class SettingStoreRequest extends FormRequest
             'email_desa' => ['required', 'email', 'max:100'],
             'telepon_desa' => ['required', 'string', 'max:20'],
             'logo_desa' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
+            'logo_pemda' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:2048'],
             'banner_desa' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:3072'],
             'foto_kantor' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:3072'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],

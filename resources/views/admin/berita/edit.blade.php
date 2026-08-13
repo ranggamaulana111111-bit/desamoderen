@@ -93,7 +93,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Foto Berita
                             </h3>
                         </div>

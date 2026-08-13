@@ -5,11 +5,11 @@
             'Baik' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
             'Rusak Ringan' => 'bg-amber-100 text-amber-700 border border-amber-200',
             'Rusak Berat' => 'bg-red-100 text-red-700 border border-red-200',
-            'Perawatan' => 'bg-blue-100 text-blue-700 border border-blue-200',
+            'Perawatan' => 'bg-teal-100 text-teal-700 border border-teal-200',
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
         $statusBadge = match($inventaris->status) {
-            'Digunakan' => 'bg-blue-100 text-blue-700 border border-blue-200',
+            'Digunakan' => 'bg-teal-100 text-teal-700 border border-teal-200',
             'Tersedia' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
             'Disimpan' => 'bg-amber-100 text-amber-700 border border-amber-200',
             'Dihapus' => 'bg-red-100 text-red-700 border border-red-200',
@@ -68,15 +68,15 @@
                         @php
                             $infoRows = [
                                 ['label' => 'Kode Inventaris', 'value' => $inventaris->kode_inventaris, 'color' => 'emerald', 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'],
-                                ['label' => 'Nama Barang', 'value' => $inventaris->nama_barang, 'color' => 'blue', 'icon' => 'M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'],
+                                ['label' => 'Nama Barang', 'value' => $inventaris->nama_barang, 'color' => 'teal', 'icon' => 'M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'],
                                 ['label' => 'Kategori', 'value' => $inventaris->kategori, 'color' => 'purple', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
                                 ['label' => 'Nomor Inventaris', 'value' => $inventaris->nomor_inventaris ?? '-', 'color' => 'amber', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
                                 ['label' => 'Jumlah', 'value' => $inventaris->jumlah, 'color' => 'cyan', 'icon' => 'M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'],
                                 ['label' => 'Lokasi', 'value' => $inventaris->lokasi ?? '-', 'color' => 'rose', 'icon' => 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z'],
-                                ['label' => 'Tahun Perolehan', 'value' => $inventaris->tahun_perolehan ?? '-', 'color' => 'indigo', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5'],
+                                ['label' => 'Tahun Perolehan', 'value' => $inventaris->tahun_perolehan ?? '-', 'color' => 'cyan', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5'],
                                 ['label' => 'Nilai Perolehan', 'value' => $inventaris->nilai_perolehan ? 'Rp ' . number_format($inventaris->nilai_perolehan, 0, ',', '.') : '-', 'color' => 'emerald', 'icon' => 'M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
                                 ['label' => 'Kondisi', 'value' => $inventaris->kondisi, 'color' => 'amber', 'icon' => 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z'],
-                                ['label' => 'Status', 'value' => $inventaris->status, 'color' => 'blue', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+                                ['label' => 'Status', 'value' => $inventaris->status, 'color' => 'teal', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
                             ];
                         @endphp
                         @foreach ($infoRows as $row)

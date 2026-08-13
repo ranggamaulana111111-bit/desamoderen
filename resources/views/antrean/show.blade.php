@@ -35,7 +35,7 @@
         .a1{animation-delay:.05s} .a2{animation-delay:.1s} .a3{animation-delay:.15s} .a4{animation-delay:.2s} .a5{animation-delay:.25s}
         .a6{animation-delay:.3s} .a7{animation-delay:.35s} .a8{animation-delay:.4s} .a9{animation-delay:.45s} .a10{animation-delay:.5s}
         .gradient-waiting {
-            background: linear-gradient(160deg, #1e3a5f 0%, #1e40af 30%, #3b82f6 60%, #06b6d4 100%);
+            background: linear-gradient(160deg, #052e22 0%, #065f46 30%, #0e7490 60%, #06b6d4 100%);
         }
         .gradient-done {
             background: linear-gradient(160deg, #064e3b 0%, #065f46 25%, #047857 50%, #0d9488 75%, #0f766e 100%);
@@ -83,7 +83,7 @@
     </style>
     @include('components.design-tokens')
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50/30 min-h-screen font-sans antialiased" x-data="antreanApp()" x-init="init()">
+<body class="bg-gradient-to-br from-slate-50 via-gray-50 to-teal-50/30 min-h-screen font-sans antialiased" x-data="antreanApp()" x-init="init()">
 
     @php
         $status = $antrean->status;
@@ -136,8 +136,8 @@
                             <p class="text-[11px] text-white/60">Silakan hubungi kantor desa</p>
                         </div>
                     @else
-                        <div class="w-8 h-8 rounded-full bg-blue-400/25 flex items-center justify-center">
-                            <svg class="w-5 h-5 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div class="w-8 h-8 rounded-full bg-teal-400/25 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-teal-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div class="text-left">
                             <p class="text-sm font-bold text-white tracking-wide">MENUNGGU PENGAMBILAN</p>
@@ -178,14 +178,14 @@
             <div class="section-card opacity-0 animate-slide-up a2 overflow-visible">
                 <div class="px-5 sm:px-6 pt-6 pb-6 text-center">
                     <p class="text-[11px] text-gray-400 font-bold uppercase tracking-[0.2em] mb-3">Nomor Antrean Anda</p>
-                    <div class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 border border-blue-100/80 shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+                    <div class="inline-flex items-center gap-3 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl px-6 sm:px-10 py-4 sm:py-5 border border-teal-100/80 shadow-sm">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white shadow-sm flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
                         </div>
                         <p class="text-2xl sm:text-3xl font-extrabold text-gray-900 queue-number">{{ $antrean->nomor_antrean }}</p>
                     </div>
                     @if($isWaiting)
-                        <p class="text-xs text-blue-600 font-medium mt-3 count-pulse">Menunggu pemanggilan</p>
+                        <p class="text-xs text-teal-600 font-medium mt-3 count-pulse">Menunggu pemanggilan</p>
                     @endif
                 </div>
             </div>
@@ -217,7 +217,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 p-3 bg-gray-50/80 rounded-xl border border-gray-100">
-                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white shadow-sm flex-shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
                             </div>
                             <div class="min-w-0">
@@ -239,7 +239,7 @@
             <div class="section-card opacity-0 animate-slide-up a4">
                 <div class="px-5 sm:px-6 pt-5 pb-4">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-blue-400 to-indigo-600"></div>
+                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-teal-400 to-cyan-600"></div>
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Jadwal Pengambilan</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -253,8 +253,8 @@
                             </div>
                         </div>
                         <div class="info-row sm:border-t-0">
-                            <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <div class="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
                             <div>
                                 <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Jam</p>
@@ -283,30 +283,30 @@
 
                     {{-- Countdown for waiting --}}
                     @if($isWaiting)
-                    <div class="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100/80" x-data x-init="$nextTick(() => { countdownTarget = '{{ \Carbon\Carbon::parse($antrean->tanggal_ambil)->format('Y-m-d') }}T{{ $jamMulai }}:00'; startCountdown(); })">
+                    <div class="mt-4 p-4 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl border border-teal-100/80" x-data x-init="$nextTick(() => { countdownTarget = '{{ \Carbon\Carbon::parse($antrean->tanggal_ambil)->format('Y-m-d') }}T{{ $jamMulai }}:00'; startCountdown(); })">
                         <div class="flex items-center gap-2 mb-2">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <p class="text-xs font-bold text-blue-700 uppercase tracking-wider">Hitung Mundur</p>
+                            <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="text-xs font-bold text-teal-700 uppercase tracking-wider">Hitung Mundur</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="text-center">
-                                <p class="text-2xl font-extrabold text-blue-800" x-text="countdown.days">0</p>
-                                <p class="text-[10px] text-blue-500 font-medium">Hari</p>
+                                <p class="text-2xl font-extrabold text-teal-800" x-text="countdown.days">0</p>
+                                <p class="text-[10px] text-teal-500 font-medium">Hari</p>
                             </div>
-                            <p class="text-lg font-bold text-blue-300">:</p>
+                            <p class="text-lg font-bold text-teal-300">:</p>
                             <div class="text-center">
-                                <p class="text-2xl font-extrabold text-blue-800" x-text="countdown.hours">0</p>
-                                <p class="text-[10px] text-blue-500 font-medium">Jam</p>
+                                <p class="text-2xl font-extrabold text-teal-800" x-text="countdown.hours">0</p>
+                                <p class="text-[10px] text-teal-500 font-medium">Jam</p>
                             </div>
-                            <p class="text-lg font-bold text-blue-300">:</p>
+                            <p class="text-lg font-bold text-teal-300">:</p>
                             <div class="text-center">
-                                <p class="text-2xl font-extrabold text-blue-800" x-text="countdown.minutes">0</p>
-                                <p class="text-[10px] text-blue-500 font-medium">Menit</p>
+                                <p class="text-2xl font-extrabold text-teal-800" x-text="countdown.minutes">0</p>
+                                <p class="text-[10px] text-teal-500 font-medium">Menit</p>
                             </div>
-                            <p class="text-lg font-bold text-blue-300">:</p>
+                            <p class="text-lg font-bold text-teal-300">:</p>
                             <div class="text-center">
-                                <p class="text-2xl font-extrabold text-blue-800" x-text="countdown.seconds">0</p>
-                                <p class="text-[10px] text-blue-500 font-medium">Detik</p>
+                                <p class="text-2xl font-extrabold text-teal-800" x-text="countdown.seconds">0</p>
+                                <p class="text-[10px] text-teal-500 font-medium">Detik</p>
                             </div>
                         </div>
                     </div>
@@ -318,7 +318,7 @@
             <div class="section-card opacity-0 animate-slide-up a5">
                 <div class="px-5 sm:px-6 pt-5 pb-5">
                     <div class="flex items-center gap-2 mb-5">
-                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-blue-400 to-indigo-600"></div>
+                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-teal-400 to-cyan-600"></div>
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Status Pengajuan</h2>
                     </div>
 
@@ -391,7 +391,7 @@
                                 @endif
                                 <div class="pt-1.5">
                                     <p class="text-sm font-semibold {{ $completed || $active ? 'text-gray-800' : 'text-gray-400' }}">{{ $step['label'] }}</p>
-                                    <p class="text-[10px] {{ $completed ? 'text-emerald-600 font-medium' : ($active && $isExpired ? 'text-amber-600 font-medium' : ($active ? 'text-blue-600 font-medium' : 'text-gray-300')) }}">{{ $completed ? 'Selesai' : ($active && $isExpired ? 'Terlewat' : ($active ? 'Saat Ini' : 'Menunggu')) }}</p>
+                                    <p class="text-[10px] {{ $completed ? 'text-emerald-600 font-medium' : ($active && $isExpired ? 'text-amber-600 font-medium' : ($active ? 'text-teal-600 font-medium' : 'text-gray-300')) }}">{{ $completed ? 'Selesai' : ($active && $isExpired ? 'Terlewat' : ($active ? 'Saat Ini' : 'Menunggu')) }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -406,7 +406,7 @@
             <div class="section-card opacity-0 animate-slide-up a6">
                 <div class="px-5 sm:px-6 pt-5 pb-5">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-indigo-400 to-indigo-600"></div>
+                        <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-cyan-400 to-cyan-600"></div>
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">QR Code</h2>
                     </div>
                     <div class="flex flex-col items-center p-5 bg-gray-50/80 rounded-2xl border border-gray-100">
@@ -496,8 +496,8 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-0">
                         <div class="info-row sm:border-r sm:pr-4">
-                            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+                            <div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
                             </div>
                             <div>
                                 <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Alamat</p>

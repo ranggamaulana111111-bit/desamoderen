@@ -11,7 +11,7 @@
                 <span class="text-sm font-bold text-gray-900">{{ $queue['waiting'] }}</span>
             </div>
             <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Berjalan</span>
+                <span class="text-sm text-gray-600 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span> Berjalan</span>
                 <span class="text-sm font-bold text-gray-900">{{ $queue['running'] }}</span>
             </div>
             <div class="flex items-center justify-between">
@@ -70,7 +70,7 @@
         <div class="space-y-3">
             @forelse ($operatorPerformance as $op)
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-100 to-indigo-200 flex items-center justify-center text-[10px] font-bold text-indigo-600 shrink-0 shadow-sm ring-2 ring-white">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-100 to-cyan-200 flex items-center justify-center text-[10px] font-bold text-cyan-600 shrink-0 shadow-sm ring-2 ring-white">
                     @php
                         $initials = collect(explode(' ', $op['name']))->map(fn($w) => mb_substr($w, 0, 1))->take(2)->join('');
                     @endphp

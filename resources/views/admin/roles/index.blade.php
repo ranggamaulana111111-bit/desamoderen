@@ -29,7 +29,7 @@
                         @php
                             $roleBadge = match($role->name) {
                                 'Super Admin' => 'bg-red-50 text-red-700 border-red-100',
-                                'Operator Pelayanan' => 'bg-blue-50 text-blue-700 border-blue-100',
+                                'Operator Pelayanan' => 'bg-teal-50 text-teal-700 border-teal-100',
                                 'Sekretaris Desa' => 'bg-purple-50 text-purple-700 border-purple-100',
                                 'Kepala Desa' => 'bg-amber-50 text-amber-700 border-amber-100',
                                 'RT' => 'bg-teal-50 text-teal-700 border-teal-100',
@@ -40,16 +40,16 @@
                         <tr class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white shadow-sm">
+                                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white shadow-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
                                     </div>
                                     <div>
-                                        <p class="font-semibold text-gray-900 group-hover:text-indigo-700 transition">{{ $role->name }}</p>
+                                        <p class="font-semibold text-gray-900 group-hover:text-cyan-700 transition">{{ $role->name }}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="chip bg-indigo-50 text-indigo-700 border border-indigo-100">{{ $role->permissions_count }} permission</span>
+                                <span class="chip bg-cyan-50 text-cyan-700 border border-cyan-100">{{ $role->permissions_count }} permission</span>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="chip bg-gray-50 text-gray-600 border border-gray-100">{{ $role->users_count }} user</span>

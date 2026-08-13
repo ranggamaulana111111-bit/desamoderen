@@ -6,7 +6,7 @@
 <div class="widget-card p-5">
     <div class="flex items-center justify-between mb-5">
         <div class="flex items-center gap-2.5">
-            <div class="widget-icon bg-indigo-50 text-indigo-600 border border-indigo-100/50">
+            <div class="widget-icon bg-cyan-50 text-cyan-600 border border-cyan-100/50">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg>
             </div>
             <h3 class="text-xs font-semibold text-gray-800">Workflow Pipeline</h3>
@@ -18,7 +18,7 @@
     <div class="relative">
         {{-- Connection line --}}
         <div class="absolute top-4 left-4 right-4 h-0.5 bg-gray-200"></div>
-        <div class="absolute top-4 left-4 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-emerald-500 transition-all duration-700" style="width: {{ $totalAll > 0 ? 'calc(' . round(($pipeline[array_key_last($pipeline)]['total'] / $totalAll) * 100) . '% - 2rem)' : '0' }}"></div>
+        <div class="absolute top-4 left-4 h-0.5 bg-gradient-to-r from-teal-500 via-purple-500 to-emerald-500 transition-all duration-700" style="width: {{ $totalAll > 0 ? 'calc(' . round(($pipeline[array_key_last($pipeline)]['total'] / $totalAll) * 100) . '% - 2rem)' : '0' }}"></div>
 
         <div class="relative flex items-center justify-between">
             @foreach ($pipeline as $i => $step)

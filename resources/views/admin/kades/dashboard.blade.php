@@ -74,7 +74,7 @@
         body{background:#f0f0eb;
             background-image:
                 radial-gradient(ellipse 80% 50% at 20% 0%,rgba(16,185,129,.04),transparent),
-                radial-gradient(ellipse 60% 40% at 80% 100%,rgba(99,102,241,.03),transparent);
+                radial-gradient(ellipse 60% 40% at 80% 100%,rgba(20,184,166,.03),transparent);
         }
     </style>
     @include('components.design-tokens')
@@ -111,8 +111,8 @@
                     $topJenis = $riwayatTertandaTangan->groupBy('jenis_surat')->map->count()->sortDesc()->take(3);
                     $now = now();
                     $kpis = [
-                        ['label' => 'Total Warga', 'value' => $totalWarga, 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z', 'color' => 'blue', 'subtitle' => 'Penduduk terdaftar', 'growth' => $wargaGrowth],
-                        ['label' => 'Total Surat', 'value' => $totalSurat, 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z', 'color' => 'indigo', 'subtitle' => 'Sepanjang masa', 'growth' => $suratGrowth],
+                        ['label' => 'Total Warga', 'value' => $totalWarga, 'icon' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z', 'color' => 'teal', 'subtitle' => 'Penduduk terdaftar', 'growth' => $wargaGrowth],
+                        ['label' => 'Total Surat', 'value' => $totalSurat, 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z', 'color' => 'cyan', 'subtitle' => 'Sepanjang masa', 'growth' => $suratGrowth],
                         ['label' => 'Menunggu', 'value' => $pendingTotal, 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z', 'color' => 'amber', 'subtitle' => 'Perlu ditindak', 'pulse' => $pendingTotal > 0],
                         ['label' => 'Selesai', 'value' => $selesai, 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'color' => 'emerald', 'subtitle' => 'Total selesai'],
                         ['label' => 'Bulan Ini', 'value' => $selesaiBulanIni, 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5', 'color' => 'teal', 'subtitle' => 'Selesai bulan ini'],
@@ -211,8 +211,8 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mt-6">
                     @foreach($kpis as $i => $kpi)
                         @php
-                            $colorMap = ['blue'=>['from-blue-500','to-blue-600','bg-blue-50','text-blue-600','border-blue-100'],
-                                'indigo'=>['from-indigo-500','to-indigo-600','bg-indigo-50','text-indigo-600','border-indigo-100'],
+                            $colorMap = ['teal'=>['from-teal-500','to-teal-600','bg-teal-50','text-teal-600','border-teal-100'],
+                                'cyan'=>['from-cyan-500','to-cyan-600','bg-cyan-50','text-cyan-600','border-cyan-100'],
                                 'amber'=>['from-amber-500','to-amber-600','bg-amber-50','text-amber-600','border-amber-100'],
                                 'emerald'=>['from-emerald-500','to-emerald-600','bg-emerald-50','text-emerald-600','border-emerald-100'],
                                 'teal'=>['from-teal-500','to-teal-600','bg-teal-50','text-teal-600','border-teal-100'],
@@ -220,7 +220,7 @@
                                 'orange'=>['from-orange-500','to-orange-600','bg-orange-50','text-orange-600','border-orange-100'],
                                 'cyan'=>['from-cyan-500','to-cyan-600','bg-cyan-50','text-cyan-600','border-cyan-100'],
                             ];
-                            $c = $colorMap[$kpi['color']] ?? $colorMap['blue'];
+                            $c = $colorMap[$kpi['color']] ?? $colorMap['teal'];
                         @endphp
                         <div class="card p-4 lg:p-3 xl:p-4 reveal reveal-delay-{{ min($i + 1, 8) }} group" style="overflow:hidden">
                             {{-- Top gradient accent --}}
@@ -427,7 +427,7 @@
                                 <div class="space-y-2.5">
                                     @foreach($eventMendatang as $event)
                                         @php
-                                            $jenisColor = match($event->jenis) { 'musrenbangdes' => 'indigo', 'rapat' => 'blue', 'sosialisasi' => 'amber', 'kegiatan' => 'emerald', default => 'gray' };
+                                            $jenisColor = match($event->jenis) { 'musrenbangdes' => 'cyan', 'rapat' => 'teal', 'sosialisasi' => 'amber', 'kegiatan' => 'emerald', default => 'gray' };
                                             $daysUntil = now()->diffInDays($event->tanggal, false);
                                             $dateLabel = $daysUntil == 0 ? 'Hari ini' : ($daysUntil == 1 ? 'Besok' : 'Dalam '.ceil($daysUntil).' hr');
                                         @endphp
@@ -523,7 +523,7 @@
                                         @php
                                             $actColor = match(true) {
                                                 str_contains($act->aksi, 'create') => 'emerald',
-                                                str_contains($act->aksi, 'update') || str_contains($act->aksi, 'approve') => 'blue',
+                                                str_contains($act->aksi, 'update') || str_contains($act->aksi, 'approve') => 'teal',
                                                 str_contains($act->aksi, 'delete') || str_contains($act->aksi, 'reject') => 'red',
                                                 default => 'gray',
                                             };
@@ -575,7 +575,7 @@
                                 @php
                                     $actions = [
                                         ['route' => route('admin.pengajuan.index', ['status' => 'approved_sekdes']), 'label' => 'Persetujuan', 'color' => 'amber', 'icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
-                                        ['route' => route('admin.pengajuan.index'), 'label' => 'Riwayat', 'color' => 'indigo', 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z'],
+                                        ['route' => route('admin.pengajuan.index'), 'label' => 'Riwayat', 'color' => 'cyan', 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z'],
                                         ['route' => route('admin.analytics.index'), 'label' => 'Analitik', 'color' => 'purple', 'icon' => 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z'],
                                         ['route' => route('admin.pengajuan.index', ['status' => 'completed']), 'label' => 'Selesai', 'color' => 'emerald', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
                                         ['route' => route('admin.setting.index'), 'label' => 'Pengaturan', 'color' => 'gray', 'icon' => 'M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z', 'icon2' => 'M15 12a3 3 0 11-6 0 3 3 0 016 0z'],
@@ -601,7 +601,7 @@
                                     $execSummary = [
                                         ['label' => 'Surat Hari Ini', 'value' => \App\Models\PengajuanSurat::whereDate('created_at', now()->toDateString())->count(), 'color' => 'teal', 'icon' => 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z'],
                                         ['label' => 'Selesai Bulan Ini', 'value' => $selesaiBulanIni, 'color' => 'emerald', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-                                        ['label' => 'Rate Persetujuan', 'value' => $ratePersetujuan . '%', 'color' => 'indigo', 'icon' => 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z'],
+                                        ['label' => 'Rate Persetujuan', 'value' => $ratePersetujuan . '%', 'color' => 'cyan', 'icon' => 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z'],
                                     ];
                                 @endphp
                                 @foreach($execSummary as $es)
@@ -705,7 +705,7 @@
                             <div class="flex items-center gap-4">
                                 <div class="w-28 h-28 shrink-0"><canvas id="jenisChart"></canvas></div>
                                 <div class="flex-1 space-y-1">
-                                    @php $colors = ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4']; @endphp
+                                    @php $colors = ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4']; @endphp
                                     @foreach($distribusiJenis as $i => $dj)
                                         <div class="flex items-center gap-1.5">
                                             <span class="w-2 h-2 rounded-full shrink-0" style="background:{{ $colors[$i % 6] }}"></span>
@@ -792,7 +792,7 @@
                                     <div><p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Nama Desa</p><p class="text-[12px] font-semibold text-gray-800">{{ config('village.nama_desa') }}</p></div>
                                 </div>
                                 <div class="flex items-start gap-2.5">
-                                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                                    <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                                     </div>
                                     <div><p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Kepala Desa</p><p class="text-[12px] font-semibold text-gray-800">{{ config('village.nama_kades') }}</p></div>
@@ -848,7 +848,7 @@
                                     {{ $antreanLewat }} antrean lewat jadwal
                                 </span>
                             @endif
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-semibold border border-indigo-100/50">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 text-[10px] font-semibold border border-cyan-100/50">
                                 Rate {{ $ratePersetujuan }}%
                             </span>
                             @if($topJenis->count())
@@ -969,7 +969,7 @@
                             type: 'doughnut',
                             data: {
                                 labels: jenisLabels,
-                                datasets: [{ data: jenisValues, backgroundColor: ['#10b981','#3b82f6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'], borderWidth: 0, hoverOffset: 4 }]
+                                datasets: [{ data: jenisValues, backgroundColor: ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'], borderWidth: 0, hoverOffset: 4 }]
                             },
                             options: { responsive: true, maintainAspectRatio: false, cutout: '68%', animation: { animateRotate: true, duration: 1200, easing: 'easeOutQuart' }, plugins: { legend: { display: false }, tooltip } }
                         });
@@ -980,14 +980,14 @@
                     const wargaCtx = document.getElementById('wargaChart');
                     if (wargaCtx) {
                         const grad = wargaCtx.getContext('2d').createLinearGradient(0, 0, 0, 144);
-                        grad.addColorStop(0, 'rgba(59,130,246,.18)'); grad.addColorStop(1, 'rgba(59,130,246,.01)');
+                        grad.addColorStop(0, 'rgba(20,184,166,.18)'); grad.addColorStop(1, 'rgba(20,184,166,.01)');
                         new Chart(wargaCtx, {
                             type: 'line',
                             data: {
                                 labels: wargaLabels,
                                 datasets: [{
-                                    label: 'Warga Baru', data: wargaValues, borderColor: '#3b82f6', borderWidth: 2,
-                                    pointRadius: 3, pointBackgroundColor: '#3b82f6', pointBorderColor: '#fff', pointBorderWidth: 2,
+                                    label: 'Warga Baru', data: wargaValues, borderColor: '#14b8a6', borderWidth: 2,
+                                    pointRadius: 3, pointBackgroundColor: '#14b8a6', pointBorderColor: '#fff', pointBorderWidth: 2,
                                     backgroundColor: grad, fill: true, tension: 0.4
                                 }]
                             },

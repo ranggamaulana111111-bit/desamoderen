@@ -1,6 +1,3 @@
-@include('admin.setting.partials._active_note', [
-    'message' => 'Google Maps digunakan pada halaman lokasi antrean, Webhook aktif mengirim event pengajuan surat, dan Cloudflare Turnstile / reCAPTCHA menggantikan captcha biasa di halaman auth saat Site/Secret Key terisi (Turnstile diprioritaskan).',
-])
 <form x-show="activeTab === 'integrasi'" x-cloak
       action="{{ route('admin.setting.update', 'integrasi') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">

@@ -17,16 +17,16 @@
                 'Biasa': 'bg-gray-100 text-gray-700',
                 'Segera': 'bg-amber-100 text-amber-700',
                 'Rahasia': 'bg-red-100 text-red-700',
-                'Penting': 'bg-blue-100 text-blue-700',
+                'Penting': 'bg-teal-100 text-teal-700',
             }[this.sifatSurat] || 'bg-gray-100 text-gray-700';
         },
         get statusBadge() {
             return {
-                'diterima': 'bg-blue-100 text-blue-700',
+                'diterima': 'bg-teal-100 text-teal-700',
                 'diproses': 'bg-amber-100 text-amber-700',
                 'selesai': 'bg-emerald-100 text-emerald-700',
                 'ditolak': 'bg-red-100 text-red-700',
-            }[this.status] || 'bg-blue-100 text-blue-700';
+            }[this.status] || 'bg-teal-100 text-teal-700';
         },
         get statusLabel() {
             return { 'diterima': 'Diterima', 'diproses': 'Diproses', 'selesai': 'Selesai', 'ditolak': 'Ditolak' }[this.status] || 'Diterima';
@@ -137,7 +137,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Tanggal & Klasifikasi
                             </h3>
                         </div>

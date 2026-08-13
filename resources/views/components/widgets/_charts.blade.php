@@ -12,7 +12,7 @@
     <div class="xl:col-span-8 widget-card p-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div class="flex items-center gap-2.5">
-                <div class="widget-icon bg-blue-50 text-blue-600 border border-blue-100/50">
+                <div class="widget-icon bg-emerald-50 text-emerald-600 border border-emerald-100/50">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z"/></svg>
                 </div>
                 <h2 class="text-sm font-semibold text-gray-800">Tren Pengajuan Surat</h2>

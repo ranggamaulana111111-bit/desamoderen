@@ -3,8 +3,8 @@
     @php
         $statusConfig = [
             '' => ['label' => 'Semua', 'icon' => 'M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z', 'gradient' => 'from-slate-400 to-slate-600', 'bg' => 'slate'],
-            'submitted' => ['label' => 'Diajukan', 'icon' => 'M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-blue-400 to-indigo-500', 'bg' => 'blue'],
-            'verified' => ['label' => 'Diverifikasi', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-indigo-400 to-purple-500', 'bg' => 'indigo'],
+            'submitted' => ['label' => 'Diajukan', 'icon' => 'M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-teal-400 to-cyan-500', 'bg' => 'teal'],
+            'verified' => ['label' => 'Diverifikasi', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-cyan-400 to-purple-500', 'bg' => 'cyan'],
             'approved_operator' => ['label' => 'Operator', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-purple-400 to-violet-500', 'bg' => 'purple'],
             'approved_sekdes' => ['label' => 'Sekdes', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-cyan-400 to-teal-500', 'bg' => 'cyan'],
             'approved_kades' => ['label' => 'Kades', 'icon' => 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'gradient' => 'from-emerald-400 to-green-500', 'bg' => 'emerald'],

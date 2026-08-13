@@ -124,7 +124,7 @@
     @push('scripts')
     <script>
         const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-        const lembagaColors = ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#06b6d4','#f43f5e','#84cc16','#ec4899','#14b8a6','#a855f7','#f97316','#64748b','#22d3ee','#eab308','#6366f1','#ef4444','#34d399','#fbbf24','#2dd4bf','#c084fc'];
+        const lembagaColors = ['#10b981','#14b8a6','#8b5cf6','#f59e0b','#06b6d4','#f43f5e','#84cc16','#ec4899','#14b8a6','#a855f7','#f97316','#64748b','#22d3ee','#eab308','#6366f1','#ef4444','#34d399','#fbbf24','#2dd4bf','#c084fc'];
 
         // ── Monthly chart ──
         new Chart(document.getElementById('monthlyChart'), {

@@ -56,7 +56,7 @@
                         <a href="{{ $notif['url'] }}" class="flex items-start gap-3 px-5 py-3.5 hover:bg-slate-50/80 transition group">
                             <div class="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm shadow-sm
                                 @switch($notif['type'])
-                                    @case('approval') bg-gradient-to-br from-blue-500 to-blue-600 @break
+                                    @case('approval') bg-gradient-to-br from-emerald-500 to-emerald-600 @break
                                     @case('revision') bg-gradient-to-br from-amber-500 to-amber-600 @break
                                     @case('queue') bg-gradient-to-br from-red-500 to-red-600 @break
                                     @case('event') bg-gradient-to-br from-purple-500 to-purple-600 @break
@@ -98,7 +98,7 @@
         @endif
         <div class="flex flex-wrap items-center gap-2 mt-2">
             @if($todayStats['todaySubmissions'] > 0)
-                <span class="chip bg-blue-50 text-blue-700 border border-blue-200/60">
+                <span class="chip bg-teal-50 text-teal-700 border border-teal-200/60">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                     {{ $todayStats['todaySubmissions'] }} baru
                 </span>
@@ -110,7 +110,7 @@
                 </span>
             @endif
             @if($todayStats['todayVerified'] > 0)
-                <span class="chip bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                <span class="chip bg-cyan-50 text-cyan-700 border border-cyan-200/60">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     {{ $todayStats['todayVerified'] }} diverifikasi
                 </span>

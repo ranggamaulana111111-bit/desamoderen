@@ -217,7 +217,7 @@ class SettingService
     private function isFileField(string $key): bool
     {
         return in_array($key, [
-            'logo_desa', 'stempel_desa', 'ttd_kades', 'ttd_sekdes',
+            'logo_desa', 'logo_pemda', 'stempel_desa', 'ttd_kades', 'ttd_sekdes',
             'foto_kades', 'banner_desa', 'foto_kantor',
             'logo_login', 'logo_sidebar', 'favicon', 'background_login',
         ]);

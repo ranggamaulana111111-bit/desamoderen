@@ -2,7 +2,7 @@
 
     @php
         $statusBadge = match($surat->status) {
-            'diterima' => 'bg-blue-100 text-blue-700 border border-blue-200',
+            'diterima' => 'bg-teal-100 text-teal-700 border border-teal-200',
             'diproses' => 'bg-amber-100 text-amber-700 border border-amber-200',
             'selesai' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
             'ditolak' => 'bg-red-100 text-red-700 border border-red-200',
@@ -18,7 +18,7 @@
         $sifatBadge = match($surat->sifat_surat) {
             'Segera' => 'bg-amber-50 text-amber-700 border border-amber-100',
             'Rahasia' => 'bg-red-50 text-red-700 border border-red-100',
-            'Penting' => 'bg-blue-50 text-blue-700 border border-blue-100',
+            'Penting' => 'bg-teal-50 text-teal-700 border border-teal-100',
             default => 'bg-gray-50 text-gray-600 border border-gray-100',
         };
     @endphp
@@ -84,12 +84,12 @@
                         @php
                             $infoRows = [
                                 ['label' => 'Nomor Agenda', 'value' => $surat->nomor_agenda, 'color' => 'emerald', 'icon' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'],
-                                ['label' => 'Nomor Surat', 'value' => $surat->nomor_surat, 'color' => 'blue', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
+                                ['label' => 'Nomor Surat', 'value' => $surat->nomor_surat, 'color' => 'teal', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
                                 ['label' => 'Pengirim', 'value' => $surat->pengirim, 'color' => 'purple', 'icon' => 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'],
                                 ['label' => 'Tanggal Terima', 'value' => $surat->tanggal_terima?->locale('id')->translatedFormat('d F Y') ?? '-', 'color' => 'amber', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5'],
                                 ['label' => 'Tanggal Surat', 'value' => $surat->tanggal_surat?->locale('id')->translatedFormat('d F Y') ?? '-', 'color' => 'cyan', 'icon' => 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5'],
                                 ['label' => 'Jenis Surat', 'value' => $surat->jenis_surat, 'color' => 'rose', 'icon' => 'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
-                                ['label' => 'Sifat Surat', 'value' => $surat->sifat_surat, 'color' => 'indigo', 'icon' => 'M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5'],
+                                ['label' => 'Sifat Surat', 'value' => $surat->sifat_surat, 'color' => 'cyan', 'icon' => 'M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5'],
                             ];
                         @endphp
                         @foreach ($infoRows as $row)
@@ -235,8 +235,8 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3 py-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Status</p>

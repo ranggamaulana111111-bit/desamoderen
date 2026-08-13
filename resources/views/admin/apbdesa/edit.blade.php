@@ -115,7 +115,7 @@
                     <div class="widget-card">
                         <div class="widget-card-header">
                             <h3 class="section-header">
-                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600 mr-2"></span>
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-600 mr-2"></span>
                                 Detail Keuangan
                             </h3>
                         </div>
@@ -227,7 +227,7 @@
                         <div class="widget-card-body">
                             <div class="rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white p-4 space-y-3">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="font-mono text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md" x-text="tahun || 'Tahun'"></span>
+                                    <span class="font-mono text-[10px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md" x-text="tahun || 'Tahun'"></span>
                                     <span :class="kategoriBadge" class="chip text-[11px]" x-text="kategori"></span>
                                     <span :class="statusBadge" class="chip text-[11px]" x-text="status"></span>
                                 </div>
@@ -240,7 +240,7 @@
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-[11px] text-gray-400">Realisasi</span>
-                                        <span class="text-xs font-semibold text-blue-600" x-text="formattedRealisasi"></span>
+                                        <span class="text-xs font-semibold text-teal-600" x-text="formattedRealisasi"></span>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-[11px] text-gray-400">Sisa</span>
