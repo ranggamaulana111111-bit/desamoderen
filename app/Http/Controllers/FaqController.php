@@ -78,10 +78,10 @@ class FaqController extends Controller
             ['q' => 'batas desa', 'a' => 'Desa '.config('village.nama_desa', 'Desa').' berbatasan dengan desa-desa lain di Kecamatan Banjarsari. Untuk batas administrasi yang lebih detail, silakan hubungi kantor desa langsung ya.'],
 
             // ── Pendaftaran & Akun ──
-            ['q' => 'bagaimana cara mendaftar', 'a' => 'Caranya gampang! Klik tombol "Daftar Warga" di halaman utama, lalu isi formulir pendaftaran dengan NIK, nama lengkap, dan password. Setelah itu kamu bisa langsung login menggunakan NIK dan password yang didaftarkan.'],
-            ['q' => 'syarat pendaftaran', 'a' => 'Syarat mendaftar di Prodesa: 1) Warga '.config('village.nama_desa', 'Desa').', 2) Memiliki NIK yang terdaftar di data kependudukan desa, 3) Data diri lengkap (nama, tempat/tanggal lahir, alamat, RT/RW). Pastikan data yang dimasukkan sesuai dengan KTP ya!'],
-            ['q' => 'lupa password', 'a' => 'Saat ini fitur reset password belum tersedia. Silakan hubungi admin desa atau perangkat desa setempat untuk bantuan reset password akun Anda.'],
-            ['q' => 'lupa nik', 'a' => 'NIK bisa dicek di Kartu Tanda Penduduk (KTP) atau Kartu Keluarga (KK). Jika kehilangan, silakan hubungi kantor desa untuk informasi lebih lanjut.'],
+            ['q' => 'bagaimana cara mendaftar', 'a' => 'Caranya gampang! Klik tombol "Daftar Warga" di halaman utama, lalu isi formulir pendaftaran dengan email, nama lengkap, dan password. Setelah itu kamu bisa langsung login menggunakan email dan password yang didaftarkan.'],
+            ['q' => 'syarat pendaftaran', 'a' => 'Syarat mendaftar di Prodesa: 1) Warga '.config('village.nama_desa', 'Desa').', 2) Alamat email aktif, 3) Data diri lengkap (nama, alamat, RT/RW). NIK bersifat opsional. Pastikan data yang dimasukkan sudah benar ya!'],
+            ['q' => 'lupa password', 'a' => 'Klik "Lupa Password" di halaman login, masukkan email dan nomor HP yang terdaftar, lalu buat password baru. Pastikan email dan nomor HP sudah benar ya!'],
+            ['q' => 'lupa email', 'a' => 'Email yang digunakan untuk login adalah email yang Anda masukkan saat pendaftaran. Jika lupa, silakan hubungi admin desa atau perangkat desa setempat untuk bantuan.'],
             ['q' => 'ubah data diri', 'a' => 'Untuk mengubah data diri, silakan hubungi admin desa karena perubahan data kependudukan memerlukan verifikasi dari perangkat desa.'],
             ['q' => 'hapus akun', 'a' => 'Untuk penghapusan akun, silakan datang langsung ke kantor desa atau hubungi admin melalui halaman dashboard.'],
             ['q' => 'verifikasi akun', 'a' => 'Setelah mendaftar, akun Anda langsung aktif dan bisa digunakan untuk login serta mengajukan surat online. Pastikan data yang dimasukkan sudah benar ya!'],
@@ -144,7 +144,7 @@ class FaqController extends Controller
             ['q' => 'aplikasi mobile', 'a' => 'Saat ini Prodesa bisa diakses melalui website di HP kamu. Tampilannya sudah responsif dan nyaman dipakai dari browser HP. Untuk aplikasi mobile, masih dalam rencana pengembangan!'],
             ['q' => 'error system', 'a' => 'Kalau mengalami error atau masalah teknis, coba refresh halaman atau clear cache browser dulu. Jika masih bermasalah, silakan laporkan ke admin desa atau tim teknis.'],
             ['q' => 'ganti password', 'a' => 'Saat ini belum ada fitur ganti password mandiri. Hubungi admin desa untuk bantuan perubahan password akun Anda.'],
-            ['q' => 'lupa email', 'a' => 'Pendaftaran Prodesa menggunakan NIK, bukan email. Jadi tidak perlu khawatir soal lupa email. Cukup ingat NIK dan password kamu.'],
+            ['q' => 'lupa email', 'a' => 'Email yang digunakan untuk login adalah email yang Anda masukkan saat pendaftaran. Jika lupa email atau password, silakan gunakan fitur "Lupa Password" di halaman login, atau hubungi admin desa.'],
             ['q' => 'rt rw', 'a' => 'Data RT dan RW untuk pengajuan surat akan diambil dari data kependudukan saat pendaftaran. Pastikan kamu memasukkan RT dan RW yang benar saat mendaftar ya!'],
         ];
 

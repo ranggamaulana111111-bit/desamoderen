@@ -261,24 +261,16 @@
                                 @csrf
 
                                 <div>
-                                    <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">NIK</label>
-                                    <div class="input-group" :class="{ 'has-error': '{{ $errors->has('nik') }}', 'has-success': loginNikLen === 16 }">
-                                        <input type="text" name="nik" id="login-nik" value="{{ old('nik') }}" required autofocus
-                                            placeholder="16 digit NIK Anda"
-                                            maxlength="16"
-                                            inputmode="numeric"
-                                            autocomplete="username"
-                                            oninput="this.value=this.value.replace(/\D/g,'')"
-                                            x-init="loginNikLen = $el.value.length"
-                                            @input="loginNikLen = $el.value.length">
+                                    <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email</label>
+                                    <div class="input-group" :class="{ 'has-error': '{{ $errors->has('email') }}' }">
+                                        <input type="email" name="email" id="login-email" value="{{ old('email') }}" required autofocus
+                                            placeholder="nama@gmail.com"
+                                            autocomplete="username">
                                         <span class="input-icon">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
-                                        </span>
-                                        <span class="input-action" x-show="loginNikLen === 16" x-cloak>
-                                            <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                         </span>
                                     </div>
-                                    @error('nik')
+                                    @error('email')
                                     <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -386,7 +378,7 @@
                                         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-teal-600 flex items-center justify-center text-white font-extrabold text-xs flex-shrink-0">W</div>
                                         <div class="min-w-0">
                                             <p class="text-sm font-bold text-slate-800 truncate">Warga Demo</p>
-                                            <p class="text-[11px] text-slate-500 font-mono truncate">NIK 3216010101010001</p>
+                                            <p class="text-[11px] text-slate-500 truncate">demo@prodesa.id</p>
                                         </div>
                                     </div>
                                     <button type="button" @click="fillDemo()" class="btn-ghost shrink-0 !py-2 !px-3 text-[11px]">Isi Otomatis</button>
@@ -454,12 +446,24 @@
                                         @enderror
                                     </div>
                                     <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email <span class="text-red-400">*</span></label>
+                                        <div class="input-group" :class="{ 'has-error': '{{ $errors->has('email') }}' }">
+                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@gmail.com" required autocomplete="email">
+                                            <span class="input-icon">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                            </span>
+                                        </div>
+                                        @error('email')
+                                        <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div>
                                         <div class="flex items-center justify-between mb-2 ml-1">
-                                            <label class="block text-xs font-semibold text-slate-600">NIK</label>
+                                            <label class="block text-xs font-semibold text-slate-600">NIK <span class="text-slate-400 font-normal">(opsional)</span></label>
                                             <span class="text-[11px] font-medium text-slate-400">16 digit</span>
                                         </div>
                                         <div class="input-group" :class="nikLen === 16 ? 'has-success' : (nikLen > 0 && nikLen !== 16 ? 'has-error' : '')">
-                                            <input type="text" name="nik" value="{{ old('nik') }}" placeholder="Nomor Induk Kependudukan" required
+                                            <input type="text" name="nik" value="{{ old('nik') }}" placeholder="Nomor Induk Kependudukan"
                                                 maxlength="16" inputmode="numeric"
                                                 oninput="this.value=this.value.replace(/\D/g,'')"
                                                 x-init="nikLen = $el.value.length"
@@ -517,15 +521,6 @@
                                         <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email <span class="text-slate-400 font-normal">(opsional)</span></label>
-                                        <div class="input-group">
-                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@email.com" autocomplete="email">
-                                            <span class="input-icon">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-                                            </span>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 {{-- STEP 4: PASSWORD --}}
@@ -581,8 +576,12 @@
                                             <span class="review-value" x-text="getVal('nama_lengkap')"></span>
                                         </div>
                                         <div class="review-row">
+                                            <span class="review-label">Email</span>
+                                            <span class="review-value font-mono" x-text="getVal('email')"></span>
+                                        </div>
+                                        <div class="review-row">
                                             <span class="review-label">NIK</span>
-                                            <span class="review-value font-mono" x-text="getVal('nik')"></span>
+                                            <span class="review-value font-mono" x-text="getVal('nik') || '—'"></span>
                                         </div>
                                         <div class="review-row">
                                             <span class="review-label">No. WhatsApp</span>
@@ -712,8 +711,7 @@
             <div class="w-16 h-16 mx-auto rounded-2xl bg-brand-500 flex items-center justify-center shadow-xl shadow-brand-500/30" style="animation:checkPop .6s var(--ease-out-expo) .15s both">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
             </div>
-            <h2 class="text-xl font-extrabold text-slate-900 mt-5">Pendaftaran Berhasil!</h2>
-            <p class="text-sm text-slate-500 mt-2 leading-relaxed">Akun Anda telah dibuat. Silakan masuk menggunakan NIK dan password Anda.</p>
+            <h2 class="text-xl font-extrabold text-slate-900 mt-5">Pendaftaran Berhasil!</h2>                            <p class="text-sm text-slate-500 mt-2 leading-relaxed">Akun Anda telah dibuat. Silakan masuk menggunakan email dan password Anda.</p>
             <button type="button" @click="finishRegister()" class="btn-primary mt-6">Lanjut ke Masuk</button>
         </div>
     </div>
@@ -726,7 +724,7 @@
                 captchaB: capB,
                 submitting: false,
                 showPw: false,
-                loginNikLen: 0,
+                loginEmailLen: 0,
                 nikLen: 0,
                 showSuccess: false,
                 registerStep: 1,
@@ -766,9 +764,8 @@
 
                 fillDemo() {
                     const f = document.getElementById('loginForm');
-                    f.elements['nik'].value = '3216010101010001';
+                    f.elements['email'].value = 'demo@prodesa.id';
                     f.elements['password'].value = 'demo1234';
-                    this.loginNikLen = 16;
                 },
 
                 getVal(key) {
@@ -797,8 +794,8 @@
                             return false;
                         }
                     }
-                    const nik = form.elements['nik'].value;
-                    if (this.registerStep === 1 && nik && nik.length !== 16) {
+                    const nik = form.elements['nik'] ? form.elements['nik'].value : '';
+                    if (nik && nik.length !== 16) {
                         form.elements['nik'].focus();
                         return false;
                     }

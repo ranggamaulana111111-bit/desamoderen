@@ -1,9 +1,16 @@
 @php
     use Illuminate\Support\Facades\Storage;
 
-    $namaDesaKop = trim((string) config('village.nama_desa', 'Desa'));
+    // Use per-template kop surat if available, fallback to village settings
+    $kop = $letterConfig ?? null;
+
+    $namaDesaKop = trim((string) ($kop->kop_nama_desa ?? config('village.nama_desa', 'Desa')));
     $namaDesaKop = preg_replace('/^(Desa|Kelurahan)\s+/i', '', $namaDesaKop) ?: $namaDesaKop;
-    $namaKabKop = trim((string) config('village.nama_kabupaten', 'Kabupaten'));
+    $namaKabKop = trim((string) ($kop->kop_nama_kabupaten ?? config('village.nama_kabupaten', 'Kabupaten')));
+    $namaKecKop = trim((string) ($kop->kop_nama_kecamatan ?? config('village.nama_kecamatan', 'Kecamatan')));
+    $alamatKop = $kop->kop_alamat_kantor ?? config('village.alamat_kantor', 'Alamat Kantor');
+    $emailKop = $kop->kop_email_desa ?? config('village.email_desa', 'email@desa.id');
+    $teleponKop = $kop->kop_telepon_desa ?? config('village.telepon_desa', '');
 
     $kopMimeMap = fn (string $path) => strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'jpg'
         || strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'jpeg'
@@ -11,13 +18,15 @@
             : 'png';
 
     $logoPemdaSrc = null;
-    if (config('village.logo_pemda') && Storage::disk('public')->exists(config('village.logo_pemda'))) {
-        $logoPemdaSrc = 'data:image/'.$kopMimeMap(config('village.logo_pemda')).';base64,'.base64_encode(Storage::disk('public')->get(config('village.logo_pemda')));
+    $logoPemdaPath = $kop->kop_logo_pemda_path ?? config('village.logo_pemda');
+    if ($logoPemdaPath && Storage::disk('public')->exists($logoPemdaPath)) {
+        $logoPemdaSrc = 'data:image/'.$kopMimeMap($logoPemdaPath).';base64,'.base64_encode(Storage::disk('public')->get($logoPemdaPath));
     }
 
     $logoDesaSrc = null;
-    if (config('village.logo_desa') && Storage::disk('public')->exists(config('village.logo_desa'))) {
-        $logoDesaSrc = 'data:image/'.$kopMimeMap(config('village.logo_desa')).';base64,'.base64_encode(Storage::disk('public')->get(config('village.logo_desa')));
+    $logoDesaPath = $kop->kop_logo_desa_path ?? config('village.logo_desa');
+    if ($logoDesaPath && Storage::disk('public')->exists($logoDesaPath)) {
+        $logoDesaSrc = 'data:image/'.$kopMimeMap($logoDesaPath).';base64,'.base64_encode(Storage::disk('public')->get($logoDesaPath));
     }
 @endphp
 <div class="kop">
@@ -31,8 +40,8 @@
             <td style="text-align:center; vertical-align:middle;">
                 <div style="font-size:11pt; font-weight:bold; text-transform:uppercase; letter-spacing:0.5px;">Pemerintah Kabupaten {{ $namaKabKop }}</div>
                 <h1>Pemerintah Desa {{ $namaDesaKop }}</h1>
-                <p><strong>Kecamatan {{ config('village.nama_kecamatan', 'Kecamatan') }}, Kabupaten {{ $namaKabKop }}</strong></p>
-                <p class="alamat">{{ config('village.alamat_kantor', 'Alamat Kantor') }} &mdash; Email: {{ config('village.email_desa', 'email@desa.id') }}</p>
+                <p><strong>Kecamatan {{ $namaKecKop }}, Kabupaten {{ $namaKabKop }}</strong></p>
+                <p class="alamat">{{ $alamatKop }} &mdash; Email: {{ $emailKop }}{{ $teleponKop ? ' &mdash; Telp: '.$teleponKop : '' }}</p>
             </td>
             <td style="width:24%; text-align:center; vertical-align:middle;">
                 @if ($logoDesaSrc)

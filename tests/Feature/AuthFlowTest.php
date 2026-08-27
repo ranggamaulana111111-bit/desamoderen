@@ -54,7 +54,7 @@ class AuthFlowTest extends TestCase
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/login', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'password' => 'demo1234',
             'captcha' => '7',
         ])->assertRedirect('/warga/dashboard');
@@ -69,7 +69,7 @@ class AuthFlowTest extends TestCase
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/login', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'password' => 'demo1234',
             'captcha' => '99',
         ])->assertSessionHasErrors('captcha');
@@ -84,10 +84,10 @@ class AuthFlowTest extends TestCase
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/login', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'password' => 'salah123',
             'captcha' => '7',
-        ])->assertSessionHasErrors('nik');
+        ])->assertSessionHasErrors('email');
 
         $this->assertGuest();
     }
@@ -100,6 +100,7 @@ class AuthFlowTest extends TestCase
 
         $this->post('/register', [
             'nama_lengkap' => 'Warga Baru',
+            'email' => 'wargabaru@example.com',
             'nik' => '3216010101010002',
             'rt' => '01',
             'rw' => '02',
@@ -110,14 +111,14 @@ class AuthFlowTest extends TestCase
             'captcha' => '7',
         ])->assertRedirect('/warga/dashboard');
 
-        $user = User::where('nik', '3216010101010002')->first();
+        $user = User::where('email', 'wargabaru@example.com')->first();
 
         $this->assertNotNull($user);
         $this->assertTrue($user->hasRole('Warga'));
         $this->assertAuthenticatedAs($user);
     }
 
-    public function test_register_rejects_duplicate_nik(): void
+    public function test_register_rejects_duplicate_email(): void
     {
         $this->get('/register');
 
@@ -125,12 +126,12 @@ class AuthFlowTest extends TestCase
 
         $this->post('/register', [
             'nama_lengkap' => 'Warga Demo Lagi',
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'no_hp' => '081234567892',
             'password' => 'rahasia123',
             'password_confirmation' => 'rahasia123',
             'captcha' => '7',
-        ])->assertSessionHasErrors('nik');
+        ])->assertSessionHasErrors('email');
     }
 
     public function test_forgot_password_resets_password(): void
@@ -140,14 +141,14 @@ class AuthFlowTest extends TestCase
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/password/lupa', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'no_hp' => '081234567890',
             'password' => 'passwordbaru1',
             'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
         ])->assertRedirect('/login')->assertSessionHas('status');
 
-        $user = User::findByNik('3216010101010001');
+        $user = User::where('email', 'demo@prodesa.id')->first();
 
         $this->assertTrue(password_verify('passwordbaru1', $user->password));
     }
@@ -159,7 +160,7 @@ class AuthFlowTest extends TestCase
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/password/lupa', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'no_hp' => '081111111111',
             'password' => 'passwordbaru1',
             'password_confirmation' => 'passwordbaru1',
@@ -169,21 +170,21 @@ class AuthFlowTest extends TestCase
 
     public function test_forgot_password_works_when_user_has_no_no_hp(): void
     {
-        User::findByNik('3216010101010001')->update(['no_hp' => null]);
+        User::where('email', 'demo@prodesa.id')->first()->update(['no_hp' => null]);
 
         $this->get('/password/lupa');
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->post('/password/lupa', [
-            'nik' => '3216010101010001',
+            'email' => 'demo@prodesa.id',
             'no_hp' => '081234567890',
             'password' => 'passwordbaru1',
             'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
         ])->assertRedirect('/login')->assertSessionHas('status');
 
-        $this->assertTrue(password_verify('passwordbaru1', User::findByNik('3216010101010001')->password));
+        $this->assertTrue(password_verify('passwordbaru1', User::where('email', 'demo@prodesa.id')->first()->password));
     }
 
     public function test_captcha_check_helper(): void

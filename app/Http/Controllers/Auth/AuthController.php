@@ -103,7 +103,8 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'nama_lengkap' => ['required', 'string', 'max:100'],
-            'nik' => ['required', 'string', 'digits:16'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'nik' => ['nullable', 'string', 'digits:16'],
             'rt' => ['nullable', 'string', 'max:3'],
             'rw' => ['nullable', 'string', 'max:3'],
             'alamat' => ['nullable', 'string', 'max:255'],
@@ -123,12 +124,13 @@ class AuthController extends Controller
         }
 
         $request->validate([
-            'nik' => [Rule::unique('users', 'nik')],
+            'email' => [Rule::unique('users', 'email')],
         ]);
 
         $user = User::create([
             'name' => $validated['nama_lengkap'],
-            'nik' => $validated['nik'],
+            'email' => $validated['email'],
+            'nik' => $validated['nik'] ?? null,
             'rt' => $validated['rt'] ?? null,
             'rw' => $validated['rw'] ?? null,
             'alamat' => $validated['alamat'] ?? null,
@@ -159,7 +161,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'nik' => ['required', 'string', 'digits:16'],
+            'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
             ...$this->captchaFieldRules(),
         ], [], [
@@ -174,11 +176,10 @@ class AuthController extends Controller
             return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
-        $user = User::findByNik($credentials['nik']);
-
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            Auth::login($user, $request->boolean('remember'));
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $request->boolean('remember'))) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
 
             if ($user->hasRole('Lembaga')) {
                 return redirect()->route('lembaga.dashboard');
@@ -194,8 +195,8 @@ class AuthController extends Controller
         Captcha::question();
 
         return back()->withErrors([
-            'nik' => 'NIK atau password salah.',
-        ])->onlyInput('nik');
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
 
     public function showForgot()
@@ -210,7 +211,7 @@ class AuthController extends Controller
     public function forgot(Request $request)
     {
         $validated = $request->validate([
-            'nik' => ['required', 'string', 'digits:16'],
+            'email' => ['required', 'string', 'email'],
             'no_hp' => ['required', 'string'],
             'password' => $this->passwordRules(),
             ...$this->captchaFieldRules(),
@@ -227,12 +228,12 @@ class AuthController extends Controller
             return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
-        $user = User::findByNik($validated['nik']);
+        $user = User::where('email', $validated['email'])->first();
 
         if (! $user) {
             Captcha::question();
 
-            return back()->withInput()->withErrors(['nik' => 'NIK tidak terdaftar.']);
+            return back()->withInput()->withErrors(['email' => 'Email tidak terdaftar.']);
         }
 
         $normalizedHp = preg_replace('/[^0-9]/', '', $validated['no_hp']);

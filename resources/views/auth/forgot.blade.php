@@ -97,7 +97,7 @@
                         <span class="bg-gradient-to-r from-brand-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">Password Anda</span>
                     </h1>
                     <p class="text-sm text-white/40 mt-3 max-w-[260px] mx-auto leading-relaxed">
-                        Verifikasi NIK dan nomor HP terdaftar untuk membuat password baru.
+                        Verifikasi email dan nomor HP terdaftar untuk membuat password baru.
                     </p>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         </a>
                     </div>
                     <h1 class="text-xl font-extrabold text-white tracking-tight">Lupa <span class="bg-gradient-to-r from-brand-300 to-teal-300 bg-clip-text text-transparent">Password</span></h1>
-                    <p class="text-xs text-white/40 mt-1.5 max-w-[280px]">Verifikasi NIK dan nomor HP terdaftar untuk membuat password baru.</p>
+                    <p class="text-xs text-white/40 mt-1.5 max-w-[280px]">Verifikasi email dan nomor HP terdaftar untuk membuat password baru.</p>
                 </div>
             </div>
 
@@ -142,7 +142,7 @@
                                 </a>
                                 <div>
                                     <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Atur Ulang <span class="bg-gradient-to-r from-brand-600 to-teal-600 bg-clip-text text-transparent">Password</span></h1>
-                                    <p class="text-sm text-slate-500 mt-1 leading-relaxed">Masukkan NIK dan nomor HP yang terdaftar di sistem.</p>
+                                    <p class="text-sm text-slate-500 mt-1 leading-relaxed">Masukkan email dan nomor HP yang terdaftar di sistem.</p>
                                 </div>
                             </div>
                         </div>
@@ -151,16 +151,15 @@
                             @csrf
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">NIK</label>
-                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('nik') }}' }">
-                                    <input type="text" name="nik" value="{{ old('nik') }}" placeholder="16 digit NIK Anda" required autofocus
-                                        maxlength="16" inputmode="numeric" autocomplete="username"
-                                        oninput="this.value=this.value.replace(/\D/g,'')">
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email</label>
+                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('email') }}' }">
+                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@gmail.com" required autofocus
+                                        autocomplete="username">
                                     <span class="input-icon">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                     </span>
                                 </div>
-                                @error('nik')
+                                @error('email')
                                 <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>

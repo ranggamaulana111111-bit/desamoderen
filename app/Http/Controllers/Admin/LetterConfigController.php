@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\LetterConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class LetterConfigController extends Controller
@@ -29,6 +30,7 @@ class LetterConfigController extends Controller
     {
         $data = $this->validateData($request);
         $data['fields'] = $this->buildFields($request);
+        $data = $this->handleKopUploads($request, $data);
 
         LetterConfig::create($data);
 
@@ -54,6 +56,7 @@ class LetterConfigController extends Controller
     {
         $data = $this->validateData($request, $template_surat->id);
         $data['fields'] = $this->buildFields($request);
+        $data = $this->handleKopUploads($request, $data, $template_surat);
 
         $template_surat->update($data);
 
@@ -112,6 +115,14 @@ class LetterConfigController extends Controller
             'masa_berlaku_bulan' => 'required|integer|min:0|max:255',
             'body_template' => 'nullable|string',
             'is_active' => 'boolean',
+            'kop_nama_kabupaten' => 'nullable|string|max:255',
+            'kop_nama_desa' => 'nullable|string|max:255',
+            'kop_nama_kecamatan' => 'nullable|string|max:255',
+            'kop_alamat_kantor' => 'nullable|string|max:255',
+            'kop_email_desa' => 'nullable|email|max:255',
+            'kop_telepon_desa' => 'nullable|string|max:50',
+            'kop_logo_pemda' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kop_logo_desa' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
     }
 
@@ -146,5 +157,24 @@ class LetterConfigController extends Controller
         }
 
         return $fields;
+    }
+
+    private function handleKopUploads(Request $request, array $data, ?LetterConfig $existing = null): array
+    {
+        if ($request->hasFile('kop_logo_pemda')) {
+            if ($existing && $existing->kop_logo_pemda_path && Storage::disk('public')->exists($existing->kop_logo_pemda_path)) {
+                Storage::disk('public')->delete($existing->kop_logo_pemda_path);
+            }
+            $data['kop_logo_pemda_path'] = $request->file('kop_logo_pemda')->store('kop-surat', 'public');
+        }
+
+        if ($request->hasFile('kop_logo_desa')) {
+            if ($existing && $existing->kop_logo_desa_path && Storage::disk('public')->exists($existing->kop_logo_desa_path)) {
+                Storage::disk('public')->delete($existing->kop_logo_desa_path);
+            }
+            $data['kop_logo_desa_path'] = $request->file('kop_logo_desa')->store('kop-surat', 'public');
+        }
+
+        return $data;
     }
 }

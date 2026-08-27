@@ -225,6 +225,16 @@
         @endcan
 
         @can('setting.manage')
+        <a href="{{ route('admin.kop-surat.show') }}"
+           class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all {{ request()->routeIs('admin.kop-surat.*') ? 'bg-accent-500/20 text-white shadow-lg shadow-accent-900/20 border-l-2 border-[#34d399]' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 {{ request()->routeIs('admin.kop-surat.*') ? 'bg-accent-500/25 text-[#6ee7b7]' : 'bg-white/[.06] text-white/40 group-hover:text-white/70 group-hover:bg-white/[.1]' }}">
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+            </div>
+            Kop Surat
+        </a>
+        @endcan
+
+        @can('setting.manage')
         <a href="{{ route('admin.setting.index') }}"
            class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all {{ request()->routeIs('admin.setting.*') ? 'bg-accent-500/20 text-white shadow-lg shadow-accent-900/20 border-l-2 border-[#34d399]' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
             <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 {{ request()->routeIs('admin.setting.*') ? 'bg-accent-500/25 text-[#6ee7b7]' : 'bg-white/[.06] text-white/40 group-hover:text-white/70 group-hover:bg-white/[.1]' }}">
@@ -396,6 +406,12 @@
         <a href="{{ route('admin.letter-config.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium {{ request()->routeIs('admin.letter-config.*') ? 'bg-accent-500/25 text-white border-l-2 border-[#34d399]' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
             Template Surat
+        </a>
+        @endcan
+        @can('setting.manage')
+        <a href="{{ route('admin.kop-surat.show') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium {{ request()->routeIs('admin.kop-surat.*') ? 'bg-accent-500/25 text-white border-l-2 border-[#34d399]' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5"/></svg>
+            Kop Surat
         </a>
         @endcan
         @can('setting.manage')

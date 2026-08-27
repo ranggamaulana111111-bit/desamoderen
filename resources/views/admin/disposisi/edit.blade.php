@@ -46,7 +46,7 @@
                                 <option value="">Pilih Tujuan</option>
                                 @foreach ($tujuanUsers as $user)
                                     <option value="{{ $user->id }}" {{ old('tujuan_disposisi', $disposisi->tujuan_disposisi) == $user->id ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->role }})
+                                        {{ $user->name }} ({{ $user->role_names }})
                                     </option>
                                 @endforeach
                             </select>

@@ -1110,7 +1110,7 @@
                 <div class="lg:col-span-3 space-y-3" x-data="{ openFaq: null }">
                     @php
                         $faqs = [
-                            ['q' => 'Bagaimana cara mendaftar di Prodesa?', 'a' => 'Klik tombol "Daftar Gratis" di halaman utama, isi formulir dengan NIK dan data diri Anda, lalu login menggunakan NIK dan password yang telah didaftarkan. Prosesnya hanya butuh 1 menit!'],
+                            ['q' => 'Bagaimana cara mendaftar di Prodesa?', 'a' => 'Klik tombol "Daftar Gratis" di halaman utama, isi formulir dengan email dan data diri Anda, lalu login menggunakan email dan password yang telah didaftarkan. Prosesnya hanya butuh 1 menit!'],
                             ['q' => 'Apa saja dokumen yang diperlukan?', 'a' => 'Dokumen yang diperlukan tergantung jenis surat. Untuk SKTM: KTP dan KK. Untuk KTP sementara: KTP yang sedang dalam proses. Untuk akta: surat keterangan dari rumah sakit/kelurahan.'],
                             ['q' => 'Berapa lama proses pengajuan surat?', 'a' => 'Proses pengajuan biasanya selesai dalam 1-3 hari kerja setelah data diverifikasi oleh perangkat desa. Anda akan mendapat notifikasi setiap ada perubahan status.'],
                             ['q' => 'Apakah ada biaya untuk pengajuan surat?', 'a' => 'Tidak ada biaya sama sekali. Seluruh layanan surat menyurat di '.config('village.nama_desa', 'Desa').' gratis untuk seluruh warga.'],

@@ -11,9 +11,10 @@ class DemoAuthSeeder extends Seeder
     public function run(): void
     {
         $warga = User::firstOrCreate(
-            ['nik' => '3216010101010001'],
+            ['email' => 'demo@prodesa.id'],
             [
                 'name' => 'Warga Demo',
+                'email' => 'demo@prodesa.id',
                 'nik' => '3216010101010001',
                 'no_hp' => '081234567890',
                 'rt' => '01',
@@ -28,6 +29,6 @@ class DemoAuthSeeder extends Seeder
             $warga->syncRoles([$wargaRole]);
         }
 
-        $this->command?->info('Demo warga siap: NIK 3216010101010001 / password demo1234');
+        $this->command?->info('Demo warga siap: email demo@prodesa.id / password demo1234');
     }
 }

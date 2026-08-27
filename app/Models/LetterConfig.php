@@ -18,6 +18,14 @@ class LetterConfig extends Model
         'body_template',
         'requirements',
         'is_active',
+        'kop_nama_kabupaten',
+        'kop_nama_desa',
+        'kop_nama_kecamatan',
+        'kop_alamat_kantor',
+        'kop_email_desa',
+        'kop_telepon_desa',
+        'kop_logo_pemda_path',
+        'kop_logo_desa_path',
     ];
 
     protected function casts(): array

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AntreanController;
 use App\Http\Controllers\Admin\ApbdesaController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DisposisiController;
+use App\Http\Controllers\Admin\KopSuratController;
 use App\Http\Controllers\Admin\DocumentVersionController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\InventarisController;
@@ -196,6 +197,10 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     Route::get('pengaturan/update-status', [SettingController::class, 'updateStatus'])->middleware(['permission:setting.manage', 'role:Super Admin'])->name('setting.updateStatus');
     Route::post('pengaturan/update', [SettingController::class, 'updateApp'])->middleware(['permission:setting.manage', 'role:Super Admin'])->name('setting.updateApp');
     Route::post('pengaturan/{category}', [SettingController::class, 'update'])->middleware('permission:setting.manage')->name('setting.update');
+
+    // ── Kop Surat (global letterhead editor) ──
+    Route::get('kop-surat', [KopSuratController::class, 'show'])->middleware('permission:setting.manage')->name('kop-surat.show');
+    Route::put('kop-surat', [KopSuratController::class, 'update'])->middleware('permission:setting.manage')->name('kop-surat.update');
 
     // ── Configuration Versioning ──
     Route::get('pengaturan/versions', [SettingVersionController::class, 'index'])->middleware('permission:setting.manage')->name('setting.versions.index');
