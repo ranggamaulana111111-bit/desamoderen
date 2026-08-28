@@ -370,21 +370,7 @@
                                 </button>
                             </form>
 
-                            {{-- Demo akun --}}
-                            <div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Akun Demo</p>
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="flex items-center gap-2.5 min-w-0">
-                                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-teal-600 flex items-center justify-center text-white font-extrabold text-xs flex-shrink-0">W</div>
-                                        <div class="min-w-0">
-                                            <p class="text-sm font-bold text-slate-800 truncate">Warga Demo</p>
-                                            <p class="text-[11px] text-slate-500 truncate">demo@prodesa.id</p>
-                                        </div>
-                                    </div>
-                                    <button type="button" @click="fillDemo()" class="btn-ghost shrink-0 !py-2 !px-3 text-[11px]">Isi Otomatis</button>
-                                </div>
-                                <p class="text-[11px] text-slate-400 mt-2.5">Password: <span class="font-mono font-semibold">demo1234</span></p>
-                            </div>
+
 
                             <p class="text-center text-sm text-slate-500 mt-6">
                                 Belum punya akun?
@@ -762,11 +748,7 @@
                     } catch (err) {}
                 },
 
-                fillDemo() {
-                    const f = document.getElementById('loginForm');
-                    f.elements['email'].value = 'demo@prodesa.id';
-                    f.elements['password'].value = 'demo1234';
-                },
+
 
                 getVal(key) {
                     const f = document.getElementById('registerForm');
