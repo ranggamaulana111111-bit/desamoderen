@@ -376,7 +376,7 @@
 
                 async cari(query) {
                     try {
-                        const res = await fetch('{{ route('admin.queue.pickup.cari') }}', {
+                        const res = await fetch('{{ route('admin.queue.pickup.cari', [], false) }}', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json' },
                             body: JSON.stringify({ query }),
@@ -405,7 +405,7 @@
                     if (!this.antrean || this.processing) return;
                     this.processing = true;
                     try {
-                        const res = await fetch('{{ route('admin.queue.pickup.proses', ['antrean' => '__ID__']) }}'.replace('__ID__', this.antrean.id), {
+                        const res = await fetch('{{ route('admin.queue.pickup.proses', ['antrean' => '__ID__'], false) }}'.replace('__ID__', this.antrean.id), {
                             method: 'POST',
                             headers: { 'X-CSRF-TOKEN': this.csrf, 'Accept': 'application/json' },
                         });

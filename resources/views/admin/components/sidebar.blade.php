@@ -23,10 +23,15 @@
     <div class="absolute inset-0 opacity-[.04]" style="background-image: radial-gradient(circle at 20% 50%, rgba(16,185,129,.5) 0, transparent 50%), radial-gradient(circle at 80% 20%, rgba(6,182,212,.3) 0, transparent 40%); pointer-events: none;"></div>
 
     {{-- Brand --}}
+    @php($sidebarLogo = config('village.logo_sidebar') ?: config('village.logo_desa'))
     <div class="relative flex items-center gap-3 px-5 py-5 border-b border-white/[.08]">
+        @if($sidebarLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($sidebarLogo))
+            <img src="{{ asset('storage/' . $sidebarLogo) }}" alt="Logo {{ config('village.nama_desa', 'Desa') }}" class="w-10 h-10 rounded-xl object-contain bg-white/90 p-1 shadow-lg shadow-brand-500/30 ring-2 ring-white/10">
+        @else
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 via-brand-500 to-teal-500 flex items-center justify-center text-white font-extrabold text-sm shadow-lg shadow-brand-500/30 ring-2 ring-white/10">
             P
         </div>
+        @endif
         <div class="sidebar-brand-text">
             <p class="font-bold text-[15px] leading-tight tracking-tight">Pro<span class="text-brand-400">desa</span></p>
             <p class="text-[10px] text-white/35 leading-tight font-medium">{{ config('village.nama_desa', 'Portal Desa') }}</p>
@@ -299,7 +304,11 @@
 {{-- Mobile Top Bar --}}
 <div class="lg:hidden fixed top-0 left-0 right-0 z-50 glass-header px-4 py-3 flex items-center justify-between">
     <div class="flex items-center gap-3">
+        @if($sidebarLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($sidebarLogo))
+            <img src="{{ asset('storage/' . $sidebarLogo) }}" alt="Logo {{ config('village.nama_desa', 'Desa') }}" class="w-8 h-8 rounded-lg object-contain bg-white p-0.5 shadow-md shadow-brand-500/20">
+        @else
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-xs shadow-md shadow-brand-500/20">P</div>
+        @endif
         <span class="font-bold text-sm text-slate-800">Prodesa</span>
     </div>
     <div class="flex items-center gap-1">

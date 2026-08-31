@@ -93,10 +93,18 @@
 </head>
 <body class="min-h-screen font-sans antialiased bg-slate-50 overflow-x-clip" x-data="authPage('{{ $mode }}', {{ $captcha[0] }}, {{ $captcha[1] }})" x-init="init()">
 
+    @php
+        $loginLogo = config('village.logo_login') ?: config('village.logo_desa');
+        $loginLogoPath = $loginLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($loginLogo) ? asset('storage/' . $loginLogo) : null;
+        $loginBg = config('village.background_login') && \Illuminate\Support\Facades\Storage::disk('public')->exists(config('village.background_login'))
+            ? "url('".asset('storage/' . config('village.background_login'))."') center/cover no-repeat, var(--gradient-hero)"
+            : 'var(--gradient-hero)';
+    @endphp
+
     <div class="min-h-screen lg:grid lg:grid-cols-[460px_1fr] xl:grid-cols-[520px_1fr]">
 
         {{-- LEFT PANEL: BRANDING (desktop) --}}
-        <aside class="relative hidden lg:flex flex-col justify-between p-10 xl:p-12 overflow-hidden z-10" style="background:var(--gradient-hero);box-shadow:18px 0 40px -18px rgba(0,0,0,.35)">
+        <aside class="relative hidden lg:flex flex-col justify-between p-10 xl:p-12 overflow-hidden z-10" style="background:{{ $loginBg }};box-shadow:18px 0 40px -18px rgba(0,0,0,.35)">
             <div class="mesh-bg"></div>
             <div class="noise-overlay"></div>
             <div class="dot-pattern"></div>
@@ -107,9 +115,13 @@
             <div class="relative z-10">
                 <div class="a-fade-up flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                        </div>
+                        @if($loginLogoPath)
+                            <img src="{{ $loginLogoPath }}" alt="Logo {{ config('village.nama_desa') }}" class="w-11 h-11 rounded-2xl object-contain bg-white/90 p-1 shadow-lg shadow-brand-500/30">
+                        @else
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            </div>
+                        @endif
                         <div>
                             <h2 class="text-xl font-extrabold text-white tracking-tight">Pro<span class="text-brand-300">desa</span></h2>
                             <p class="text-[10px] text-white/40 font-semibold tracking-widest uppercase">Portal Desa Digital</p>
@@ -202,15 +214,19 @@
         <main class="relative flex flex-col min-h-screen">
 
             {{-- Mobile hero strip --}}
-            <div class="lg:hidden relative overflow-hidden" style="background:var(--gradient-hero)">
+            <div class="lg:hidden relative overflow-hidden" style="background:{{ $loginBg }}">
                 <div class="mesh-bg"></div>
                 <div class="noise-overlay"></div>
                 <div class="relative z-10 px-5 pt-5 pb-9">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                            </div>
+                            @if($loginLogoPath)
+                                <img src="{{ $loginLogoPath }}" alt="Logo {{ config('village.nama_desa') }}" class="w-9 h-9 rounded-xl object-contain bg-white/90 p-0.5 shadow-lg shadow-brand-500/30">
+                            @else
+                                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                                </div>
+                            @endif
                             <div>
                                 <h2 class="text-base font-extrabold text-white tracking-tight">Pro<span class="text-brand-300">desa</span></h2>
                                 <p class="text-[8px] text-white/30 font-semibold tracking-widest uppercase">Portal Desa Digital</p>

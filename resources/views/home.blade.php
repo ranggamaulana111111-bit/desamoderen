@@ -252,7 +252,7 @@
                     </span>
                     </h1>
                     <p class="text-lg text-white/75 max-w-lg mb-8 leading-relaxed anim-fade-up stagger-2">
-                        Urus surat desa kapan saja, di mana saja. Tanpa antre, tanpa ribet — transparan dan cepat untuk seluruh warga {{ config('village.nama_desa', 'Desa') }}.
+                        Dan urus surat desa kapan saja, di mana saja. Tanpa antre, tanpa ribet — transparan dan cepat untuk seluruh warga {{ config('village.nama_desa', 'Desa') }}.
                     </p>
                     <div class="flex flex-wrap gap-3 mb-10 anim-fade-up stagger-3">
                         <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#10b981] text-white px-7 py-3.5 rounded-full font-semibold hover:bg-[#059669] transition-all shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:-translate-y-0.5">
@@ -295,10 +295,10 @@
                             <div class="w-3 h-3 rounded-full bg-green-400/80"></div>
                             <span class="ml-2 text-xs text-white/40 font-medium">Informasi Desa</span>
                             <div class="ml-auto flex items-center gap-1">
-                                <button type="button" @click="prev()" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Sebelumnya">
+                                <button type="button" @click="prev()" aria-label="Sebelumnya" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Sebelumnya">
                                     <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                                 </button>
-                                <button type="button" @click="next()" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Berikutnya">
+                                <button type="button" @click="next()" aria-label="Berikutnya" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Berikutnya">
                                     <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                                 </button>
                             </div>
@@ -388,8 +388,8 @@
             </div>
 
             <div class="hidden md:flex justify-center mt-12">
-                <a href="#layanan" class="flex flex-col items-center gap-2 text-white/40 hover:text-white/70 transition group">
-                    <span class="text-xs font-medium tracking-wider uppercase">Scroll</span>
+                <a href="#layanan" class="flex flex-col items-center gap-2 text-white/40 hover:text-white/70 transition group" aria-label="Lihat Layanan">
+                    <span class="text-xs font-medium tracking-wider uppercase">Lihat Layanan</span>
                     <div class="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center pt-2 group-hover:border-white/40 transition">
                         <div class="w-1 h-2.5 bg-white/40 rounded-full animate-bounce"></div>
                     </div>
@@ -400,13 +400,23 @@
 
     {{-- MARQUEE TRUST BAR --}}
     <div class="bg-white border-b border-slate-100 py-4 overflow-hidden">
-        <div class="marquee-track">
-            @foreach(array_merge(['Pelayanan Cepat & Mudah','100% Gratis untuk Warga','Data Aman & Terenkripsi','Proses Transparan','14+ Jenis Surat Tersedia','24/7 Online','Didukung AI Assistant','Terverifikasi Resmi'], ['Pelayanan Cepat & Mudah','100% Gratis untuk Warga','Data Aman & Terenkripsi','Proses Transparan','14+ Jenis Surat Tersedia','24/7 Online','Didukung AI Assistant','Terverifikasi Resmi']) as $item)
+    <div class="marquee-track">
+        <div class="flex items-center">
+            @foreach(['Pelayanan Cepat & Mudah','100% Gratis untuk Warga','Data Aman & Terenkripsi','Proses Transparan','14+ Jenis Surat Tersedia','24/7 Online','Didukung AI Assistant','Terverifikasi Resmi'] as $item)
                 <div class="flex items-center gap-3 px-8 whitespace-nowrap">
-                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 5"/></svg>
                     <span class="text-sm font-medium text-slate-500">{{ $item }}</span>
                 </div>
             @endforeach
+        </div>
+        <div class="flex items-center" aria-hidden="true">
+            @foreach(['Pelayanan Cepat & Mudah','100% Gratis untuk Warga','Data Aman & Terenkripsi','Proses Transparan','14+ Jenis Surat Tersedia','24/7 Online','Didukung AI Assistant','Terverifikasi Resmi'] as $item)
+                <div class="flex items-center gap-3 px-8 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 5"/></svg>
+                    <span class="text-sm font-medium text-slate-500">{{ $item }}</span>
+                </div>
+            @endforeach
+        </div>
         </div>
     </div>
 
@@ -505,7 +515,7 @@
                     <p class="text-slate-500">Kabar terbaru dari {{ config('village.nama_desa', 'Desa') }} untuk seluruh warga.</p>
                 </div>
                 <div class="relative w-full md:w-80">
-                    <input type="text" id="searchBerita" placeholder="Cari berita..." class="w-full text-sm border border-slate-200 rounded-2xl pl-11 pr-4 py-3 bg-white focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition text-slate-700 placeholder-slate-400">
+                    <input type="text" id="searchBerita" placeholder="Cari berita..." aria-label="Cari berita" class="w-full text-sm border border-slate-200 rounded-2xl pl-11 pr-4 py-3 bg-white focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition text-slate-700 placeholder-slate-400">
                     <svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
             </div>
@@ -718,7 +728,7 @@
                 {{-- Dots --}}
                 <div class="flex items-center justify-center gap-1.5 mt-5">
                     @foreach($services as $i => $s)
-                    <button type="button" @click="select({{ $i }})" class="h-1.5 rounded-full transition-all duration-300" :class="active === {{ $i }} ? 'w-6 bg-brand-600' : 'w-1.5 bg-slate-300 hover:bg-slate-400'"></button>
+                    <button type="button" @click="select({{ $i }})" :aria-label="'Tampilkan ' + '{{ $s['title'] }}'" :aria-current="active === {{ $i }} ? 'true' : 'false'" class="h-1.5 rounded-full transition-all duration-300" :class="active === {{ $i }} ? 'w-6 bg-brand-600' : 'w-1.5 bg-slate-300 hover:bg-slate-400'"></button>
                     @endforeach
                 </div>
             </div>
@@ -1172,8 +1182,8 @@
                         </div>
                         <div class="border-t border-slate-100 p-3">
                             <form @submit.prevent="sendMessage()" class="flex gap-2">
-                                <input type="text" x-model="question" placeholder="Ketik pertanyaan Anda..." class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none bg-slate-50 text-slate-700 placeholder-slate-400 transition">
-                                <button type="submit" :disabled="!question.trim() || sending" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
+                                <input type="text" x-model="question" placeholder="Ketik pertanyaan Anda..." aria-label="Ketik pertanyaan Anda" class="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none bg-slate-50 text-slate-700 placeholder-slate-400 transition">
+                                <button type="submit" :disabled="!question.trim() || sending" aria-label="Kirim pertanyaan" class="w-10 h-10 rounded-full bg-[#10b981] text-white flex items-center justify-center hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
                                 </button>
                             </form>
@@ -1231,7 +1241,7 @@
                     </div>
                 </div>
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-4 tracking-wide">Navigasi</h4>
+                    <h2 class="text-sm font-bold text-white mb-4 tracking-wide">Navigasi</h2>
                     <ul class="space-y-2.5">
                         @foreach(['profil'=>'Profil','berita'=>'Berita','layanan'=>'Layanan','keunggulan'=>'Keunggulan','statistik'=>'Statistik','struktur'=>'Struktur','kelembagaan'=>'Kelembagaan','faq'=>'FAQ'] as $id=>$label)
                         <li><a href="#{{ $id }}" class="text-sm hover:text-brand-400 transition">{{ $label }}</a></li>
@@ -1239,7 +1249,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-4 tracking-wide">Layanan</h4>
+                    <h2 class="text-sm font-bold text-white mb-4 tracking-wide">Layanan</h2>
                     <ul class="space-y-2.5">
                         @foreach(['SKTM','KTP Sementara','Akta Kelahiran','Domisili','SKU','SKKB'] as $svc)
                         <li><a href="#layanan" class="text-sm hover:text-brand-400 transition">{{ $svc }}</a></li>
@@ -1247,7 +1257,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-4 tracking-wide">Kontak</h4>
+                    <h2 class="text-sm font-bold text-white mb-4 tracking-wide">Kontak</h2>
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3 text-sm">
                             <svg class="w-4 h-4 text-brand-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
