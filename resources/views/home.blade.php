@@ -218,12 +218,13 @@
                 @endforeach
                 <div class="border-t border-slate-100 mt-3 pt-3 flex flex-col gap-2">
                     @guest
-                        <a href="{{ route('login') }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">Masuk</a>
-                        <a href="{{ route('register') }}" class="block text-center px-4 py-3 rounded-full text-sm font-semibold text-white bg-[#10b981] shadow-lg shadow-brand-500/25 hover:bg-[#059669] transition">Daftar Gratis</a>
+                         <a href="{{ route('login') }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Masuk</a>
+                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-[#10b981] px-5 py-2.5 rounded-full hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/30 nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
                     @endguest
                     @auth
-                        <a href="{{ auth()->user()->dashboardRoute() }}" class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-brand-600 bg-brand-50 transition">Dashboard</a>
-                    @endauth
+                        <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">@csrf
+                             @endauth
                 </div>
             </div>
         </div>
@@ -259,9 +260,15 @@
                             <span>Daftar Sekarang</span>
                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
+                        @guest
                         <a href="{{ route('login') }}" class="inline-flex items-center gap-2 glass text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/15 transition-all border border-white/30">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-                            <span>Masuk</span>
+                        <span>masuk</span>
+                        @endguest
+                    @auth
+                    <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">@csrf
+                             @endauth
                         </a>
                     </div>
                     <div class="flex flex-wrap gap-6 anim-fade-up stagger-4">
