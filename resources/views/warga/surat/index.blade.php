@@ -79,7 +79,7 @@
     </style>
     @include('components.design-tokens')
 </head>
-<body class="bg-gray-50 font-sans antialiased" x-data="riwayat()">
+<body class="bg-gray-50 font-sans antialiased" x-data="riwayat()" @open-letter-picker.window="showLetterPicker = true" @keydown.escape.window="showLetterPicker = false">
     <div class="scroll-progress" id="scrollProgress" style="width:0%"></div>
 
     {{-- FLOATING NAV --}}
@@ -123,24 +123,10 @@
                     </div>
                 </div>
                 <div class="a-fade-up d2">
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" @click.away="open = false" class="btn-primary text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                            Ajukan Surat Baru
-                        </button>
-                        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 -translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,.15)] border border-slate-100 z-20 max-h-80 overflow-y-auto">
-                            <div class="p-2">
-                                @foreach ($letterConfigs as $lc)
-                                    <a href="{{ route('warga.surat.create', $lc->jenis_surat) }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-brand-50 transition group">
-                                        <div class="w-8 h-8 rounded-lg bg-brand-50 group-hover:bg-brand-100 flex items-center justify-center transition">
-                                            <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                        </div>
-                                        <span class="text-sm font-semibold text-slate-700 group-hover:text-brand-700 transition">{{ $lc->label }}</span>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" @click="$dispatch('open-letter-picker')" class="btn-primary text-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        Ajukan Surat Baru
+                    </button>
                 </div>
             </div>
 
@@ -211,10 +197,10 @@
                 </div>
                 <h3 class="text-lg font-bold text-slate-700">Belum Ada Pengajuan</h3>
                 <p class="text-sm text-slate-400 mt-1 max-w-xs mx-auto">Mulai ajukan surat pertama Anda dari tombol di atas</p>
-                <a href="{{ route('warga.surat.create', $letterConfigs->first()->jenis_surat ?? 'sktm') }}" class="btn-primary mt-6 text-sm">
+                <button type="button" @click="$dispatch('open-letter-picker')" class="btn-primary mt-6 text-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     Ajukan Sekarang
-                </a>
+                </button>
             </div>
         @else
             {{-- REVISION ALERTS --}}
@@ -460,6 +446,66 @@
         </template>
     </div>
 
+    @php
+        $lm = [
+            'sktm'=>['i'=>'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z','f'=>'#f43f5e','t'=>'#e11d48'],
+            'ktp_sementara'=>['i'=>'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0','f'=>'#0ea5e9','t'=>'#0284c7'],
+            'akta'=>['i'=>'M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z','f'=>'#f59e0b','t'=>'#d97706'],
+            'sku'=>['i'=>'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4','f'=>'#10b981','t'=>'#059669'],
+            'domisili'=>['i'=>'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6','f'=>'#06b6d4','t'=>'#0891b2'],
+            'skkb'=>['i'=>'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z','f'=>'#8b5cf6','t'=>'#7c3aed'],
+            'belum_menikah'=>['i'=>'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z','f'=>'#ec4899','t'=>'#db2777'],
+            'izin_keramaian'=>['i'=>'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z','f'=>'#14b8a6','t'=>'#0d9488'],
+            'ahli_waris'=>['i'=>'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3','f'=>'#64748b','t'=>'#475569'],
+            'kepemilikan_tanah'=>['i'=>'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7','f'=>'#eab308','t'=>'#ca8a04'],
+            'pengantar_skck'=>['i'=>'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z','f'=>'#6366f1','t'=>'#4f46e5'],
+            'penghasilan'=>['i'=>'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z','f'=>'#22c55e','t'=>'#16a34a'],
+            'janda_duda'=>['i'=>'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z','f'=>'#a855f7','t'=>'#9333ea'],
+            'pindah'=>['i'=>'M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2m4-10l3-3m0 0l3 3m-3-3v12','f'=>'#f97316','t'=>'#ea580c'],
+        ];
+        $df=['i'=>'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z','f'=>'#64748b','t'=>'#475569'];
+    @endphp
+
+    {{-- LETTER PICKER MODAL --}}
+    <template x-teleport="body">
+        <div x-show="showLetterPicker" x-cloak class="fixed inset-0 z-[70] flex items-center justify-center p-4" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" @click="showLetterPicker = false"></div>
+            <div class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
+                <div class="p-5 text-white relative overflow-hidden" style="background:var(--gradient-dark-card)">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/20 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="flex items-start justify-between relative">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/25">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Pilih Jenis Surat</h3>
+                                <p class="text-xs text-white/50 mt-0.5">Pilih jenis surat yang ingin Anda ajukan</p>
+                            </div>
+                        </div>
+                        <button @click="showLetterPicker = false" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition flex-shrink-0">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-5 max-h-[60vh] overflow-y-auto">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        @foreach ($letterConfigs as $lc)
+                        @php $m = $lm[$lc->jenis_surat] ?? $df; @endphp
+                        <a href="{{ route('warga.surat.create', $lc->jenis_surat) }}" class="group relative overflow-hidden rounded-2xl p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-slate-100 bg-white" style="box-shadow:0 1px 3px rgba(0,0,0,.03)">
+                            <div class="absolute top-0 right-0 w-14 h-14 rounded-full opacity-[0.07] -translate-y-1/3 translate-x-1/3 transition-opacity group-hover:opacity-[0.12]" style="background:linear-gradient(135deg,{{ $m['f'] }},{{ $m['t'] }})"></div>
+                            <div class="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5 shadow-md transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg" style="background:linear-gradient(135deg,{{ $m['f'] }},{{ $m['t'] }});box-shadow:0 4px 12px {{ $m['f'] }}25">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $m['i'] }}"/></svg>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 group-hover:text-slate-900 transition leading-tight block">{{ $lc->label }}</span>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
     {{-- AI ASSISTANT --}}
     <div class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40" x-data="aiChat()" x-cloak>
         <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90 translate-y-4" class="absolute bottom-16 right-0 w-[340px] sm:w-[360px] bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,.15),0_4px_12px_rgba(0,0,0,.05)] border border-slate-200/60 overflow-hidden mb-2">
@@ -497,10 +543,10 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     <span class="text-[10px] font-semibold">Beranda</span>
                 </a>
-                <a href="{{ route('warga.surat.create', $letterConfigs->first()->jenis_surat ?? 'sktm') }}" class="flex flex-col items-center gap-0.5 py-2 rounded-xl text-slate-400 hover:text-brand-600 transition">
+                <button type="button" @click="$dispatch('open-letter-picker')" class="flex flex-col items-center gap-0.5 py-2 rounded-xl text-slate-400 hover:text-brand-600 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     <span class="text-[10px] font-semibold">Surat</span>
-                </a>
+                </button>
                 <a href="{{ route('warga.surat.index') }}" class="flex flex-col items-center gap-0.5 py-2 rounded-xl text-brand-600 bg-brand-50/80">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                     <span class="text-[10px] font-bold">Riwayat</span>
@@ -519,7 +565,7 @@
     {{-- SCRIPTS --}}
     <script>
         function riwayat(){return{
-            search:'',activeFilter:'all',
+            search:'',activeFilter:'all',showLetterPicker:false,
             greeting:'',currentTime:'',currentDate:'',
             filters:[
                 {key:'all',label:'Semua'},

@@ -108,7 +108,7 @@ class WidgetController extends Controller
         $request->validate([
             'theme' => 'nullable|string|in:light,dark,system',
             'density' => 'nullable|string|in:compact,comfortable,loose',
-            'accent_color' => 'nullable|string|in:emerald,blue,purple,indigo,amber,cyan,rose',
+            'accent_color' => 'nullable|string|in:emerald,blue,purple,indigo,amber,cyan,rose,orange',
             'sidebar_collapsed' => 'nullable|boolean',
         ]);
 

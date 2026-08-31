@@ -29,11 +29,14 @@ class UserSetting extends Model
         $villageAccent = (string) config('village.tampilan_accent_color', 'emerald');
         $villageAccent = array_key_exists($villageAccent, static::validAccentColors()) ? $villageAccent : 'emerald';
 
+        $villageSidebarStyle = (string) config('village.tampilan_sidebar_style', 'default');
+
         return [
             'theme' => (string) config('village.tampilan_dark_mode', '0') === '1' ? 'dark' : 'light',
             'density' => 'comfortable',
             'accent_color' => $villageAccent,
-            'sidebar_collapsed' => (string) config('village.tampilan_sidebar_style', 'default') === 'icon-only',
+            'sidebar_collapsed' => $villageSidebarStyle === 'icon-only',
+            'sidebar_style' => in_array($villageSidebarStyle, ['default', 'compact', 'icon-only']) ? $villageSidebarStyle : 'default',
         ];
     }
 
@@ -57,6 +60,7 @@ class UserSetting extends Model
             'amber' => '#f59e0b',
             'cyan' => '#06b6d4',
             'rose' => '#f43f5e',
+            'orange' => '#f97316',
         ];
     }
 }

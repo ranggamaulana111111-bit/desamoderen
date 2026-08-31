@@ -422,7 +422,7 @@
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Nama Lengkap</label>
                                         <div class="input-group" :class="{ 'has-error': '{{ $errors->has('nama_lengkap') }}' }">
-                                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" placeholder="Sesuai KTP" required autocomplete="name">
+                                            <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" placeholder="Sesuai KTP" required autocomplete="name" x-model="regNama">
                                             <span class="input-icon">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
                                             </span>
@@ -434,7 +434,7 @@
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email <span class="text-red-400">*</span></label>
                                         <div class="input-group" :class="{ 'has-error': '{{ $errors->has('email') }}' }">
-                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@gmail.com" required autocomplete="email">
+                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@gmail.com" required autocomplete="email" x-model="regEmail">
                                             <span class="input-icon">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                             </span>
@@ -453,7 +453,8 @@
                                                 maxlength="16" inputmode="numeric"
                                                 oninput="this.value=this.value.replace(/\D/g,'')"
                                                 x-init="nikLen = $el.value.length"
-                                                @input="nikLen = $el.value.length">
+                                                @input="nikLen = $el.value.length"
+                                                x-model="regNik">
                                             <span class="input-icon">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/></svg>
                                             </span>
@@ -470,7 +471,7 @@
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Alamat Lengkap</label>
                                         <div class="input-group">
-                                            <textarea name="alamat" rows="2" placeholder="Nama jalan, RT/RW, Dusun, Kecamatan" required class="w-full text-sm border-1.5 border-slate-200 rounded-2xl p-4 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition font-sans resize-none">{{ old('alamat') }}</textarea>
+                                            <textarea name="alamat" rows="2" placeholder="Nama jalan, RT/RW, Dusun, Kecamatan" required class="w-full text-sm border-1.5 border-slate-200 rounded-2xl p-4 focus:outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 transition font-sans resize-none" x-model="regAlamat">{{ old('alamat') }}</textarea>
                                         </div>
                                         @error('alamat')
                                         <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
@@ -498,7 +499,7 @@
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">No. WhatsApp</label>
                                         <div class="input-group" :class="{ 'has-error': '{{ $errors->has('no_hp') }}' }">
-                                            <input type="tel" name="no_hp" value="{{ old('no_hp') }}" placeholder="08xxxxxxxxxx" required autocomplete="tel">
+                                            <input type="tel" name="no_hp" value="{{ old('no_hp') }}" placeholder="08xxxxxxxxxx" required autocomplete="tel" x-model="regNoHp">
                                             <span class="input-icon">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
                                             </span>
@@ -510,7 +511,7 @@
                                 </div>
 
                                 {{-- STEP 4: PASSWORD --}}
-                                <div class="wizard-step" :class="{ 'active': registerStep === 4 }" x-data="{ pw: '', pwLen: 0, strength: 0, showPwC: false }">
+                                <div class="wizard-step" :class="{ 'active': registerStep === 4 }" x-data="{ pw: '', pwC: '', pwLen: 0, strength: 0, showPwC: false }">
                                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Keamanan</p>
                                     <div>
                                         <div class="flex items-center justify-between mb-2 ml-1">
@@ -541,8 +542,8 @@
                                     </div>
                                     <div>
                                         <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Konfirmasi Password</label>
-                                        <div class="input-group">
-                                            <input :type="showPwC ? 'text' : 'password'" name="password_confirmation" placeholder="Ulangi password" required autocomplete="new-password" x-model="pwC">
+                                        <div class="input-group" :class="{ 'has-error': pwC !== '' && pwC !== pw }">
+                                            <input :type="showPwC ? 'text' : 'password'" name="password_confirmation" placeholder="Ulangi password" required autocomplete="new-password" x-model="pwC" @input="pwC = $el.value">
                                             <span class="input-icon">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
                                             </span>
@@ -550,6 +551,9 @@
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                             </span>
                                         </div>
+                                        <template x-if="pwC !== '' && pwC !== pw">
+                                            <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">Password tidak sesuai</p>
+                                        </template>
                                     </div>
                                 </div>
 
@@ -559,23 +563,23 @@
                                     <div class="rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden mb-5">
                                         <div class="review-row">
                                             <span class="review-label">Nama</span>
-                                            <span class="review-value" x-text="getVal('nama_lengkap')"></span>
+                                            <span class="review-value" x-text="regNama"></span>
                                         </div>
                                         <div class="review-row">
                                             <span class="review-label">Email</span>
-                                            <span class="review-value font-mono" x-text="getVal('email')"></span>
+                                            <span class="review-value font-mono" x-text="regEmail"></span>
                                         </div>
                                         <div class="review-row">
                                             <span class="review-label">NIK</span>
-                                            <span class="review-value font-mono" x-text="getVal('nik') || '—'"></span>
+                                            <span class="review-value font-mono" x-text="regNik || '—'"></span>
                                         </div>
                                         <div class="review-row">
                                             <span class="review-label">No. WhatsApp</span>
-                                            <span class="review-value" x-text="getVal('no_hp')"></span>
+                                            <span class="review-value" x-text="regNoHp"></span>
                                         </div>
                                         <div class="review-row">
                                             <span class="review-label">Alamat</span>
-                                            <span class="review-value" x-text="getVal('alamat')"></span>
+                                            <span class="review-value" x-text="regAlamat"></span>
                                         </div>
                                     </div>
                                     @if($captchaMode === 'turnstile')
@@ -717,6 +721,11 @@
                 confirmed: false,
                 totalSteps: 5,
                 stepLabels: ['Identitas', 'Alamat', 'Kontak', 'Keamanan', 'Konfirmasi'],
+                regNama: '',
+                regEmail: '',
+                regNik: '',
+                regAlamat: '',
+                regNoHp: '',
 
                 init() {
                     const els = document.querySelectorAll('.a-fade-up');
@@ -779,6 +788,12 @@
                     const nik = form.elements['nik'] ? form.elements['nik'].value : '';
                     if (nik && nik.length !== 16) {
                         form.elements['nik'].focus();
+                        return false;
+                    }
+                    const pwEl = form.elements['password'];
+                    const pwCEl = form.elements['password_confirmation'];
+                    if (pwEl && pwCEl && pwCEl.value && pwCEl.value !== pwEl.value) {
+                        pwCEl.focus();
                         return false;
                     }
                     return true;

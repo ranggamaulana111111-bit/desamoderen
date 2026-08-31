@@ -10,9 +10,14 @@ class DemoAuthSeeder extends Seeder
 {
     public function run(): void
     {
-        $warga = User::firstOrCreate(
-            ['email' => 'demo@prodesa.id'],
-            [
+        // Cari user berdasarkan NIK atau Email yang sudah ada
+        $warga = User::where('nik', '3216010101010001')
+            ->orWhere('email', 'demo@prodesa.id')
+            ->first();
+
+        // Jika belum ada, baru buat user baru
+        if (! $warga) {
+            $warga = User::create([
                 'name' => 'Warga Demo',
                 'email' => 'demo@prodesa.id',
                 'nik' => '3216010101010001',
@@ -21,8 +26,8 @@ class DemoAuthSeeder extends Seeder
                 'rw' => '02',
                 'alamat' => 'Jl. Raya Desa No. 1, Kecamatan Cibeureum',
                 'password' => bcrypt('demo1234'),
-            ]
-        );
+            ]);
+        }
 
         $wargaRole = Role::where('name', 'Warga')->first();
         if ($wargaRole) {

@@ -21,12 +21,18 @@ class ThemeSettingsService
             return UserSetting::defaults();
         }
 
+        $villageStyle = (string) config('village.tampilan_sidebar_style', 'default');
+        if (! in_array($villageStyle, ['default', 'compact', 'icon-only'])) {
+            $villageStyle = 'default';
+        }
+
         return [
             'theme' => $setting->theme,
             'density' => $setting->density,
             'accent_color' => $setting->accent_color,
             'accent_hex' => UserSetting::validAccentColors()[$setting->accent_color] ?? '#10b981',
             'sidebar_collapsed' => $setting->sidebar_collapsed,
+            'sidebar_style' => $setting->sidebar_collapsed ? 'icon-only' : $villageStyle,
         ];
     }
 

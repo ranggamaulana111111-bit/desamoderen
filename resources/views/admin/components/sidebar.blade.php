@@ -1,4 +1,24 @@
-<aside id="sidebar" class="fixed top-0 left-0 z-40 w-[260px] h-screen bg-gradient-to-b from-[#022c22] via-[#052e22] to-[#064e3b] text-white hidden lg:flex lg:flex-col transition-all duration-300 overflow-hidden">
+<style>
+        /* ── Sidebar Style: compact ── */
+        #sidebar.sidebar-compact { width: 204px; }
+        #sidebar.sidebar-compact nav a { padding-left: 10px; padding-right: 10px; font-size: 12.5px; }
+        #sidebar.sidebar-compact .sidebar-brand-text { font-size: 13px; }
+        #sidebar.sidebar-compact .px-5 { padding-left: 14px; padding-right: 14px; }
+
+        /* ── Sidebar Style: icon-only ── */
+        #sidebar.sidebar-icon-only { width: 84px; }
+        #sidebar.sidebar-icon-only nav a { justify-content: center; padding-left: 0; padding-right: 0; gap: 0; font-size: 0; }
+        #sidebar.sidebar-icon-only nav p { display: none; }
+        #sidebar.sidebar-icon-only .sidebar-brand-text { display: none; }
+        #sidebar.sidebar-icon-only .user-info { display: none; }
+        #sidebar.sidebar-icon-only .user-row { justify-content: center; padding-left: 0; padding-right: 0; }
+        #sidebar.sidebar-icon-only form button { justify-content: center; padding-left: 0; padding-right: 0; gap: 0; font-size: 0; }
+
+        .sidebar-spacer-icon { width: 84px !important; }
+        .sidebar-spacer-compact { width: 204px !important; }
+    </style>
+<aside id="sidebar" class="fixed top-0 left-0 z-40 w-[260px] h-screen bg-gradient-to-b from-[#022c22] via-[#052e22] to-[#064e3b] text-white hidden lg:flex lg:flex-col transition-all duration-300 overflow-hidden"
+       :class="sidebarStyle === 'icon-only' ? 'sidebar-icon-only' : sidebarStyle === 'compact' ? 'sidebar-compact' : ''">
     {{-- Decorative mesh --}}
     <div class="absolute inset-0 opacity-[.04]" style="background-image: radial-gradient(circle at 20% 50%, rgba(16,185,129,.5) 0, transparent 50%), radial-gradient(circle at 80% 20%, rgba(6,182,212,.3) 0, transparent 40%); pointer-events: none;"></div>
 
@@ -7,7 +27,7 @@
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 via-brand-500 to-teal-500 flex items-center justify-center text-white font-extrabold text-sm shadow-lg shadow-brand-500/30 ring-2 ring-white/10">
             P
         </div>
-        <div>
+        <div class="sidebar-brand-text">
             <p class="font-bold text-[15px] leading-tight tracking-tight">Pro<span class="text-brand-400">desa</span></p>
             <p class="text-[10px] text-white/35 leading-tight font-medium">{{ config('village.nama_desa', 'Portal Desa') }}</p>
         </div>
@@ -257,11 +277,11 @@
 
     {{-- User Footer --}}
     <div class="relative px-4 py-4 border-t border-white/[.08]">
-        <div class="flex items-center gap-3 px-2 mb-3">
+        <div class="flex items-center gap-3 px-2 mb-3 user-row">
             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-xs font-bold text-white shadow-lg shadow-brand-500/30 ring-2 ring-white/10">
                 {{ auth()->user()->avatar_initials }}
             </div>
-            <div class="min-w-0 flex-1">
+            <div class="min-w-0 flex-1 user-info">
                 <p class="text-[13px] font-semibold truncate text-white/90">{{ auth()->user()->name }}</p>
                 <p class="text-[10px] text-white/35 truncate font-medium">{{ auth()->user()->role_label }}</p>
             </div>
@@ -439,4 +459,5 @@
 </div>
 
 <div class="flex min-h-screen">
-    <div class="hidden lg:block w-[260px] shrink-0"></div>
+    <div class="hidden lg:block w-[260px] shrink-0"
+         :class="sidebarStyle === 'icon-only' ? 'sidebar-spacer-icon' : sidebarStyle === 'compact' ? 'sidebar-spacer-compact' : ''"></div>

@@ -136,9 +136,9 @@
                         ['label' => 'Surat Masuk', 'value' => $totalSuratMasuk, 'icon' => 'M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51', 'color' => 'cyan', 'subtitle' => 'Total masuk'],
                     ];
                 @endphp
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-8 gap-3">
                     @foreach($kpis as $i => $kpi)
-                        <div class="bento-card stat-micro p-4 lg:p-3 xl:p-4 a-fade-up d{{ $i + 1 }}" style="animation:successPop .5s var(--ease-out-expo)">
+                        <div class="bento-card stat-micro p-4 a-fade-up d{{ $i + 1 }}" style="animation:successPop .5s var(--ease-out-expo)">
                             <div class="flex items-center justify-between mb-3">
                                 <div class="w-10 h-10 rounded-xl bg-{{ $kpi['color'] }}-50 text-{{ $kpi['color'] }}-600 flex items-center justify-center border border-{{ $kpi['color'] }}-100/50">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $kpi['icon'] }}"/></svg>
@@ -150,12 +150,12 @@
                                     </span>
                                 @endif
                             </div>
-                            <p class="text-2xl lg:text-xl xl:text-2xl font-extrabold text-gray-900 tabular-nums">{{ number_format($kpi['value']) }}</p>
-                            <p class="text-[10px] xl:text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wider">{{ $kpi['label'] }}</p>
-                            <div class="flex items-center gap-1.5 mt-1">
-                                <p class="text-[10px] text-gray-400">{{ $kpi['subtitle'] }}</p>
+                            <p class="text-2xl font-extrabold text-gray-900 tabular-nums">{{ number_format($kpi['value']) }}</p>
+                            <p class="text-[11px] font-semibold text-gray-500 mt-1.5">{{ $kpi['label'] }}</p>
+                            <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                <p class="text-[10px] text-gray-400 leading-snug">{{ $kpi['subtitle'] }}</p>
                                 @if(isset($kpi['growth']))
-                                    <span class="text-[9px] font-bold {{ $kpi['growth'] >= 0 ? 'text-emerald-500' : 'text-red-500' }}">
+                                    <span class="text-[10px] font-bold {{ $kpi['growth'] >= 0 ? 'text-emerald-500' : 'text-red-500' }}">
                                         {{ $kpi['growth'] >= 0 ? '+' : '' }}{{ $kpi['growth'] }}%
                                     </span>
                                 @endif
@@ -217,6 +217,65 @@
                                     </a>
                                 @endif
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- SURAT MASUK / KELUAR --}}
+                <div class="mt-6">
+                    <div class="bento-card a-fade-up" style="animation:successPop .5s var(--ease-out-expo)">
+                        <div class="px-5 sm:px-6 py-4 border-b border-gray-100">
+                            <div class="section-header mb-0">
+                                <h3 class="text-gray-800">Surat Masuk & Keluar</h3>
+                            </div>
+                        </div>
+                        <div class="p-4 sm:p-5">
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="p-4 rounded-xl bg-cyan-50/80 border border-cyan-100/50">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51"/></svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-cyan-700">Masuk</span>
+                                    </div>
+                                    <p class="text-xl font-extrabold text-gray-900">{{ $totalSuratMasuk }}</p>
+                                    <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-500">
+                                        <span>Hari ini: <strong class="text-cyan-600">{{ $suratMasukHariIni }}</strong></span>
+                                        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                        <span>Minggu ini: <strong class="text-cyan-600">{{ $suratMasukMingguIni }}</strong></span>
+                                    </div>
+                                </div>
+                                <div class="p-4 rounded-xl bg-violet-50/80 border border-violet-100/50">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-violet-700">Keluar</span>
+                                    </div>
+                                    <p class="text-xl font-extrabold text-gray-900">{{ $totalSuratKeluar }}</p>
+                                    <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-500">
+                                        <span>Hari ini: <strong class="text-violet-600">{{ $suratKeluarHariIni }}</strong></span>
+                                        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                        <span>Minggu ini: <strong class="text-violet-600">{{ $suratKeluarMingguIni }}</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if($suratMasukTerbaru->count())
+                                <div>
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Terbaru Diterima</p>
+                                    <div class="space-y-2">
+                                        @foreach($suratMasukTerbaru as $sm)
+                                            <div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50/60">
+                                                <div class="w-2 h-2 rounded-full bg-cyan-400 shrink-0"></div>
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-xs font-semibold text-gray-700 truncate">{{ $sm->perihal }}</p>
+                                                    <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima ? \Carbon\Carbon::parse($sm->tanggal_terima)->format('d M Y') : '-' }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -463,63 +522,6 @@
                             </div>
                         </div>
                         @endif
-
-                        {{-- SURAT MASUK / KELUAR --}}
-                        <div class="bento-card a-fade-up d8" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="px-5 sm:px-6 py-4 border-b border-gray-100">
-                                <div class="section-header mb-0">
-                                    <h3 class="text-gray-800">Surat Masuk & Keluar</h3>
-                                </div>
-                            </div>
-                            <div class="p-4 sm:p-5">
-                                <div class="grid grid-cols-2 gap-3 mb-4">
-                                    <div class="p-4 rounded-xl bg-cyan-50/80 border border-cyan-100/50">
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51"/></svg>
-                                            </div>
-                                            <span class="text-xs font-bold text-cyan-700">Masuk</span>
-                                        </div>
-                                        <p class="text-xl font-extrabold text-gray-900">{{ $totalSuratMasuk }}</p>
-                                        <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-500">
-                                            <span>Hari ini: <strong class="text-cyan-600">{{ $suratMasukHariIni }}</strong></span>
-                                            <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                                            <span>Minggu ini: <strong class="text-cyan-600">{{ $suratMasukMingguIni }}</strong></span>
-                                        </div>
-                                    </div>
-                                    <div class="p-4 rounded-xl bg-violet-50/80 border border-violet-100/50">
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <div class="w-8 h-8 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
-                                            </div>
-                                            <span class="text-xs font-bold text-violet-700">Keluar</span>
-                                        </div>
-                                        <p class="text-xl font-extrabold text-gray-900">{{ $totalSuratKeluar }}</p>
-                                        <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-500">
-                                            <span>Hari ini: <strong class="text-violet-600">{{ $suratKeluarHariIni }}</strong></span>
-                                            <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                                            <span>Minggu ini: <strong class="text-violet-600">{{ $suratKeluarMingguIni }}</strong></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                @if($suratMasukTerbaru->count())
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Terbaru Diterima</p>
-                                        <div class="space-y-2">
-                                            @foreach($suratMasukTerbaru as $sm)
-                                                <div class="flex items-center gap-3 p-2 rounded-lg bg-gray-50/60">
-                                                    <div class="w-2 h-2 rounded-full bg-cyan-400 shrink-0"></div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <p class="text-xs font-semibold text-gray-700 truncate">{{ $sm->perihal }}</p>
-                                                        <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima ? \Carbon\Carbon::parse($sm->tanggal_terima)->format('d M Y') : '-' }}</p>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
                     </div>
 
                     {{-- ── RIGHT COLUMN (4 cols) ── --}}
@@ -571,7 +573,15 @@
                             </div>
                         </div>
 
-                        {{-- RINGKASAN EKSEKUTIF --}}
+                    </div>
+                </div>
+
+                {{-- ═══════════════════════════════════════════════════════════ --}}
+                {{-- SECTION 4: ANALYTICS GRID (FULL WIDTH)                    --}}
+                {{-- ═══════════════════════════════════════════════════════════ --}}
+                <div class="mt-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        {{-- ROW 1: Ringkasan | Kuota | Waktu | SLA --}}
                         <div class="bento-card p-5 sm:p-6 a-fade-up d5" style="animation:successPop .5s var(--ease-out-expo)">
                             <div class="section-header">
                                 <h3 class="text-gray-800">Ringkasan Eksekutif</h3>
@@ -582,7 +592,7 @@
                                     <div class="w-9 h-9 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </div>
-                                    <div class="flex-1">
+                                    <div class="flex-1 min-w-0">
                                         <p class="text-[11px] text-gray-500 font-medium">Surat Hari Ini</p>
                                         <p class="text-lg font-bold text-gray-900">{{ $totalSuratBulanIni }}</p>
                                     </div>
@@ -591,7 +601,7 @@
                                     <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </div>
-                                    <div class="flex-1">
+                                    <div class="flex-1 min-w-0">
                                         <p class="text-[11px] text-gray-500 font-medium">Selesai Bulan Ini</p>
                                         <p class="text-lg font-bold text-gray-900">{{ $selesaiBulanIni }}</p>
                                     </div>
@@ -600,7 +610,7 @@
                                     <div class="w-9 h-9 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
                                     </div>
-                                    <div class="flex-1">
+                                    <div class="flex-1 min-w-0">
                                         <p class="text-[11px] text-gray-500 font-medium">Rate Persetujuan</p>
                                         <p class="text-lg font-bold text-gray-900">{{ $ratePersetujuan }}%</p>
                                     </div>
@@ -651,9 +661,44 @@
                             </div>
                         </div>
 
+                        {{-- MONITORING SLA --}}
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d14" style="animation:successPop .5s var(--ease-out-expo)">
+                            <div class="section-header">
+                                <h3 class="text-gray-800">Monitoring SLA</h3>
+                                <div class="shimmer-line"></div>
+                            </div>
+                            @php
+                                $slaPercent = $inProgress > 0 ? round((($inProgress - $slaBreached) / $inProgress) * 100) : 100;
+                            @endphp
+                            <div class="text-center mb-4">
+                                <div class="relative w-24 h-24 mx-auto">
+                                    <svg class="w-24 h-24 -rotate-90" viewBox="0 0 36 36">
+                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="#e5e7eb" stroke-width="3"/>
+                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="{{ $slaPercent >= 80 ? '#10b981' : ($slaPercent >= 50 ? '#f59e0b' : '#ef4444') }}" stroke-width="3" stroke-dasharray="{{ $slaPercent }}, 100" stroke-linecap="round"/>
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span class="text-lg font-extrabold text-gray-900">{{ $slaPercent }}%</span>
+                                        <span class="text-[8px] font-semibold text-gray-400 uppercase">On Time</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-100/50 text-center">
+                                    <p class="text-sm font-extrabold text-emerald-600">{{ $inProgress - $slaBreached }}</p>
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase">Sesuai SLA</p>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-red-50/80 border border-red-100/50 text-center">
+                                    <p class="text-sm font-extrabold text-red-600">{{ $slaBreached }}</p>
+                                    <p class="text-[9px] font-bold text-red-500 uppercase">Melewati SLA</p>
+                                </div>
+                            </div>
+                            <p class="text-[10px] text-gray-400 text-center mt-2">Batas SLA: {{ $slaHours }} jam</p>
+                        </div>
+
+                        {{-- ROW 2: Sebaran (2) | Tren (2) --}}
                         {{-- PETA SEBARAN RT/RW --}}
                         @if($rtStats->count())
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d8" style="animation:successPop .5s var(--ease-out-expo)">
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d8 xl:col-span-2" style="animation:successPop .5s var(--ease-out-expo)">
                             <div class="section-header">
                                 <h3 class="text-gray-800">Sebaran RT / RW</h3>
                                 <div class="shimmer-line"></div>
@@ -670,6 +715,46 @@
                                     <div class="h-32">
                                         <canvas id="rwChart"></canvas>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+                        {{-- TREN PENGAJUAN --}}
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d11 xl:col-span-2" style="animation:successPop .5s var(--ease-out-expo)">
+                            <div class="section-header">
+                                <h3 class="text-gray-800">Tren Pengajuan</h3>
+                                <div class="shimmer-line"></div>
+                            </div>
+                            <div class="h-48">
+                                <canvas id="trenChart"></canvas>
+                            </div>
+                        </div>
+
+                        {{-- ROW 3: Distribusi | Antrean | Pertumbuhan (2) --}}
+                        {{-- DISTRIBUSI JENIS SURAT --}}
+                        @if($distribusiJenis->count())
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d12" style="animation:successPop .5s var(--ease-out-expo)">
+                            <div class="section-header">
+                                <h3 class="text-gray-800">Distribusi Jenis Surat</h3>
+                                <div class="shimmer-line"></div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-32 h-32 shrink-0">
+                                    <canvas id="jenisChart"></canvas>
+                                </div>
+                                <div class="flex-1 min-w-0 space-y-1.5">
+                                    @php
+                                        $colors = ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+                                        $totalJenis = $distribusiJenis->sum('total');
+                                    @endphp
+                                    @foreach($distribusiJenis as $i => $dj)
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:{{ $colors[$i % 6] }}"></span>
+                                            <span class="text-[10px] font-medium text-gray-600 capitalize flex-1 leading-tight">{{ str_replace('_', ' ', $dj->jenis_surat) }}</span>
+                                            <span class="text-[10px] font-bold text-gray-700 shrink-0">{{ $dj->total }}</span>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -707,7 +792,7 @@
                                                 <p class="text-xs font-semibold text-gray-700 truncate">{{ $aq->pengajuan->user->name ?? '-' }}</p>
                                                 <p class="text-[10px] text-gray-400 capitalize">{{ str_replace('_', ' ', $aq->pengajuan->jenis_surat ?? '') }} &middot; {{ $aq->tanggal_ambil->format('d M') }}</p>
                                             </div>
-                                            <span class="text-[9px] font-bold {{ $aq->tanggal_ambil->isPast() ? 'text-red-500' : 'text-amber-500' }}">
+                                            <span class="text-[9px] font-bold shrink-0 {{ $aq->tanggal_ambil->isPast() ? 'text-red-500' : 'text-amber-500' }}">
                                                 {{ $aq->tanggal_ambil->isPast() ? 'LEWAT' : $aq->tanggal_ambil->diffForHumans() }}
                                             </span>
                                         </div>
@@ -717,16 +802,79 @@
                         </div>
                         @endif
 
+                        {{-- PERTUMBUHAN WARGA --}}
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d13 xl:col-span-2" style="animation:successPop .5s var(--ease-out-expo)">
+                            <div class="section-header">
+                                <h3 class="text-gray-800">Pertumbuhan Warga</h3>
+                                <div class="shimmer-line"></div>
+                            </div>
+                            <div class="h-44">
+                                <canvas id="wargaChart"></canvas>
+                            </div>
+                        </div>
+
+                        {{-- ROW 4: Informasi (2) | Berita (2) --}}
+                        {{-- INFORMASI DESA --}}
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d14 xl:col-span-2" style="animation:successPop .5s var(--ease-out-expo)">
+                            <div class="section-header">
+                                <h3 class="text-gray-800">Informasi Desa</h3>
+                                <div class="shimmer-line"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Nama Desa</p>
+                                        <p class="text-[13px] font-semibold text-gray-900 leading-snug">{{ config('village.nama_desa') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kepala Desa</p>
+                                        <p class="text-[13px] font-semibold text-gray-900 leading-snug">{{ config('village.nama_kades') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Sekretaris Desa</p>
+                                        <p class="text-[13px] font-semibold text-gray-900 leading-snug">{{ config('village.nama_sekdes') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5">
+                                    <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kontak</p>
+                                        <p class="text-[13px] font-semibold text-gray-900 leading-snug break-words">{{ config('village.email_desa') }}</p>
+                                        <p class="text-xs text-gray-500">{{ config('village.telepon_desa') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2.5 col-span-2 mt-7 pt-3 border-t border-gray-100">
+                                    <span class="health-dot ok"></span>
+                                    <span class="text-[11px] font-medium text-gray-500">Server Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- BERITA TERBARU --}}
                         @if($beritaTerbaru->count())
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d10" style="animation:successPop .5s var(--ease-out-expo)">
+                        <div class="bento-card p-5 sm:p-6 a-fade-up d10 xl:col-span-2" style="animation:successPop .5s var(--ease-out-expo)">
                             <div class="section-header">
                                 <h3 class="text-gray-800">Berita Terbaru</h3>
                                 <div class="shimmer-line"></div>
                             </div>
                             <div class="space-y-3">
                                 @foreach($beritaTerbaru as $berita)
-                                    <a href="{{ route('berita.show', $berita->slug) }}" target="_blank" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50/80 transition group">
+                                    <a href="{{ route('berita.show', $berita->slug) }}" target="_blank" class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-gray-50/80 transition group border border-gray-50">
                                         @if($berita->foto)
                                             <img src="{{ asset('storage/' . $berita->foto) }}" alt="{{ $berita->judul }}" class="w-14 h-14 rounded-lg object-cover shrink-0 border border-gray-100">
                                         @else
@@ -735,149 +883,14 @@
                                             </div>
                                         @endif
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-semibold text-gray-900 group-hover:text-teal-700 transition truncate">{{ $berita->judul }}</p>
-                                            <p class="text-[11px] text-gray-400 mt-0.5">{{ $berita->created_at->diffForHumans() }}</p>
+                                            <p class="text-sm font-semibold text-gray-900 group-hover:text-teal-700 transition leading-snug">{{ $berita->judul }}</p>
+                                            <p class="text-[11px] text-gray-400 mt-1">{{ $berita->created_at->diffForHumans() }}</p>
                                         </div>
                                     </a>
                                 @endforeach
                             </div>
                         </div>
                         @endif
-
-                        {{-- TREN PENGAJUAN --}}
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d11" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="section-header">
-                                <h3 class="text-gray-800">Tren Pengajuan</h3>
-                                <div class="shimmer-line"></div>
-                            </div>
-                            <div class="h-48">
-                                <canvas id="trenChart"></canvas>
-                            </div>
-                        </div>
-
-                        {{-- DISTRIBUSI JENIS SURAT --}}
-                        @if($distribusiJenis->count())
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d12" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="section-header">
-                                <h3 class="text-gray-800">Distribusi Jenis Surat</h3>
-                                <div class="shimmer-line"></div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-32 h-32 shrink-0">
-                                    <canvas id="jenisChart"></canvas>
-                                </div>
-                                <div class="flex-1 space-y-1.5">
-                                    @php
-                                        $colors = ['#10b981','#14b8a6','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
-                                        $totalJenis = $distribusiJenis->sum('total');
-                                    @endphp
-                                    @foreach($distribusiJenis as $i => $dj)
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:{{ $colors[$i % 6] }}"></span>
-                                            <span class="text-[10px] font-medium text-gray-600 capitalize truncate flex-1">{{ str_replace('_', ' ', $dj->jenis_surat) }}</span>
-                                            <span class="text-[10px] font-bold text-gray-700">{{ $dj->total }}</span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-
-                        {{-- PERTUMBUHAN WARGA --}}
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d13" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="section-header">
-                                <h3 class="text-gray-800">Pertumbuhan Warga</h3>
-                                <div class="shimmer-line"></div>
-                            </div>
-                            <div class="h-40">
-                                <canvas id="wargaChart"></canvas>
-                            </div>
-                        </div>
-
-                        {{-- MONITORING SLA --}}
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d14" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="section-header">
-                                <h3 class="text-gray-800">Monitoring SLA</h3>
-                                <div class="shimmer-line"></div>
-                            </div>
-                            @php
-                                $slaPercent = $inProgress > 0 ? round((($inProgress - $slaBreached) / $inProgress) * 100) : 100;
-                            @endphp
-                            <div class="text-center mb-4">
-                                <div class="relative w-24 h-24 mx-auto">
-                                    <svg class="w-24 h-24 -rotate-90" viewBox="0 0 36 36">
-                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="#e5e7eb" stroke-width="3"/>
-                                        <path d="M18 2.0845a15.9155 15.9155 0 010 31.831 15.9155 15.9155 0 010-31.831" fill="none" stroke="{{ $slaPercent >= 80 ? '#10b981' : ($slaPercent >= 50 ? '#f59e0b' : '#ef4444') }}" stroke-width="3" stroke-dasharray="{{ $slaPercent }}, 100" stroke-linecap="round"/>
-                                    </svg>
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span class="text-lg font-extrabold text-gray-900">{{ $slaPercent }}%</span>
-                                        <span class="text-[8px] font-semibold text-gray-400 uppercase">On Time</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-100/50 text-center">
-                                    <p class="text-sm font-extrabold text-emerald-600">{{ $inProgress - $slaBreached }}</p>
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase">Sesuai SLA</p>
-                                </div>
-                                <div class="p-2.5 rounded-xl bg-red-50/80 border border-red-100/50 text-center">
-                                    <p class="text-sm font-extrabold text-red-600">{{ $slaBreached }}</p>
-                                    <p class="text-[9px] font-bold text-red-500 uppercase">Melewati SLA</p>
-                                </div>
-                            </div>
-                            <p class="text-[10px] text-gray-400 text-center mt-2">Batas SLA: {{ $slaHours }} jam</p>
-                        </div>
-
-                        {{-- INFORMASI DESA --}}
-                        <div class="bento-card p-5 sm:p-6 a-fade-up d14" style="animation:successPop .5s var(--ease-out-expo)">
-                            <div class="section-header">
-                                <h3 class="text-gray-800">Informasi Desa</h3>
-                                <div class="shimmer-line"></div>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Nama Desa</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ config('village.nama_desa') }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kepala Desa</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ config('village.nama_kades') }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Sekretaris Desa</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ config('village.nama_sekdes') }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kontak</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ config('village.email_desa') }}</p>
-                                        <p class="text-xs text-gray-500">{{ config('village.telepon_desa') }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
-                                    <span class="health-dot ok"></span>
-                                    <span class="text-[11px] font-medium text-gray-500">Server Aktif</span>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                 </div>

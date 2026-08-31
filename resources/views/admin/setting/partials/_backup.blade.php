@@ -1,4 +1,35 @@
 <form x-show="activeTab === 'backup'" x-cloak
+      action="{{ route('admin.setting.backupRun') }}" method="POST"
+      class="mb-6 animate-fade-in" @submit="savingBackup = true">
+    @csrf
+    <div class="setting-card bg-white rounded-2xl shadow-sm overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-cyan-50/50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                </div>
+                <div>
+                    <h2 class="text-base font-semibold text-gray-900">Backup Sekarang</h2>
+                    <p class="text-xs text-gray-500">Snapshot database & file storage secara manual</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="rounded-xl border border-cyan-100 bg-cyan-50/60 p-4">
+                <p class="text-sm font-semibold text-gray-800">Buat Snapshot</p>
+                <p class="text-xs text-gray-500 mt-1">Buat backup database beserta file storage secara manual. File tersimpan lokal di server.</p>
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
+            <button type="submit" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition shadow-sm" :disabled="savingBackup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                <span x-text="savingBackup ? 'Membuat...' : 'Buat Backup'"></span>
+            </button>
+        </div>
+    </div>
+</form>
+
+<form x-show="activeTab === 'backup'" x-cloak
       action="{{ route('admin.setting.update', 'backup') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">
     @csrf
@@ -9,25 +40,12 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/></svg>
                 </div>
                 <div>
-                    <h2 class="text-base font-semibold text-gray-900">Backup</h2>
-                    <p class="text-xs text-gray-500">Konfigurasi backup database dan storage</p>
+                    <h2 class="text-base font-semibold text-gray-900">Konfigurasi Backup</h2>
+                    <p class="text-xs text-gray-500">Jadwal dan kebijakan penyimpanan backup database</p>
                 </div>
             </div>
         </div>
         <div class="p-6 space-y-5">
-            <div class="rounded-xl border border-cyan-100 bg-cyan-50/60 p-4 flex flex-wrap items-center justify-between gap-3">
-                <div>
-                    <p class="text-sm font-semibold text-gray-800">Backup Sekarang</p>
-                    <p class="text-xs text-gray-500">Buat snapshot database & file storage secara manual.</p>
-                </div>
-                <form action="{{ route('admin.setting.backupRun') }}" method="POST" @submit="saving = true">
-                    @csrf
-                    <button type="submit" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition shadow-sm" :disabled="saving">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-                        <span x-text="saving ? 'Membuat...' : 'Buat Backup'"></span>
-                    </button>
-                </form>
-            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Frekuensi Backup</label>

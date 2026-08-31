@@ -191,7 +191,7 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     Route::post('pengaturan/clear-cache', [SettingController::class, 'clearCache'])->middleware('permission:setting.manage')->name('setting.clearCache');
     Route::post('pengaturan/maintenance/{action}', [SettingController::class, 'maintenance'])->middleware('permission:setting.manage')->name('setting.maintenance');
     Route::post('pengaturan/notify-test', [SettingController::class, 'notifyTest'])->middleware('permission:setting.manage')->name('setting.notifyTest');
-    Route::post('pengaturan/backup', [SettingController::class, 'backupRun'])->middleware('permission:setting.manage')->name('setting.backupRun');
+    Route::post('pengaturan/backup/run', [SettingController::class, 'backupRun'])->middleware('permission:setting.manage')->name('setting.backupRun');
     Route::get('pengaturan/backup/{filename}/download', [SettingController::class, 'backupDownload'])->middleware('permission:setting.manage')->name('setting.backupDownload');
     Route::delete('pengaturan/backup/{filename}', [SettingController::class, 'backupDelete'])->middleware('permission:setting.manage')->name('setting.backupDelete');
     Route::get('pengaturan/update-status', [SettingController::class, 'updateStatus'])->middleware(['permission:setting.manage', 'role:Super Admin'])->name('setting.updateStatus');

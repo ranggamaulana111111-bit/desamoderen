@@ -536,12 +536,13 @@
                 accentColor: window.__THEME?.accent_color || 'emerald',
                 accentHex: window.__THEME?.accent_hex || '#10b981',
                 sidebarCollapsed: window.__THEME?.sidebar_collapsed || false,
+                sidebarStyle: window.__THEME?.sidebar_style || 'default',
                 resolvedTheme: window.__THEME?.theme || 'light',
                 settingsOpen: false,
                 saving: false,
                 accentColors: {
                     emerald: '#10b981', blue: '#3b82f6', purple: '#8b5cf6',
-                    indigo: '#6366f1', amber: '#f59e0b', cyan: '#06b6d4', rose: '#f43f5e',
+                    indigo: '#6366f1', amber: '#f59e0b', cyan: '#06b6d4', rose: '#f43f5e', orange: '#f97316',
                 },
                 init() {
                     this.resolveTheme();

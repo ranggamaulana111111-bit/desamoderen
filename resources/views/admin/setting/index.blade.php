@@ -141,6 +141,7 @@
             return {
                 activeTab: tabFromUrl,
                 saving: false,
+                savingBackup: false,
                 loading: true,
                 showToast: false,
                 toastMessage: '',

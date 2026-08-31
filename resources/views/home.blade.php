@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" class="scroll-smooth overflow-x-clip">
 <head>
     <meta charset="utf-8">
@@ -8,8 +8,15 @@
     <x-pwa-assets />
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link rel="preconnect" href="https://api.fontshare.com">
-    <link href="https://api.fontshare.com/v2/css?f[]=inter@300,400,500,600,700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('{{ asset('fonts/Inter-VariableFont_opsz,wght.ttf') }}') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -44,7 +51,7 @@
         }
 
         *{scroll-behavior:smooth}
-        body{font-family:'Inter',system-ui,sans-serif}
+        body{font-family:'Inter',system-ui,sans-serif;font-weight:500!important}
 
         @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
@@ -68,7 +75,12 @@
         .stagger-4{transition-delay:.32s}.stagger-5{transition-delay:.4s}.stagger-6{transition-delay:.48s}
         .stagger-7{transition-delay:.56s}.stagger-8{transition-delay:.64s}
 
-        .hero-gradient{background:var(--gradient-hero);background-size:300% 300%;animation:gradientShift 12s ease infinite}
+        .hero-gradient{
+            background:linear-gradient(rgba(5,22,18,.58),rgba(5,22,18,.68)),url('{{ asset('pwa/background.jpg') }}') center/cover no-repeat;
+            background-size:cover;
+            box-shadow:inset 0 -110px 90px -40px rgba(0,0,0,.85);
+        }
+        .hero-fade-bottom{position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(to top,rgba(2,10,8,.7),transparent);pointer-events:none;z-index:5}
         .hero-mesh{background:radial-gradient(ellipse at 20% 50%,rgba(16,185,129,.10) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(8,145,178,.08) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(2,132,199,.07) 0%,transparent 50%)}
 
         .glass{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
@@ -173,12 +185,12 @@
                 </a>
                 <div class="hidden lg:flex items-center gap-8">
                     <a href="#profil" class="nav-link">Profil</a>
+                    <a href="#berita" class="nav-link">Berita</a>
                     <a href="#layanan" class="nav-link">Layanan</a>
                     <a href="#keunggulan" class="nav-link">Keunggulan</a>
                     <a href="#statistik" class="nav-link">Statistik</a>
                     <a href="#struktur" class="nav-link">Struktur</a>
                     <a href="#kelembagaan" class="nav-link">Kelembagaan</a>
-                    <a href="#berita" class="nav-link">Berita</a>
                     <a href="#faq" class="nav-link">FAQ</a>
                 </div>
                 <div class="hidden lg:flex items-center gap-3">
@@ -201,7 +213,7 @@
         </div>
         <div x-show="mobileOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 -translate-y-2" x-cloak class="lg:hidden bg-white/95 backdrop-blur-xl border-b border-slate-100 shadow-xl">
             <div class="max-w-7xl mx-auto px-4 py-4 space-y-1">
-                @foreach(['profil'=>'Profil','layanan'=>'Layanan','keunggulan'=>'Keunggulan','statistik'=>'Statistik','struktur'=>'Struktur','kelembagaan'=>'Kelembagaan','berita'=>'Berita','faq'=>'FAQ'] as $id=>$label)
+                @foreach(['profil'=>'Profil','berita'=>'Berita','layanan'=>'Layanan','keunggulan'=>'Keunggulan','statistik'=>'Statistik','struktur'=>'Struktur','kelembagaan'=>'Kelembagaan','faq'=>'FAQ'] as $id=>$label)
                     <a href="#{{ $id }}" @click="mobileOpen=false" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-50 hover:text-brand-600 transition">{{ $label }}</a>
                 @endforeach
                 <div class="border-t border-slate-100 mt-3 pt-3 flex flex-col gap-2">
@@ -228,6 +240,7 @@
         <div class="shape shape-3"></div>
         <div class="shape shape-4"></div>
         <div class="absolute inset-0" style="background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:24px 24px"></div>
+        <div class="hero-fade-bottom"></div>
 
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-28 md:py-32">
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -402,10 +415,8 @@
         <div class="absolute top-0 right-0 w-96 h-96 bg-brand-50 rounded-full opacity-50 -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-brand-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>
-                    <span class="text-xs font-semibold text-brand-700 uppercase tracking-wider">Profil {{ config('village.nama_desa', 'Desa') }}</span>
-                </div>
+                <div class="inline-flex items-center">
+                   </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Selamat Datang di <span class="gradient-text">{{ config('village.nama_desa', 'Desa') }}</span></h2>
                 @if(config('village.motto_desa'))
                 <p class="text-brand-600 font-semibold text-lg">"{{ config('village.motto_desa') }}"</p>
@@ -488,9 +499,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 anim-fade-up">
                 <div>
-                    <div class="inline-flex items-center gap-2 bg-cyan-50 rounded-full px-4 py-1.5 mb-4">
-                        <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
-                        <span class="text-xs font-semibold text-cyan-700 uppercase tracking-wider">Berita Terbaru</span>
+                    <div class="inline-flex items-center">
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">Informasi Desa</h2>
                     <p class="text-slate-500">Kabar terbaru dari {{ config('village.nama_desa', 'Desa') }} untuk seluruh warga.</p>
@@ -620,9 +629,7 @@
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-cyan-50 rounded-full opacity-40 translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-brand-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    <span class="text-xs font-semibold text-brand-700 uppercase tracking-wider">Layanan Kami</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Kebutuhan Surat Desa<br><span class="gradient-text">di Ujung Jari Anda</span></h2>
                 <p class="text-slate-500 leading-relaxed">Ajukan berbagai jenis surat desa secara online. Cepat, mudah, dan tanpa perlu datang ke kantor.</p>
@@ -722,9 +729,7 @@
     <section class="py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-cyan-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                    <span class="text-xs font-semibold text-cyan-700 uppercase tracking-wider">Cara Kerja</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Mudah dalam <span class="gradient-text">4 Langkah</span></h2>
                 <p class="text-slate-500">Tidak perlu antre lama. Urus surat desa cukup dari ponsel Anda.</p>
@@ -757,9 +762,7 @@
     <section id="keunggulan" class="py-20 md:py-28 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-violet-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    <span class="text-xs font-semibold text-violet-700 uppercase tracking-wider">Keunggulan</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Mengapa Memilih <span class="gradient-text">Prodesa</span>?</h2>
                 <p class="text-slate-500">Dirancang khusus untuk pelayanan desa yang modern, efisien, dan terpercaya.</p>
@@ -922,9 +925,7 @@
     <section id="struktur" class="py-20 md:py-28 bg-gradient-to-b from-white to-slate-50 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-amber-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">Pemerintahan Desa</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Struktur Organisasi</h2>
                 <p class="text-slate-500">Perangkat Pemerintah {{ config('village.nama_desa', 'Desa') }} — Berdasarkan Permendagri No. 84 Tahun 2015</p>
@@ -1061,9 +1062,7 @@
         <div class="absolute top-0 left-0 w-80 h-80 bg-brand-50 rounded-full opacity-30 -translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-rose-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    <span class="text-xs font-semibold text-rose-700 uppercase tracking-wider">Kelembagaan Desa</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Lembaga & Organisasi <span class="gradient-text">Masyarakat Desa</span></h2>
                 <p class="text-slate-500">Berbagai lembaga yang mendukung pembangunan dan pemberdayaan masyarakat di {{ config('village.nama_desa', 'Desa') }}.</p>
@@ -1098,9 +1097,7 @@
     <section id="faq" class="py-20 md:py-28 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-16 anim-fade-up">
-                <div class="inline-flex items-center gap-2 bg-emerald-50 rounded-full px-4 py-1.5 mb-4">
-                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">FAQ & Asisten</span>
+                <div class="inline-flex items-center">
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Pertanyaan & Bantuan</h2>
                 <p class="text-slate-500">Temukan jawaban atas pertanyaan umum atau tanyakan langsung ke AI kami.</p>
@@ -1197,9 +1194,7 @@
         <div class="absolute inset-0" style="background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:20px 20px"></div>
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/5 rounded-full -translate-y-1/2"></div>
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative anim-fade-up">
-            <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-6">
-                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <span class="text-xs font-medium text-white/80">Mulai Sekarang — Gratis!</span>
+            <div class="inline-flex items-center">
             </div>
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">Siap Merasakan<br>Kemudahan Prodesa?</h2>
             <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto leading-relaxed">Bergabung dengan ribuan warga {{ config('village.nama_desa', 'Desa') }} yang sudah merasakan kemudahan pelayanan desa digital.</p>
@@ -1238,7 +1233,7 @@
                 <div>
                     <h4 class="text-sm font-bold text-white mb-4 tracking-wide">Navigasi</h4>
                     <ul class="space-y-2.5">
-                        @foreach(['profil'=>'Profil','layanan'=>'Layanan','statistik'=>'Statistik','struktur'=>'Struktur','kelembagaan'=>'Kelembagaan','berita'=>'Berita'] as $id=>$label)
+                        @foreach(['profil'=>'Profil','berita'=>'Berita','layanan'=>'Layanan','keunggulan'=>'Keunggulan','statistik'=>'Statistik','struktur'=>'Struktur','kelembagaan'=>'Kelembagaan','faq'=>'FAQ'] as $id=>$label)
                         <li><a href="#{{ $id }}" class="text-sm hover:text-brand-400 transition">{{ $label }}</a></li>
                         @endforeach
                     </ul>
@@ -1278,51 +1273,6 @@
                     <span>&middot;</span>
                     <span>Prov. Jawa Barat</span>
                 </div>
-            </div>
-        </div>
-        {{-- Developer Credit --}}
-        <div class="mt-10 pt-8 pb-2">
-            <div class="dev-card max-w-2xl mx-auto text-center relative z-10">
-                <div class="relative z-10">
-                    <div class="dev-badge mx-auto mb-4 w-fit">
-                        <div class="dev-badge-inner">
-                            <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                            <span class="text-xs font-bold text-brand-400 tracking-wide">DEVELOPED WITH</span>
-                            <svg class="w-3 h-3 text-red-400" fill="currentColor" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                        </div>
-                    </div>
-
-                    <h4 class="text-base font-bold text-white mb-1">Rangga Dev</h4>
-                    <p class="text-xs text-slate-400 mb-5">Fullstack Developer & UI/UX Designer</p>
-
-                    <div class="flex items-center justify-center gap-3">
-                        <a href="https://instagram.com/rangga.mrw" target="_blank" rel="noopener"
-                            class="group flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-pink-500/30 rounded-2xl px-5 py-3 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/10">
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:shadow-pink-500/30 group-hover:scale-110 transition-all">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                            </div>
-                            <div class="text-left">
-                                <div class="text-xs font-bold text-white/80 group-hover:text-pink-300 transition-colors">Instagram</div>
-                                <div class="text-xs text-slate-400 group-hover:text-pink-400/60 transition-colors">@rangga.mrw</div>
-                            </div>
-                        </a>
-
-                        <a href="https://wa.me/6285176922584" target="_blank" rel="noopener"
-                            class="group flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/30 rounded-2xl px-5 py-3 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/30 group-hover:scale-110 transition-all">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                            </div>
-                            <div class="text-left">
-                                <div class="text-xs font-bold text-white/80 group-hover:text-emerald-300 transition-colors">WhatsApp</div>
-                                <div class="text-xs text-slate-400 group-hover:text-emerald-400/60 transition-colors">0851 7692 2584</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mt-6 text-xs text-slate-600">
-                &copy; {{ date('Y') }} {{ config('village.nama_desa', 'Desa') }} &middot; Prodesa Digital &middot; RanggaDev ACCESS
             </div>
         </div>
     </footer>
@@ -1391,6 +1341,33 @@
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+
+        // ─── Smooth Scroll Nav Links (custom animated) ───
+        function smoothScrollTo(targetY, duration) {
+            const startY = window.scrollY;
+            const diff = targetY - startY;
+            if (Math.abs(diff) < 2) return;
+            const start = performance.now();
+            function easeInOutCubic(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+            function step(now) {
+                const elapsed = Math.min((now - start) / duration, 1);
+                window.scrollTo(0, startY + diff * easeInOutCubic(elapsed));
+                if (elapsed < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const id = this.getAttribute('href');
+                if (id.length < 2) return;
+                const target = document.querySelector(id);
+                if (!target) return;
+                e.preventDefault();
+                const navHeight = (document.getElementById('mainNav')?.offsetHeight || 0);
+                const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+                smoothScrollTo(Math.max(top, 0), 800);
             });
         });
 
