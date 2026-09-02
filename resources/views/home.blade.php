@@ -369,28 +369,7 @@
                             </template>
                         </div>
                     </div>
-                    <div class="absolute -top-4 -right-4 glass rounded-2xl px-4 py-3 shadow-xl" style="animation:float 5s ease-in-out infinite">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-white text-xs font-bold">+{{ number_format($suratSelesai, 0, ',', '.') }}</div>
-                                <div class="text-white/50 text-xs">Surat selesai</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="absolute -bottom-4 -left-4 glass rounded-2xl px-4 py-3 shadow-xl" style="animation:floatSlow 6s ease-in-out infinite 1s">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-cyan-400/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-cyan-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-white text-xs font-bold">Notifikasi</div>
-                                <div class="text-white/50 text-xs">Surat baru diterbitkan</div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -522,8 +501,8 @@
                     <p class="text-slate-500">Kabar terbaru dari {{ config('village.nama_desa', 'Desa') }} untuk seluruh warga.</p>
                 </div>
                 <div class="relative w-full md:w-80">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     <input type="text" id="searchBerita" placeholder="Cari berita..." aria-label="Cari berita" class="w-full text-sm border border-slate-200 rounded-2xl pl-11 pr-4 py-3 bg-white focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none transition text-slate-700 placeholder-slate-400">
-                    <svg class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
             </div>
 

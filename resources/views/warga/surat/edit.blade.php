@@ -382,13 +382,14 @@
                     const allowed=['application/pdf','image/jpeg','image/png'];
                     if(!allowed.includes(f.type)){alert('Format file tidak didukung. Gunakan PDF, JPG, atau PNG.');return}
                     if(f.size>2*1024*1024){alert('Ukuran file maksimal 2MB per file.');return}
-                    const item={name:f.name,size:this.formatSize(f.size),type:f.type==='application/pdf'?'pdf':'image',preview:null,object:f};
-                    if(item.type==='image'){const r=new FileReader();r.onload=e=>{item.preview=e.target.result};r.readAsDataURL(f)}else{item.preview=null}
+                    const isImage=f.type.startsWith('image/');
+                    const isPdf=f.type==='application/pdf';
+                    const item={name:f.name,size:this.formatSize(f.size),type:isPdf?'pdf':'image',preview:isImage?URL.createObjectURL(f):null,object:f};
                     this.files.push(item);
                 });
                 this.syncFileInput();
             },
-            removeFileAt(i){this.files.splice(i,1);this.syncFileInput()},
+            removeFileAt(i){if(this.files[i]&&this.files[i].preview){URL.revokeObjectURL(this.files[i].preview)}this.files.splice(i,1);this.syncFileInput()},
             syncFileInput(){
                 const inp=this.$refs.fileInput;
                 if(!inp)return;
