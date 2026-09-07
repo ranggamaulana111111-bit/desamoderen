@@ -4,6 +4,7 @@
         judul: '{{ old('judul', addslashes($beritum->judul)) }}',
         konten: '{{ old('konten', addslashes($beritum->konten)) }}',
         status: '{{ old('status', $beritum->status) }}',
+        kategori: '{{ old('kategori', $beritum->kategori) }}',
         fotoPreview: {{ $beritum->foto ? "'" . asset('storage/' . $beritum->foto) . "'" : 'null' }},
         existingFoto: '{{ $beritum->foto }}',
         get statusLabel() {
@@ -157,6 +158,7 @@
                                 </div>
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <span :class="statusColor" class="chip text-[11px]" x-text="statusLabel"></span>
+                                    <span x-show="kategori" class="chip text-[11px] bg-brand-50 text-brand-700" x-text="kategori"></span>
                                 </div>
                                 <h4 class="text-sm font-bold text-gray-800 leading-snug" x-text="judul || 'Judul Berita'"></h4>
                                 <p x-show="konten" class="text-xs text-gray-500 leading-relaxed line-clamp-4" x-text="konten"></p>
@@ -193,6 +195,32 @@
                                 </button>
                             </div>
                             @error('status')
+                                <p class="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><text x="10" y="13.5" text-anchor="middle" fill="white" font-size="11" font-weight="bold">!</text></svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Kategori --}}
+                    <div class="widget-card">
+                        <div class="widget-card-header">
+                            <h3 class="section-header">
+                                <span class="inline-block w-1 h-5 rounded-full bg-gradient-to-b from-brand-500 to-teal-600 mr-2"></span>
+                                Kategori Berita
+                            </h3>
+                        </div>
+                        <div class="widget-card-body">
+                            <select name="kategori" x-model="kategori"
+                                class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
+                                <option value="">Tanpa Kategori</option>
+                                @foreach (['Pembangunan', 'Kesehatan', 'Pendidikan', 'Budaya', 'Pemerintahan', 'Lingkungan'] as $kat)
+                                    <option value="{{ $kat }}" @selected(old('kategori', $beritum->kategori) === $kat)>{{ $kat }}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-[11px] text-gray-400 mt-2">Menentukan topik/tentang apa berita ini, akan tampil sebagai badge di halaman utama.</p>
+                            @error('kategori')
                                 <p class="text-red-500 text-xs mt-1.5 flex items-center gap-1">
                                     <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><text x="10" y="13.5" text-anchor="middle" fill="white" font-size="11" font-weight="bold">!</text></svg>
                                     {{ $message }}

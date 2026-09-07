@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
+    private const KATEGORI = ['Pembangunan', 'Kesehatan', 'Pendidikan', 'Budaya', 'Pemerintahan', 'Lingkungan'];
+
     public function index(Request $request)
     {
         $lembaga = $this->lembaga();
@@ -42,6 +44,7 @@ class BeritaController extends Controller
             'konten' => 'required|string',
             'foto' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,publish',
+            'kategori' => 'nullable|string|in:'.implode(',', self::KATEGORI),
         ]);
 
         $slug = Str::slug($request->judul);
@@ -62,6 +65,7 @@ class BeritaController extends Controller
             'konten' => $validated['konten'],
             'foto' => $fotoPath,
             'status' => $validated['status'],
+            'kategori' => $validated['kategori'] ?? null,
             'user_id' => Auth::id(),
             'lembaga_id' => $lembaga->id,
         ]);
@@ -107,6 +111,7 @@ class BeritaController extends Controller
             'konten' => 'required|string',
             'foto' => 'nullable|image|max:2048',
             'status' => 'required|in:draft,publish',
+            'kategori' => 'nullable|string|in:'.implode(',', self::KATEGORI),
         ]);
 
         $slug = Str::slug($request->judul);
@@ -121,6 +126,7 @@ class BeritaController extends Controller
             'slug' => $slug,
             'konten' => $validated['konten'],
             'status' => $validated['status'],
+            'kategori' => $validated['kategori'] ?? null,
         ];
 
         if ($request->hasFile('foto')) {

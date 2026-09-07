@@ -21,3 +21,4 @@ yarn-error.log
 /.playwright-cli
 /Inter-VariableFont_opsz,wght.ttf
 /Inter-Italic-VariableFont_opsz,wght.ttf
+.originkit/

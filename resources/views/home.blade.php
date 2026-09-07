@@ -171,6 +171,21 @@
 </head>
 <body class="bg-white font-sans antialiased text-slate-700 overflow-x-clip" x-data="{ mobileOpen:false }">
 
+    @php
+        $services = [
+            ['jenis' => 'sktm', 'badge' => 'SKTM', 'title' => 'Surat Keterangan Tidak Mampu', 'tag' => 'Proses 1-3 hari kerja', 'desc' => 'Ajukan SKTM untuk berobat gratis, keringanan biaya, atau keperluan lainnya — semuanya dari rumah.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-emerald-500 to-teal-700', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
+            ['jenis' => 'ktp_sementara', 'badge' => 'KTP Sementara', 'title' => 'KTP Sementara', 'tag' => 'KTP sementara', 'desc' => 'Surat keterangan pengganti KTP sementara dalam proses penerbitan.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-cyan-400 to-cyan-600', 'icon' => 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2'],
+            ['jenis' => 'akta', 'badge' => 'Akta', 'title' => 'Akta Kelahiran / Kematian', 'tag' => 'Surat pengantar', 'desc' => 'Surat pengantar pembuatan akta kelahiran atau kematian resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-amber-400 to-orange-500', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
+            ['jenis' => 'domisili', 'badge' => 'Domisili', 'title' => 'Surat Domisili', 'tag' => 'Domisili resmi', 'desc' => 'Keterangan resmi tentang alamat dan tempat tinggal warga desa.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-violet-400 to-purple-600', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
+            ['jenis' => 'belum_menikah', 'badge' => 'Belum Menikah', 'title' => 'Belum Menikah / Janda Duda', 'tag' => 'Status pernikahan', 'desc' => 'Surat keterangan status pernikahan untuk berbagai keperluan resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-rose-400 to-pink-600', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
+            ['jenis' => null, 'badge' => 'Lainnya', 'title' => '14+ Jenis Surat Lainnya', 'tag' => 'SKU, SKKB, dan banyak lagi', 'desc' => 'SKU, SKKB, Ahli Waris, Kepemilikan Tanah, Penghasilan, dan banyak lagi — semuanya tersedia online.', 'cta' => 'Lihat semua layanan', 'gradient' => 'from-cyan-400 to-teal-600', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
+        ];
+        $services = array_map(function ($s) {
+            $s['href'] = $s['jenis'] ? route('warga.surat.create', ['jenis' => $s['jenis']]) : route('login');
+            return $s;
+        }, $services);
+    @endphp
+
     <div id="scrollProgress" style="width:0%"></div>
 
     {{-- NAVBAR --}}
@@ -256,12 +271,12 @@
                         Dan urus surat desa kapan saja, di mana saja. Tanpa antre, tanpa ribet — transparan dan cepat untuk seluruh warga {{ config('village.nama_desa', 'Desa') }}.
                     </p>
                     <div class="flex flex-wrap gap-3 mb-10 anim-fade-up stagger-3">
-                        <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#10b981] text-white px-7 py-3.5 rounded-full font-semibold hover:bg-[#059669] transition-all shadow-xl shadow-brand-500/30 hover:shadow-2xl hover:-translate-y-0.5">
+                        <a href="{{ route('register') }}" class="group inline-flex items-center gap-2.5 bg-[#10b981]/90 text-white px-7 py-3.5 rounded-full font-semibold transition-all shadow-xl shadow-brand-500/30 hover:bg-[#059669]/80 hover:opacity-80 hover:-translate-y-0.5 active:opacity-60 active:scale-[.98]">
                             <span>Daftar Sekarang</span>
                             <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                         </a>
                         @guest
-                        <a href="{{ route('login') }}" class="inline-flex items-center gap-2 glass text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/15 transition-all border border-white/30">
+                        <a href="{{ route('login') }}" class="inline-flex items-center gap-2 glass text-white px-7 py-3.5 rounded-full font-semibold hover:bg-white/15 transition-all border border-white/30 hover:border-white/50">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
                         <span>masuk</span>
                         @endguest
@@ -271,115 +286,48 @@
                              @endauth
                         </a>
                     </div>
-                    <div class="flex flex-wrap gap-6 anim-fade-up stagger-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
-                                <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-white font-bold text-lg leading-tight counter-hero" data-target="{{ $totalWarga }}">0</div>
-                                <div class="text-white/50 text-xs">Warga Aktif</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl glass flex items-center justify-center">
-                                <svg class="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="text-white font-bold text-lg leading-tight counter-hero" data-target="{{ $suratSelesai }}">0</div>
-                                <div class="text-white/50 text-xs">Surat Selesai</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                {{-- Informasi Desa Slider: Berita Terbaru (pelihat terbanyak + filter lembaga) --}}
-                <div class="relative anim-fade-scale stagger-3 hidden lg:block" x-data="infoSlider({{ Illuminate\Support\Js::from($sliderBerita) }})" @mouseenter="pause()" @mouseleave="play()">
-                    <div class="glass-strong rounded-3xl p-6 shadow-2xl">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-3 h-3 rounded-full bg-red-400/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-400/80"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-400/80"></div>
-                            <span class="ml-2 text-xs text-white/40 font-medium">Informasi Desa</span>
-                            <div class="ml-auto flex items-center gap-1">
-                                <button type="button" @click="prev()" aria-label="Sebelumnya" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Sebelumnya">
-                                    <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                                </button>
-                                <button type="button" @click="next()" aria-label="Berikutnya" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition" title="Berikutnya">
-                                    <svg class="w-3 h-3 text-white/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-1.5 mb-4">
-                            <button type="button" @click="Alpine.store('berita').setLembaga('all')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full transition" :class="Alpine.store('berita').lembaga === 'all' ? 'bg-emerald-400 text-emerald-950' : 'bg-white/10 text-white/60 hover:bg-white/20'">Semua</button>
-                            @if ($pemdesCount > 0)
-                            <button type="button" @click="Alpine.store('berita').setLembaga('pemdes')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full transition" :class="Alpine.store('berita').lembaga === 'pemdes' ? 'bg-emerald-400 text-emerald-950' : 'bg-white/10 text-white/60 hover:bg-white/20'">Pemerintah Desa</button>
-                            @endif
-                            @foreach ($lembagas as $lg)
-                            <button type="button" @click="Alpine.store('berita').setLembaga('{{ $lg->id }}')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full transition" :class="Alpine.store('berita').lembaga === '{{ (string) $lg->id }}' ? 'bg-emerald-400 text-emerald-950' : 'bg-white/10 text-white/60 hover:bg-white/20'">{{ $lg->nama }}</button>
-                            @endforeach
-                        </div>
-                        <div class="relative overflow-hidden rounded-2xl">
-                            <div class="flex transition-transform duration-700 ease-out" :style="`transform: translateX(-${slide*100}%)`">
-                                <template x-for="(b, i) in visibleSlides" :key="b.id">
-                                    <div class="w-full flex-shrink-0 rounded-2xl relative overflow-hidden">
-                                        <div class="absolute inset-0 bg-cover bg-center" :style="b.bg"></div>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/70 to-emerald-950/20"></div>
-                                        <div class="absolute inset-0 bg-gradient-to-tr from-emerald-900/40 via-transparent to-transparent"></div>
-                                        <div class="relative p-5 min-h-[17rem] flex flex-col justify-end">
-                                            <div class="flex flex-wrap items-center gap-2 mb-3">
-                                                <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/90 text-white text-[10px] font-bold uppercase tracking-wider">
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
-                                                    Berita
-                                                </span>
-                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white/10 text-white/80 text-[10px] font-semibold">
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14m-9 0v-6h4v6"/></svg>
-                                                    <span x-text="b.lembaga"></span>
-                                                </span>
-                                                <span class="text-white/60 text-[10px] font-medium"><span x-text="i + 1"></span> / <span x-text="visibleSlides.length"></span> &middot; <span x-text="b.tanggal"></span></span>
-                                            </div>
-                                            <a :href="b.url" class="group block">
-                                                <h3 class="text-white font-bold text-base leading-snug line-clamp-2 group-hover:text-emerald-300 transition" x-text="b.judul"></h3>
-                                                <p class="text-white/70 text-xs leading-relaxed line-clamp-3 mt-2" x-text="b.excerpt"></p>
-                                                <div class="flex items-center justify-between mt-3">
-                                                    <span class="inline-flex items-center gap-1.5 text-[10px] text-white/50">
-                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                                        <span x-text="b.dilihat"></span>x dilihat
-                                                    </span>
-                                                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-300 group-hover:text-emerald-200 transition">Baca Selengkapnya
-                                                        <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </div>
+                {{-- Kartu Layanan Slide (Kanan) --}}
+                <div class="relative anim-slide-right w-full max-w-md mx-auto lg:ml-auto">
+                    <div x-data="heroSlides({{ count($services) }})" @mouseenter="pause()" @mouseleave="play()" @pointerdown="swipeStart($event)" @pointermove="swipeMove($event)" @pointerup="swipeEnd()" @pointercancel="swipeEnd()" class="select-none cursor-grab active:cursor-grabbing" style="touch-action:pan-y">
+                        <div class="relative overflow-hidden rounded-[1.75rem] bg-white/10 backdrop-blur-xl border border-white/40 shadow-2xl shadow-black/10">
+                            <div class="relative min-h-[15rem]">
+                                @foreach($services as $i => $s)
+                                <div {{ $i > 0 ? 'style="display:none"' : '' }} x-show="active === {{ $i }}" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-5" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-5" class="absolute inset-0 p-5 sm:p-6 flex flex-col justify-center">
+                                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r {{ $s['gradient'] }} text-white text-[10px] font-bold uppercase tracking-wider shadow-lg">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $s['icon'] }}"/></svg>
+                                            {{ $s['badge'] }}
+                                        </span>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 text-white/90 text-[10px] font-semibold">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            {{ $s['tag'] }}
+                                        </span>
                                     </div>
-                                </template>
-                                <div x-show="visibleSlides.length === 0" class="w-full flex-shrink-0 bg-white/5 rounded-2xl p-8 text-center">
-                                    <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-3">
-                                        <svg class="w-6 h-6 text-white/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                                    <h3 class="text-lg sm:text-xl font-bold text-white leading-snug mb-2">{{ $s['title'] }}</h3>
+                                    <p class="text-xs sm:text-sm text-white/75 leading-relaxed mb-5">{{ $s['desc'] }}</p>
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <a href="{{ $s['href'] }}" class="group inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r {{ $s['gradient'] }} text-white text-xs sm:text-sm font-bold shadow-lg transition-all hover:opacity-80 active:opacity-60 active:scale-[.98] hover:-translate-y-0.5">
+                                            {{ $s['cta'] }}
+                                            <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                                        </a>
+                                        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                                            <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                            100% Gratis
+                                        </span>
                                     </div>
-                                    <div class="text-white/60 text-sm font-medium">Belum Ada Berita</div>
-                                    <div class="text-white/30 text-xs mt-1">Berita dari kategori ini belum tersedia.</div>
                                 </div>
+                                @endforeach
+                            </div>
+                            <div class="flex items-center justify-center gap-1.5 py-3">
+                                @foreach($services as $i => $dot)
+                                <button type="button" @click="go({{ $i }})" class="h-1.5 rounded-full transition-all duration-300" :class="active === {{ $i }} ? 'w-6 bg-brand-600' : 'w-1.5 bg-white/30 hover:bg-white/50'" aria-label="Slide {{ $i + 1 }}"></button>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="flex justify-center gap-1.5 mt-4">
-                            <template x-for="(s, i) in visibleSlides" :key="s.id">
-                                <button type="button" @click="go(i)" class="h-1.5 rounded-full transition-all duration-300" :class="slide === i ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/25 hover:bg-white/40'"></button>
-                            </template>
-                        </div>
                     </div>
-
                 </div>
-            </div>
-
-            <div class="hidden md:flex justify-center mt-12">
-                <a href="#layanan" class="flex flex-col items-center gap-2 text-white/40 hover:text-white/70 transition group" aria-label="Lihat Layanan">
-                    <span class="text-xs font-medium tracking-wider uppercase">Lihat Layanan</span>
-                    <div class="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center pt-2 group-hover:border-white/40 transition">
-                        <div class="w-1 h-2.5 bg-white/40 rounded-full animate-bounce"></div>
-                    </div>
-                </a>
             </div>
         </div>
     </section>
@@ -529,13 +477,13 @@
             @php
                 $first = $berita->shift();
                 $relTime = function($date) {
-                    $diff = now()->diffInHours($date);
-                    if ($diff < 1) return now()->diffInMinutes($date).' menit lalu';
-                    if ($diff < 24) return $diff.' jam lalu';
-                    if ($diff < 168) return now()->diffInDays($date).' hari lalu';
+                    $secs = max(0, (int) round(abs($date->diffInSeconds(now()))));
+                    if ($secs < 60) return $secs.' detik lalu';
+                    if ($secs < 3600) return (int) round($secs / 60).' menit lalu';
+                    if ($secs < 86400) return (int) round($secs / 3600).' jam lalu';
+                    if ($secs < 604800) return (int) round($secs / 86400).' hari lalu';
                     return $date->format('d M Y');
                 };
-                $category = ['Pembangunan', 'Kesehatan', 'Pendidikan', 'Budaya', 'Pemerintahan', 'Lingkungan'];
             @endphp
 
             <div class="berita-item anim-fade-up mb-8" data-judul="{{ strtolower($first->judul) }}" data-lembaga="{{ $first->lembaga_id ? (string) $first->lembaga_id : 'pemdes' }}">
@@ -551,9 +499,11 @@
                         <div class="absolute top-4 left-4"><span class="text-xs font-bold text-white bg-gradient-to-r from-brand-500 to-brand-600 px-3 py-1.5 rounded-lg shadow-lg shadow-brand-500/25">Terbaru</span></div>
                     </div>
                     <div class="md:col-span-2 p-6 md:p-8 flex flex-col justify-center">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-xs font-semibold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-lg">{{ $category[$first->id % 6] }}</span>
+                        <div class="flex items-center gap-2 mb-4 flex-wrap">
+                            @if ($first->kategori)
+                            <span class="text-xs font-semibold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-lg">{{ $first->kategori }}</span>
                             <span class="text-slate-300">|</span>
+                            @endif
                             <span class="text-xs text-slate-400">{{ $relTime($first->created_at) }}</span>
                             <span class="text-slate-300">|</span>
                             <span class="text-xs text-slate-400">{{ ceil(str_word_count(strip_tags($first->konten)) / 200) ?: 1 }} menit baca</span>
@@ -569,7 +519,7 @@
                         <p class="text-sm text-slate-500 leading-relaxed mb-5 line-clamp-3">{{ strip_tags($first->konten) }}</p>
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-xs font-bold">{{ substr($first->user?->name ?? 'A', 0, 1) }}</div>
-                            <div><div class="text-sm font-semibold text-slate-700">{{ $first->user?->name ?? 'Admin' }}</div><div class="text-xs text-slate-400">Penulis</div></div>
+                            <div><div class="text-sm font-semibold text-slate-700">{{ $first->user?->name ?? 'Admin' }}</div><div class="text-xs text-slate-400">{{ $first->user?->getRoleNames()->first() ?? 'Penulis' }}</div></div>
                         </div>
                     </div>
                 </a>
@@ -588,7 +538,9 @@
                                 <svg class="w-12 h-12 text-slate-200" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                             </div>
                             @endif
-                            <span class="absolute top-3 left-3 text-xs font-bold text-white bg-gradient-to-r from-brand-500/90 to-brand-600/90 px-2.5 py-1 rounded-lg backdrop-blur-sm">{{ $category[$item->id % 6] }}</span>
+                            @if ($item->kategori)
+                            <span class="absolute top-3 left-3 text-xs font-bold text-white bg-gradient-to-r from-brand-500/90 to-brand-600/90 px-2.5 py-1 rounded-lg backdrop-blur-sm">{{ $item->kategori }}</span>
+                            @endif
                         </div>
                         <div class="p-5">
                             <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
@@ -601,6 +553,11 @@
                             </div>
                             <h3 class="font-bold text-slate-900 group-hover:text-brand-600 transition-colors leading-snug mb-2 line-clamp-2">{{ $item->judul }}</h3>
                             <p class="text-xs text-slate-400 line-clamp-2">{{ \Illuminate\Support\Str::limit(strip_tags($item->konten), 120) }}</p>
+                            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white text-[10px] font-bold">{{ substr($item->user?->name ?? 'A', 0, 1) }}</div>
+                                <span class="text-xs font-semibold text-slate-700">{{ $item->user?->name ?? 'Admin' }}</span>
+                                <span class="text-xs text-slate-400">{{ $item->user?->getRoleNames()->first() ?? 'Penulis' }}</span>
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -630,20 +587,6 @@
                 <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Kebutuhan Surat Desa<br><span class="gradient-text">di Ujung Jari Anda</span></h2>
                 <p class="text-slate-500 leading-relaxed">Ajukan berbagai jenis surat desa secara online. Cepat, mudah, dan tanpa perlu datang ke kantor.</p>
             </div>
-            @php
-                $services = [
-                    ['jenis' => 'sktm', 'badge' => 'SKTM', 'title' => 'Surat Keterangan Tidak Mampu', 'tag' => 'Proses 1-3 hari kerja', 'desc' => 'Ajukan SKTM untuk berobat gratis, keringanan biaya, atau keperluan lainnya — semuanya dari rumah.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-emerald-500 to-teal-700', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
-                    ['jenis' => 'ktp_sementara', 'badge' => 'KTP Sementara', 'title' => 'KTP Sementara', 'tag' => 'KTP sementara', 'desc' => 'Surat keterangan pengganti KTP sementara dalam proses penerbitan.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-cyan-400 to-cyan-600', 'icon' => 'M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2'],
-                    ['jenis' => 'akta', 'badge' => 'Akta', 'title' => 'Akta Kelahiran / Kematian', 'tag' => 'Surat pengantar', 'desc' => 'Surat pengantar pembuatan akta kelahiran atau kematian resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-amber-400 to-orange-500', 'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
-                    ['jenis' => 'domisili', 'badge' => 'Domisili', 'title' => 'Surat Domisili', 'tag' => 'Domisili resmi', 'desc' => 'Keterangan resmi tentang alamat dan tempat tinggal warga desa.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-violet-400 to-purple-600', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'],
-                    ['jenis' => 'belum_menikah', 'badge' => 'Belum Menikah', 'title' => 'Belum Menikah / Janda Duda', 'tag' => 'Status pernikahan', 'desc' => 'Surat keterangan status pernikahan untuk berbagai keperluan resmi.', 'cta' => 'Ajukan Sekarang', 'gradient' => 'from-rose-400 to-pink-600', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
-                    ['jenis' => null, 'badge' => 'Lainnya', 'title' => '14+ Jenis Surat Lainnya', 'tag' => 'SKU, SKKB, dan banyak lagi', 'desc' => 'SKU, SKKB, Ahli Waris, Kepemilikan Tanah, Penghasilan, dan banyak lagi — semuanya tersedia online.', 'cta' => 'Lihat semua layanan', 'gradient' => 'from-cyan-400 to-teal-600', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'],
-                ];
-                $services = array_map(function ($s) {
-                    $s['href'] = $s['jenis'] ? route('warga.surat.create', ['jenis' => $s['jenis']]) : route('login');
-                    return $s;
-                }, $services);
-            @endphp
 
             <div class="anim-fade-up" x-data="serviceCarousel({{ count($services) }})" @mouseenter="pause()" @mouseleave="play()">
                 {{-- Hero Stage --}}
@@ -1415,6 +1358,58 @@
                 next() { const n = this.visibleSlides.length; if (!n) return; this.slide = (this.slide + 1) % n; },
                 prev() { const n = this.visibleSlides.length; if (!n) return; this.slide = (this.slide - 1 + n) % n; },
                 go(i) { this.slide = i; },
+            };
+        }
+
+        // ─── Hero: Slide Layanan Otomatis (4s) + swipe ───
+        function heroSlides(count) {
+            return {
+                active: 0,
+                timer: null,
+                startX: 0,
+                diffX: 0,
+                swiping: false,
+                go(i) {
+                    this.active = i;
+                    this.play();
+                },
+                next() {
+                    this.go((this.active + 1) % count);
+                },
+                prev() {
+                    this.go((this.active - 1 + count) % count);
+                },
+                swipeStart(e) {
+                    this.startX = e.clientX;
+                    this.diffX = 0;
+                    this.swiping = true;
+                    this.pause();
+                },
+                swipeMove(e) {
+                    if (!this.swiping) return;
+                    this.diffX = e.clientX - this.startX;
+                },
+                swipeEnd() {
+                    if (!this.swiping) return;
+                    this.swiping = false;
+                    if (Math.abs(this.diffX) > 40) {
+                        if (this.diffX < 0) this.next(); else this.prev();
+                    }
+                    this.diffX = 0;
+                    this.play();
+                },
+                play() {
+                    this.stop();
+                    if (!count) return;
+                    this.timer = setInterval(() => {
+                        this.active = (this.active + 1) % count;
+                    }, 4000);
+                },
+                stop() {
+                    if (this.timer) { clearInterval(this.timer); this.timer = null; }
+                },
+                pause() { this.stop(); },
+                init() { this.play(); },
             };
         }
 

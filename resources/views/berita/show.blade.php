@@ -183,7 +183,7 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Kategori</p>
-                                    <p class="text-xs font-bold text-gray-800">Berita Desa</p>
+                                    <p class="text-xs font-bold text-gray-800">{{ $berita->kategori ?? 'Berita Desa' }}</p>
                                 </div>
                             </div>
                         </div>

@@ -34,7 +34,7 @@
 | **Admin Panel** | filament/filament ^3.2 | Admin panel framework (terinstall) |
 | **AI/LLM** | google-gemini-php/laravel ^2.0 | Integrasi Gemini AI (terinstall) |
 | **Auth** | Kustom (tanpa Breeze/Jetstream) | Login berbasis NIK |
-| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test (74 test) |
+| **Testing** | PHPUnit 10.5 + Collision 8.x | Unit & Feature test (74 test / 194 assertions) |
 | **Code Style** | Laravel Pint ^1.13 | PSR-12 berbasis Laravel |
 
 ---
@@ -176,7 +176,7 @@ Dashboard admin menggunakan arsitektur widget modular dengan bento grid layout:
 | **Laporan Kinerja Lembaga** | `/admin/laporan-lembaga` | `lembaga.report` | Laporan kinerja lembaga + export |
 | **Template Surat (LetterConfig)** | `/admin/template-surat` | `setting.manage` | CRUD 14 template surat dinamis (fields JSON, body template, kode klasifikasi, masa berlaku, requirements, per-template kop surat) |
 | **Log Aktivitas** | `/admin/activity-log` | `audit.view` | Audit trail semua aksi admin (filter, paginate, hapus) |
-| **Backup Database** | `/admin/pengaturan/backup*` | `setting.manage` | Buat / unduh / hapus backup database (MySQL dump via mysqldump) |
+| **Backup Database** | `/admin/pengaturan/backup*` | `setting.manage` | Buat / unduh / hapus backup database (ZIP archive via mysqldump atau PDO fallback) |
 | **Update Aplikasi** | `/admin/pengaturan/update*` | `setting.manage` (Super Admin) | Cek status git + jalankan update (`git pull`, composer, migrate, build) |
 
 #### Monitoring & Analitik
@@ -186,7 +186,7 @@ Dashboard admin menggunakan arsitektur widget modular dengan bento grid layout:
 | **Monitoring Antrean** | `/admin/queue` | `queue.view` | Statistik queue + Chart.js chart + failed jobs (retry/delete) |
 | **Pengambilan Surat** | `/admin/queue/pickup` | `queue.view` / `queue.manage` | Scan QR antrean via kamera (preferensi kamera belakang), cari manual (cocok tepat `nomor_antrean` / `kode_qr`), serahkan dokumen / tandai lewat |
 | **Analitik & Laporan** | `/admin/analytics` | `analytics.view` | 8 metrik + 4 Chart.js chart + CSV export |
-| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | 17 tab: profil desa, pemerintahan, ttd digital, template surat, nomor surat, workflow, queue driver, antrean, notifikasi, analytics, backup, keamanan, integrasi, tampilan, maintenance, audit log, preview panel |
+| **Pengaturan Desa** | `/admin/pengaturan` | `setting.manage` | 16 tab: profil desa, pemerintahan, ttd digital, template surat, nomor surat, workflow, queue driver, antrean, notifikasi, analytics, backup, keamanan, integrasi, tampilan, maintenance, audit log + preview panel sidebar |
 
 #### Laporan Desa Kuantitatif
 
@@ -530,7 +530,7 @@ village_settings (key-value store)
 | `DashboardService` | Data statistik dashboard admin/warga/lembaga |
 | `ThemeSettingsService` | Pengaturan tampilan per-user (tema, density, warna aksen, sidebar) |
 | `ClearDashboardCache` | Membersihkan semua cache dashboard widget |
-| `BackupService` | Backup/restore database via `mysqldump` |
+| `BackupService` | Backup database to ZIP archive (database.sql + optional storage) via `mysqldump` or PDO fallback |
 | `GitUpdateService` | Cek status & update aplikasi via git + composer + migrate + build |
 | `TelegramNotifier` | Kirim notifikasi Telegram (pengajuan baru, surat selesai) |
 | `WebhookNotifier` | Notifikasi webhook (n8n/integrasi) |
@@ -591,10 +591,10 @@ resources/views/
 ├── home.blade.php
 ├── components/
 │   ├── {favicon,fonts,admin-layout,warga-layout,lembaga-layout,public-layout}.blade.php
-│   ├── {alert,design-tokens,pwa-assets,setting-input,setting-textarea,setting-upload}.blade.php
+│   ├── {alert,design-tokens,pwa-assets}.blade.php
 │   ├── theme-settings-modal.blade.php
 │   └── widgets/
-│       └── _{header,stats,charts,workflow,approval,sla,submissions,queue,event,village,health,system_info,quick_actions,shortcut,notifications,audit_log,empty,skeleton}.blade.php
+│       └── _{header,stats,charts,workflow,approvals_and_activity,sla,submissions,queue,event,village,health,system_info,quick_actions,shortcuts,notifications,audit_log,empty,skeleton}.blade.php
 ├── auth/{index,forgot}.blade.php
 ├── berita/show.blade.php
 ├── verifikasi/show.blade.php
@@ -607,7 +607,7 @@ resources/views/
 ├── admin/
 │   ├── components/sidebar.blade.php
 │   ├── dashboard.blade.php (bento grid + widget engine + lazy loading)
-│   ├── dashboard/{_header,_stats,_charts,_workflow,_approvals_and_activity,_monitoring,_submissions,_analytics_summary,_quick_actions,_footer}.blade.php
+│   ├── dashboard/{_analytics_summary,_approvals_and_activity,_charts,_footer,_header,_monitoring,_quick_actions,_stats,_submissions,_workflow}.blade.php
 │   ├── kades/dashboard.blade.php
 │   ├── sekdes/dashboard.blade.php
 │   ├── pengajuan/{index,show,versions,version-show,version-diff}.blade.php
@@ -629,8 +629,8 @@ resources/views/
 │   ├── letter-config/{index,create,edit,show}.blade.php
 │   ├── activity-log/index.blade.php
 │   ├── kop-surat/show.blade.php (letterhead editor dengan live preview)
-│   └── setting/index.blade.php (17 tab)
-│       └── partials/{_profil_desa,_pemerintahan,_ttd_digital,_template_surat,_nomor_surat,_workflow,_queue_driver,_antrean,_notifikasi,_analytics,_backup,_keamanan,_integrasi,_tampilan,_maintenance,_audit_log,_preview_panel,_reserved_note,_skeleton,_versioning_bar}.blade.php
+│   └── setting/index.blade.php (16 tab + preview panel)
+│       └── partials/{_analytics,_antrean,_audit_log,_backup,_integrasi,_keamanan,_maintenance,_nomor_surat,_notifikasi,_pemerintahan,_preview_panel,_profil_desa,_queue_driver,_reserved_note,_skeleton,_tampilan,_template_surat,_ttd_digital,_versioning_bar,_workflow}.blade.php
 ├── pdf/
 │   ├── _kop.blade.php (kop surat global + per-template fallback)
 │   ├── template_{sktm,ktp_sementara,akta,dynamic}.blade.php
@@ -709,5 +709,5 @@ Konfigurasi test menggunakan SQLite `:memory:` (`DB_CONNECTION=sqlite`, `DB_DATA
 - **Policy:** `PengajuanSuratPolicy`, `DocumentVersionPolicy`
 - **Auth:** NIK sebagai identitas + bcrypt password
 - **Audit trail:** Semua aksi penting tercatat di `activity_logs` dan dilihat di `/admin/activity-log`
-- **Backup:** Backup database terjadwal (mysqldump) dengan penyimpanan lokal, unduh, dan hapus. Command `backup:run` mendukung flag `--no-storage` untuk backup tanpa file storage
+- **Backup:** Backup database ke file ZIP (database.sql + optional storage) via mysqldump atau PDO fallback, dengan penyimpanan lokal, unduh, dan hapus. Retensi otomatis sesuai pengaturan
 - **Error pages:** 403, 404, 500 dengan branding desa

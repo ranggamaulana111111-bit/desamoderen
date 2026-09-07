@@ -15,6 +15,17 @@
                     <p class="text-xs text-slate-400 mt-1.5">Format sederhana didukung: gunakan baris kosong untuk paragraf baru.</p>
                 </div>
                 <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Kategori Berita</label>
+                    <select name="kategori"
+                            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition">
+                        <option value="">Tanpa Kategori</option>
+                        @foreach (['Pembangunan', 'Kesehatan', 'Pendidikan', 'Budaya', 'Pemerintahan', 'Lingkungan'] as $kat)
+                            <option value="{{ $kat }}" @selected(old('kategori', $berita?->kategori) === $kat)>{{ $kat }}</option>
+                        @endforeach
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1.5">Tentang apa berita ini, akan tampil sebagai badge di halaman utama.</p>
+                </div>
+                <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">Foto Berita</label>
                     <input type="file" name="foto" accept="image/*"
                            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition">

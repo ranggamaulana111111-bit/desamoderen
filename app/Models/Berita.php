@@ -15,6 +15,7 @@ class Berita extends Model
         'konten',
         'foto',
         'status',
+        'kategori',
         'dilihat',
         'user_id',
         'lembaga_id',
