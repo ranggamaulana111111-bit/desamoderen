@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\PengajuanSurat;
 use App\Models\User;
+use App\Services\ApprovalService;
 
 class PengajuanSuratPolicy
 {
@@ -25,10 +26,7 @@ class PengajuanSuratPolicy
 
     public function reject(User $user, PengajuanSurat $surat): bool
     {
-        return $user->can('letter.reject')
-            || $user->can('letter.review')
-            || $user->can('letter.verify')
-            || $user->can('letter.final_approve');
+        return app(ApprovalService::class)->canReject($surat, $user);
     }
 
     public function requestRevision(User $user, PengajuanSurat $surat): bool

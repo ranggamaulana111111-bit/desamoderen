@@ -107,18 +107,18 @@ class LaporanService
 
     private function gatherKependudukan(Carbon $start, Carbon $end): array
     {
-        $totalWarga = User::count();
-        $newUsers = User::whereBetween('created_at', [$start, $end])->count();
-        $totalWargaBefore = User::where('created_at', '<', $start)->count();
+        $totalWarga = User::role('Warga')->count();
+        $newUsers = User::role('Warga')->whereBetween('created_at', [$start, $end])->count();
+        $totalWargaBefore = User::role('Warga')->where('created_at', '<', $start)->count();
 
-        $rtStats = User::whereNotNull('rt')
+        $rtStats = User::role('Warga')->whereNotNull('rt')
             ->selectRaw('rt, COUNT(*) as total')
             ->groupBy('rt')
             ->orderBy('rt')
             ->pluck('total', 'rt')
             ->toArray();
 
-        $rwStats = User::whereNotNull('rw')
+        $rwStats = User::role('Warga')->whereNotNull('rw')
             ->selectRaw('rw, COUNT(*) as total')
             ->groupBy('rw')
             ->orderBy('rw')
@@ -338,7 +338,7 @@ class LaporanService
     private function gatherBeritaInformasi(Carbon $start, Carbon $end): array
     {
         $total = Berita::whereBetween('created_at', [$start, $end])->count();
-        $published = Berita::where('status', 'published')
+        $published = Berita::where('status', 'publish')
             ->whereBetween('created_at', [$start, $end])
             ->count();
         $draft = Berita::where('status', 'draft')
@@ -683,7 +683,7 @@ class LaporanService
             $lines[] = '**Daftar Publikasi Terbaru**';
             $daftarItems = [];
             foreach ($data['terbaru'] as $berita) {
-                $statusLabel = $berita['status'] === 'published' ? 'Diterbitkan' : 'Draf';
+                $statusLabel = $berita['status'] === 'publish' ? 'Diterbitkan' : 'Draf';
                 $daftarItems[] = "\"{$berita['judul']}\" ({$statusLabel}, {$berita['tanggal']})";
             }
             $lines[] = 'Berita terbaru yang dikelola: '.implode('. ', $daftarItems).'.';

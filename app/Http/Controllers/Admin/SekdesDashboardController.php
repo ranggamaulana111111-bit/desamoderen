@@ -105,20 +105,20 @@ class SekdesDashboardController extends Controller
         // ── Operator Performance ──
         $operatorStats = User::role('Operator Pelayanan')
             ->withCount([
-                'pengajuanSurat as total_reviewed' => function ($q) {
-                    $q->whereNotIn('status', ['submitted', 'revision']);
+                'approvalHistories as total_processed' => function ($q) {
+                    $q->whereIn('status', ['verified', 'approved_operator', 'revision', 'rejected']);
                 },
-                'pengajuanSurat as total_approved' => function ($q) {
+                'approvalHistories as total_approved' => function ($q) {
                     $q->where('status', 'approved_operator');
                 },
-                'pengajuanSurat as total_rejected' => function ($q) {
+                'approvalHistories as total_rejected' => function ($q) {
                     $q->where('status', 'rejected');
                 },
             ])
             ->get()
             ->map(function ($op) {
-                $op->approval_rate = $op->total_reviewed > 0
-                    ? round(($op->total_approved / $op->total_reviewed) * 100)
+                $op->approval_rate = $op->total_processed > 0
+                    ? round(($op->total_approved / $op->total_processed) * 100)
                     : 0;
 
                 return $op;

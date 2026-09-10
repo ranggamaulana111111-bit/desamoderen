@@ -134,4 +134,44 @@ class ApprovalWorkflowTest extends TestCase
         $this->assertEquals('completed', $pengajuan->fresh()->status);
         $this->assertEquals(2, $pengajuan->fresh()->current_step);
     }
+
+    public function test_operator_can_reject_at_operator_step(): void
+    {
+        ['operator' => $operator, 'warga' => $warga] = $this->makeRoles();
+        $pengajuan = $this->makePengajuan($warga);
+
+        $this->service->reject($pengajuan, $operator, 'Data tidak lengkap');
+        $this->assertEquals('rejected', $pengajuan->fresh()->status);
+    }
+
+    public function test_operator_cannot_reject_after_sekdes_approval(): void
+    {
+        ['operator' => $operator, 'sekdes' => $sekdes, 'warga' => $warga] = $this->makeRoles();
+        $pengajuan = $this->makePengajuan($warga);
+
+        $this->service->approve($pengajuan, $operator);
+        $this->service->approve($pengajuan, $operator);
+        $this->service->approve($pengajuan, $sekdes);
+        $this->assertEquals('approved_sekdes', $pengajuan->fresh()->status);
+
+        $this->assertFalse($this->service->canReject($pengajuan, $operator));
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->service->reject($pengajuan, $operator, 'Veto tidak sah');
+    }
+
+    public function test_sekdes_can_still_reject_after_own_step(): void
+    {
+        ['operator' => $operator, 'sekdes' => $sekdes, 'warga' => $warga] = $this->makeRoles();
+        $pengajuan = $this->makePengajuan($warga);
+
+        $this->service->approve($pengajuan, $operator);
+        $this->service->approve($pengajuan, $operator);
+        $this->service->approve($pengajuan, $sekdes);
+
+        $this->assertTrue($this->service->canReject($pengajuan, $sekdes));
+
+        $this->service->reject($pengajuan, $sekdes, 'Perbaiki data');
+        $this->assertEquals('rejected', $pengajuan->fresh()->status);
+    }
 }

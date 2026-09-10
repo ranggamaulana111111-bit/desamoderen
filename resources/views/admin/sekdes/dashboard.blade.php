@@ -469,7 +469,7 @@
                                             @foreach($operatorStats as $op)
                                                 <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
                                                     <td class="py-2.5 px-2 font-semibold text-gray-700">{{ $op->name }}</td>
-                                                    <td class="py-2.5 px-2 text-center font-medium text-gray-600">{{ $op->total_reviewed }}</td>
+                                                    <td class="py-2.5 px-2 text-center font-medium text-gray-600">{{ $op->total_processed }}</td>
                                                     <td class="py-2.5 px-2 text-center font-medium text-emerald-600">{{ $op->total_approved }}</td>
                                                     <td class="py-2.5 px-2 text-center font-medium text-red-600">{{ $op->total_rejected }}</td>
                                                     <td class="py-2.5 px-2 text-center">

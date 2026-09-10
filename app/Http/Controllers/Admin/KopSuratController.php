@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
+use App\Models\VillageSetting;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class KopSuratController extends Controller
 {
@@ -16,7 +16,7 @@ class KopSuratController extends Controller
 
     public function show()
     {
-        $settings = \App\Models\VillageSetting::pluck('value', 'key')->toArray();
+        $settings = VillageSetting::pluck('value', 'key')->toArray();
 
         return view('admin.kop-surat.show', compact('settings'));
     }

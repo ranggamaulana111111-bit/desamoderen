@@ -90,6 +90,8 @@
         $isWaiting = $status === 'menunggu';
         $isDone = $status === 'diambil';
         $isExpired = $status === 'lewat';
+        $nik = $antrean->pengajuan->user->nik ?? null;
+        $nikMasked = $nik ? \Illuminate\Support\Str::mask($nik, '*', 0, 12) : '-';
     @endphp
 
     {{-- ═══ SECTION 1: HERO HEADER ═══ --}}
@@ -213,7 +215,7 @@
                             </div>
                             <div class="min-w-0">
                                 <p class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">NIK</p>
-                                <p class="text-sm font-bold text-gray-900 font-mono tracking-wide">{{ $antrean->pengajuan->user->nik }}</p>
+                                <p class="text-sm font-bold text-gray-900 font-mono tracking-wide">{{ $nikMasked }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3 p-3 bg-gray-50/80 rounded-xl border border-gray-100">

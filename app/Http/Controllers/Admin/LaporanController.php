@@ -90,22 +90,15 @@ class LaporanController extends Controller
     {
         $laporan->load('creator', 'approver');
 
-        if (empty($laporan->konten_naratif)) {
-            $start = $laporan->periode_mulai;
-            $end = $laporan->periode_akhir;
-            $laporan->konten_naratif = $this->laporanService->generateAllNarratives(
-                $laporan->modul_yang_dipilih,
-                $start,
-                $end
-            );
-            $laporan->save();
-        }
+        $this->authorizeView($laporan);
+        $this->ensureNarratives($laporan);
 
         return view('admin.laporan.show', compact('laporan'));
     }
 
     public function edit(LaporanDesa $laporan)
     {
+        abort_unless($laporan->created_by === (int) Auth::id(), 403, 'Anda hanya dapat mengubah laporan yang Anda buat.');
         abort_unless($laporan->canEdit(), 403);
 
         $modules = LaporanService::MODULES;
@@ -125,6 +118,7 @@ class LaporanController extends Controller
 
     public function update(Request $request, LaporanDesa $laporan)
     {
+        abort_unless($laporan->created_by === (int) Auth::id(), 403, 'Anda hanya dapat mengubah laporan yang Anda buat.');
         abort_unless($laporan->canEdit(), 403);
 
         $validated = $request->validate([
@@ -143,6 +137,7 @@ class LaporanController extends Controller
 
     public function destroy(LaporanDesa $laporan)
     {
+        abort_unless($laporan->created_by === (int) Auth::id(), 403, 'Anda hanya dapat menghapus laporan yang Anda buat.');
         abort_unless($laporan->canEdit(), 403);
 
         $laporan->delete();
@@ -176,14 +171,8 @@ class LaporanController extends Controller
     {
         $laporan->load('creator', 'approver');
 
-        if (empty($laporan->konten_naratif)) {
-            $laporan->konten_naratif = $this->laporanService->generateAllNarratives(
-                $laporan->modul_yang_dipilih,
-                $laporan->periode_mulai,
-                $laporan->periode_akhir
-            );
-            $laporan->save();
-        }
+        $this->authorizeView($laporan);
+        $this->ensureNarratives($laporan);
 
         $view = $laporan->format_pdf === 'laporan_institusional'
             ? 'pdf.laporan_institusional'
@@ -225,5 +214,35 @@ class LaporanController extends Controller
         ]);
 
         return back()->with('success', 'Laporan dikembalikan ke status draf.');
+    }
+
+    private function authorizeView(LaporanDesa $laporan): void
+    {
+        if ($laporan->created_by === (int) Auth::id()) {
+            return;
+        }
+
+        if (Auth::user()?->hasRole(['Kepala Desa', 'Sekretaris Desa', 'Super Admin'])) {
+            return;
+        }
+
+        abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+    }
+
+    private function ensureNarratives(LaporanDesa $laporan): void
+    {
+        if (! empty($laporan->konten_naratif)) {
+            return;
+        }
+
+        $laporan->konten_naratif = $this->laporanService->generateAllNarratives(
+            $laporan->modul_yang_dipilih,
+            $laporan->periode_mulai,
+            $laporan->periode_akhir
+        );
+
+        if ($laporan->created_by === (int) Auth::id()) {
+            $laporan->save();
+        }
     }
 }

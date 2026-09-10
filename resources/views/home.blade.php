@@ -76,11 +76,11 @@
         .stagger-7{transition-delay:.56s}.stagger-8{transition-delay:.64s}
 
         .hero-gradient{
-            background:linear-gradient(rgba(5,22,18,.58),rgba(5,22,18,.68)),url('{{ asset('pwa/background.jpg') }}') center/cover no-repeat;
+            background:linear-gradient(rgba(5,22,18,.15),rgba(5,22,18,.30)),url('{{ asset('pwa/background.jpg') }}') center/cover no-repeat;
             background-size:cover;
-            box-shadow:inset 0 -110px 90px -40px rgba(0,0,0,.85);
+            box-shadow:inset 0 -80px 70px -50px rgba(0,0,0,.45);
         }
-        .hero-fade-bottom{position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(to top,rgba(2,10,8,.7),transparent);pointer-events:none;z-index:5}
+        .hero-fade-bottom{position:absolute;left:0;right:0;bottom:0;height:50px;background:linear-gradient(to top,rgba(2,10,8,.35),transparent);pointer-events:none;z-index:5}
         .hero-mesh{background:radial-gradient(ellipse at 20% 50%,rgba(16,185,129,.10) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(8,145,178,.08) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(2,132,199,.07) 0%,transparent 50%)}
 
         .glass{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
@@ -97,7 +97,7 @@
         .card-institution{background:#fff;border:1px solid #f1f5f9;border-radius:16px;padding:1.5rem;transition:all .3s ease;text-align:center}
         .card-institution:hover{transform:translateY(-4px);box-shadow:0 12px 32px -8px rgba(0,0,0,.08);border-color:#d1fae5}
 
-        .nav-scrolled{background:rgba(255,255,255,.95)!important;backdrop-filter:blur(20px)!important;box-shadow:0 1px 20px rgba(0,0,0,.06)!important;border-color:rgba(0,0,0,.04)!important}
+        .nav-scrolled{background:rgba(255,255,255,.80)!important;backdrop-filter:blur(20px)!important;box-shadow:0 1px 20px rgba(0,0,0,.06)!important;border-color:rgba(0,0,0,.04)!important}
         .nav-scrolled .nav-link{color:#475569}
         .nav-scrolled .nav-link:hover{color:#059669}
         .nav-scrolled .nav-link::after{background:var(--accent-500,#10b981)}
@@ -105,8 +105,10 @@
         .nav-scrolled .logo-text .gradient-text{-webkit-text-fill-color:var(--brand-600)}
         .nav-scrolled .nav-btn-masuk{color:#475569}
         .nav-scrolled .nav-btn-masuk:hover{color:var(--brand-600)}
-        .nav-scrolled .nav-btn-daftar{background:#10b981;color:#fff}
-        .nav-scrolled .nav-btn-daftar:hover{background:#059669}
+        .nav-btn-daftar{background:linear-gradient(135deg,rgba(16,185,129,.80),rgba(5,150,105,.60));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -8px rgba(16,185,129,.5);transition:all .25s ease}
+        .nav-btn-daftar:hover{background:linear-gradient(135deg,rgba(16,185,129,.92),rgba(5,150,105,.72))}
+        .nav-scrolled .nav-btn-daftar{background:linear-gradient(135deg,rgba(16,185,129,.80),rgba(5,150,105,.60));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -8px rgba(16,185,129,.5);color:#fff}
+        .nav-scrolled .nav-btn-daftar:hover{background:linear-gradient(135deg,rgba(16,185,129,.92),rgba(5,150,105,.72))}
         .nav-scrolled .nav-btn-keluar{color:#64748b}
         .nav-scrolled .nav-btn-keluar:hover{color:#ef4444}
         .nav-scrolled .mobile-toggle{color:#334155}
@@ -211,7 +213,7 @@
                 <div class="hidden lg:flex items-center gap-3">
                     @guest
                         <a href="{{ route('login') }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Masuk</a>
-                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-[#10b981] px-5 py-2.5 rounded-full hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/30 nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
+                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white px-5 py-2.5 rounded-full nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
                     @endguest
                     @auth
                         <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>
@@ -234,7 +236,7 @@
                 <div class="border-t border-slate-100 mt-3 pt-3 flex flex-col gap-2">
                     @guest
                          <a href="{{ route('login') }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Masuk</a>
-                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-[#10b981] px-5 py-2.5 rounded-full hover:bg-[#059669] transition-all shadow-lg shadow-brand-500/30 nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
+                        <a href="{{ route('register') }}" class="text-sm font-semibold text-white px-5 py-2.5 rounded-full nav-btn-daftar min-h-12 inline-flex items-center">Daftar Gratis</a>
                     @endguest
                     @auth
                         <a href="{{ auth()->user()->dashboardRoute() }}" class="text-sm font-medium text-white/80 hover:text-white px-4 py-2 rounded-xl transition-colors nav-btn-masuk">Dashboard</a>

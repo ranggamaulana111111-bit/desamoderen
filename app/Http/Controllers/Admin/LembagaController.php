@@ -38,7 +38,7 @@ class LembagaController extends Controller
             $fotoPath = $request->file('foto')->store('lembaga', 'public');
         }
 
-        return DB::transaction(function () use ($validated, $fotoPath, $request) {
+        $lembaga = DB::transaction(function () use ($validated, $fotoPath, $request) {
             $lembaga = Lembaga::create([
                 'nama' => $validated['nama'],
                 'singkatan' => $validated['singkatan'] ?? null,
@@ -99,45 +99,47 @@ class LembagaController extends Controller
         $pengurus = $lembaga->users()->whereHas('roles', fn ($q) => $q->where('name', 'Lembaga'))->first();
         $validated = $this->validateLembaga($request, accountRequired: false, exceptUserId: $pengurus?->id);
 
-        $data = [
-            'nama' => $validated['nama'],
-            'singkatan' => $validated['singkatan'] ?? null,
-            'jenis' => $validated['jenis'],
-            'deskripsi' => $validated['deskripsi'] ?? null,
-            'ketua' => $validated['ketua'] ?? null,
-            'alamat' => $validated['alamat'] ?? null,
-            'no_hp' => $validated['no_hp'] ?? null,
-            'email' => $validated['email'] ?? null,
-            'status' => $validated['status'],
-        ];
+        DB::transaction(function () use ($request, $lembaga, $pengurus, $validated) {
+            $data = [
+                'nama' => $validated['nama'],
+                'singkatan' => $validated['singkatan'] ?? null,
+                'jenis' => $validated['jenis'],
+                'deskripsi' => $validated['deskripsi'] ?? null,
+                'ketua' => $validated['ketua'] ?? null,
+                'alamat' => $validated['alamat'] ?? null,
+                'no_hp' => $validated['no_hp'] ?? null,
+                'email' => $validated['email'] ?? null,
+                'status' => $validated['status'],
+            ];
 
-        if ($request->hasFile('foto')) {
-            if ($lembaga->foto) {
-                Storage::disk('public')->delete($lembaga->foto);
+            if ($request->hasFile('foto')) {
+                if ($lembaga->foto) {
+                    Storage::disk('public')->delete($lembaga->foto);
+                }
+                $data['foto'] = $request->file('foto')->store('lembaga', 'public');
             }
-            $data['foto'] = $request->file('foto')->store('lembaga', 'public');
-        }
 
-        $lembaga->update($data);
+            $lembaga->update($data);
 
-        if ($pengurus) {
-            $pengurus->update([
-                'name' => $validated['nama_pengurus'] ?? $pengurus->name,
-                'nik' => $validated['nik'] ?? $pengurus->nik,
-                'no_hp' => $validated['no_hp'] ?? $pengurus->no_hp,
-            ]);
+            if ($pengurus) {
+                $pengurus->update([
+                    'name' => $validated['nama_pengurus'] ?? $pengurus->name,
+                    'nik' => $validated['nik'] ?? $pengurus->nik,
+                    'no_hp' => $validated['no_hp'] ?? $pengurus->no_hp,
+                ]);
 
-            if (! empty($validated['password'])) {
-                $pengurus->update(['password' => Hash::make($validated['password'])]);
+                if (! empty($validated['password'])) {
+                    $pengurus->update(['password' => Hash::make($validated['password'])]);
+                }
             }
-        }
 
-        ActivityLog::catat(
-            'update_lembaga',
-            "Admin {$request->user()->name} mengupdate lembaga '{$lembaga->nama}'",
-            'lembaga',
-            $lembaga->id
-        );
+            ActivityLog::catat(
+                'update_lembaga',
+                "Admin {$request->user()->name} mengupdate lembaga '{$lembaga->nama}'",
+                'lembaga',
+                $lembaga->id
+            );
+        });
 
         return redirect()->route('admin.lembaga.index')
             ->with('success', 'Data lembaga berhasil diperbarui.');

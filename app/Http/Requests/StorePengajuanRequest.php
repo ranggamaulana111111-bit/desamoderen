@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\LetterConfig;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePengajuanRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class StorePengajuanRequest extends FormRequest
         $requiresAttachment = $config && ! empty($config->requirements);
 
         $rules = [
-            'jenis_surat' => 'required|string|max:50',
+            'jenis_surat' => ['required', 'string', 'max:50', Rule::exists('letter_configs', 'jenis_surat')->where('is_active', true)],
             'lampiran' => $requiresAttachment ? 'required|array|min:1' : 'nullable|array',
             'lampiran.*' => 'required|file|mimes:pdf,jpg,jpeg,png|mimetypes:image/jpeg,image/png,application/pdf|max:2048',
         ];
@@ -38,6 +39,7 @@ class StorePengajuanRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'jenis_surat.exists' => 'Jenis surat yang dipilih tidak tersedia atau tidak aktif.',
             'lampiran.required' => 'File lampiran wajib diunggah.',
             'lampiran.min' => 'Minimal satu file lampiran wajib diunggah.',
             'lampiran.*.mimes' => 'Lampiran harus berupa PDF, JPG, JPEG, atau PNG.',

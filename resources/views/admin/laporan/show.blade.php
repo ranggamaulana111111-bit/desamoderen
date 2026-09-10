@@ -174,7 +174,7 @@
                 </div>
                 <div class="widget-card-body space-y-3">
 
-                    @if ($laporan->isDraft())
+                    @if ($laporan->isDraft() && $laporan->created_by === Auth::id())
                         <a href="{{ route('admin.laporan.edit', $laporan) }}"
                             class="flex items-center justify-center gap-2 w-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>

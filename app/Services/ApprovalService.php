@@ -22,7 +22,6 @@ class ApprovalService
         'approved_sekdes' => 'letter.verify',
         'approved_kades' => 'letter.final_approve',
         'completed' => 'letter.sign',
-        'rejected' => ['letter.reject', 'letter.review', 'letter.verify', 'letter.final_approve'],
     ];
 
     public function getValidTransitions(PengajuanSurat $surat, User $user): array
@@ -43,7 +42,7 @@ class ApprovalService
 
         $filtered = [];
         foreach ($transitions as $targetStatus => $label) {
-            if ($this->canPerformTransition($targetStatus, $user)) {
+            if ($this->canPerformTransition($targetStatus, $user, $surat->status)) {
                 $filtered[$targetStatus] = $label;
             }
         }
@@ -51,8 +50,12 @@ class ApprovalService
         return $filtered;
     }
 
-    public function canPerformTransition(string $targetStatus, User $user): bool
+    public function canPerformTransition(string $targetStatus, User $user, ?string $currentStatus = null): bool
     {
+        if ($targetStatus === 'rejected') {
+            return $this->canReject($currentStatus, $user);
+        }
+
         $required = self::APPROVAL_PERMISSIONS[$targetStatus] ?? null;
 
         if (is_null($required)) {
@@ -64,6 +67,13 @@ class ApprovalService
         }
 
         return $user->can($required);
+    }
+
+    public function canReject(PengajuanSurat|string $surat, User $user): bool
+    {
+        $currentStatus = $surat instanceof PengajuanSurat ? $surat->status : $surat;
+
+        return $this->userRejectRank($user) >= $this->stepRejectRank($currentStatus);
     }
 
     public function transition(PengajuanSurat $surat, string $newStatus, User $user, ?string $catatan = null): void
@@ -294,5 +304,35 @@ class ApprovalService
     private function workflowEnabled(string $key): bool
     {
         return (string) (config("village.{$key}") ?? '1') === '1';
+    }
+
+    private function stepRejectRank(?string $status): int
+    {
+        return match ($status) {
+            'submitted', 'verified', 'approved_operator' => 1,
+            'approved_sekdes' => 2,
+            'approved_kades' => 3,
+            default => 0,
+        };
+    }
+
+    private function userRejectRank(User $user): int
+    {
+        $rank = 0;
+
+        if ($user->can('letter.review')) {
+            $rank = max($rank, 1);
+        }
+        if ($user->can('letter.verify')) {
+            $rank = max($rank, 2);
+        }
+        if ($user->can('letter.final_approve')) {
+            $rank = max($rank, 3);
+        }
+        if ($user->can('letter.reject')) {
+            $rank = max($rank, 4);
+        }
+
+        return $rank;
     }
 }

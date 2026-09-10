@@ -7,6 +7,8 @@ use App\Support\Captcha;
 use Database\Seeders\DemoAuthSeeder;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
 class AuthFlowTest extends TestCase
@@ -136,13 +138,13 @@ class AuthFlowTest extends TestCase
 
     public function test_forgot_password_resets_password(): void
     {
-        $this->get('/password/lupa');
+        $token = $this->requestResetToken();
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
-        $this->post('/password/lupa', [
+        $this->post('/password/reset', [
             'email' => 'demo@prodesa.id',
-            'no_hp' => '081234567890',
+            'token' => $token,
             'password' => 'passwordbaru1',
             'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
@@ -162,8 +164,6 @@ class AuthFlowTest extends TestCase
         $this->post('/password/lupa', [
             'email' => 'demo@prodesa.id',
             'no_hp' => '081111111111',
-            'password' => 'passwordbaru1',
-            'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
         ])->assertSessionHasErrors('no_hp');
     }
@@ -172,13 +172,13 @@ class AuthFlowTest extends TestCase
     {
         User::where('email', 'demo@prodesa.id')->first()->update(['no_hp' => null]);
 
-        $this->get('/password/lupa');
+        $token = $this->requestResetToken();
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
-        $this->post('/password/lupa', [
+        $this->post('/password/reset', [
             'email' => 'demo@prodesa.id',
-            'no_hp' => '081234567890',
+            'token' => $token,
             'password' => 'passwordbaru1',
             'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
@@ -187,11 +187,87 @@ class AuthFlowTest extends TestCase
         $this->assertTrue(password_verify('passwordbaru1', User::where('email', 'demo@prodesa.id')->first()->password));
     }
 
+    public function test_reset_password_rejects_invalid_token(): void
+    {
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/reset', [
+            'email' => 'demo@prodesa.id',
+            'token' => 'token-salah',
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
+            'captcha' => '7',
+        ])->assertSessionHasErrors('token');
+    }
+
+    public function test_reset_password_rejects_expired_token(): void
+    {
+        $user = User::where('email', 'demo@prodesa.id')->first();
+        $token = Password::broker()->createToken($user);
+
+        DB::table('password_reset_tokens')
+            ->where('email', $user->email)
+            ->update(['created_at' => now()->subMinutes(61)]);
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/reset', [
+            'email' => $user->email,
+            'token' => $token,
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
+            'captcha' => '7',
+        ])->assertSessionHasErrors('token');
+    }
+
+    public function test_reset_token_is_single_use(): void
+    {
+        $token = $this->requestResetToken();
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/reset', [
+            'email' => 'demo@prodesa.id',
+            'token' => $token,
+            'password' => 'passwordbaru1',
+            'password_confirmation' => 'passwordbaru1',
+            'captcha' => '7',
+        ])->assertRedirect('/login');
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/reset', [
+            'email' => 'demo@prodesa.id',
+            'token' => $token,
+            'password' => 'passwordbaru2',
+            'password_confirmation' => 'passwordbaru2',
+            'captcha' => '7',
+        ])->assertSessionHasErrors('token');
+    }
+
     public function test_captcha_check_helper(): void
     {
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
         $this->assertTrue(Captcha::check(7));
         $this->assertFalse(Captcha::check(8));
+    }
+
+    private function requestResetToken(): string
+    {
+        $this->get('/password/lupa');
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $response = $this->post('/password/lupa', [
+            'email' => 'demo@prodesa.id',
+            'no_hp' => '081234567890',
+            'captcha' => '7',
+        ]);
+
+        $location = $response->headers->get('Location');
+        parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
+
+        return (string) ($query['token'] ?? '');
     }
 }

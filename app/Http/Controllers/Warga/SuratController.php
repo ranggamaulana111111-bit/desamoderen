@@ -109,12 +109,6 @@ class SuratController extends Controller
         }
 
         if ($request->hasFile('lampiran')) {
-            foreach (($dataTambahan['lampiran'] ?? []) as $old) {
-                if ($old && Storage::exists($old)) {
-                    Storage::delete($old);
-                }
-            }
-
             $hash = substr(hash('sha256', auth()->id().now()->timestamp), 0, 12);
             $timestamp = now()->timestamp;
             $paths = [];
@@ -123,6 +117,12 @@ class SuratController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $filename = "{$pengajuan->jenis_surat}_{$hash}_{$timestamp}_{$i}.{$extension}";
                 $paths[] = $file->storeAs('private/lampiran', $filename);
+            }
+
+            foreach (($dataTambahan['lampiran'] ?? []) as $old) {
+                if ($old && ! in_array($old, $paths) && Storage::exists($old)) {
+                    Storage::delete($old);
+                }
             }
 
             $dataTambahan['lampiran'] = $paths;

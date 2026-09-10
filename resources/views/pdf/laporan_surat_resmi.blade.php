@@ -189,6 +189,7 @@
                     $teks = nl2br(e($teks));
                     $teks = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $teks);
                     $teks = preg_replace('/<strong>([A-Za-z][A-Za-z\s&;]+)<\/strong><br><br>/', '<div class="sub-heading">$1</div>', $teks);
+                    $teks = strip_tags($teks, '<strong><br><div>');
                 @endphp
                 {!! $teks !!}
             </div>

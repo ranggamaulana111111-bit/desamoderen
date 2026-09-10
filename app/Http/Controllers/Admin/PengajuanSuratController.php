@@ -154,7 +154,7 @@ class PengajuanSuratController extends Controller
         DB::transaction(function () use ($pengajuan) {
             if (! $pengajuan->hash_verifikasi) {
                 $pengajuan->update([
-                    'hash_verifikasi' => hash('sha256', $pengajuan->id.$pengajuan->user_id.$pengajuan->jenis_surat.now()->timestamp(Str::random(16))),
+                    'hash_verifikasi' => hash('sha256', $pengajuan->id.$pengajuan->user_id.$pengajuan->jenis_surat.Str::random(40)),
                 ]);
             }
 
@@ -206,11 +206,9 @@ class PengajuanSuratController extends Controller
             : $sekarang->copy()->startOfDay();
 
         for ($hari = 0; $hari < 14; $hari++) {
-            AntreanPengambilan::whereDate('tanggal_ambil', $tgl)
+            $jumlahTerisi = AntreanPengambilan::whereDate('tanggal_ambil', $tgl)
                 ->lockForUpdate()
-                ->get();
-
-            $jumlahTerisi = AntreanPengambilan::whereDate('tanggal_ambil', $tgl)->count();
+                ->count();
 
             if ($jumlahTerisi < $kapasitasHarian) {
                 $slotIndex = intdiv($jumlahTerisi, $kuotaPerSlot);
@@ -226,10 +224,12 @@ class PengajuanSuratController extends Controller
             $tgl->addDay();
         }
 
+        $menitAkhir = ($menitBuka + $durasiSlot) % 1440;
+
         return [
             'tanggal' => $tgl->toDateString(),
             'mulai' => $jamMulai,
-            'selesai' => sprintf('%02d:%02d', (int) $hMulai + (int) ($durasiSlot / 60), (int) $mMulai + ($durasiSlot % 60)),
+            'selesai' => sprintf('%02d:%02d', intdiv($menitAkhir, 60), $menitAkhir % 60),
         ];
     }
 }

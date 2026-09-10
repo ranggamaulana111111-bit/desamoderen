@@ -6,11 +6,11 @@ use App\Http\Controllers\Admin\AntreanController;
 use App\Http\Controllers\Admin\ApbdesaController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DisposisiController;
-use App\Http\Controllers\Admin\KopSuratController;
 use App\Http\Controllers\Admin\DocumentVersionController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\InventarisController;
 use App\Http\Controllers\Admin\KadesDashboardController;
+use App\Http\Controllers\Admin\KopSuratController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\LembagaController;
 use App\Http\Controllers\Admin\LembagaReportController;
@@ -68,7 +68,9 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->middleware('throttle:auth');
     Route::get('password/lupa', [AuthController::class, 'showForgot'])->name('password.request');
     Route::post('password/lupa', [AuthController::class, 'forgot'])->middleware('throttle:auth')->name('password.forgot');
-    Route::post('captcha/refresh', [AuthController::class, 'refreshCaptcha'])->name('captcha.refresh');
+    Route::get('password/reset', [AuthController::class, 'showReset'])->name('password.reset');
+    Route::post('password/reset', [AuthController::class, 'reset'])->middleware('throttle:auth')->name('password.reset.store');
+    Route::post('captcha/refresh', [AuthController::class, 'refreshCaptcha'])->middleware('throttle:30,1')->name('captcha.refresh');
 });
 
 Route::middleware('auth')->post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -209,7 +211,7 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     Route::get('pengaturan/versions/diff/{from}/{to}', [SettingVersionController::class, 'diff'])->middleware('permission:setting.manage')->name('setting.versions.diff');
 });
 
-Route::middleware(['auth'])->prefix('warga')->name('warga.')->group(function () {
+Route::middleware(['auth', 'permission:letter.create'])->prefix('warga')->name('warga.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('surat', [SuratController::class, 'index'])->name('surat.index');
     Route::get('surat/create/{jenis}', [SuratController::class, 'create'])->name('surat.create');

@@ -10,6 +10,7 @@ use App\Support\Turnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password as PasswordBroker;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
@@ -104,7 +105,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'nama_lengkap' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'nik' => ['nullable', 'string', 'digits:16'],
+            'nik' => ['nullable', 'string', 'digits:16', Rule::unique('users', 'nik')],
             'rt' => ['nullable', 'string', 'max:3'],
             'rw' => ['nullable', 'string', 'max:3'],
             'alamat' => ['nullable', 'string', 'max:255'],
@@ -210,10 +211,9 @@ class AuthController extends Controller
 
     public function forgot(Request $request)
     {
-        $validated = $request->validate([
+        $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
-            'no_hp' => ['required', 'string'],
-            'password' => $this->passwordRules(),
+            'no_hp' => ['nullable', 'string', 'max:20'],
             ...$this->captchaFieldRules(),
         ], [], [
             'no_hp' => 'nomor HP',
@@ -228,7 +228,7 @@ class AuthController extends Controller
             return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
         }
 
-        $user = User::where('email', $validated['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if (! $user) {
             Captcha::question();
@@ -236,17 +236,69 @@ class AuthController extends Controller
             return back()->withInput()->withErrors(['email' => 'Email tidak terdaftar.']);
         }
 
-        $normalizedHp = preg_replace('/[^0-9]/', '', $validated['no_hp']);
-        $userHp = preg_replace('/[^0-9]/', '', (string) $user->no_hp);
+        if ($user->no_hp) {
+            $normalizedHp = preg_replace('/[^0-9]/', '', (string) ($credentials['no_hp'] ?? ''));
+            $userHp = preg_replace('/[^0-9]/', '', (string) $user->no_hp);
 
-        if ($userHp !== '' && $normalizedHp !== $userHp) {
-            Captcha::question();
+            if ($normalizedHp === '' || $normalizedHp !== $userHp) {
+                Captcha::question();
 
-            return back()->withInput()->withErrors(['no_hp' => 'Nomor HP tidak cocok dengan data terdaftar.']);
+                return back()->withInput()->withErrors(['no_hp' => 'Nomor HP tidak cocok dengan data terdaftar.']);
+            }
         }
 
-        $user->password = Hash::make($validated['password']);
-        $user->save();
+        $token = PasswordBroker::broker()->createToken($user);
+
+        return redirect()->route('password.reset', [
+            'token' => $token,
+            'email' => $user->email,
+        ]);
+    }
+
+    public function showReset(Request $request)
+    {
+        $email = $request->query('email');
+        $token = $request->query('token');
+        $captcha = Captcha::question();
+        $captchaEnabled = $this->captchaEnabled();
+        $captchaMode = $this->captchaMode();
+
+        return view('auth.reset', compact('email', 'token', 'captcha', 'captchaEnabled', 'captchaMode'));
+    }
+
+    public function reset(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'token' => ['required', 'string'],
+            'password' => $this->passwordRules(),
+            ...$this->captchaFieldRules(),
+        ], [], [
+            'captcha' => 'jawaban keamanan',
+            'g-recaptcha-response' => 'verifikasi keamanan',
+            'cf-turnstile-response' => 'verifikasi keamanan',
+        ]);
+
+        if (! $this->checkCaptcha($request)) {
+            Captcha::question();
+
+            return back()->withInput()->withErrors([$this->captchaErrorField() => 'Verifikasi keamanan gagal. Silakan coba lagi.']);
+        }
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (! $user) {
+            return back()->withErrors(['email' => 'Email tidak terdaftar.']);
+        }
+
+        if (! PasswordBroker::broker()->tokenExists($user, $validated['token'])) {
+            return back()->withErrors(['token' => 'Tautan reset tidak valid atau sudah kedaluwarsa. Silakan ulangi dari awal.']);
+        }
+
+        $user->forceFill(['password' => Hash::make($validated['password'])])->save();
+
+        PasswordBroker::broker()->deleteToken($user);
+        Auth::logout();
 
         return redirect()->route('login')->with('status', 'Password berhasil direset. Silakan masuk dengan password baru.');
     }

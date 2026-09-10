@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
@@ -87,6 +88,8 @@ class EventController extends Controller
 
         $event->update($validated);
 
+        $this->prunePesertaTidakTarget($event, $request);
+
         $this->batchInsertPeserta($event, $request);
 
         return redirect()->route('admin.events.index')
@@ -101,7 +104,7 @@ class EventController extends Controller
             ->with('success', 'Event berhasil dihapus');
     }
 
-    private function batchInsertPeserta(Event $event, Request $request): void
+    private function targetPesertaIds(Request $request): Collection
     {
         $query = User::role('Warga');
         if ($request->filled('rt_target')) {
@@ -110,7 +113,26 @@ class EventController extends Controller
         if ($request->filled('rw_target')) {
             $query->where('rw', $request->rw_target);
         }
-        $pesertaIds = $query->pluck('id');
+
+        return $query->pluck('id');
+    }
+
+    private function prunePesertaTidakTarget(Event $event, Request $request): void
+    {
+        $keepIds = $this->targetPesertaIds($request);
+
+        $query = DB::table('event_peserta')->where('event_id', $event->id);
+
+        if ($keepIds->isNotEmpty()) {
+            $query->whereNotIn('user_id', $keepIds);
+        }
+
+        $query->delete();
+    }
+
+    private function batchInsertPeserta(Event $event, Request $request): void
+    {
+        $pesertaIds = $this->targetPesertaIds($request);
 
         if ($pesertaIds->isEmpty()) {
             return;

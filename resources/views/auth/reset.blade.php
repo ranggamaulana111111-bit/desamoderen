@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Lupa Password - {{ config('village.nama_desa', 'Prodesa') }}</title>
+    <title>Buat Password Baru - {{ config('village.nama_desa', 'Prodesa') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,6 +34,7 @@
         @keyframes meshMove{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(30px,-20px) rotate(2deg)}50%{transform:translate(-20px,30px) rotate(-1deg)}75%{transform:translate(15px,15px) rotate(1deg)}}
         @keyframes orbFloat1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(20px,-15px) scale(1.05)}50%{transform:translate(-8px,12px) scale(.95)}75%{transform:translate(-18px,-8px) scale(1.02)}}
         @keyframes orbFloat2{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-15px,18px) scale(.97)}50%{transform:translate(12px,-10px) scale(1.03)}75%{transform:translate(14px,8px) scale(.98)}}
+        @keyframes floatStat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
         .a-fade-up{opacity:0;transform:translateY(24px);transition:all .7s var(--ease-out-expo)}
         .a-fade-up.v{opacity:1;transform:none}
         .mesh-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -41,7 +42,6 @@
         .noise-overlay{position:absolute;inset:0;opacity:.03;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:128px 128px}
         .dot-pattern{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
         .brand-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
-        .glass-dark{background:rgba(0,0,0,.2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08)}
         .card-auth{background:#fff;border:1px solid #f1f5f9;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.05)}
         .input-group{position:relative}
         .input-group input{width:100%;padding:14px 44px 14px 48px;font-size:14px;color:#0f172a;background:#fff;border:1.5px solid #e2e8f0;border-radius:24px;outline:none;transition:all .3s var(--ease-out-expo);font-family:inherit}
@@ -49,6 +49,8 @@
         .input-group input:focus{border-color:rgba(16,185,129,.6);box-shadow:0 0 0 4px rgba(16,185,129,.12)}
         .input-group .input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#94a3b8;transition:color .3s;pointer-events:none}
         .input-group input:focus ~ .input-icon{color:rgba(5,150,105,.9)}
+        .input-group .input-action{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#94a3b8;cursor:pointer;transition:color .2s;padding:4px}
+        .input-group .input-action:hover{color:#0f172a}
         .input-group.has-error input{border-color:rgba(239,68,68,.6);box-shadow:0 0 0 4px rgba(239,68,68,.1)}
         .input-group.has-question input{padding-right:150px}
         .input-group .input-question{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;cursor:pointer;color:#475569;font-size:14px;font-weight:800;letter-spacing:.04em;transition:color .2s;user-select:none;pointer-events:auto}
@@ -61,7 +63,7 @@
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:9999px}
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased bg-slate-50 overflow-x-clip" x-data="{ submitting: false, showPw: false, captchaA: {{ $captcha[0] }}, captchaB: {{ $captcha[1] }} }">
+<body class="min-h-screen font-sans antialiased bg-slate-50 overflow-x-clip" x-data="{ submitting: false, showPw: false }">
 
     @php
         $loginLogo = config('village.logo_login') ?: config('village.logo_desa');
@@ -100,16 +102,16 @@
             <div class="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
                 <div class="a-fade-up mb-6">
                     <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-brand-500/20 to-cyan-500/20 border border-white/10 flex items-center justify-center" style="animation:floatStat 5s ease-in-out infinite">
-                        <svg class="w-9 h-9 text-brand-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>
+                        <svg class="w-9 h-9 text-brand-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
                     </div>
                 </div>
                 <div class="a-fade-up d2">
                     <h1 class="text-2xl xl:text-3xl font-extrabold text-white leading-tight tracking-tight">
-                        Atur Ulang<br>
-                        <span class="bg-gradient-to-r from-brand-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">Password Anda</span>
+                        Buat<br>
+                        <span class="bg-gradient-to-r from-brand-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">Password Baru</span>
                     </h1>
                     <p class="text-sm text-white/40 mt-3 max-w-[260px] mx-auto leading-relaxed">
-                        Verifikasi email dan nomor HP terdaftar sebelum mengatur ulang password.
+                        Tautan verifikasi sudah dikonfirmasi. Silakan buat password baru Anda.
                     </p>
                 </div>
             </div>
@@ -127,23 +129,21 @@
                 <div class="mesh-bg"></div>
                 <div class="noise-overlay"></div>
                 <div class="relative z-10 px-5 pt-5 pb-9">
-                    <div class="flex items-center justify-between mb-6">
-                        <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-                            @if($loginLogoPath)
-                                <img src="{{ $loginLogoPath }}" alt="Logo {{ config('village.nama_desa') }}" class="w-9 h-9 rounded-xl object-contain bg-white/90 p-0.5 shadow-lg shadow-brand-500/30">
-                            @else
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                            </div>
-                            @endif
-                            <div>
-                                <h2 class="text-base font-extrabold text-white tracking-tight">Pro<span class="text-brand-300">desa</span></h2>
-                                <p class="text-[8px] text-white/30 font-semibold tracking-widest uppercase">Portal Desa Digital</p>
-                            </div>
-                        </a>
-                    </div>
-                    <h1 class="text-xl font-extrabold text-white tracking-tight">Lupa <span class="bg-gradient-to-r from-brand-300 to-teal-300 bg-clip-text text-transparent">Password</span></h1>
-                    <p class="text-xs text-white/40 mt-1.5 max-w-[280px]">Verifikasi email dan nomor HP terdaftar sebelum mengatur ulang password.</p>
+                    <a href="{{ route('home') }}" class="flex items-center gap-2.5 mb-6">
+                        @if($loginLogoPath)
+                            <img src="{{ $loginLogoPath }}" alt="Logo {{ config('village.nama_desa') }}" class="w-9 h-9 rounded-xl object-contain bg-white/90 p-0.5 shadow-lg shadow-brand-500/30">
+                        @else
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        </div>
+                        @endif
+                        <div>
+                            <h2 class="text-base font-extrabold text-white tracking-tight">Pro<span class="text-brand-300">desa</span></h2>
+                            <p class="text-[8px] text-white/30 font-semibold tracking-widest uppercase">Portal Desa Digital</p>
+                        </div>
+                    </a>
+                    <h1 class="text-xl font-extrabold text-white tracking-tight">Password <span class="bg-gradient-to-r from-brand-300 to-teal-300 bg-clip-text text-transparent">Baru</span></h1>
+                    <p class="text-xs text-white/40 mt-1.5 max-w-[280px]">Buat password baru untuk akun {{ $email ?? '' }}.</p>
                 </div>
             </div>
 
@@ -157,45 +157,56 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
                                 </a>
                                 <div>
-                                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Atur Ulang <span class="bg-gradient-to-r from-brand-600 to-teal-600 bg-clip-text text-transparent">Password</span></h1>
-                                    <p class="text-sm text-slate-500 mt-1 leading-relaxed">Masukkan email dan nomor HP yang terdaftar di sistem.</p>
+                                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Buat <span class="bg-gradient-to-r from-brand-600 to-teal-600 bg-clip-text text-transparent">Password Baru</span></h1>
+                                    <p class="text-sm text-slate-500 mt-1 leading-relaxed">Password minimal 8 karakter, kombinasi huruf dan angka.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <form action="{{ route('password.forgot') }}" method="POST" @submit="submitting=true" class="space-y-5">
+                        <form action="{{ route('password.reset.store') }}" method="POST" @submit="submitting=true" class="space-y-5">
                             @csrf
+                            <input type="hidden" name="email" value="{{ $email ?? '' }}">
+                            <input type="hidden" name="token" value="{{ $token ?? '' }}">
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email</label>
-                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('email') }}' }">
-                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@gmail.com" required autofocus
-                                        autocomplete="username">
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Email Terdaftar</label>
+                                <div class="input-group">
+                                    <input type="email" value="{{ $email ?? '' }}" disabled class="opacity-60 cursor-not-allowed">
                                     <span class="input-icon">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
                                     </span>
                                 </div>
-                                @error('email')
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Password Baru</label>
+                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('password') }}' }">
+                                    <input :type="showPw ? 'text' : 'password'" name="password" placeholder="Minimal 8 karakter" required autocomplete="new-password">
+                                    <span class="input-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                                    </span>
+                                    <span class="input-action" @click="showPw = !showPw">
+                                        <template x-if="showPw">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>
+                                        </template>
+                                        <template x-if="!showPw">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                        </template>
+                                    </span>
+                                </div>
+                                @error('password')
                                 <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">No. HP Terdaftar</label>
-                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('no_hp') }}' }">
-                                    <input type="tel" name="no_hp" value="{{ old('no_hp') }}" placeholder="08xxxxxxxxxx" autocomplete="tel">
+                                <label class="block text-xs font-semibold text-slate-600 mb-2 ml-1">Konfirmasi Password Baru</label>
+                                <div class="input-group" :class="{ 'has-error': '{{ $errors->has('password') }}' }">
+                                    <input type="password" name="password_confirmation" placeholder="Ulangi password baru" required autocomplete="new-password">
                                     <span class="input-icon">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
                                     </span>
                                 </div>
-                                @error('no_hp')
-                                <p class="text-xs text-red-500 mt-1.5 ml-1 font-medium">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 flex items-start gap-3">
-                                <svg class="w-5 h-5 text-brand-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-                                <p class="text-xs text-slate-500 leading-relaxed">Setelah identitas terverifikasi, Anda akan diarahkan ke halaman untuk membuat <span class="font-semibold text-slate-700">password baru</span>.</p>
                             </div>
 
                             @if($captchaMode === 'turnstile')
@@ -244,14 +255,27 @@
                             </div>
                             @endif
 
+                            @if ($errors->any())
+                            <div class="rounded-2xl border border-red-200 bg-red-50 p-4">
+                                <div class="flex items-start gap-2.5">
+                                    <svg class="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+                                    <div class="text-sm text-red-600 font-medium leading-relaxed">
+                                        @foreach ($errors->all() as $e)
+                                        <p>{{ $e }}</p>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
                             <button type="submit" class="btn-primary" :disabled="submitting">
                                 <template x-if="submitting">
                                     <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
                                 </template>
                                 <template x-if="!submitting">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
                                 </template>
-                                <span x-text="submitting ? 'Memproses...' : 'Verifikasi &amp; Lanjut'"></span>
+                                <span x-text="submitting ? 'Menyimpan...' : 'Simpan Password Baru'"></span>
                             </button>
                         </form>
 
