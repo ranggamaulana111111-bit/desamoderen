@@ -22,10 +22,12 @@ class PublicVerificationController extends Controller
 
         $ttd = $surat->tanda_tangan_meta;
 
+        $dt = $surat->data_tambahan ?? [];
+
         $data = [
             'status' => $isExpired ? 'expired' : 'valid',
-            'nama_warga' => $surat->user->name,
-            'nik' => $surat->user->nik,
+            'nama_warga' => $dt['nama_lengkap'] ?? $surat->user->name,
+            'nik' => $dt['nik'] ?? $surat->user->nik,
             'jenis_surat' => str_replace('_', ' ', ucfirst($surat->jenis_surat)),
             'nomor_surat' => $surat->nomor_surat ?? '-',
             'tanggal_cetak' => $tglCetak->locale('id')->translatedFormat('d F Y'),
