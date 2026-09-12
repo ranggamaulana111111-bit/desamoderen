@@ -257,6 +257,44 @@
                         <div class="p-5 md:px-6"><p class="text-sm text-gray-700 whitespace-pre-line">{{ $pengajuan->catatan_admin }}</p></div>
                     </div>
                     @endif
+
+                    {{-- Lampiran Dokumen --}}
+                    @php $lampiran = $pengajuan->data_tambahan['lampiran'] ?? []; @endphp
+                    @if (count($lampiran) > 0)
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="px-5 md:px-6 py-4 border-b border-gray-100">
+                            <h2 class="font-semibold text-gray-900">Lampiran Dokumen</h2>
+                        </div>
+                        <div class="p-5 md:px-6">
+                            <div class="space-y-3">
+                                @foreach ($lampiran as $idx => $path)
+                                    @php
+                                        $filename = basename($path);
+                                        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                                        $isPdf = $ext === 'pdf';
+                                        $isImage = in_array($ext, ['jpg', 'jpeg', 'png']);
+                                    @endphp
+                                    <a href="{{ route('admin.pengajuan.lampiran', [$pengajuan, $idx]) }}"
+                                        class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition group">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0
+                                            {{ $isPdf ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600' }}">
+                                            @if ($isPdf)
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                            @else
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate group-hover:text-emerald-700">{{ $filename }}</p>
+                                            <p class="text-xs text-gray-400 uppercase">{{ $ext }}</p>
+                                        </div>
+                                        <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 {{-- Sidebar: Actions --}}

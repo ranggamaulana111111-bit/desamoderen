@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Disposisi;
 use App\Models\SuratMasuk;
 use App\Models\User;
@@ -58,7 +59,14 @@ class DisposisiController extends Controller
 
         $validated['created_by'] = Auth::id();
 
-        Disposisi::create($validated);
+        $disposisi = Disposisi::create($validated);
+
+        ActivityLog::catat(
+            'create_disposisi',
+            "{$request->user()->name} membuat disposisi '{$disposisi->suratMasuk->perihal}' kepada {$disposisi->tujuanUser->name} (sifat: {$disposisi->sifat_disposisi})",
+            'disposisi',
+            $disposisi->id
+        );
 
         return redirect()->route('admin.disposisi.index')->with('success', 'Disposisi berhasil dibuat.');
     }
@@ -91,11 +99,27 @@ class DisposisiController extends Controller
 
         $disposisi->update($validated);
 
+        ActivityLog::catat(
+            'update_disposisi',
+            "{$request->user()->name} memperbarui disposisi '{$disposisi->suratMasuk->perihal}' (status: {$disposisi->status})",
+            'disposisi',
+            $disposisi->id
+        );
+
         return redirect()->route('admin.disposisi.show', $disposisi)->with('success', 'Disposisi berhasil diperbarui.');
     }
 
-    public function destroy(Disposisi $disposisi)
+    public function destroy(Request $request, Disposisi $disposisi)
     {
+        $perihal = $disposisi->suratMasuk?->perihal ?? '-';
+
+        ActivityLog::catat(
+            'delete_disposisi',
+            "{$request->user()->name} menghapus disposisi '{$perihal}'",
+            'disposisi',
+            $disposisi->id
+        );
+
         $disposisi->delete();
 
         return redirect()->route('admin.disposisi.index')->with('success', 'Disposisi berhasil dihapus.');

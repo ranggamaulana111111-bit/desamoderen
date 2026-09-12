@@ -79,7 +79,7 @@ class SuratMasukController extends Controller
 
     public function show(SuratMasuk $suratMasuk)
     {
-        $suratMasuk->load('creator', 'disposisis');
+        $suratMasuk->load('creator');
 
         return view('admin.surat-masuk.show', ['surat' => $suratMasuk]);
     }

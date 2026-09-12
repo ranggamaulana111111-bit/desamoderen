@@ -15,6 +15,7 @@ use App\Services\Surat\LetterServiceFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PengajuanSuratController extends Controller
@@ -147,6 +148,25 @@ class PengajuanSuratController extends Controller
 
         return redirect()->route('admin.pengajuan.show', $pengajuan)
             ->with('success', 'Permintaan perbaikan berhasil dikirim.');
+    }
+
+    public function downloadLampiran(PengajuanSurat $pengajuan, int $index)
+    {
+        $lampiran = $pengajuan->data_tambahan['lampiran'] ?? [];
+
+        if (! isset($lampiran[$index])) {
+            abort(404, 'Lampiran tidak ditemukan.');
+        }
+
+        $path = $lampiran[$index];
+
+        if (! Storage::disk('private')->exists($path)) {
+            abort(404, 'File lampiran tidak tersedia di server.');
+        }
+
+        $filename = basename($path);
+
+        return Storage::disk('private')->download($path, $filename);
     }
 
     private function handleCompletion(PengajuanSurat $pengajuan): void

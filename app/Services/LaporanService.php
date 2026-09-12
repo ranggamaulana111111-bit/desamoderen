@@ -204,7 +204,7 @@ class LaporanService
             ->pluck('total', 'sifat_surat')
             ->toArray();
 
-        $disposisiPending = Disposisi::where('status', 'pending')
+        $disposisiPending = Disposisi::where('status', '!=', 'Selesai')
             ->whereBetween('created_at', [$start, $end])
             ->count();
 
@@ -727,7 +727,7 @@ class LaporanService
             $totalSurat = $kt['surat_masuk'] + $kt['surat_keluar'];
             $temuan[] = "Ketatausahaan menangani {$totalSurat} surat dengan {$kt['total_disposisi']} disposisi.";
             if ($kt['disposisi_pending'] > 0) {
-                $rekomendasi[] = "Tyelesaikan {$kt['disposisi_pending']} disposisi yang masih pending agar alur kerja internal tetap lancar.";
+                $rekomendasi[] = "Selesaikan {$kt['disposisi_pending']} disposisi yang masih belum selesai agar alur kerja internal tetap lancar.";
             }
         }
 

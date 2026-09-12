@@ -12,6 +12,13 @@ class Disposisi extends Model
         'sifat_disposisi', 'deadline', 'status', 'created_by',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'deadline' => 'datetime',
+        ];
+    }
+
     public function suratMasuk(): BelongsTo
     {
         return $this->belongsTo(SuratMasuk::class);
