@@ -99,21 +99,15 @@
             <div class="grid sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">Nama Pengurus @if(!isset($lembaga))<span class="text-red-500">*</span>@endif</label>
-                    <input type="text" name="nama_pengurus" value="{{ old('nama_pengurus', $pengurus?->name) }}" @if(!isset($lembaga))required@endif
+                    <input type="text" name="nama_pengurus" value="{{ old('nama_pengurus', $pengurus?->name) }}" {{ isset($lembaga) ? '' : 'required' }}
                            class="w-full rounded-xl border px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition {{ $errors->has('nama_pengurus') ? 'border-red-400' : 'border-slate-200' }}">
                     @error('nama_pengurus')<p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">Email Pengurus @if(!isset($lembaga))<span class="text-red-500">*</span>@else<small class="text-slate-400 font-normal">(untuk login)</small>@endif</label>
-                    <input type="email" name="email_pengurus" value="{{ old('email_pengurus', $pengurus?->email) }}" placeholder="pengurus@lembaga.id" @if(!isset($lembaga))required@endif
+                    <input type="email" name="email_pengurus" value="{{ old('email_pengurus', $pengurus?->email) }}" placeholder="pengurus@lembaga.id" {{ isset($lembaga) ? '' : 'required' }}
                            class="w-full rounded-xl border px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition {{ $errors->has('email_pengurus') ? 'border-red-400' : 'border-slate-200' }}">
                     @error('email_pengurus')<p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>@enderror
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">NIK (16 digit) @if(!isset($lembaga))<span class="text-red-500">*</span>@endif</label>
-                    <input type="text" name="nik" maxlength="16" inputmode="numeric" pattern="[0-9]{16}" title="NIK harus 16 digit angka" value="{{ old('nik', $pengurus?->nik) }}" @if(!isset($lembaga))required@endif
-                           class="w-full rounded-xl border px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition {{ $errors->has('nik') ? 'border-red-400' : 'border-slate-200' }}">
-                    @error('nik')<p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">No. HP Pengurus</label>
@@ -123,7 +117,7 @@
                 </div>
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">Password @if(!isset($lembaga))<span class="text-red-500">*</span>@else<small class="text-slate-400 font-normal">(kosongkan jika tidak diubah)</small>@endif</label>
-                    <input type="password" name="password" autocomplete="new-password" @if(!isset($lembaga))required minlength="8" @endif
+                    <input type="password" name="password" autocomplete="new-password" {{ isset($lembaga) ? '' : 'required minlength="8"' }}
                            class="w-full rounded-xl border px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition {{ $errors->has('password') ? 'border-red-400' : 'border-slate-200' }}">
                     @error('password')<p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>@enderror
                 </div>

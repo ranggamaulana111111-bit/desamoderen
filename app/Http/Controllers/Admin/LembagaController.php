@@ -55,7 +55,6 @@ class LembagaController extends Controller
             $user = User::create([
                 'name' => $validated['nama_pengurus'],
                 'email' => $validated['email_pengurus'],
-                'nik' => $validated['nik'],
                 'password' => $validated['password'],
                 'no_hp' => $validated['no_hp_pengurus'] ?? null,
                 'lembaga_id' => $lembaga->id,
@@ -176,7 +175,6 @@ class LembagaController extends Controller
         $rules['nama_pengurus'] = [$accountRequired ? 'required' : 'nullable', 'string', 'max:100'];
         $rules['email_pengurus'] = [$accountRequired ? 'required' : 'nullable', 'email', 'max:100', Rule::unique('users', 'email')->ignore($exceptUserId)];
         $rules['no_hp_pengurus'] = ['nullable', 'string', 'max:20'];
-        $rules['nik'] = [$accountRequired ? 'required' : 'nullable', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)];
         $rules['password'] = [$accountRequired ? 'required' : 'nullable', 'string', $passwordRule];
 
         $messages = $this->validationMessages();
@@ -185,7 +183,6 @@ class LembagaController extends Controller
 
         if (! $accountRequired) {
             $accountFilled = $request->filled('nama_pengurus')
-                || $request->filled('nik')
                 || $request->filled('email_pengurus')
                 || $request->filled('password');
 
@@ -193,7 +190,6 @@ class LembagaController extends Controller
                 $validated = array_merge($validated, $request->validate([
                     'nama_pengurus' => ['required', 'string', 'max:100'],
                     'email_pengurus' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($exceptUserId)],
-                    'nik' => ['required', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)],
                     'password' => ['required', 'string', $passwordRule],
                 ], $messages));
             }
@@ -223,9 +219,6 @@ class LembagaController extends Controller
             'email_pengurus.unique' => 'Email pengurus sudah digunakan oleh akun lain.',
             'email_pengurus.max' => 'Email pengurus maksimal 100 karakter.',
             'no_hp_pengurus.max' => 'No. HP pengurus maksimal 20 karakter.',
-            'nik.required' => 'NIK pengurus wajib diisi.',
-            'nik.digits' => 'NIK harus terdiri dari 16 digit angka.',
-            'nik.unique' => 'NIK sudah terdaftar pada akun lain.',
             'password.required' => 'Password akun pengurus wajib diisi.',
             'password.min' => 'Password minimal :min karakter.',
             'password.letters' => 'Password harus mengandung huruf.',
@@ -248,7 +241,6 @@ class LembagaController extends Controller
     private function syncPengurusAccount(Lembaga $lembaga, ?User $pengurus, array $validated): void
     {
         $accountFilled = ! empty($validated['nama_pengurus'])
-            || ! empty($validated['nik'])
             || ! empty($validated['email_pengurus'])
             || ! empty($validated['password']);
 
@@ -256,7 +248,6 @@ class LembagaController extends Controller
             $pengurus->update([
                 'name' => $validated['nama_pengurus'] ?? $pengurus->name,
                 'email' => $validated['email_pengurus'] ?? $pengurus->email,
-                'nik' => $validated['nik'] ?? $pengurus->nik,
                 'no_hp' => $validated['no_hp_pengurus'] ?? $pengurus->no_hp,
             ]);
 
@@ -275,7 +266,6 @@ class LembagaController extends Controller
         $user = User::create([
             'name' => $validated['nama_pengurus'],
             'email' => $validated['email_pengurus'],
-            'nik' => $validated['nik'],
             'password' => $validated['password'],
             'no_hp' => $validated['no_hp_pengurus'] ?? null,
             'lembaga_id' => $lembaga->id,

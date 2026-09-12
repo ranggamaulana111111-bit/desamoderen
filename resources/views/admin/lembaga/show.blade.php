@@ -63,7 +63,7 @@
                     </div>
                     <div>
                         <p class="font-semibold text-slate-800">{{ $pengurus->name }}</p>
-                        <p class="text-xs text-slate-500">Role: Lembaga · NIK: {{ $pengurus->nik }}</p>
+                        <p class="text-xs text-slate-500">Role: Lembaga @if($pengurus->nik)· NIK: {{ $pengurus->nik }}@endif</p>
                         <p class="text-xs text-slate-500">Login: {{ $pengurus->email ?? '-' }}</p>
                     </div>
                 </div>

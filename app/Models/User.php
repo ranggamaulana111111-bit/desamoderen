@@ -62,10 +62,10 @@ class User extends Authenticatable
         return static::where('nik_hash', static::hashNik($nik))->first();
     }
 
-    public function setNikAttribute(string $value): void
+    public function setNikAttribute(?string $value): void
     {
         $this->attributes['nik'] = $value;
-        $this->attributes['nik_hash'] = static::hashNik($value);
+        $this->attributes['nik_hash'] = $value ? static::hashNik($value) : null;
     }
 
     public function berita(): HasMany
