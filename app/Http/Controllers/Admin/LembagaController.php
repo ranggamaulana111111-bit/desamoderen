@@ -179,7 +179,9 @@ class LembagaController extends Controller
         $rules['nik'] = [$accountRequired ? 'required' : 'nullable', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)];
         $rules['password'] = [$accountRequired ? 'required' : 'nullable', 'string', $passwordRule];
 
-        $validated = $request->validate($rules);
+        $messages = $this->validationMessages();
+
+        $validated = $request->validate($rules, $messages);
 
         if (! $accountRequired) {
             $accountFilled = $request->filled('nama_pengurus')
@@ -193,11 +195,42 @@ class LembagaController extends Controller
                     'email_pengurus' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($exceptUserId)],
                     'nik' => ['required', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)],
                     'password' => ['required', 'string', $passwordRule],
-                ]));
+                ], $messages));
             }
         }
 
         return $validated;
+    }
+
+    private function validationMessages(): array
+    {
+        return [
+            'nama.required' => 'Nama lembaga wajib diisi.',
+            'nama.max' => 'Nama lembaga maksimal 100 karakter.',
+            'jenis.required' => 'Jenis lembaga wajib diisi.',
+            'singkatan.max' => 'Singkatan maksimal 50 karakter.',
+            'ketua.max' => 'Nama ketua maksimal 100 karakter.',
+            'alamat.max' => 'Alamat maksimal 255 karakter.',
+            'no_hp.max' => 'No. HP maksimal 20 karakter.',
+            'email.email' => 'Email lembaga tidak valid.',
+            'email.max' => 'Email lembaga maksimal 100 karakter.',
+            'foto.image' => 'File logo/foto harus berupa gambar.',
+            'foto.max' => 'Ukuran file logo/foto maksimal 2MB.',
+            'nama_pengurus.required' => 'Nama pengurus wajib diisi saat menambah akun login.',
+            'nama_pengurus.max' => 'Nama pengurus maksimal 100 karakter.',
+            'email_pengurus.required' => 'Email pengurus wajib diisi (dipakai untuk login).',
+            'email_pengurus.email' => 'Email pengurus tidak valid.',
+            'email_pengurus.unique' => 'Email pengurus sudah digunakan oleh akun lain.',
+            'email_pengurus.max' => 'Email pengurus maksimal 100 karakter.',
+            'no_hp_pengurus.max' => 'No. HP pengurus maksimal 20 karakter.',
+            'nik.required' => 'NIK pengurus wajib diisi.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit angka.',
+            'nik.unique' => 'NIK sudah terdaftar pada akun lain.',
+            'password.required' => 'Password akun pengurus wajib diisi.',
+            'password.min' => 'Password minimal :min karakter.',
+            'password.letters' => 'Password harus mengandung huruf.',
+            'password.numbers' => 'Password harus mengandung angka.',
+        ];
     }
 
     private function passwordRule(): Password
