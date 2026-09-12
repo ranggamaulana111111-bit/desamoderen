@@ -183,6 +183,16 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user->hasRole('Lembaga')) {
+                $lembaga = $user->lembaga;
+
+                if (! $lembaga || $lembaga->status !== 'aktif') {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+
+                    return back()->withErrors(['email' => 'Akun lembaga tidak aktif. Silakan hubungi admin desa.'])->onlyInput('email');
+                }
+
                 return redirect()->route('lembaga.dashboard');
             }
 

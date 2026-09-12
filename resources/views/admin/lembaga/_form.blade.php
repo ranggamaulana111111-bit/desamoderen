@@ -77,8 +77,18 @@
                            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition">
                 </div>
                 <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Email Pengurus @if(!isset($lembaga))<span class="text-red-500">*</span>@else<small class="text-slate-400 font-normal">(untuk login)</small>@endif</label>
+                    <input type="email" name="email_pengurus" value="{{ old('email_pengurus', $pengurus?->email) }}" placeholder="pengurus@lembaga.id"
+                           class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition">
+                </div>
+                <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1.5">NIK (16 digit) @if(!isset($lembaga))<span class="text-red-500">*</span>@endif</label>
                     <input type="text" name="nik" maxlength="16" inputmode="numeric" value="{{ old('nik', $pengurus?->nik) }}"
+                           class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">No. HP Pengurus</label>
+                    <input type="tel" name="no_hp_pengurus" value="{{ old('no_hp_pengurus', $pengurus?->no_hp) }}" placeholder="08xxxxxxxxxx"
                            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 outline-none transition">
                 </div>
                 <div class="sm:col-span-2">

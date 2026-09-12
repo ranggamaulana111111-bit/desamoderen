@@ -9,9 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
 
 class LembagaController extends Controller
@@ -54,9 +54,10 @@ class LembagaController extends Controller
 
             $user = User::create([
                 'name' => $validated['nama_pengurus'],
+                'email' => $validated['email_pengurus'],
                 'nik' => $validated['nik'],
-                'password' => Hash::make($validated['password']),
-                'no_hp' => $validated['no_hp'] ?? null,
+                'password' => $validated['password'],
+                'no_hp' => $validated['no_hp_pengurus'] ?? null,
                 'lembaga_id' => $lembaga->id,
             ]);
 
@@ -67,7 +68,7 @@ class LembagaController extends Controller
 
             ActivityLog::catat(
                 'create_lembaga',
-                "Admin {$request->user()->name} menambahkan lembaga '{$lembaga->nama}' beserta akun login {$user->name}",
+                "Admin {$request->user()->name} menambahkan lembaga '{$lembaga->nama}' beserta akun login {$user->name} ({$user->email})",
                 'lembaga',
                 $lembaga->id
             );
@@ -121,17 +122,7 @@ class LembagaController extends Controller
 
             $lembaga->update($data);
 
-            if ($pengurus) {
-                $pengurus->update([
-                    'name' => $validated['nama_pengurus'] ?? $pengurus->name,
-                    'nik' => $validated['nik'] ?? $pengurus->nik,
-                    'no_hp' => $validated['no_hp'] ?? $pengurus->no_hp,
-                ]);
-
-                if (! empty($validated['password'])) {
-                    $pengurus->update(['password' => Hash::make($validated['password'])]);
-                }
-            }
+            $this->syncPengurusAccount($lembaga, $pengurus, $validated);
 
             ActivityLog::catat(
                 'update_lembaga',
@@ -180,21 +171,93 @@ class LembagaController extends Controller
             'status' => ['required', 'in:aktif,nonaktif'],
         ];
 
-        if ($accountRequired) {
-            $rules['nama_pengurus'] = ['required', 'string', 'max:100'];
-            $rules['password'] = ['required', 'string', 'min:6'];
-        } else {
-            $rules['nama_pengurus'] = ['nullable', 'string', 'max:100'];
-            $rules['password'] = ['nullable', 'string', 'min:6'];
+        $passwordRule = $this->passwordRule();
+
+        $rules['nama_pengurus'] = [$accountRequired ? 'required' : 'nullable', 'string', 'max:100'];
+        $rules['email_pengurus'] = [$accountRequired ? 'required' : 'nullable', 'email', 'max:100', Rule::unique('users', 'email')->ignore($exceptUserId)];
+        $rules['no_hp_pengurus'] = ['nullable', 'string', 'max:20'];
+        $rules['nik'] = [$accountRequired ? 'required' : 'nullable', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)];
+        $rules['password'] = [$accountRequired ? 'required' : 'nullable', 'string', $passwordRule];
+
+        $validated = $request->validate($rules);
+
+        if (! $accountRequired) {
+            $accountFilled = $request->filled('nama_pengurus')
+                || $request->filled('nik')
+                || $request->filled('email_pengurus')
+                || $request->filled('password');
+
+            if ($accountFilled) {
+                $validated = array_merge($validated, $request->validate([
+                    'nama_pengurus' => ['required', 'string', 'max:100'],
+                    'email_pengurus' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($exceptUserId)],
+                    'nik' => ['required', 'string', 'digits:16', Rule::unique('users', 'nik')->ignore($exceptUserId)],
+                    'password' => ['required', 'string', $passwordRule],
+                ]));
+            }
         }
 
-        $nikRule = ['string', 'digits:16'];
-        if ($accountRequired) {
-            $nikRule[] = 'required';
-        }
-        $nikRule[] = Rule::unique('users', 'nik')->ignore($exceptUserId);
-        $rules['nik'] = $nikRule;
+        return $validated;
+    }
 
-        return $request->validate($rules);
+    private function passwordRule(): Password
+    {
+        $min = (int) config('village.security_password_min_length', 8);
+        $base = Password::min($min);
+
+        if ((string) config('village.security_password_policy', '1') === '1') {
+            $base = $base->letters()->numbers();
+        }
+
+        return $base;
+    }
+
+    private function syncPengurusAccount(Lembaga $lembaga, ?User $pengurus, array $validated): void
+    {
+        $accountFilled = ! empty($validated['nama_pengurus'])
+            || ! empty($validated['nik'])
+            || ! empty($validated['email_pengurus'])
+            || ! empty($validated['password']);
+
+        if ($pengurus) {
+            $pengurus->update([
+                'name' => $validated['nama_pengurus'] ?? $pengurus->name,
+                'email' => $validated['email_pengurus'] ?? $pengurus->email,
+                'nik' => $validated['nik'] ?? $pengurus->nik,
+                'no_hp' => $validated['no_hp_pengurus'] ?? $pengurus->no_hp,
+            ]);
+
+            if (! empty($validated['password'])) {
+                $pengurus->password = $validated['password'];
+                $pengurus->save();
+            }
+
+            return;
+        }
+
+        if (! $accountFilled) {
+            return;
+        }
+
+        $user = User::create([
+            'name' => $validated['nama_pengurus'],
+            'email' => $validated['email_pengurus'],
+            'nik' => $validated['nik'],
+            'password' => $validated['password'],
+            'no_hp' => $validated['no_hp_pengurus'] ?? null,
+            'lembaga_id' => $lembaga->id,
+        ]);
+
+        $lembagaRole = Role::where('name', 'Lembaga')->first();
+        if ($lembagaRole) {
+            $user->assignRole($lembagaRole);
+        }
+
+        ActivityLog::catat(
+            'create_lembaga_pengurus',
+            'Admin '.(Auth::user()->name ?? '')." menambahkan akun pengurus {$user->name} ({$user->email}) untuk lembaga '{$lembaga->nama}'",
+            'lembaga',
+            $lembaga->id
+        );
     }
 }

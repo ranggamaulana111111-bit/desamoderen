@@ -14,6 +14,10 @@ class DashboardController extends Controller
             abort(403, 'Akun ini tidak terhubung dengan lembaga mana pun.');
         }
 
+        if ($lembaga->status !== 'aktif') {
+            abort(403, 'Lembaga ini berstatus nonaktif. Silakan hubungi admin desa.');
+        }
+
         $stats = [
             'berita_total' => $lembaga->berita()->count(),
             'event_total' => $lembaga->events()->count(),

@@ -178,6 +178,7 @@ class BeritaController extends Controller
         $lembaga = auth()->user()->lembaga;
 
         abort_if(! $lembaga, 403, 'Akun ini tidak terhubung dengan lembaga mana pun.');
+        abort_if($lembaga->status !== 'aktif', 403, 'Lembaga ini berstatus nonaktif. Silakan hubungi admin desa.');
 
         return $lembaga;
     }
