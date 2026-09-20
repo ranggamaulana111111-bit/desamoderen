@@ -1212,7 +1212,7 @@
                     <span>&middot;</span>
                     <span>Kab. {{ config('village.nama_kabupaten', 'Kabupaten') }}</span>
                     <span>&middot;</span>
-                    <span>Prov. Jawa Barat</span>
+                    <span>Prov. Banten</span>
                 </div>
             </div>
         </div>
