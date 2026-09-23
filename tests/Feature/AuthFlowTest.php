@@ -138,7 +138,18 @@ class AuthFlowTest extends TestCase
 
     public function test_forgot_password_resets_password(): void
     {
-        $token = $this->requestResetToken();
+        $this->get('/password/lupa');
+
+        session(['captcha_a' => 3, 'captcha_b' => 4]);
+
+        $this->post('/password/lupa', [
+            'email' => 'demo@prodesa.id',
+            'no_hp' => '081234567890',
+            'captcha' => '7',
+        ])->assertRedirect()->assertSessionHas('status');
+
+        $user = User::where('email', 'demo@prodesa.id')->first();
+        $token = Password::broker()->createToken($user);
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
@@ -150,7 +161,7 @@ class AuthFlowTest extends TestCase
             'captcha' => '7',
         ])->assertRedirect('/login')->assertSessionHas('status');
 
-        $user = User::where('email', 'demo@prodesa.id')->first();
+        $user->refresh();
 
         $this->assertTrue(password_verify('passwordbaru1', $user->password));
     }
@@ -165,26 +176,19 @@ class AuthFlowTest extends TestCase
             'email' => 'demo@prodesa.id',
             'no_hp' => '081111111111',
             'captcha' => '7',
-        ])->assertSessionHasErrors('no_hp');
+        ])->assertRedirect()->assertSessionHas('status')->assertSessionMissing('no_hp');
     }
 
-    public function test_forgot_password_works_when_user_has_no_no_hp(): void
+    public function test_forgot_password_requires_no_hp(): void
     {
-        User::where('email', 'demo@prodesa.id')->first()->update(['no_hp' => null]);
-
-        $token = $this->requestResetToken();
+        $this->get('/password/lupa');
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
-        $this->post('/password/reset', [
+        $this->post('/password/lupa', [
             'email' => 'demo@prodesa.id',
-            'token' => $token,
-            'password' => 'passwordbaru1',
-            'password_confirmation' => 'passwordbaru1',
             'captcha' => '7',
-        ])->assertRedirect('/login')->assertSessionHas('status');
-
-        $this->assertTrue(password_verify('passwordbaru1', User::where('email', 'demo@prodesa.id')->first()->password));
+        ])->assertSessionHasErrors('no_hp');
     }
 
     public function test_reset_password_rejects_invalid_token(): void
@@ -222,7 +226,8 @@ class AuthFlowTest extends TestCase
 
     public function test_reset_token_is_single_use(): void
     {
-        $token = $this->requestResetToken();
+        $user = User::where('email', 'demo@prodesa.id')->first();
+        $token = Password::broker()->createToken($user);
 
         session(['captcha_a' => 3, 'captcha_b' => 4]);
 
@@ -251,23 +256,5 @@ class AuthFlowTest extends TestCase
 
         $this->assertTrue(Captcha::check(7));
         $this->assertFalse(Captcha::check(8));
-    }
-
-    private function requestResetToken(): string
-    {
-        $this->get('/password/lupa');
-
-        session(['captcha_a' => 3, 'captcha_b' => 4]);
-
-        $response = $this->post('/password/lupa', [
-            'email' => 'demo@prodesa.id',
-            'no_hp' => '081234567890',
-            'captcha' => '7',
-        ]);
-
-        $location = $response->headers->get('Location');
-        parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
-
-        return (string) ($query['token'] ?? '');
     }
 }

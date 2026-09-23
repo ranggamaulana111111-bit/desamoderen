@@ -60,7 +60,7 @@ class SuratKeluarController extends Controller
         $validated['created_by'] = auth()->id();
 
         if ($request->hasFile('file')) {
-            $validated['file_path'] = $request->file('file')->store('surat-keluar', 'public');
+            $validated['file_path'] = $request->file('file')->store('surat-keluar', 'private');
         }
 
         unset($validated['file']);
@@ -97,9 +97,9 @@ class SuratKeluarController extends Controller
 
         if ($request->hasFile('file')) {
             if ($suratKeluar->file_path) {
-                Storage::disk('public')->delete($suratKeluar->file_path);
+                Storage::disk('private')->delete($suratKeluar->file_path);
             }
-            $validated['file_path'] = $request->file('file')->store('surat-keluar', 'public');
+            $validated['file_path'] = $request->file('file')->store('surat-keluar', 'private');
         }
 
         unset($validated['file']);
@@ -110,10 +110,19 @@ class SuratKeluarController extends Controller
             ->with('success', 'Surat keluar berhasil diperbarui.');
     }
 
+    public function downloadFile(SuratKeluar $suratKeluar)
+    {
+        if (! $suratKeluar->file_path || ! Storage::disk('private')->exists($suratKeluar->file_path)) {
+            abort(404, 'Lampiran tidak ditemukan.');
+        }
+
+        return Storage::disk('private')->download($suratKeluar->file_path, basename($suratKeluar->file_path));
+    }
+
     public function destroy(SuratKeluar $suratKeluar)
     {
         if ($suratKeluar->file_path) {
-            Storage::disk('public')->delete($suratKeluar->file_path);
+            Storage::disk('private')->delete($suratKeluar->file_path);
         }
 
         $suratKeluar->delete();

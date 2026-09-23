@@ -63,7 +63,7 @@
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:9999px}
     </style>
 </head>
-<body class="min-h-screen font-sans antialiased bg-slate-50 overflow-x-clip" x-data="{ submitting: false, showPw: false }">
+<body class="min-h-screen font-sans antialiased bg-slate-50 overflow-x-clip" x-data="{ submitting: false, showPw: false, captchaA: {{ $captcha[0] }}, captchaB: {{ $captcha[1] }} }">
 
     @php
         $loginLogo = config('village.logo_login') ?: config('village.logo_desa');

@@ -19,7 +19,7 @@
             <div class="flex items-start gap-3 px-5 py-3.5 hover:bg-gray-50/50 transition {{ !$loop->last ? 'border-b border-gray-50' : '' }}">
                 <div class="shrink-0 w-11 text-center bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl py-2 border border-pink-100/50">
                     <div class="text-lg font-extrabold text-pink-700 leading-none">{{ \Carbon\Carbon::parse($event['tanggal_full'])->format('d') }}</div>
-                    <div class="text-[9px] text-pink-500 font-semibold uppercase mt-0.5">{{ \Carbon\Carbon::parse($event['tanggal_full'])->format('M') }}</div>
+                    <div class="text-[9px] text-pink-500 font-semibold uppercase mt-0.5">{{ \Carbon\Carbon::parse($event['tanggal_full'])->locale('id')->translatedFormat('F') }}</div>
                 </div>
                 <div class="flex-1 min-w-0 pt-0.5">
                     <p class="text-[13px] font-semibold text-gray-800 truncate">{{ $event['judul'] }}</p>

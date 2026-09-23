@@ -9,11 +9,11 @@ class QueueMonitoringService
     public function getStats(): array
     {
         return [
-            'waiting' => DB::table('jobs')->count(),
-            'failed' => DB::table('failed_jobs')->count(),
-            'batches_total' => DB::table('job_batches')->count(),
-            'batches_pending' => DB::table('job_batches')->sum('pending_jobs'),
-            'batches_failed' => DB::table('job_batches')->sum('failed_jobs'),
+            'waiting' => (int) DB::table('jobs')->count(),
+            'failed' => (int) DB::table('failed_jobs')->count(),
+            'batches_total' => (int) DB::table('job_batches')->count(),
+            'batches_pending' => (int) DB::table('job_batches')->sum('pending_jobs'),
+            'batches_failed' => (int) DB::table('job_batches')->sum('failed_jobs'),
         ];
     }
 
@@ -143,9 +143,9 @@ class QueueMonitoringService
         return DB::table('failed_jobs')->delete();
     }
 
-    private function previewException(string $exception): string
+    private function previewException(?string $exception): string
     {
-        $lines = explode("\n", $exception);
+        $lines = explode("\n", (string) $exception);
 
         return implode("\n", array_slice($lines, 0, 5));
     }

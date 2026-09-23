@@ -110,9 +110,12 @@
     @php
         use Illuminate\Support\Facades\Storage;
 
-        $kopMimeMap = fn (string $path) => in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['jpg', 'jpeg'], true)
-            ? 'jpeg'
-            : 'png';
+        $kopMimeMap = fn (string $path): string => match (Storage::disk('public')->mimeType($path)) {
+            'image/jpeg' => 'jpeg',
+            'image/svg+xml' => 'svg+xml',
+            'image/webp' => 'webp',
+            default => 'png',
+        };
 
         $kopLogoPemda = null;
         if (config('village.logo_pemda') && Storage::disk('public')->exists(config('village.logo_pemda'))) {

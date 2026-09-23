@@ -11,6 +11,8 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    private const SYSTEM_ROLES = ['Super Admin', 'Operator Pelayanan', 'Sekretaris Desa', 'Kepala Desa', 'RT', 'RW', 'Warga', 'Lembaga'];
+
     public function index()
     {
         $roles = Role::withCount(['permissions', 'users'])
@@ -66,6 +68,11 @@ class RoleController extends Controller
 
     public function update(UpdateRoleRequest $request, Role $role)
     {
+        if (in_array($role->name, self::SYSTEM_ROLES, true) && $request->name !== $role->name) {
+            return redirect()->route('admin.roles.index')
+                ->with('error', "Role sistem '{$role->name}' tidak dapat diubah namanya.");
+        }
+
         $role->update([
             'name' => $request->name,
         ]);
@@ -85,9 +92,14 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        if ($role->name === 'Super Admin') {
+        if (in_array($role->name, self::SYSTEM_ROLES, true)) {
             return redirect()->route('admin.roles.index')
-                ->with('error', 'Role Super Admin tidak dapat dihapus.');
+                ->with('error', "Role sistem '{$role->name}' tidak dapat dihapus.");
+        }
+
+        if ($role->users()->exists()) {
+            return redirect()->route('admin.roles.index')
+                ->with('error', "Role '{$role->name}' tidak dapat dihapus karena masih digunakan oleh pengguna.");
         }
 
         $roleName = $role->name;

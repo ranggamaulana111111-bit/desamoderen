@@ -22,7 +22,7 @@
                 <div class="p-6 sm:p-8">
                     <div class="flex items-center gap-3 text-xs text-slate-400 mb-5">
                         <span class="badge-status {{ 'bg-'.$berita->status }}">{{ $berita->status === 'publish' ? 'Tayang' : 'Draf' }}</span>
-                        <span>{{ $berita->created_at->translatedFormat('d M Y H:i') }}</span>
+                        <span>{{ $berita->created_at->locale('id')->translatedFormat('d F Y H:i') }}</span>
                         <span>·</span>
                         <span>oleh {{ $berita->user?->name }}</span>
                     </div>
@@ -38,8 +38,8 @@
                     <div class="flex justify-between"><span class="text-slate-400">Lembaga</span><span class="font-semibold text-slate-700">{{ $lembaga->nama }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Status</span><span class="font-semibold text-slate-700">{{ $berita->status === 'publish' ? 'Dipublikasikan' : 'Draf' }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Dilihat</span><span class="font-semibold text-slate-700">{{ number_format($berita->dilihat) }} kali</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Dibuat</span><span class="font-semibold text-slate-700">{{ $berita->created_at->translatedFormat('d M Y') }}</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Diperbarui</span><span class="font-semibold text-slate-700">{{ $berita->updated_at->translatedFormat('d M Y') }}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Dibuat</span><span class="font-semibold text-slate-700">{{ $berita->created_at->locale('id')->translatedFormat('d F Y') }}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Diperbarui</span><span class="font-semibold text-slate-700">{{ $berita->updated_at->locale('id')->translatedFormat('d F Y') }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Penulis</span><span class="font-semibold text-slate-700">{{ $berita->user?->name }}</span></div>
                 </div>
             </div>

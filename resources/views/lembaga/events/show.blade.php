@@ -18,7 +18,7 @@
             <div class="bento-card overflow-hidden">
                 <div class="p-6 sm:p-8">
                     <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 mb-5">
-                        <span class="badge-status bg-akan_datang">{{ $event->jenis }}</span>
+                        <span class="badge-status {{ match($event->jenis) { 'musrenbangdes' => 'bg-musrenbangdes', 'rapat' => 'bg-rapat', 'kegiatan' => 'bg-kegiatan', 'sosialisasi' => 'bg-sosialisasi', default => 'bg-kegiatan' } }}">{{ match($event->jenis) { 'musrenbangdes' => 'Musrenbangdes', 'rapat' => 'Rapat', 'kegiatan' => 'Kegiatan', 'sosialisasi' => 'Sosialisasi', default => ucfirst($event->jenis) } }}</span>
                         <span class="badge-status {{ 'bg-'.$event->status }}">{{ str_replace('_', ' ', $event->status) }}</span>
                     </div>
                     <p class="text-slate-700 text-sm leading-7 whitespace-pre-line">{{ $event->deskripsi ?? 'Belum ada deskripsi.' }}</p>
@@ -30,11 +30,11 @@
             <div class="bento-card p-6">
                 <div class="section-header"><h3>Jadwal</h3><div class="shimmer-line"></div></div>
                 <div class="space-y-3 text-sm">
-                    <div class="flex justify-between"><span class="text-slate-400">Tanggal</span><span class="font-semibold text-slate-700">{{ $event->tanggal->translatedFormat('l, d M Y') }}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Tanggal</span><span class="font-semibold text-slate-700">{{ $event->tanggal->locale('id')->translatedFormat('l, d F Y') }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Waktu</span><span class="font-semibold text-slate-700">{{ $event->waktu_mulai?->format('H:i') }}{{ $event->waktu_selesai ? ' - '.$event->waktu_selesai->format('H:i') : '' }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Tempat</span><span class="font-semibold text-slate-700">{{ $event->tempat ?? '-' }}</span></div>
                     <div class="flex justify-between"><span class="text-slate-400">Lembaga</span><span class="font-semibold text-slate-700">{{ $lembaga->nama }}</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Dibuat</span><span class="font-semibold text-slate-700">{{ $event->created_at->translatedFormat('d M Y') }}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Dibuat</span><span class="font-semibold text-slate-700">{{ $event->created_at->locale('id')->translatedFormat('d F Y') }}</span></div>
                 </div>
             </div>
 

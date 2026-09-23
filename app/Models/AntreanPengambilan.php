@@ -47,12 +47,12 @@ class AntreanPengambilan extends Model
         return $query->where('status', self::STATUS_MENUNGGU);
     }
 
-    public function markAsTaken(int $userId): void
+    public function markAsTaken(): void
     {
         $this->update(['status' => self::STATUS_DIAMBIL]);
     }
 
-    public function markAsMissed(int $userId): void
+    public function markAsMissed(): void
     {
         $this->update(['status' => self::STATUS_LEWAT]);
     }
@@ -66,8 +66,8 @@ class AntreanPengambilan extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        $next = $last ? (int) substr($last->nomor_antrean, -3) + 1 : 1;
+        $next = $last ? ((int) (explode('/', $last->nomor_antrean)[1] ?? 0)) + 1 : 1;
 
-        return $prefix.'/'.str_pad($next, 3, '0', STR_PAD_LEFT);
+        return $prefix.'/'.str_pad((string) $next, 3, '0', STR_PAD_LEFT);
     }
 }

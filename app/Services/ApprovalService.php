@@ -73,6 +73,10 @@ class ApprovalService
     {
         $currentStatus = $surat instanceof PengajuanSurat ? $surat->status : $surat;
 
+        if (in_array($currentStatus, ['revision', 'completed', 'rejected'], true)) {
+            return false;
+        }
+
         return $this->userRejectRank($user) >= $this->stepRejectRank($currentStatus);
     }
 
@@ -277,6 +281,29 @@ class ApprovalService
         $transitions['rejected'] = 'Tolak';
 
         return $transitions;
+    }
+
+    public function getActiveStepKeys(): array
+    {
+        return $this->activeChain();
+    }
+
+    public function getPendingStatusesForPermission(string $permission): array
+    {
+        $steps = $this->getWorkflowSteps();
+        $pending = [];
+
+        foreach ($steps as $i => $step) {
+            if ($i === 0) {
+                continue;
+            }
+
+            if ($step['permission'] === $permission) {
+                $pending[] = $steps[$i - 1]['key'];
+            }
+        }
+
+        return array_values(array_unique($pending));
     }
 
     private function activeChain(): array

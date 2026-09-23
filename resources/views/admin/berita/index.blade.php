@@ -61,7 +61,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->format('d M Y, H:i') }}</td>
+                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->locale('id')->translatedFormat('d F Y, H:i') }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">
                                     <a href="{{ route('admin.berita.edit', $item) }}"

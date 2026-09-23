@@ -5,7 +5,7 @@
         kategori: '{{ old('kategori', 'Peralatan') }}',
         nomorInventaris: '{{ old('nomor_inventaris') }}',
         jumlah: {{ old('jumlah', 1) }},
-        keterangan: '{{ addslashes(old('keterangan')) }}',
+        keterangan: @js(old('keterangan')),
         kondisi: '{{ old('kondisi', 'Baik') }}',
         status: '{{ old('status', 'Tersedia') }}',
         lokasi: '{{ old('lokasi') }}',

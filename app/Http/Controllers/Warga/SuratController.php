@@ -12,6 +12,7 @@ use App\Services\TelegramNotifier;
 use App\Services\WebhookNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SuratController extends Controller
 {
@@ -28,7 +29,16 @@ class SuratController extends Controller
             $query->where('jenis_surat', $jenis);
         }
 
-        $pengajuan = $query->latest()->get();
+        $pengajuan = $query->latest()->get()->map(function ($item) {
+            if ($item->hash_verifikasi) {
+                $item->qr_verifikasi_svg = QrCode::format('svg')->size(120)->generate(
+                    route('verifikasi.show', $item->hash_verifikasi)
+                );
+            }
+
+            return $item;
+        });
+
         $letterConfigs = LetterConfig::active()->get();
 
         return view('warga.surat.index', compact('pengajuan', 'letterConfigs'));
@@ -55,6 +65,12 @@ class SuratController extends Controller
         $config = LetterConfig::where('jenis_surat', $pengajuan->jenis_surat)->first();
         $timeline = $this->approvalService->getTimeline($pengajuan);
         $stepProgress = $this->approvalService->getStepProgress($pengajuan);
+
+        if ($pengajuan->hash_verifikasi) {
+            $pengajuan->qr_verifikasi_svg = QrCode::format('svg')->size(120)->generate(
+                route('verifikasi.show', $pengajuan->hash_verifikasi)
+            );
+        }
 
         return view('warga.surat.show', compact('pengajuan', 'config', 'timeline', 'stepProgress'));
     }
@@ -88,10 +104,12 @@ class SuratController extends Controller
             'lampiran.*' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
 
-        if ($config) {
-            foreach ($config->getValidationRules() as $key => $rule) {
-                $rules[$key] = $rule;
-            }
+        if (! $config || ! $config->is_active) {
+            abort(422, 'Template surat jenis ini tidak aktif. Hubungi perangkat desa.');
+        }
+
+        foreach ($config->getValidationRules() as $key => $rule) {
+            $rules[$key] = $rule;
         }
 
         $validated = $request->validate($rules);

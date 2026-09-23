@@ -119,15 +119,20 @@ class EventController extends Controller
 
     private function prunePesertaTidakTarget(Event $event, Request $request): void
     {
-        $keepIds = $this->targetPesertaIds($request);
-
-        $query = DB::table('event_peserta')->where('event_id', $event->id);
-
-        if ($keepIds->isNotEmpty()) {
-            $query->whereNotIn('user_id', $keepIds);
+        if (! $request->filled('rt_target') && ! $request->filled('rw_target')) {
+            return;
         }
 
-        $query->delete();
+        $keepIds = $this->targetPesertaIds($request);
+
+        if ($keepIds->isEmpty()) {
+            return;
+        }
+
+        DB::table('event_peserta')
+            ->where('event_id', $event->id)
+            ->whereNotIn('user_id', $keepIds)
+            ->delete();
     }
 
     private function batchInsertPeserta(Event $event, Request $request): void

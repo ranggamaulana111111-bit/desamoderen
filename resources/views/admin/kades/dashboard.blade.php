@@ -310,7 +310,7 @@
                                                 <div class="flex items-center gap-3 text-[11px] text-gray-400 mb-3">
                                                     <span class="inline-flex items-center gap-1">
                                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                                        {{ $item->created_at->format('d M, H:i') }}
+                                                        {{ $item->created_at->locale('id')->translatedFormat('d M, H:i') }}
                                                     </span>
                                                     <span class="w-1 h-1 rounded-full bg-gray-200"></span>
                                                     <span class="font-medium">{{ $timeAgo }}</span>
@@ -376,7 +376,7 @@
                                                      x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                                      class="mt-3 pt-3 border-t border-gray-100 text-[11px] text-gray-500 space-y-1">
                                                     <div class="flex justify-between"><span class="font-medium">ID Pengajuan</span><span class="text-gray-700 font-mono">#{{ $item->id }}</span></div>
-                                                    <div class="flex justify-between"><span class="font-medium">Diajukan</span><span class="text-gray-700">{{ $item->created_at->format('d M Y, H:i') }}</span></div>
+                                                    <div class="flex justify-between"><span class="font-medium">Diajukan</span><span class="text-gray-700">{{ $item->created_at->locale('id')->translatedFormat('d M Y, H:i') }}</span></div>
                                                     <div class="flex justify-between"><span class="font-medium">Jenis Surat</span><span class="text-gray-700 capitalize">{{ str_replace('_', ' ', $item->jenis_surat) }}</span></div>
                                                 </div>
 
@@ -434,7 +434,7 @@
                                         <div class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50/80 border border-transparent hover:border-gray-100 transition-all duration-200">
                                             <div class="w-11 h-11 rounded-xl bg-{{ $jenisColor }}-50 border border-{{ $jenisColor }}-100/60 flex flex-col items-center justify-center shrink-0">
                                                 <span class="text-[10px] font-bold text-{{ $jenisColor }}-600 leading-none">{{ $event->tanggal->format('d') }}</span>
-                                                <span class="text-[8px] font-bold text-{{ $jenisColor }}-400 uppercase leading-none mt-0.5">{{ $event->tanggal->format('M') }}</span>
+                                                <span class="text-[8px] font-bold text-{{ $jenisColor }}-400 uppercase leading-none mt-0.5">{{ $event->tanggal->locale('id')->translatedFormat('F') }}</span>
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-[13px] font-bold text-gray-900 truncate">{{ $event->judul }}</p>
@@ -499,7 +499,7 @@
                                                     <div class="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0"></div>
                                                     <div class="flex-1 min-w-0">
                                                         <p class="text-[12px] font-semibold text-gray-700 truncate">{{ $sm->perihal }}</p>
-                                                        <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima ? \Carbon\Carbon::parse($sm->tanggal_terima)->format('d M Y') : '-' }}</p>
+                                                        <p class="text-[10px] text-gray-400">{{ $sm->pengirim }} &middot; {{ $sm->tanggal_terima ? \Carbon\Carbon::parse($sm->tanggal_terima)->locale('id')->translatedFormat('d M Y') : '-' }}</p>
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -662,7 +662,7 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-[11px] font-semibold text-gray-700 truncate">{{ $aq->pengajuan->user->name ?? '-' }}</p>
-                                                <p class="text-[9px] text-gray-400 capitalize">{{ str_replace('_', ' ', $aq->pengajuan->jenis_surat ?? '') }} &middot; {{ $aq->tanggal_ambil->format('d M') }}</p>
+                                                <p class="text-[9px] text-gray-400 capitalize">{{ str_replace('_', ' ', $aq->pengajuan->jenis_surat ?? '') }} &middot; {{ $aq->tanggal_ambil->locale('id')->translatedFormat('d F') }}</p>
                                             </div>
                                             <span class="text-[9px] font-bold {{ $aq->tanggal_ambil->isPast() ? 'text-red-500' : 'text-amber-500' }}">
                                                 {{ $aq->tanggal_ambil->isPast() ? 'LEWAT' : $aq->tanggal_ambil->diffForHumans() }}
@@ -875,7 +875,7 @@
                             <span class="w-0.5 h-0.5 rounded-full bg-gray-300"></span>
                             <span class="px-1.5 py-0.5 rounded-full {{ config('app.env') === 'production' ? 'bg-emerald-50 text-emerald-600 font-bold border border-emerald-100' : 'bg-amber-50 text-amber-600 font-bold border border-amber-100' }}">{{ ucfirst(config('app.env')) }}</span>
                         </div>
-                        <span>&copy; {{ date('Y') }} {{ config('village.nama_desa', 'Desa') }} &middot; IG <a href="https://instagram.com/rangga.mrw" target="_blank" class="text-gray-500 hover:text-brand-600 transition-colors font-medium">@rangga.mrw</a></span>
+                        <span>&copy; {{ date('Y') }} {{ config('village.nama_desa', 'Desa') }} @if(config('village.instagram')) &middot; IG <a href="{{ config('village.instagram_url', 'https://instagram.com/'.config('village.instagram')) }}" target="_blank" class="text-gray-500 hover:text-brand-600 transition-colors font-medium">@{{ config('village.instagram') }}</a> @endif</span>
                     </div>
                 </div>
 

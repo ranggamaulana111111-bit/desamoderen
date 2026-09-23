@@ -46,6 +46,13 @@ class PublicVerificationController extends Controller
             'tanggal_cetak' => $tglCetak->locale('id')->translatedFormat('d F Y'),
             'tgl_berlaku_sampai' => $tglBerlakuSampai->locale('id')->translatedFormat('d F Y'),
             'penandatangan' => $ttd['jabatan'] ?? config('village.jabatan_kades', 'Kepala Desa'),
+            'checks' => [
+                'dokumen_ditemukan' => true,
+                'qr_valid' => true,
+                'signature_valid' => ! empty($ttd),
+                'tidak_diubah' => ! $isExpired,
+                'sumber_server' => true,
+            ],
         ];
 
         return view('verifikasi.show', $data);

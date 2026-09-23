@@ -107,7 +107,7 @@
                             <td class="px-6 py-4">
                                 <span class="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100">{{ $item->nomor_agenda }}</span>
                             </td>
-                            <td class="px-6 py-4 text-gray-600 text-xs whitespace-nowrap">{{ \Carbon\Carbon::parse($item->tanggal_kirim)->format('d M Y') }}</td>
+                            <td class="px-6 py-4 text-gray-600 text-xs whitespace-nowrap">{{ \Carbon\Carbon::parse($item->tanggal_kirim)->locale('id')->translatedFormat('d M Y') }}</td>
                             <td class="px-6 py-4 text-gray-700 max-w-[180px] truncate">{{ $item->tujuan }}</td>
                             <td class="px-6 py-4 text-gray-700 max-w-[200px] truncate">{{ $item->perihal }}</td>
                             <td class="px-6 py-4">

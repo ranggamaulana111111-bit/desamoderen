@@ -1,8 +1,8 @@
 <x-admin-layout title="Edit Berita" maxWidth="max-w-[1200px]">
 
     <div x-data="{
-        judul: '{{ old('judul', addslashes($beritum->judul)) }}',
-        konten: '{{ old('konten', addslashes($beritum->konten)) }}',
+        judul: @js(old('judul', $beritum->judul)),
+        konten: @js(old('konten', $beritum->konten)),
         status: '{{ old('status', $beritum->status) }}',
         kategori: '{{ old('kategori', $beritum->kategori) }}',
         fotoPreview: {{ $beritum->foto ? "'" . asset('storage/' . $beritum->foto) . "'" : 'null' }},

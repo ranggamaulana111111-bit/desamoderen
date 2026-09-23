@@ -1,8 +1,8 @@
 <x-admin-layout title="Buat Event Baru" maxWidth="max-w-[1200px]">
 
     <div x-data="{
-        judul: '{{ old('judul') }}',
-        deskripsi: '{{ old('deskripsi') }}',
+        judul: @js(old('judul')),
+        deskripsi: @js(old('deskripsi')),
         jenis: '{{ old('jenis', 'kegiatan') }}',
         status: '{{ old('status', 'akan_datang') }}',
         tanggal: '{{ old('tanggal') }}',

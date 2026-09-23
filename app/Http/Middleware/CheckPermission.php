@@ -10,7 +10,17 @@ class CheckPermission
 {
     public function handle(Request $request, Closure $next, string $permission): Response
     {
-        if (! $request->user() || ! $request->user()->can($permission)) {
+        $user = $request->user();
+
+        if (! $user) {
+            abort(403, __('Anda tidak memiliki izin untuk mengakses halaman ini.'));
+        }
+
+        $permissions = array_values(array_filter(array_map('trim', explode('|', $permission))));
+
+        $allowed = $user->hasAnyPermission($permissions);
+
+        if (! $allowed) {
             abort(403, __('Anda tidak memiliki izin untuk mengakses halaman ini.'));
         }
 

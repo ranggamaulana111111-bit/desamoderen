@@ -73,6 +73,21 @@ class LetterConfigController extends Controller
 
     public function destroy(LetterConfig $template_surat)
     {
+        if ($template_surat->pengajuan()->exists()) {
+            $label = $template_surat->label;
+            $template_surat->update(['is_active' => false]);
+
+            ActivityLog::catat(
+                'deactivate_letter_config',
+                auth()->user()->name.' menonaktifkan template surat: '.$label.' (masih dipakai surat lama)',
+                'letter_config',
+                $template_surat->id
+            );
+
+            return redirect()->route('admin.letter-config.index')
+                ->with('success', 'Template surat dinonaktifkan karena masih dipakai surat lama.');
+        }
+
         $label = $template_surat->label;
         $template_surat->delete();
 

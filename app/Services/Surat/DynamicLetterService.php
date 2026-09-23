@@ -16,7 +16,7 @@ class DynamicLetterService implements LetterGeneratorInterface
         $dt = $surat->data_tambahan;
 
         $dt = array_merge(
-            config('village', []),
+            $this->kopConfig(),
             $dt ?? [],
         );
 
@@ -57,5 +57,20 @@ class DynamicLetterService implements LetterGeneratorInterface
     public function masaBerlakuBulan(): int
     {
         return $this->config->masa_berlaku_bulan;
+    }
+
+    private function kopConfig(): array
+    {
+        $k = config('village', []);
+        $keys = [
+            'nama_desa', 'nama_kades', 'nama_sekdes', 'nama_kecamatan', 'nama_kabupaten',
+            'alamat_kantor', 'telepon_desa', 'email_desa', 'jabatan_kades', 'jabatan_sekdes',
+            'rt', 'rw', 'kode_pos', 'provinsi',
+        ];
+
+        return collect($keys)
+            ->filter(fn ($key) => array_key_exists($key, $k))
+            ->mapWithKeys(fn ($key) => [$key => $k[$key]])
+            ->all();
     }
 }

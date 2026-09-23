@@ -46,12 +46,25 @@ class SettingVersionService
         $version = SettingVersion::findOrFail($versionId);
         $snapshot = $version->data_snapshot;
 
-        $oldSettings = VillageSetting::pluck('value', 'key')->toArray();
+        DB::transaction(function () use ($snapshot, $version) {
+            $this->createSnapshot(
+                "Sebelum rollback ke v{$version->version_number}",
+                ['pre_rollback_of' => $version->id]
+            );
 
-        DB::transaction(function () use ($snapshot) {
+            $existing = VillageSetting::whereIn('key', array_keys($snapshot))->get()->keyBy('key');
+
             foreach ($snapshot as $key => $value) {
-                VillageSetting::where('key', $key)->update(['value' => $value]);
+                $setting = $existing->get($key);
+
+                if ($setting) {
+                    $setting->update(['value' => $value]);
+                } else {
+                    VillageSetting::create(['key' => $key, 'value' => $value]);
+                }
             }
+
+            VillageSetting::whereNotIn('key', array_keys($snapshot))->delete();
         });
 
         $this->settingService->clearCache();

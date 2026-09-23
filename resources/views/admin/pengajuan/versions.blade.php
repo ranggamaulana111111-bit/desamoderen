@@ -58,7 +58,7 @@
                             <label class="block text-xs font-medium text-gray-500 mb-1">Versi A</label>
                             <select name="v1" required class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
                                 @foreach ($versions as $v)
-                                    <option value="{{ $v->version_number }}">{{ $v->version_label }} ({{ $v->created_at->format('d/m/Y') }})</option>
+                                    <option value="{{ $v->version_number }}">{{ $v->version_label }} ({{ $v->created_at->locale('id')->translatedFormat('d M Y') }})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -66,7 +66,7 @@
                             <label class="block text-xs font-medium text-gray-500 mb-1">Versi B</label>
                             <select name="v2" required class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none">
                                 @foreach ($versions as $v)
-                                    <option value="{{ $v->version_number }}">{{ $v->version_label }} ({{ $v->created_at->format('d/m/Y') }})</option>
+                                    <option value="{{ $v->version_number }}">{{ $v->version_label }} ({{ $v->created_at->locale('id')->translatedFormat('d M Y') }})</option>
                                 @endforeach
                             </select>
                         </div>

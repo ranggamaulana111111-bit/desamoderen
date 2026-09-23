@@ -71,7 +71,7 @@
                             };
                         @endphp
                         <tr class="group hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $log->created_at->format('d M Y, H:i') }}</td>
+                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $log->created_at->locale('id')->translatedFormat('d M Y, H:i') }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 rounded-full bg-gradient-to-br from-{{ $aksiColor }}-400 to-{{ $aksiColor }}-500 flex items-center justify-center text-white text-[10px] font-bold shadow-sm">

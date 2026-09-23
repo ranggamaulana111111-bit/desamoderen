@@ -94,7 +94,7 @@
                             </td>
                             <td class="px-6 py-4 text-gray-700 text-xs">{{ $item->no_hp ?? '-' }}</td>
                             <td class="px-6 py-4 text-gray-500 text-xs">{{ $item->email ?? '-' }}</td>
-                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->format('d M Y') }}</td>
+                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->locale('id')->translatedFormat('d M Y') }}</td>
                         </tr>
                     @empty
                         <tr>

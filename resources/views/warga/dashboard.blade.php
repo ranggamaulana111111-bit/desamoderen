@@ -383,7 +383,7 @@
                             <div class="mt-2 space-y-1.5">
                                 @foreach ($revisiList as $item)
                                 <div class="flex items-center justify-between bg-white/50 backdrop-blur-sm rounded-xl px-3 py-2 border border-amber-200/50">
-                                    <div><p class="text-sm font-semibold text-amber-900 capitalize">{{ str_replace('_', ' ', $item->jenis_surat) }}</p><p class="text-[11px] text-amber-700/60">{{ $item->created_at->format('d M Y') }}</p></div>
+                                    <div><p class="text-sm font-semibold text-amber-900 capitalize">{{ str_replace('_', ' ', $item->jenis_surat) }}</p><p class="text-[11px] text-amber-700/60">{{ $item->created_at->locale('id')->translatedFormat('d M Y') }}</p></div>
                                     <a href="{{ route('warga.surat.edit', $item) }}" class="text-xs font-bold text-amber-800 bg-white/70 hover:bg-white px-3 py-1.5 rounded-lg transition interact">Perbaiki</a>
                                 </div>
                                 @endforeach

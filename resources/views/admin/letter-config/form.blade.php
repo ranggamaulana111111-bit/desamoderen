@@ -295,10 +295,14 @@
                                         <input type="text" x-model="field.rules" placeholder="string|max:100"
                                                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-mono text-[12px]">
                                     </div>
-                                    <div x-show="field.type === 'select'">
-                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Opsi (koma pemisah)</label>
+                                    <div x-show="field.type === 'select' || field.type === 'textarea'">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">
+                                            <span x-show="field.type === 'select'">Opsi (koma pemisah)</span>
+                                            <span x-show="field.type === 'textarea'">Saran Pilihan Keperluan (koma pemisah)</span>
+                                        </label>
                                         <input type="text" x-model="field.options" placeholder="Laki-laki,Perempuan"
                                                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                        <p class="mt-1 text-[10px] text-gray-400" x-show="field.type === 'textarea'">Ditampilkan sebagai tombol pilihan di atas kotak teks. Warga tetap bisa mengetik sendiri.</p>
                                     </div>
                                 </div>
                             </div>

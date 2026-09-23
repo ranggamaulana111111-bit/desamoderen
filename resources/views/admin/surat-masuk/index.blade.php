@@ -148,7 +148,7 @@
                                     {{ ucfirst($item->status) }}
                                 </span>
                             </td>
-                            <td class="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->tanggal_surat?->format('d M Y') ?? '-' }}</td>
+                            <td class="px-5 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->tanggal_surat?->locale('id')->translatedFormat('d M Y') ?? '-' }}</td>
                             <td class="px-5 py-4">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <a href="{{ route('admin.surat-masuk.show', $item) }}"

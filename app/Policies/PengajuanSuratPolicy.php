@@ -14,32 +14,62 @@ class PengajuanSuratPolicy
             return true;
         }
 
-        return $user->can('letter.view');
+        if (! $user->can('letter.view')) {
+            return false;
+        }
+
+        return $user->isRtRw() ? $user->inSameWilayah($surat->user) : true;
     }
 
     public function approve(User $user, PengajuanSurat $surat): bool
     {
-        return $user->can('letter.review')
-            || $user->can('letter.verify')
-            || $user->can('letter.final_approve');
+        $service = app(ApprovalService::class);
+        $nextStatus = $service->getNextStatus($surat->status);
+
+        if (is_null($nextStatus)) {
+            return false;
+        }
+
+        return array_key_exists($nextStatus, $service->getValidTransitions($surat, $user));
     }
 
     public function reject(User $user, PengajuanSurat $surat): bool
     {
-        return app(ApprovalService::class)->canReject($surat, $user);
+        $validTransitions = app(ApprovalService::class)->getValidTransitions($surat, $user);
+
+        return array_key_exists('rejected', $validTransitions);
     }
 
     public function requestRevision(User $user, PengajuanSurat $surat): bool
     {
-        return $user->can('letter.review');
+        $validTransitions = app(ApprovalService::class)->getValidTransitions($surat, $user);
+
+        return array_key_exists('revision', $validTransitions);
     }
 
     public function download(User $user, PengajuanSurat $surat): bool
     {
         if ($user->id === $surat->user_id) {
-            return true;
+            return $surat->status === 'completed';
         }
 
-        return $user->can('letter.download');
+        if (! $user->can('letter.download')) {
+            return false;
+        }
+
+        if ($user->isRtRw() && ! $user->inSameWilayah($surat->user)) {
+            return false;
+        }
+
+        return $surat->status === 'completed';
+    }
+
+    public function viewLampiran(User $user, PengajuanSurat $surat): bool
+    {
+        if ($user->id === $surat->user_id) {
+            return false;
+        }
+
+        return $this->view($user, $surat);
     }
 }

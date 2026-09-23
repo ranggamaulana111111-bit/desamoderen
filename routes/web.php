@@ -87,8 +87,10 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     // ── Office Administration Center ──
     Route::resource('surat-masuk', SuratMasukController::class)->except(['index'])->middleware('permission:office.view')->names('surat-masuk');
     Route::get('surat-masuk', [SuratMasukController::class, 'index'])->middleware('permission:office.view')->name('surat-masuk.index');
+    Route::get('surat-masuk/{suratMasuk}/download', [SuratMasukController::class, 'downloadFile'])->middleware('permission:office.view')->name('surat-masuk.download');
     Route::resource('surat-keluar', SuratKeluarController::class)->except(['index'])->middleware('permission:office.view')->names('surat-keluar');
     Route::get('surat-keluar', [SuratKeluarController::class, 'index'])->middleware('permission:office.view')->name('surat-keluar.index');
+    Route::get('surat-keluar/{suratKeluar}/download', [SuratKeluarController::class, 'downloadFile'])->middleware('permission:office.view')->name('surat-keluar.download');
     Route::resource('disposisi', DisposisiController::class)->except(['index'])->middleware('permission:office.view')->names('disposisi');
     Route::get('disposisi', [DisposisiController::class, 'index'])->middleware('permission:office.view')->name('disposisi.index');
 
@@ -117,19 +119,19 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     // ── Letter Workflow ──
     Route::get('pengajuan', [PengajuanSuratController::class, 'index'])->middleware('permission:letter.view')->name('pengajuan.index');
     Route::get('pengajuan/{pengajuan}', [PengajuanSuratController::class, 'show'])->middleware('permission:letter.view')->name('pengajuan.show');
-    Route::post('pengajuan/{pengajuan}/approve', [PengajuanSuratController::class, 'approve'])->name('pengajuan.approve');
-    Route::post('pengajuan/{pengajuan}/reject', [PengajuanSuratController::class, 'reject'])->name('pengajuan.reject');
-    Route::post('pengajuan/{pengajuan}/revision', [PengajuanSuratController::class, 'requestRevision'])->name('pengajuan.revision');
+    Route::post('pengajuan/{pengajuan}/approve', [PengajuanSuratController::class, 'approve'])->middleware('permission:letter.review|letter.verify|letter.final_approve')->name('pengajuan.approve');
+    Route::post('pengajuan/{pengajuan}/reject', [PengajuanSuratController::class, 'reject'])->middleware('permission:letter.review|letter.verify|letter.final_approve|letter.reject')->name('pengajuan.reject');
+    Route::post('pengajuan/{pengajuan}/revision', [PengajuanSuratController::class, 'requestRevision'])->middleware('permission:letter.review')->name('pengajuan.revision');
     Route::get('pengajuan/{pengajuan}/cetak', [CetakSuratController::class, 'cetak'])->middleware('permission:letter.print')->name('pengajuan.cetak');
-    Route::get('pengajuan/{pengajuan}/lampiran/{index}', [PengajuanSuratController::class, 'downloadLampiran'])->middleware('permission:letter.view')->name('pengajuan.lampiran');
+    Route::get('pengajuan/{pengajuan}/lampiran/{index}', [PengajuanSuratController::class, 'downloadLampiran'])->middleware('permission:letter.view')->whereNumber('index')->name('pengajuan.lampiran');
 
     // ── Document Versioning ──
     Route::prefix('pengajuan/{pengajuan}/versions')->name('pengajuan.versions.')->middleware('permission:letter.version.view')->group(function () {
         Route::get('/', [DocumentVersionController::class, 'index'])->name('index');
-        Route::get('/{version}', [DocumentVersionController::class, 'show'])->name('show');
-        Route::post('/{version}/restore', [DocumentVersionController::class, 'restore'])->name('restore');
-        Route::get('/{version}/download', [DocumentVersionController::class, 'download'])->name('download');
-        Route::get('/diff/compare', [DocumentVersionController::class, 'diff'])->name('diff');
+        Route::get('/diff/compare', [DocumentVersionController::class, 'diff'])->name('diff')->whereNumber('pengajuan', 'version');
+        Route::get('/{version}', [DocumentVersionController::class, 'show'])->whereNumber('version')->name('show');
+        Route::post('/{version}/restore', [DocumentVersionController::class, 'restore'])->whereNumber('version')->name('restore');
+        Route::get('/{version}/download', [DocumentVersionController::class, 'download'])->whereNumber('version')->name('download');
     });
 
     // ── Content Management ──
@@ -143,9 +145,9 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     // ── Queue Monitoring ──
     Route::get('queue', [QueueController::class, 'index'])->middleware('permission:queue.view')->name('queue.index');
     Route::get('queue/chart-data', [QueueController::class, 'chartData'])->middleware('permission:queue.view')->name('queue.chart');
-    Route::post('queue/retry/{id}', [QueueController::class, 'retry'])->middleware('permission:queue.manage')->name('queue.retry');
+    Route::post('queue/retry/{id}', [QueueController::class, 'retry'])->middleware('permission:queue.manage')->whereNumber('id')->name('queue.retry');
     Route::post('queue/retry-all', [QueueController::class, 'retryAll'])->middleware('permission:queue.manage')->name('queue.retryAll');
-    Route::delete('queue/{id}', [QueueController::class, 'destroy'])->middleware('permission:queue.manage')->name('queue.destroy');
+    Route::delete('queue/{id}', [QueueController::class, 'destroy'])->middleware('permission:queue.manage')->whereNumber('id')->name('queue.destroy');
     Route::delete('queue/all', [QueueController::class, 'destroyAll'])->middleware('permission:queue.manage')->name('queue.destroyAll');
 
     // ── Pengambilan Surat (Scan QR Antrean) ──
@@ -178,7 +180,7 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     Route::delete('activity-log/{activityLog}', [ActivityLogController::class, 'destroy'])->middleware('permission:audit.view')->name('activity-log.destroy');
 
     // ── Letter Template Management ──
-    Route::get('template-surat/{letterConfig}/toggle', [LetterConfigController::class, 'toggle'])->middleware('permission:setting.manage')->name('letter-config.toggle');
+    Route::post('template-surat/{letterConfig}/toggle', [LetterConfigController::class, 'toggle'])->middleware('permission:setting.manage')->name('letter-config.toggle');
     Route::resource('template-surat', LetterConfigController::class)->middleware('permission:setting.manage')->except('show')->names('letter-config');
 
     // ── Theme Settings (AJAX) — must be before wildcard widgets/{key} ──
@@ -207,9 +209,9 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
 
     // ── Configuration Versioning ──
     Route::get('pengaturan/versions', [SettingVersionController::class, 'index'])->middleware('permission:setting.manage')->name('setting.versions.index');
-    Route::get('pengaturan/versions/{id}', [SettingVersionController::class, 'show'])->middleware('permission:setting.manage')->name('setting.versions.show');
-    Route::post('pengaturan/versions/{id}/rollback', [SettingVersionController::class, 'rollback'])->middleware('permission:setting.manage')->name('setting.versions.rollback');
-    Route::get('pengaturan/versions/diff/{from}/{to}', [SettingVersionController::class, 'diff'])->middleware('permission:setting.manage')->name('setting.versions.diff');
+    Route::get('pengaturan/versions/diff/{from}/{to}', [SettingVersionController::class, 'diff'])->middleware('permission:setting.manage')->whereNumber('from', 'to')->name('setting.versions.diff');
+    Route::get('pengaturan/versions/{id}', [SettingVersionController::class, 'show'])->middleware('permission:setting.manage')->whereNumber('id')->name('setting.versions.show');
+    Route::post('pengaturan/versions/{id}/rollback', [SettingVersionController::class, 'rollback'])->middleware('permission:setting.manage')->whereNumber('id')->name('setting.versions.rollback');
 });
 
 Route::middleware(['auth', 'permission:letter.create'])->prefix('warga')->name('warga.')->group(function () {

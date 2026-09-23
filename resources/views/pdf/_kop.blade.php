@@ -12,10 +12,12 @@
     $emailKop = $kop->kop_email_desa ?? config('village.email_desa', 'email@desa.id');
     $teleponKop = $kop->kop_telepon_desa ?? config('village.telepon_desa', '');
 
-    $kopMimeMap = fn (string $path) => strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'jpg'
-        || strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'jpeg'
-            ? 'jpeg'
-            : 'png';
+    $kopMimeMap = fn (string $path): string => match (Storage::disk('public')->mimeType($path)) {
+        'image/jpeg' => 'jpeg',
+        'image/svg+xml' => 'svg+xml',
+        'image/webp' => 'webp',
+        default => 'png',
+    };
 
     $logoPemdaSrc = null;
     $logoPemdaPath = $kop->kop_logo_pemda_path ?? config('village.logo_pemda');

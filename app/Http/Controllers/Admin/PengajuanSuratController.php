@@ -28,6 +28,8 @@ class PengajuanSuratController extends Controller
 
     public function index(Request $request)
     {
+        $user = $request->user();
+
         $query = PengajuanSurat::with('user', 'latestApproval');
 
         if ($status = $request->input('status')) {
@@ -44,19 +46,30 @@ class PengajuanSuratController extends Controller
             });
         }
 
+        if ($user->isRtRw()) {
+            $query->whereHas('user', function ($q) use ($user) {
+                $q->where('rt', $user->rt)->where('rw', $user->rw);
+            });
+        }
+
         $pengajuan = $query->latest()->paginate(20)->withQueryString();
 
         $letterConfigs = LetterConfig::active()->get();
 
+        $base = PengajuanSurat::query();
+        if ($user->isRtRw()) {
+            $base->whereHas('user', fn ($q) => $q->where('rt', $user->rt)->where('rw', $user->rw));
+        }
+
         $stats = [
-            'all' => PengajuanSurat::count(),
-            'submitted' => PengajuanSurat::where('status', 'submitted')->count(),
-            'verified' => PengajuanSurat::where('status', 'verified')->count(),
-            'approved_operator' => PengajuanSurat::where('status', 'approved_operator')->count(),
-            'approved_sekdes' => PengajuanSurat::where('status', 'approved_sekdes')->count(),
-            'approved_kades' => PengajuanSurat::where('status', 'approved_kades')->count(),
-            'completed' => PengajuanSurat::where('status', 'completed')->count(),
-            'rejected' => PengajuanSurat::where('status', 'rejected')->count(),
+            'all' => (clone $base)->count(),
+            'submitted' => (clone $base)->where('status', 'submitted')->count(),
+            'verified' => (clone $base)->where('status', 'verified')->count(),
+            'approved_operator' => (clone $base)->where('status', 'approved_operator')->count(),
+            'approved_sekdes' => (clone $base)->where('status', 'approved_sekdes')->count(),
+            'approved_kades' => (clone $base)->where('status', 'approved_kades')->count(),
+            'completed' => (clone $base)->where('status', 'completed')->count(),
+            'rejected' => (clone $base)->where('status', 'rejected')->count(),
         ];
 
         return view('admin.pengajuan.index', compact('pengajuan', 'stats', 'letterConfigs'));
@@ -64,6 +77,8 @@ class PengajuanSuratController extends Controller
 
     public function show(PengajuanSurat $pengajuan)
     {
+        Gate::authorize('view', $pengajuan);
+
         $pengajuan->load(['user', 'approvalHistories.user', 'antrean']);
 
         $service = LetterServiceFactory::make($pengajuan->jenis_surat);
@@ -84,7 +99,11 @@ class PengajuanSuratController extends Controller
 
         Gate::authorize('approve', $pengajuan);
 
-        $this->approvalService->approve($pengajuan, $user, $validated['catatan'] ?? null);
+        try {
+            $this->approvalService->approve($pengajuan, $user, $validated['catatan'] ?? null);
+        } catch (\InvalidArgumentException $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
 
         $label = str_replace('_', ' ', ucfirst($pengajuan->jenis_surat));
         ActivityLog::catat(
@@ -112,7 +131,11 @@ class PengajuanSuratController extends Controller
 
         Gate::authorize('reject', $pengajuan);
 
-        $this->approvalService->reject($pengajuan, $user, $validated['catatan']);
+        try {
+            $this->approvalService->reject($pengajuan, $user, $validated['catatan']);
+        } catch (\InvalidArgumentException $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
 
         $label = str_replace('_', ' ', ucfirst($pengajuan->jenis_surat));
         ActivityLog::catat(
@@ -136,7 +159,11 @@ class PengajuanSuratController extends Controller
 
         Gate::authorize('requestRevision', $pengajuan);
 
-        $this->approvalService->requestRevision($pengajuan, $user, $validated['catatan']);
+        try {
+            $this->approvalService->requestRevision($pengajuan, $user, $validated['catatan']);
+        } catch (\InvalidArgumentException $e) {
+            return back()->withErrors(['message' => $e->getMessage()]);
+        }
 
         $label = str_replace('_', ' ', ucfirst($pengajuan->jenis_surat));
         ActivityLog::catat(
@@ -152,6 +179,8 @@ class PengajuanSuratController extends Controller
 
     public function downloadLampiran(PengajuanSurat $pengajuan, int $index)
     {
+        Gate::authorize('viewLampiran', $pengajuan);
+
         $lampiran = $pengajuan->data_tambahan['lampiran'] ?? [];
 
         if (! isset($lampiran[$index])) {
@@ -172,6 +201,8 @@ class PengajuanSuratController extends Controller
     private function handleCompletion(PengajuanSurat $pengajuan): void
     {
         DB::transaction(function () use ($pengajuan) {
+            $pengajuan->lockForUpdate();
+
             if (! $pengajuan->hash_verifikasi) {
                 $pengajuan->update([
                     'hash_verifikasi' => hash('sha256', $pengajuan->id.$pengajuan->user_id.$pengajuan->jenis_surat.Str::random(40)),
@@ -179,22 +210,26 @@ class PengajuanSuratController extends Controller
             }
 
             if (! $pengajuan->nomor_surat) {
+                $nomor = $this->letterNumberService->generateFor($pengajuan, now());
                 $pengajuan->update([
-                    'nomor_surat' => $this->letterNumberService->generateFor($pengajuan),
+                    'nomor_surat' => $nomor,
+                    'tgl_selesai' => $pengajuan->tgl_selesai ?? now()->toDateString(),
                 ]);
             }
 
             if (! $pengajuan->antrean) {
                 $slot = $this->alokasiSlot();
 
-                AntreanPengambilan::create([
-                    'pengajuan_id' => $pengajuan->id,
-                    'nomor_antrean' => AntreanPengambilan::generateNomor(new \DateTime($slot['tanggal'])),
-                    'tanggal_ambil' => $slot['tanggal'],
-                    'jam_mulai' => $slot['mulai'],
-                    'jam_selesai' => $slot['selesai'],
-                    'kode_qr' => Str::random(32),
-                ]);
+                $antrean = AntreanPengambilan::firstOrCreate(
+                    ['pengajuan_id' => $pengajuan->id],
+                    [
+                        'nomor_antrean' => AntreanPengambilan::generateNomor(new \DateTime($slot['tanggal'])),
+                        'tanggal_ambil' => $slot['tanggal'],
+                        'jam_mulai' => $slot['mulai'],
+                        'jam_selesai' => $slot['selesai'],
+                        'kode_qr' => Str::random(32),
+                    ]
+                );
             }
         });
 
@@ -225,7 +260,7 @@ class PengajuanSuratController extends Controller
             ? $sekarang->copy()->addDay()->startOfDay()
             : $sekarang->copy()->startOfDay();
 
-        for ($hari = 0; $hari < 14; $hari++) {
+        for ($hari = 0; $hari < 30; $hari++) {
             $jumlahTerisi = AntreanPengambilan::whereDate('tanggal_ambil', $tgl)
                 ->lockForUpdate()
                 ->count();
@@ -244,12 +279,6 @@ class PengajuanSuratController extends Controller
             $tgl->addDay();
         }
 
-        $menitAkhir = ($menitBuka + $durasiSlot) % 1440;
-
-        return [
-            'tanggal' => $tgl->toDateString(),
-            'mulai' => $jamMulai,
-            'selesai' => sprintf('%02d:%02d', intdiv($menitAkhir, 60), $menitAkhir % 60),
-        ];
+        throw new \RuntimeException('Tidak ada slot antrean yang tersedia dalam 30 hari ke depan.');
     }
 }

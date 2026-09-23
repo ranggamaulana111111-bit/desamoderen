@@ -62,7 +62,7 @@ class ChartWidget implements WidgetInterface
         $stats = app(DashboardStatsService::class);
 
         return [
-            'trends' => $analytics->getMonthlyTrends(12),
+            'trends' => $analytics->getMonthlyTrends(now()->subMonths(11)->startOfMonth()),
             'letterDistribution' => $stats->letterDistribution(),
         ];
     }

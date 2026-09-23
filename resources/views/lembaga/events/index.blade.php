@@ -31,10 +31,10 @@
                             <p class="text-xs text-slate-400">{{ $event->tempat ?? 'Lokasi belum diisi' }}</p>
                         </td>
                         <td>
-                            <p class="font-semibold text-slate-700 text-sm">{{ $event->tanggal->translatedFormat('d M Y') }}</p>
+                            <p class="font-semibold text-slate-700 text-sm">{{ $event->tanggal->locale('id')->translatedFormat('d F Y') }}</p>
                             <p class="text-xs text-slate-400">{{ $event->waktu_mulai?->format('H:i') }}{{ $event->waktu_selesai ? ' - '.$event->waktu_selesai->format('H:i') : '' }}</p>
                         </td>
-                        <td><span class="badge-status bg-akan_datang">{{ $event->jenis }}</span></td>
+                        <td><span class="badge-status {{ match($event->jenis) { 'musrenbangdes' => 'bg-musrenbangdes', 'rapat' => 'bg-rapat', 'kegiatan' => 'bg-kegiatan', 'sosialisasi' => 'bg-sosialisasi', default => 'bg-kegiatan' } }}">{{ match($event->jenis) { 'musrenbangdes' => 'Musrenbangdes', 'rapat' => 'Rapat', 'kegiatan' => 'Kegiatan', 'sosialisasi' => 'Sosialisasi', default => ucfirst($event->jenis) } }}</span></td>
                         <td><span class="badge-status {{ 'bg-'.$event->status }}">{{ str_replace('_', ' ', $event->status) }}</span></td>
                         <td class="text-right">
                             <div class="flex items-center justify-end gap-2">

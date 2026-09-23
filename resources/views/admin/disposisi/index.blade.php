@@ -168,7 +168,7 @@
                                     </td>
                                     <td>
                                         <span class="text-xs font-medium {{ $isOverdue ? 'text-red-600 font-bold' : 'text-gray-500' }} whitespace-nowrap">
-                                            {{ \Carbon\Carbon::parse($d->deadline)->format('d M Y, H:i') }}
+                                            {{ \Carbon\Carbon::parse($d->deadline)->locale('id')->translatedFormat('d M Y, H:i') }}
                                         </span>
                                     </td>
                                     <td>

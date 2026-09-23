@@ -11,6 +11,7 @@ use App\Models\PengajuanSurat;
 use App\Models\SuratKeluar;
 use App\Models\SuratMasuk;
 use App\Models\User;
+use App\Services\ApprovalService;
 use Illuminate\Support\Facades\DB;
 
 class SekdesDashboardController extends Controller
@@ -30,13 +31,19 @@ class SekdesDashboardController extends Controller
             ->where('updated_at', '>=', $bulanIni)
             ->count();
 
-        // ── Pending Verification (approved_operator) ──
+        // ── Pending Verification (status before verifikasi sekdes) ──
+        $activeSteps = app(ApprovalService::class)->getActiveStepKeys();
+        $sekdesIdx = array_search('approved_sekdes', $activeSteps, true);
+        $pendingStatus = $sekdesIdx !== false && $sekdesIdx > 0
+            ? $activeSteps[$sekdesIdx - 1]
+            : 'approved_operator';
+
         $pendingVerification = PengajuanSurat::with('user')
-            ->where('status', 'approved_operator')
+            ->where('status', $pendingStatus)
             ->latest()
             ->paginate(15);
 
-        $pendingCount = PengajuanSurat::where('status', 'approved_operator')->count();
+        $pendingCount = PengajuanSurat::where('status', $pendingStatus)->count();
 
         // ── Growth Comparisons ──
         $totalSuratBulanLalu = PengajuanSurat::where('created_at', '>=', $bulanIni->copy()->subMonth())
@@ -124,9 +131,9 @@ class SekdesDashboardController extends Controller
                 return $op;
             });
 
-        // ── Stuck Surat (at operator, waiting for approve) ──
+        // ── Stuck Surat (waiting for sekdes verification) ──
         $stuckSurat = PengajuanSurat::with('user')
-            ->where('status', 'verified')
+            ->where('status', $pendingStatus)
             ->where('updated_at', '<', now()->subDays(3))
             ->latest()
             ->take(5)
@@ -217,10 +224,10 @@ class SekdesDashboardController extends Controller
 
         // ── SLA Monitoring ──
         $slaHours = 48;
-        $slaBreached = PengajuanSurat::where('status', 'approved_operator')
+        $slaBreached = PengajuanSurat::where('status', $pendingStatus)
             ->where('created_at', '<', now()->subHours($slaHours))
             ->count();
-        $inProgress = PengajuanSurat::where('status', 'approved_operator')->count();
+        $inProgress = PengajuanSurat::where('status', $pendingStatus)->count();
 
         // ── Pre-computed Chart Data ──
         $bulanMap = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];

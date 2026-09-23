@@ -8,7 +8,7 @@
         anggaran: {{ old('anggaran', 0) }},
         realisasi: {{ old('realisasi', 0) }},
         sumberDana: '{{ old('sumber_dana') }}',
-        keterangan: '{{ addslashes(old('keterangan')) }}',
+        keterangan: @js(old('keterangan')),
         status: '{{ old('status', 'Draft') }}',
         get sisa() { return this.anggaran - this.realisasi; },
         get formattedAnggaran() { return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',minimumFractionDigits:0}).format(this.anggaran); },

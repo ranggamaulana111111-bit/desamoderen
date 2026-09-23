@@ -155,10 +155,11 @@ class QrVerificationTest extends TestCase
         $response->assertSee('460/001/DS-KP/2026');
     }
 
-    public function test_hash_not_found_returns_404(): void
+    public function test_hash_not_found_returns_friendly_page(): void
     {
         $response = $this->get(route('verifikasi.show', 'hash_tidak_ada'));
 
-        $response->assertStatus(404);
+        $response->assertStatus(200);
+        $response->assertSee('DOKUMEN TIDAK DITEMUKAN');
     }
 }

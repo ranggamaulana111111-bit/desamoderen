@@ -108,7 +108,7 @@
                                     {{ $role ?: 'Tidak ada role' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->format('d M Y') }}</td>
+                            <td class="px-6 py-4 text-gray-400 text-xs whitespace-nowrap">{{ $item->created_at->locale('id')->translatedFormat('d M Y') }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <a href="{{ route('admin.users.show', $item) }}"

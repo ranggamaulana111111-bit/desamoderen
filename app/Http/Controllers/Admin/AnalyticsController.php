@@ -66,8 +66,28 @@ class AnalyticsController extends Controller
 
     private function resolveRange(Request $request): array
     {
-        $start = $request->filled('start') ? Carbon::parse($request->start) : null;
-        $end = $request->filled('end') ? Carbon::parse($request->end) : null;
+        $start = null;
+        $end = null;
+
+        if ($request->filled('start')) {
+            $parsed = Carbon::createFromFormat('Y-m-d', $request->start);
+            if (! $parsed) {
+                abort(422, 'Format tanggal mulai tidak valid (Y-m-d).');
+            }
+            $start = $parsed->startOfDay();
+        }
+
+        if ($request->filled('end')) {
+            $parsed = Carbon::createFromFormat('Y-m-d', $request->end);
+            if (! $parsed) {
+                abort(422, 'Format tanggal akhir tidak valid (Y-m-d).');
+            }
+            $end = $parsed->startOfDay();
+        }
+
+        if ($start && $end && $start->gt($end)) {
+            abort(422, 'Tanggal mulai tidak boleh lebih baru dari tanggal akhir.');
+        }
 
         if (! $start) {
             $defaultDays = (int) config('village.analytics_default_filter', 30);

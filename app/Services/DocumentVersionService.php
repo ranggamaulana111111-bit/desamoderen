@@ -66,7 +66,16 @@ class DocumentVersionService
                 throw new \InvalidArgumentException("Versi #{$versionNumber} tidak ditemukan.");
             }
 
+            $surat->lockForUpdate();
+
             $oldData = $surat->data_tambahan;
+
+            $preSnapshot = $this->createVersion(
+                $surat,
+                $user,
+                "Snapshot sebelum dikembalikan ke versi {$version->version_label}: {$version->catatan}",
+                'Restore target: versi '.$versionNumber
+            );
 
             $surat->update([
                 'data_tambahan' => $version->data_snapshot,

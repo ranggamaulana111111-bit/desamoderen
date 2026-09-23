@@ -27,7 +27,7 @@ class CetakSuratController extends Controller
 
         if (! $surat->hash_verifikasi) {
             $surat->update([
-                'hash_verifikasi' => hash('sha256', $surat->id.$surat->user_id.$surat->jenis_surat.now()->timestamp),
+                'hash_verifikasi' => hash('sha256', $surat->id.$surat->user_id.$surat->jenis_surat.\Illuminate\Support\Str::random(40)),
             ]);
             $surat->refresh();
         }

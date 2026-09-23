@@ -223,7 +223,7 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email'],
-            'no_hp' => ['nullable', 'string', 'max:20'],
+            'no_hp' => ['required', 'string', 'max:20'],
             ...$this->captchaFieldRules(),
         ], [], [
             'no_hp' => 'nomor HP',
@@ -240,29 +240,19 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if (! $user) {
+        $matched = $user !== null
+            && $user->no_hp !== null
+            && preg_replace('/[^0-9]/', '', $credentials['no_hp']) === preg_replace('/[^0-9]/', '', (string) $user->no_hp);
+
+        if (! $matched) {
             Captcha::question();
 
-            return back()->withInput()->withErrors(['email' => 'Email tidak terdaftar.']);
+            return back()->withInput()->with('status', 'Jika email dan nomor HP sesuai dengan data terdaftar, tautan reset dikirim ke email Anda.');
         }
 
-        if ($user->no_hp) {
-            $normalizedHp = preg_replace('/[^0-9]/', '', (string) ($credentials['no_hp'] ?? ''));
-            $userHp = preg_replace('/[^0-9]/', '', (string) $user->no_hp);
+        PasswordBroker::broker()->sendResetLink(['email' => $user->email]);
 
-            if ($normalizedHp === '' || $normalizedHp !== $userHp) {
-                Captcha::question();
-
-                return back()->withInput()->withErrors(['no_hp' => 'Nomor HP tidak cocok dengan data terdaftar.']);
-            }
-        }
-
-        $token = PasswordBroker::broker()->createToken($user);
-
-        return redirect()->route('password.reset', [
-            'token' => $token,
-            'email' => $user->email,
-        ]);
+        return back()->withInput()->with('status', 'Jika email dan nomor HP sesuai dengan data terdaftar, tautan reset dikirim ke email Anda.');
     }
 
     public function showReset(Request $request)
@@ -298,7 +288,7 @@ class AuthController extends Controller
         $user = User::where('email', $validated['email'])->first();
 
         if (! $user) {
-            return back()->withErrors(['email' => 'Email tidak terdaftar.']);
+            return back()->withErrors(['email' => 'Tautan reset tidak valid.']);
         }
 
         if (! PasswordBroker::broker()->tokenExists($user, $validated['token'])) {

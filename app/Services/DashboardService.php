@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\ActivityLog;
-use App\Models\ApprovalHistory;
 use App\Models\Berita;
 use App\Models\Event;
 use App\Models\PengajuanSurat;
@@ -94,13 +93,19 @@ class DashboardService
             $lastMonthStart = $lastMonth->startOfMonth();
             $thisMonthStart = $now->copy()->startOfMonth();
 
-            $counts = PengajuanSurat::selectRaw('
+            $prosesStatuses = collect(app(ApprovalService::class)->getActiveStepKeys())
+                ->filter(fn ($s) => $s !== 'completed')
+                ->values()
+                ->all();
+            $prosesPlaceholders = implode(',', array_map(fn ($s) => '"'.$s.'"', $prosesStatuses));
+
+            $counts = PengajuanSurat::selectRaw("
                 COUNT(*) as total,
-                SUM(CASE WHEN status = "submitted" THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status IN ("submitted","verified","revision","approved_operator","approved_sekdes","approved_kades") THEN 1 ELSE 0 END) as proses,
-                SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) as selesai,
-                SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as ditolak
-            ')->first();
+                SUM(CASE WHEN status = \"submitted\" THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status IN ({$prosesPlaceholders}) THEN 1 ELSE 0 END) as proses,
+                SUM(CASE WHEN status = \"completed\" THEN 1 ELSE 0 END) as selesai,
+                SUM(CASE WHEN status = \"rejected\" THEN 1 ELSE 0 END) as ditolak
+            ")->first();
 
             $countsPrev = PengajuanSurat::where('created_at', '<', $thisMonthStart)->selectRaw('
                 COUNT(*) as total,
@@ -186,7 +191,7 @@ class DashboardService
     public function workflowMonitor(): array
     {
         return Cache::remember(self::CACHE_PREFIX.'workflow', self::CACHE_TTL, function () {
-            $steps = [
+            $colors = [
                 'submitted' => 'blue',
                 'verified' => 'indigo',
                 'approved_operator' => 'purple',
@@ -195,18 +200,21 @@ class DashboardService
                 'completed' => 'green',
             ];
 
+            $steps = app(ApprovalService::class)->getWorkflowSteps();
+            $statuses = array_column($steps, 'key');
+
             $counts = PengajuanSurat::selectRaw('status, COUNT(*) as total')
-                ->whereIn('status', array_keys($steps))
+                ->whereIn('status', $statuses)
                 ->groupBy('status')
                 ->pluck('total', 'status');
 
             $result = [];
-            foreach ($steps as $status => $color) {
+            foreach ($steps as $step) {
                 $result[] = [
-                    'status' => $status,
-                    'label' => ApprovalHistory::STATUS_LABELS()[$status] ?? ucfirst(str_replace('_', ' ', $status)),
-                    'total' => (int) ($counts[$status] ?? 0),
-                    'color' => $color,
+                    'status' => $step['key'],
+                    'label' => $step['label'],
+                    'total' => (int) ($counts[$step['key']] ?? 0),
+                    'color' => $colors[$step['key']] ?? 'gray',
                 ];
             }
 
@@ -219,14 +227,17 @@ class DashboardService
         $user = auth()->user();
         $role = $user?->roles()->first()?->name;
 
+        $steps = app(ApprovalService::class)->getWorkflowSteps();
+        $stepKeys = array_column($steps, 'key');
+
         $statusMap = [
-            'Operator Pelayanan' => ['submitted', 'verified'],
-            'Sekretaris Desa' => ['approved_operator'],
-            'Kepala Desa' => ['approved_sekdes'],
+            'Operator Pelayanan' => array_values(array_intersect($stepKeys, ['verified', 'approved_operator'])),
+            'Sekretaris Desa' => array_values(array_intersect($stepKeys, ['approved_sekdes'])),
+            'Kepala Desa' => array_values(array_intersect($stepKeys, ['approved_kades'])),
         ];
 
         $statuses = $role === 'Super Admin'
-            ? ['submitted', 'verified', 'approved_operator', 'approved_sekdes']
+            ? array_values(array_intersect($stepKeys, ['verified', 'approved_operator', 'approved_sekdes']))
             : ($statusMap[$role] ?? []);
 
         $items = [];
@@ -514,14 +525,38 @@ class DashboardService
     {
         $user = auth()->user();
         $items = collect();
+        $approvalService = app(ApprovalService::class);
 
-        $pendingCount = PengajuanSurat::where('status', 'submitted')->count();
-        if ($pendingCount > 0 && $user->can('letter.review')) {
-            $items->push([
-                'type' => 'approval',
-                'message' => "{$pendingCount} pengajuan menunggu verifikasi",
-                'url' => route('admin.pengajuan.index', ['status' => 'submitted']),
-            ]);
+        $permissionLabels = [
+            'letter.review' => 'verifikasi',
+            'letter.verify' => 'verifikasi Sekretaris Desa',
+            'letter.final_approve' => 'tanda tangan Kepala Desa',
+        ];
+
+        foreach ($permissionLabels as $permission => $label) {
+            if (! $user->hasPermissionTo($permission)) {
+                continue;
+            }
+
+            $pendingStatuses = $approvalService->getPendingStatusesForPermission($permission);
+            $total = 0;
+            $linkStatus = $pendingStatuses[0] ?? null;
+
+            foreach ($pendingStatuses as $pendingStatus) {
+                $pendingCount = PengajuanSurat::where('status', $pendingStatus)->count();
+                $total += $pendingCount;
+                if ($linkStatus === null && $pendingCount > 0) {
+                    $linkStatus = $pendingStatus;
+                }
+            }
+
+            if ($total > 0) {
+                $items->push([
+                    'type' => 'approval',
+                    'message' => "{$total} pengajuan menunggu {$label}",
+                    'url' => route('admin.pengajuan.index', ['status' => $linkStatus]),
+                ]);
+            }
         }
 
         $revisionCount = PengajuanSurat::where('status', 'revision')->count();

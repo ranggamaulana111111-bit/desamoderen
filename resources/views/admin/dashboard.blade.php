@@ -87,7 +87,7 @@
                     </div>
                 @else
                     {{-- Eager-loaded widget (rendered server-side) --}}
-                    <div data-span="{{ $span }}" class="a-fade-up d{{ min($widget['position'], 10) }}">
+                    <div data-span="{{ $span }}" class="a-fade-up d{{ min($widget['position'], 10) }} {{ $widget['key'] === 'header' ? 'isolate z-40' : '' }}">
                         @include($widget['component'], $widget['data'])
                     </div>
                 @endif
@@ -102,7 +102,7 @@
                     <span class="w-1 h-1 rounded-full bg-slate-300"></span>
                     <span class="px-2 py-0.5 rounded-full {{ config('app.env') === 'production' ? 'bg-emerald-50 text-emerald-600 font-semibold border border-emerald-100' : 'bg-amber-50 text-amber-600 font-semibold border border-amber-100' }}">{{ ucfirst(config('app.env')) }}</span>
                 </div>
-                <span>&copy; {{ date('Y') }} {{ config('village.nama_desa', 'Desa') }} &middot; IG <a href="https://instagram.com/rangga.mrw" target="_blank" class="text-slate-500 hover:text-brand-600 transition font-medium">@rangga.mrw</a></span>
+                <span>&copy; {{ date('Y') }} {{ config('village.nama_desa', 'Desa') }} @if(config('village.instagram')) &middot; IG <a href="{{ config('village.instagram_url', 'https://instagram.com/'.config('village.instagram')) }}" target="_blank" class="text-slate-500 hover:text-brand-600 transition font-medium">@{{ config('village.instagram') }}</a> @endif</span>
             </div>
         </div>
     </div>
@@ -194,7 +194,7 @@
                 },
                 search() {
                     if (this.searchQuery.trim()) {
-                        window.location.href = '/admin/search?q=' + encodeURIComponent(this.searchQuery);
+                        window.location.href = '{{ route('admin.pengajuan.index') }}?search=' + encodeURIComponent(this.searchQuery);
                     }
                 },
                 initReveal() {

@@ -535,18 +535,19 @@
                         </div>
                     </div>
 
-                    {{-- Google Maps --}}
+                    {{-- Peta Lokasi (OpenStreetMap) --}}
                     @if($hasCoords)
+                    @php($bbox = ($lng - 0.005).','.($lat - 0.006).','.($lng + 0.005).','.($lat + 0.006))
                     <div class="mt-4 rounded-xl overflow-hidden border border-gray-100">
-                        <a href="https://www.google.com/maps?q={{ $lat }},{{ $lng }}" target="_blank" rel="noopener" class="block relative group">
-                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ $lat }},{{ $lng }}&zoom=15&size=600x200&markers=color:green%7C{{ $lat }},{{ $lng }}&style=feature:all|element:labels|visibility:on{{ config('village.integrasi_maps_api_key') ? '&key='.config('village.integrasi_maps_api_key') : '' }}" alt="Peta Lokasi" class="w-full h-32 object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-3">
+                        <div class="relative">
+                            <iframe title="Peta Lokasi" src="https://www.openstreetmap.org/export/embed.html?bbox={{ $bbox }}&layer=mapnik&marker={{ $lat }},{{ $lng }}" class="w-full h-32" loading="lazy"></iframe>
+                            <a href="https://www.openstreetmap.org/?mlat={{ $lat }}&mlon={{ $lng }}#map=15/{{ $lat }}/{{ $lng }}" target="_blank" rel="noopener" class="absolute inset-0 flex items-end p-3 bg-gradient-to-t from-black/40 to-transparent no-underline">
                                 <div class="flex items-center gap-2 text-white">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-                                    <span class="text-xs font-semibold">Buka di Google Maps</span>
+                                    <span class="text-xs font-semibold">Buka di OpenStreetMap</span>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                     @endif
                 </div>

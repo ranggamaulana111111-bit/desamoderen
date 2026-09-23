@@ -67,7 +67,7 @@ class AntreanController extends Controller
             return response()->json(['message' => 'Antrean ini sudah tidak berstatus menunggu.'], 422);
         }
 
-        $antrean->markAsTaken(auth()->id());
+        $antrean->markAsTaken();
 
         ActivityLog::catat(
             'antrean_diambil',
@@ -85,7 +85,7 @@ class AntreanController extends Controller
             return response()->json(['message' => 'Antrean ini sudah tidak berstatus menunggu.'], 422);
         }
 
-        $antrean->markAsMissed(auth()->id());
+        $antrean->markAsMissed();
 
         ActivityLog::catat(
             'antrean_lewat',

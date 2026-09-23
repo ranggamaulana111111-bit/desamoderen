@@ -6,6 +6,7 @@ use App\Models\PengajuanSurat;
 use App\Services\Surat\LetterServiceFactory;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Facades\DB;
 
 class LetterNumberService
 {
@@ -50,23 +51,27 @@ class LetterNumberService
 
     public function nextSequenceNumber(PengajuanSurat $surat, CarbonInterface $date, string $reset): int
     {
-        $query = PengajuanSurat::query()
-            ->where('jenis_surat', $surat->jenis_surat)
-            ->whereNotNull('nomor_surat');
+        return DB::transaction(function () use ($surat, $date, $reset) {
+            $range = fn ($query, string $column) => match ($reset) {
+                'bulanan' => $query->whereYear($column, $date->year)->whereMonth($column, $date->month),
+                'harian' => $query->whereDate($column, $date->toDateString()),
+                default => $query->whereYear($column, $date->year),
+            };
 
-        switch ($reset) {
-            case 'bulanan':
-                $query->whereYear('updated_at', $date->year)->whereMonth('updated_at', $date->month);
-                break;
-            case 'harian':
-                $query->whereDate('updated_at', $date->toDateString());
-                break;
-            default:
-                $query->whereYear('updated_at', $date->year);
-                break;
-        }
+            $query = PengajuanSurat::query()
+                ->where('jenis_surat', $surat->jenis_surat)
+                ->whereNotNull('nomor_surat')
+                ->where(function ($q) use ($date, $reset, $range) {
+                    $range($q->whereNotNull('tgl_selesai'), 'tgl_selesai');
+                    $q->orWhere(function ($legacy) use ($date, $reset, $range) {
+                        $range($legacy->whereNull('tgl_selesai'), 'updated_at');
+                    });
+                });
 
-        return $query->count() + 1;
+            $count = $query->lockForUpdate()->count();
+
+            return $count + 1;
+        });
     }
 
     private function kodeKlasifikasi(PengajuanSurat $surat): string

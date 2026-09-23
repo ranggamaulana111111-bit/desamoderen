@@ -1,8 +1,8 @@
 <x-admin-layout title="Tambah Berita" maxWidth="max-w-[1200px]">
 
     <div x-data="{
-        judul: '{{ old('judul') }}',
-        konten: '{{ addslashes(old('konten')) }}',
+        judul: @js(old('judul')),
+        konten: @js(old('konten')),
         status: '{{ old('status', 'draft') }}',
         kategori: '{{ old('kategori') }}',
         fotoPreview: null,

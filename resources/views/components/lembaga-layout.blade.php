@@ -101,6 +101,10 @@
         .bg-akan_datang { background: #ccfbf1; color: #0f766e; border-color: rgba(20,184,166,.2); }
         .bg-berlangsung { background: #fef3c7; color: #b45309; border-color: rgba(245,158,11,.2); }
         .bg-selesai { background: #f0fdf4; color: #16a34a; border-color: rgba(34,197,94,.2); }
+        .bg-musrenbangdes { background: #f3e8ff; color: #7e22ce; border-color: rgba(168,85,247,.2); }
+        .bg-rapat { background: #dcfce7; color: #15803d; border-color: rgba(34,197,94,.2); }
+        .bg-kegiatan { background: #ccfbf1; color: #0f766e; border-color: rgba(20,184,166,.2); }
+        .bg-sosialisasi { background: #fef3c7; color: #b45309; border-color: rgba(245,158,11,.2); }
 
         .section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; padding: 0 2px; }
         .section-header::before { content: ''; width: 3px; height: 18px; border-radius: 9999px; background: linear-gradient(180deg, var(--brand-400), var(--brand-600)); }

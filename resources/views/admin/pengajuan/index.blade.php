@@ -104,7 +104,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-gray-500 whitespace-nowrap text-xs">
-                                {{ $item->created_at->format('d M Y, H:i') }}
+                                {{ $item->created_at->locale('id')->translatedFormat('d M Y, H:i') }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">

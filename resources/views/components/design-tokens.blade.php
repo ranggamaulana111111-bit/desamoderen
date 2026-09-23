@@ -123,7 +123,7 @@
         font-size: 13.3333px;
         font-weight: 400;
         color: #1f1f1f;
-        border-radius: 4px !important;
+        border-radius: 4px;
         border: 1px solid #cccccc;
         padding: 12px 16px;
         line-height: normal;
@@ -242,11 +242,11 @@
        Elevated (2) rgba(0,0,0,.12) 0 8px 16px     → shadow-md / shadow-lg
        Floating (3) 0 12px 24px rgba(0,0,0,.15)    → shadow-xl
        Modal (4)    0 16px 40px rgba(0,0,0,.25)    → shadow-2xl */
-    .shadow-sm, .shadow { box-shadow: rgba(0,0,0,.06) 0 4px 8px 0 !important; }
-    .shadow-md, .shadow-lg { box-shadow: rgba(0,0,0,.12) 0 8px 16px 0 !important; }
-    .shadow-xl { box-shadow: 0 12px 24px rgba(0,0,0,.15) !important; }
-    .shadow-2xl { box-shadow: 0 16px 40px rgba(0,0,0,.25) !important; }
-    .shadow-none { box-shadow: none !important; }
+    .shadow-sm, .shadow { box-shadow: rgba(0,0,0,.06) 0 4px 8px 0; }
+    .shadow-md, .shadow-lg { box-shadow: rgba(0,0,0,.12) 0 8px 16px 0; }
+    .shadow-xl { box-shadow: 0 12px 24px rgba(0,0,0,.15); }
+    .shadow-2xl { box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+    .shadow-none { box-shadow: none; }
 </style>
 <script>
     // Extend whatever tailwind.config each page sets with the brand accent palette.

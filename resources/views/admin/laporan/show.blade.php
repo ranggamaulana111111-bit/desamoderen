@@ -127,9 +127,9 @@
                                                 <tr class="{{ !$loop->last ? 'border-b border-gray-100' : '' }}">
                                                     <td class="px-4 py-2.5 font-medium text-gray-500 uppercase tracking-wider text-xs w-1/3">{{ $key }}</td>
                                                     <td class="px-4 py-2.5 text-gray-800 font-semibold text-right">
-                                                        @if (is_numeric($value) && str_contains(strtolower($key), ['anggaran', 'pendapatan', 'belanja', 'realisasi', 'sisa', 'dana', 'harga', 'nilai', 'biaya']))
+                                                        @if (is_numeric($value) && collect(['anggaran', 'pendapatan', 'belanja', 'realisasi', 'sisa', 'dana', 'harga', 'nilai', 'biaya'])->contains(fn ($n) => str_contains(strtolower($key), $n)))
                                                             Rp {{ number_format((float) $value, 0, ',', '.') }}
-                                                        @elseif (is_numeric($value) && str_contains(strtolower($key), ['persentase', 'rasio', 'target', 'pencapaian', '%']))
+                                                        @elseif (is_numeric($value) && collect(['persentase', 'rasio', 'target', 'pencapaian', '%'])->contains(fn ($n) => str_contains(strtolower($key), $n)))
                                                             {{ number_format((float) $value, 1, ',', '.') }}%
                                                         @elseif (is_bool($value))
                                                             {{ $value ? 'Ya' : 'Tidak' }}

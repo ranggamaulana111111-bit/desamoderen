@@ -27,7 +27,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'pekerjaan', 'label' => 'Pekerjaan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:50'],
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Lengkap', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'penghasilan', 'label' => 'Penghasilan per Bulan (Rp)', 'type' => 'number', 'required' => true, 'rules' => 'numeric|min:0'],
-                    ['key' => 'alasan_sktm', 'label' => 'Keperluan / Alasan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'alasan_sktm', 'label' => 'Keperluan / Alasan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Pengobatan dan pelayanan kesehatan di fasilitas kesehatan,Keringanan biaya rumah sakit,Persyaratan mengurus beasiswa,Keringanan biaya pendidikan,Syarat penerima bantuan sosial,Persyaratan administrasi perbankan'],
                     ['key' => 'agama', 'label' => 'Agama', 'type' => 'select', 'required' => false, 'options' => 'Islam,Kristen,Katolik,Hindu,Buddha,Konghucu', 'rules' => 'string|max:20'],
                     ['key' => 'status_perkawinan', 'label' => 'Status Perkawinan', 'type' => 'select', 'required' => false, 'options' => 'Belum Kawin,Kawin,Cerai Hidup,Cerai Mati', 'rules' => 'string|max:20'],
                     ['key' => 'kewarganegaraan', 'label' => 'Kewarganegaraan', 'type' => 'select', 'required' => false, 'options' => 'WNI,WNA', 'rules' => 'in:WNI,WNA'],
@@ -48,7 +48,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'type' => 'select', 'required' => true, 'options' => 'Laki-laki,Perempuan', 'rules' => 'in:Laki-laki,Perempuan'],
                     ['key' => 'pekerjaan', 'label' => 'Pekerjaan', 'type' => 'text', 'required' => false, 'rules' => 'string|max:50'],
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Lengkap', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
-                    ['key' => 'alasan_ktp', 'label' => 'Alasan Pengajuan KTP Sementara', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'alasan_ktp', 'label' => 'Alasan Pengajuan KTP Sementara', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'KTP asli hilang dan sedang dalam proses penggantian,KTP rusak dan sedang dalam proses penggantian,Dalam proses pembuatan KTP elektronik,Pengurusan dokumen administrasi kependudukan'],
                     ['key' => 'agama', 'label' => 'Agama', 'type' => 'select', 'required' => false, 'options' => 'Islam,Kristen,Katolik,Hindu,Buddha,Konghucu', 'rules' => 'string|max:20'],
                     ['key' => 'status_perkawinan', 'label' => 'Status Perkawinan', 'type' => 'select', 'required' => false, 'options' => 'Belum Kawin,Kawin,Cerai Hidup,Cerai Mati', 'rules' => 'string|max:20'],
                 ],
@@ -92,7 +92,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'bidang_usaha', 'label' => 'Bidang / Jenis Usaha', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'lokasi_usaha', 'label' => 'Lokasi Usaha', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'tahun_mulai', 'label' => 'Tahun Mulai Usaha', 'type' => 'number', 'required' => true, 'rules' => 'integer|min:1900|max:'.date('Y')],
-                    ['key' => 'keperluan_sku', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_sku', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Syarat pengajuan pinjaman modal usaha,Persyaratan perbankan / kredit,Syarat pengajuan izin usaha,Persyaratan pengadaan / tender,Syarat administrasi pemerintahan'],
                 ],
             ],
             [
@@ -110,7 +110,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'alamat_domisili', 'label' => 'Alamat Domisili (Lengkap)', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'rt_domisili', 'label' => 'RT', 'type' => 'text', 'required' => true, 'rules' => 'string|max:3'],
                     ['key' => 'rw_domisili', 'label' => 'RW', 'type' => 'text', 'required' => true, 'rules' => 'string|max:3'],
-                    ['key' => 'keperluan_domisili', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_domisili', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Pengurusan dokumen kependudukan,Persyaratan administrasi perbankan,Persyaratan melamar pekerjaan,Persyaratan pendidikan,Kepentingan administrasi pemerintahan'],
                 ],
             ],
             [
@@ -128,7 +128,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'type' => 'select', 'required' => true, 'options' => 'Laki-laki,Perempuan', 'rules' => 'in:Laki-laki,Perempuan'],
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Lengkap', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'pekerjaan', 'label' => 'Pekerjaan', 'type' => 'text', 'required' => false, 'rules' => 'string|max:50'],
-                    ['key' => 'keperluan_skkb', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_skkb', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Persyaratan melamar pekerjaan,Persyaratan seleksi / rekrutmen,Persyaratan perpanjangan dokumen,Kepentingan administrasi pemerintahan'],
                 ],
             ],
             [
@@ -146,7 +146,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'jenis_kelamin', 'label' => 'Jenis Kelamin', 'type' => 'select', 'required' => true, 'options' => 'Laki-laki,Perempuan', 'rules' => 'in:Laki-laki,Perempuan'],
                     ['key' => 'pekerjaan', 'label' => 'Pekerjaan', 'type' => 'text', 'required' => false, 'rules' => 'string|max:50'],
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Lengkap', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
-                    ['key' => 'keperluan_belum_menikah', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_belum_menikah', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Persyaratan pembuatan dokumen kependudukan,Persyaratan administrasi perbankan,Kepentingan administrasi pemerintahan,Persyaratan melamar pekerjaan'],
                 ],
             ],
             [
@@ -185,7 +185,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'nik', 'label' => 'NIK Ahli Waris', 'type' => 'text', 'required' => true, 'rules' => 'string|size:16'],
                     ['key' => 'hubungan_ahli_waris', 'label' => 'Hubungan dengan Pewaris', 'type' => 'select', 'required' => true, 'options' => 'Suami,Istri,Anak Kandung,Anak Angkat,Orang Tua,Saudara Kandung,Lainnya', 'rules' => 'string|max:50'],
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Ahli Waris', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
-                    ['key' => 'keperluan_ahli_waris', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_ahli_waris', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Pengurusan warisan / harta peninggalan,Klaim dana di perbankan / BPJS,Pengurusan administrasi kependudukan,Kepentingan hukum'],
                 ],
             ],
             [
@@ -205,7 +205,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'batas_selatan', 'label' => 'Batas Selatan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:200'],
                     ['key' => 'batas_timur', 'label' => 'Batas Timur', 'type' => 'text', 'required' => true, 'rules' => 'string|max:200'],
                     ['key' => 'batas_barat', 'label' => 'Batas Barat', 'type' => 'text', 'required' => true, 'rules' => 'string|max:200'],
-                    ['key' => 'keperluan_tanah', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_tanah', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Pengurusan sertifikat tanah,Persyaratan balik nama,Pengurusan administrasi pertanahan,Kepentingan hukum'],
                 ],
             ],
             [
@@ -243,7 +243,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'jumlah_penghasilan', 'label' => 'Jumlah Penghasilan (Rp)', 'type' => 'number', 'required' => true, 'rules' => 'numeric|min:0'],
                     ['key' => 'periode_penghasilan', 'label' => 'Periode Penghasilan', 'type' => 'select', 'required' => true, 'options' => 'hari,minggu,bulan,tahun', 'rules' => 'in:hari,minggu,bulan,tahun'],
                     ['key' => 'sumber_penghasilan', 'label' => 'Sumber Penghasilan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:200'],
-                    ['key' => 'keperluan_penghasilan', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_penghasilan', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Syarat pengajuan kredit / pinjaman,Persyaratan penerima bantuan sosial,Persyaratan beasiswa,Syarat administrasi pemerintahan'],
                 ],
             ],
             [
@@ -262,7 +262,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'alamat_lengkap', 'label' => 'Alamat Lengkap', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
                     ['key' => 'penyebab_janda', 'label' => 'Penyebab (Meninggal / Cerai)', 'type' => 'select', 'required' => true, 'options' => 'Meninggal Dunia,Cerai', 'rules' => 'string|max:50'],
                     ['key' => 'tgl_janda', 'label' => 'Tanggal Kejadian', 'type' => 'date', 'required' => true, 'rules' => 'date'],
-                    ['key' => 'keperluan_janda', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'keperluan_janda', 'label' => 'Keperluan', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Persyaratan penerima bantuan sosial,Pengurusan dokumen kependudukan,Persyaratan administrasi perbankan,Kepentingan administrasi pemerintahan'],
                 ],
             ],
             [
@@ -283,7 +283,7 @@ class LetterConfigSeeder extends Seeder
                     ['key' => 'kecamatan_tujuan', 'label' => 'Kecamatan Tujuan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'kabupaten_tujuan', 'label' => 'Kabupaten / Kota Tujuan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
                     ['key' => 'provinsi_tujuan', 'label' => 'Provinsi Tujuan', 'type' => 'text', 'required' => true, 'rules' => 'string|max:100'],
-                    ['key' => 'alasan_pindah', 'label' => 'Alasan Pindah', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500'],
+                    ['key' => 'alasan_pindah', 'label' => 'Alasan Pindah', 'type' => 'textarea', 'required' => true, 'rules' => 'string|max:500', 'options' => 'Mengikuti suami / istri,Mengikuti orang tua / keluarga,Penempatan pekerjaan / tugas baru,Pendidikan,Kesehatan,Pindah ke tempat tinggal baru'],
                 ],
             ],
         ];

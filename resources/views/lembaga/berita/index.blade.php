@@ -49,7 +49,7 @@
                                     @if ($item->kategori)
                                         <span class="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-semibold bg-brand-50 text-brand-700">{{ $item->kategori }}</span>
                                     @endif
-                                    <p class="text-xs text-slate-400 mt-1">{{ $item->created_at->translatedFormat('d M Y H:i') }}</p>
+                                    <p class="text-xs text-slate-400 mt-1">{{ $item->created_at->locale('id')->translatedFormat('d F Y H:i') }}</p>
                                 </div>
                             </div>
                         </td>

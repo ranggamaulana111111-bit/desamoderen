@@ -9,10 +9,10 @@
         jenisSurat: '{{ old('jenis_surat', $surat->jenis_surat) }}',
         sifatSurat: '{{ old('sifat_surat', $surat->sifat_surat) }}',
         status: '{{ old('status', $surat->status) }}',
-        keterangan: '{{ addslashes(old('keterangan', $surat->keterangan)) }}',
+        keterangan: @js(old('keterangan', $surat->keterangan)),
         filePreview: null,
         fileName: '{{ $surat->file_path ? basename($surat->file_path) : '' }}',
-        existingFile: '{{ $surat->file_path ? asset('storage/' . $surat->file_path) : '' }}',
+        existingFile: '{{ $surat->file_path ? route('admin.surat-masuk.download', $surat) : '' }}',
         get sifatBadge() {
             return {
                 'Biasa': 'bg-gray-100 text-gray-700',
@@ -261,7 +261,7 @@
                                         <p class="text-sm font-semibold text-emerald-800 truncate">{{ $surat->file_path ? basename($surat->file_path) : '-' }}</p>
                                         <p class="text-xs text-emerald-600">File saat ini &middot; Upload baru untuk mengganti</p>
                                     </div>
-                                    <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank"
+                                    <a href="{{ route('admin.surat-masuk.download', $surat) }}" target="_blank" rel="noopener"
                                         class="text-emerald-600 hover:text-emerald-800 transition">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                                     </a>

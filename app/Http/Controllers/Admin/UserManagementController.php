@@ -148,11 +148,17 @@ class UserManagementController extends Controller
 
     public function updateRole(UpdateUserRoleRequest $request, User $user)
     {
+        $user->loadMissing('roles');
         $oldRole = $user->roles()->first()?->name;
-
-        $user->syncRoles([$request->role]);
-
         $newRole = $request->role;
+
+        if ($oldRole === 'Super Admin' && $newRole !== 'Super Admin') {
+            if (User::role('Super Admin')->where('id', '!=', $user->id)->doesntExist()) {
+                return back()->with('error', 'Tidak dapat menurunkan Super Admin terakhir.');
+            }
+        }
+
+        $user->syncRoles([$newRole]);
 
         ActivityLog::catat(
             'update_user_role',

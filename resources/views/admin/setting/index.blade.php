@@ -1,6 +1,5 @@
 <x-admin-layout title="Pengaturan Desa" maxWidth="max-w-[1440px]">
     @push('styles')
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <style>
         .nav-item { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); position: relative; }
         .nav-item:hover { background: rgba(16,185,129,0.08); }
@@ -126,6 +125,7 @@
     </div>
 
     @push('scripts')
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script>
         function updateWidgetAktif(el) {
             const checks = document.querySelectorAll('input[type="checkbox"][value]');
@@ -179,6 +179,24 @@
                     this.toastMessage = message;
                     this.showToast = true;
                     setTimeout(() => { this.showToast = false; }, 4000);
+                },
+
+                async asyncNotifyTest() {
+                    try {
+                        const res = await fetch('{{ route('admin.setting.notifyTest') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: '{}',
+                        });
+                        const data = await res.json();
+                        this.showToastMessage(data.success ? 'success' : 'error', data.message || (data.success ? 'Pesan uji terkirim.' : 'Gagal mengirim pesan uji.'));
+                    } catch (e) {
+                        this.showToastMessage('error', 'Terjadi kesalahan jaringan saat mengirim pesan uji.');
+                    }
                 },
 
                 updatePreviewNumber() {

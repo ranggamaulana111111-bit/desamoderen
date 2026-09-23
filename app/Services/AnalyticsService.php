@@ -32,30 +32,45 @@ class AnalyticsService
         return compact('total', 'completed', 'rejected', 'active', 'revisionCount', 'approvalRate', 'rejectionRate');
     }
 
-    public function getMonthlyTrends(int $months = 12): array
+    public function getMonthlyTrends(?Carbon $start = null, ?Carbon $end = null): array
     {
-        $raw = PengajuanSurat::selectRaw($this->monthExpr().' as bulan')
+        $query = PengajuanSurat::query();
+        if ($start) {
+            $query->whereDate('created_at', '>=', $start);
+        }
+        if ($end) {
+            $query->whereDate('created_at', '<=', $end);
+        }
+
+        $raw = (clone $query)
+            ->selectRaw($this->monthExpr().' as bulan')
             ->selectRaw('COUNT(*) as total')
             ->selectRaw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as selesai")
             ->selectRaw("SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as ditolak")
-            ->where('created_at', '>=', now()->subMonths($months)->startOfMonth())
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->get()
             ->keyBy('bulan');
 
+        $cursor = $start?->copy() ?? PengajuanSurat::min('created_at');
+        $cursor ??= now();
+        $cursor = $cursor->startOfMonth();
+
+        $endCursor = $end?->copy() ?? now();
+        $endCursor = $endCursor->endOfMonth();
+
         $monthsCollection = collect();
-        for ($i = $months - 1; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
-            $key = $date->format('Y-m');
+        while ($cursor->lte($endCursor)) {
+            $key = $cursor->format('Y-m');
             $row = $raw->get($key);
             $monthsCollection->push([
                 'bulan' => $key,
-                'label' => $date->locale('id')->isoFormat('MMM YYYY'),
+                'label' => $cursor->locale('id')->isoFormat('MMM YYYY'),
                 'total' => (int) ($row->total ?? 0),
                 'selesai' => (int) ($row->selesai ?? 0),
                 'ditolak' => (int) ($row->ditolak ?? 0),
             ]);
+            $cursor->addMonth();
         }
 
         return $monthsCollection->toArray();
@@ -88,11 +103,20 @@ class AnalyticsService
         })->toArray();
     }
 
-    public function getAvgProcessingTimePerType(): array
+    public function getAvgProcessingTimePerType(?Carbon $start = null, ?Carbon $end = null): array
     {
-        $results = PengajuanSurat::where('status', 'completed')
+        $query = PengajuanSurat::where('status', 'completed');
+
+        if ($start) {
+            $query->whereDate('created_at', '>=', $start);
+        }
+        if ($end) {
+            $query->whereDate('created_at', '<=', $end);
+        }
+
+        $results = (clone $query)
             ->selectRaw('jenis_surat')
-            ->selectRaw('AVG('.$this->diffSecondsExpr().') as avg_seconds')
+            ->selectRaw('AVG('.$this->completionSecondsExpr().') as avg_seconds')
             ->selectRaw('COUNT(*) as sample_count')
             ->groupBy('jenis_surat')
             ->get();
@@ -113,46 +137,70 @@ class AnalyticsService
         return $formatted;
     }
 
-    public function getUserGrowth(int $months = 12): array
+    public function getUserGrowth(?Carbon $start = null, ?Carbon $end = null): array
     {
-        $raw = User::selectRaw($this->monthExpr().' as bulan')
+        $query = User::query();
+        if ($start) {
+            $query->whereDate('created_at', '>=', $start);
+        }
+        if ($end) {
+            $query->whereDate('created_at', '<=', $end);
+        }
+
+        $raw = (clone $query)
+            ->selectRaw($this->monthExpr().' as bulan')
             ->selectRaw('COUNT(*) as total_baru')
-            ->where('created_at', '>=', now()->subMonths($months)->startOfMonth())
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->get()
             ->keyBy('bulan');
 
-        $cumulative = User::where('created_at', '<', now()->subMonths($months)->startOfMonth())->count();
+        $cursor = $start?->copy() ?? User::min('created_at');
+        $cursor ??= now();
+        $cursor = $cursor->startOfMonth();
+
+        $endCursor = $end?->copy() ?? now();
+        $endCursor = $endCursor->endOfMonth();
+
+        $cumulative = User::where('created_at', '<', $cursor)->count();
 
         $monthsCollection = collect();
-        for ($i = $months - 1; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
-            $key = $date->format('Y-m');
+        while ($cursor->lte($endCursor)) {
+            $key = $cursor->format('Y-m');
             $baru = (int) ($raw->get($key)->total_baru ?? 0);
             $cumulative += $baru;
 
             $monthsCollection->push([
                 'bulan' => $key,
-                'label' => $date->locale('id')->isoFormat('MMM YYYY'),
+                'label' => $cursor->locale('id')->isoFormat('MMM YYYY'),
                 'baru' => $baru,
                 'total_akumulasi' => $cumulative,
             ]);
+            $cursor->addMonth();
         }
 
         return $monthsCollection->toArray();
     }
 
-    public function getOperatorPerformance(): array
+    public function getOperatorPerformance(?Carbon $start = null, ?Carbon $end = null): array
     {
-        $histories = ApprovalHistory::selectRaw('approval_histories.user_id')
+        $query = ApprovalHistory::selectRaw('approval_histories.user_id')
             ->selectRaw('approval_histories.status')
             ->selectRaw('COUNT(*) as total')
             ->join('users', 'approval_histories.user_id', '=', 'users.id')
             ->whereIn('approval_histories.status', [
                 'verified', 'approved_operator', 'approved_sekdes',
                 'approved_kades', 'completed', 'rejected', 'revision',
-            ])
+            ]);
+
+        if ($start) {
+            $query->whereDate('approval_histories.created_at', '>=', $start);
+        }
+        if ($end) {
+            $query->whereDate('approval_histories.created_at', '<=', $end);
+        }
+
+        $histories = (clone $query)
             ->groupBy('approval_histories.user_id', 'approval_histories.status')
             ->with('user:id,name')
             ->get()
@@ -179,9 +227,18 @@ class AnalyticsService
         })->sortByDesc('total')->values()->toArray();
     }
 
-    public function getStatusDistribution(): array
+    public function getStatusDistribution(?Carbon $start = null, ?Carbon $end = null): array
     {
-        $raw = PengajuanSurat::selectRaw('status')
+        $query = PengajuanSurat::query();
+        if ($start) {
+            $query->whereDate('created_at', '>=', $start);
+        }
+        if ($end) {
+            $query->whereDate('created_at', '<=', $end);
+        }
+
+        $raw = (clone $query)
+            ->selectRaw('status')
             ->selectRaw('COUNT(*) as total')
             ->groupBy('status')
             ->get()
@@ -229,12 +286,16 @@ class AnalyticsService
 
         return $query->get()->map(function ($surat) {
             $latestHistory = $surat->approvalHistories->last();
-            $duration = $surat->created_at->diffInSeconds($surat->updated_at);
+            $completedAt = $surat->approvalHistories
+                ->firstWhere('status', 'completed')?->created_at;
+            $end = $completedAt ?? ($surat->tgl_selesai
+                ? Carbon::parse($surat->tgl_selesai)->endOfDay()
+                : $surat->updated_at);
+            $duration = max(0, $surat->created_at->diffInSeconds($end));
 
             return [
                 'ID' => $surat->id,
                 'Pemohon' => $surat->user->name ?? '-',
-                'NIK' => $surat->user->nik ?? '-',
                 'Jenis Surat' => str_replace('_', ' ', ucfirst($surat->jenis_surat)),
                 'Status' => $surat->status_label,
                 'Tanggal Diajukan' => $surat->created_at->format('Y-m-d H:i'),
@@ -254,11 +315,11 @@ class AnalyticsService
         $build = fn () => [
             'overview' => $this->getOverviewStats($start, $end),
             'popularTypes' => $this->getPopularLetterTypes($start, $end),
-            'statusDistribution' => $this->getStatusDistribution(),
-            'monthlyTrends' => $this->getMonthlyTrends(),
-            'avgProcessingTime' => $this->getAvgProcessingTimePerType(),
-            'userGrowth' => $this->getUserGrowth(),
-            'operatorPerformance' => $this->getOperatorPerformance(),
+            'statusDistribution' => $this->getStatusDistribution($start, $end),
+            'monthlyTrends' => $this->getMonthlyTrends($start, $end),
+            'avgProcessingTime' => $this->getAvgProcessingTimePerType($start, $end),
+            'userGrowth' => $this->getUserGrowth($start, $end),
+            'operatorPerformance' => $this->getOperatorPerformance($start, $end),
         ];
 
         if ($ttl <= 0) {
@@ -284,5 +345,15 @@ class AnalyticsService
         return DB::connection()->getDriverName() === 'sqlite'
             ? "((julianday({$b}) - julianday({$a})) * 86400)"
             : "TIMESTAMPDIFF(SECOND, {$a}, {$b})";
+    }
+
+    private function completionSecondsExpr(): string
+    {
+        $subSelect = '(SELECT ah.created_at FROM approval_histories ah WHERE ah.pengajuan_id = pengajuan_surats.id AND ah.status = \'completed\' ORDER BY ah.created_at DESC LIMIT 1)';
+        $fallback = $this->diffSecondsExpr();
+
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "COALESCE(((julianday($subSelect) - julianday(pengajuan_surats.created_at)) * 86400), $fallback)"
+            : "COALESCE(TIMESTAMPDIFF(SECOND, pengajuan_surats.created_at, $subSelect), $fallback)";
     }
 }

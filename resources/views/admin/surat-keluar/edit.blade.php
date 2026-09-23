@@ -2,12 +2,12 @@
 
     <div x-data="{
         tanggalKirim: '{{ old('tanggal_kirim', $surat->tanggal_kirim) }}',
-        tujuan: '{{ old('tujuan', addslashes($surat->tujuan)) }}',
-        perihal: '{{ old('perihal', addslashes($surat->perihal)) }}',
+        tujuan: @js(old('tujuan', $surat->tujuan)),
+        perihal: @js(old('perihal', $surat->perihal)),
         jenisSurat: '{{ old('jenis_surat', $surat->jenis_surat) }}',
         sifatSurat: '{{ old('sifat_surat', $surat->sifat_surat) }}',
         status: '{{ old('status', $surat->status) }}',
-        filePreview: {{ $surat->file_path ? (in_array(pathinfo($surat->file_path, PATHINFO_EXTENSION), ['jpg','jpeg','png']) ? "'" . asset('storage/' . $surat->file_path) . "'" : "'pdf'") : 'null' }},
+        filePreview: {{ $surat->file_path ? (in_array(pathinfo($surat->file_path, PATHINFO_EXTENSION), ['jpg','jpeg','png']) ? "'" . route('admin.surat-keluar.download', $surat) . "'" : "'pdf'") : 'null' }},
         existingFile: '{{ $surat->file_path }}',
         fileName: '',
         get sifatColor() {

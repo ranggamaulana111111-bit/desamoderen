@@ -373,7 +373,7 @@
                         </div>
                         <div class="p-5 md:px-6 text-sm space-y-2">
                             <div class="flex justify-between"><span class="text-gray-500">Nomor</span><span class="font-medium text-gray-900">{{ $pengajuan->antrean->nomor_antrean }}</span></div>
-                            <div class="flex justify-between"><span class="text-gray-500">Tanggal</span><span class="font-medium text-gray-900">{{ $pengajuan->antrean->tanggal_ambil->format('d/m/Y') }}</span></div>
+                            <div class="flex justify-between"><span class="text-gray-500">Tanggal</span><span class="font-medium text-gray-900">{{ $pengajuan->antrean->tanggal_ambil->locale('id')->translatedFormat('d F Y') }}</span></div>
                             <div class="flex justify-between"><span class="text-gray-500">Jam</span><span class="font-medium text-gray-900">{{ substr($pengajuan->antrean->jam_mulai, 0, 5) }} - {{ substr($pengajuan->antrean->jam_selesai, 0, 5) }}</span></div>
                         </div>
                     </div>

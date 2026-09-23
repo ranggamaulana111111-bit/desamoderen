@@ -55,6 +55,12 @@
         .field-group.has-error input,.field-group.has-error select,.field-group.has-error textarea{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
         .field-group.has-error .error-text{display:block}
 
+        .suggestion-hint{font-size:11px;color:#64748b;margin-bottom:7px;font-weight:600}
+        .suggestion-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+        .suggestion-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:#475569;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:999px;padding:6px 13px;cursor:pointer;transition:all .25s ease;line-height:1.3}
+        .suggestion-chip:hover{border-color:var(--brand-400);color:var(--brand-700);background:var(--brand-50)}
+        .suggestion-chip.active{border-color:var(--brand-500);background:var(--brand-500);color:white;box-shadow:0 4px 12px rgba(16,185,129,.25)}
+
         .upload-zone{border:2px dashed #d1d5db;border-radius:20px;padding:32px 24px;text-align:center;transition:all .3s var(--ease-out-expo);cursor:pointer;background:rgba(0,0,0,.01)}
         .upload-zone:hover{border-color:var(--brand-400);background:rgba(16,185,129,.03)}
         .upload-zone.dragover{border-color:var(--brand-500);background:rgba(16,185,129,.06);box-shadow:0 0 0 4px rgba(16,185,129,.1)}
@@ -173,6 +179,8 @@
                                 {{ $field['label'] }}
                                 @if($isRequired)<span class="required">*</span>@endif
                             </label>
+
+                            @include('warga.surat._suggestion_chips', ['field' => $field, 'currentValue' => old($field['key'], $dt[$field['key']] ?? '')])
 
                             @if ($field['type'] === 'select')
                                 <select name="{{ $field['key'] }}" id="{{ $field['key'] }}" @if($isRequired) required @endif>
@@ -374,6 +382,7 @@
             init(){
                 window.addEventListener('scroll',()=>{const b=document.getElementById('scrollProgress');if(b){const h=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(window.scrollY/h*100)+'%'}});
                 this.initReveal();
+                initSuggestionChips(document);
             },
             handleSelect(e){const selected=[...e.target.files];e.target.value='';this.addFiles(selected)},
             handleDrop(e){this.dragover=false;this.addFiles([...e.dataTransfer.files])},
@@ -401,6 +410,28 @@
             formatSize(bytes){if(bytes===0)return'0 B';const k=1024,s=['B','KB','MB','GB'];const i=Math.floor(Math.log(bytes)/Math.log(k));return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+s[i]},
             initReveal(){const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');o.unobserve(x.target)}})},{threshold:.08,rootMargin:'0px 0px -30px 0px'});document.querySelectorAll('.a-fade-up,.a-fade-in,.a-slide-l,.a-slide-r,.a-scale').forEach(e=>o.observe(e))}
         }}
+        function initSuggestionChips(scope){
+            (scope||document).querySelectorAll('.suggestion-box').forEach(function(box){
+                const key=box.dataset.field;
+                const input=document.querySelector('[name="'+key+'"]');
+                if(!input)return;
+                const chips=box.querySelectorAll('.suggestion-chip');
+                function sync(){
+                    chips.forEach(function(c){c.classList.toggle('active', c.dataset.value===String(input.value).trim());});
+                }
+                chips.forEach(function(c){
+                    c.addEventListener('click',function(e){
+                        e.preventDefault();
+                        input.value=c.dataset.value;
+                        sync();
+                        input.dispatchEvent(new Event('input',{bubbles:true}));
+                        input.focus();
+                    });
+                });
+                input.addEventListener('input',sync);
+                sync();
+            });
+        }
     </script>
 </body>
 </html>

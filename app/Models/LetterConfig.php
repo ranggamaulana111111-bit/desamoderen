@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 class LetterConfig extends Model
@@ -36,6 +37,11 @@ class LetterConfig extends Model
             'masa_berlaku_bulan' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function pengajuan(): HasMany
+    {
+        return $this->hasMany(PengajuanSurat::class, 'jenis_surat', 'jenis_surat');
     }
 
     public function scopeActive($query)

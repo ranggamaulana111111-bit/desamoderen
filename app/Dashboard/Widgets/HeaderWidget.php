@@ -6,6 +6,8 @@ use App\Dashboard\Contracts\WidgetInterface;
 use App\Models\Event;
 use App\Models\PengajuanSurat;
 use App\Models\User;
+use App\Services\ApprovalService;
+use App\Services\WeatherService;
 use Illuminate\Support\Facades\DB;
 
 class HeaderWidget implements WidgetInterface
@@ -63,6 +65,7 @@ class HeaderWidget implements WidgetInterface
 
         return [
             'user' => $this->user,
+            'weather' => app(WeatherService::class)->getWeather(),
             'notifications' => $this->getNotifications(),
             'dailySummary' => $this->buildDailySummary($todayStats),
             'todayStats' => $todayStats,
@@ -77,14 +80,7 @@ class HeaderWidget implements WidgetInterface
         $todayVerified = PengajuanSurat::where('status', 'verified')
             ->whereDate('updated_at', today())->count();
 
-        $pendingApprovals = 0;
-        if ($this->user->can('letter.review')) {
-            $pendingApprovals = PengajuanSurat::where('status', 'submitted')->count();
-        } elseif ($this->user->can('letter.verify')) {
-            $pendingApprovals = PengajuanSurat::where('status', 'approved_operator')->count();
-        } elseif ($this->user->can('letter.final_approve')) {
-            $pendingApprovals = PengajuanSurat::where('status', 'approved_sekdes')->count();
-        }
+        $pendingApprovals = $this->pendingApprovalCount();
 
         return compact(
             'todaySubmissions',
@@ -94,18 +90,37 @@ class HeaderWidget implements WidgetInterface
         );
     }
 
+    private function pendingApprovalCount(): int
+    {
+        $service = app(ApprovalService::class);
+        $permissions = ['letter.review', 'letter.verify', 'letter.final_approve'];
+        $total = 0;
+
+        foreach ($permissions as $permission) {
+            if (! $this->user->hasPermissionTo($permission)) {
+                continue;
+            }
+
+            foreach ($service->getPendingStatusesForPermission($permission) as $status) {
+                $total += PengajuanSurat::where('status', $status)->count();
+            }
+        }
+
+        return $total;
+    }
+
     private function buildDailySummary(array $stats): string
     {
         $parts = [];
 
         if ($stats['pendingApprovals'] > 0) {
-            if ($this->user->can('letter.review')) {
-                $parts[] = "{$stats['pendingApprovals']} surat menunggu verifikasi";
-            } elseif ($this->user->can('letter.verify')) {
-                $parts[] = "{$stats['pendingApprovals']} surat menunggu verifikasi Sekretaris Desa";
-            } elseif ($this->user->can('letter.final_approve')) {
-                $parts[] = "{$stats['pendingApprovals']} surat menunggu tanda tangan Kepala Desa";
-            }
+            $label = match (true) {
+                $this->user->hasPermissionTo('letter.review') => 'surat menunggu verifikasi',
+                $this->user->hasPermissionTo('letter.verify') => 'surat menunggu verifikasi Sekretaris Desa',
+                $this->user->hasPermissionTo('letter.final_approve') => 'surat menunggu tanda tangan Kepala Desa',
+                default => 'surat menunggu verifikasi',
+            };
+            $parts[] = "{$stats['pendingApprovals']} {$label}";
         }
 
         if ($stats['todayCompleted'] > 0) {
@@ -113,7 +128,7 @@ class HeaderWidget implements WidgetInterface
         }
 
         $todayEvents = Event::whereDate('tanggal', today())->count();
-        if ($todayEvents > 0 && $this->user->can('event.manage')) {
+        if ($todayEvents > 0 && $this->user->hasPermissionTo('event.manage')) {
             $parts[] = "{$todayEvents} event desa berlangsung";
         }
 
@@ -144,18 +159,42 @@ class HeaderWidget implements WidgetInterface
     private function getNotifications(): array
     {
         $items = collect();
+        $service = app(ApprovalService::class);
 
-        $pendingCount = PengajuanSurat::where('status', 'submitted')->count();
-        if ($pendingCount > 0 && $this->user->can('letter.review')) {
-            $items->push([
-                'type' => 'approval',
-                'message' => "{$pendingCount} pengajuan menunggu verifikasi",
-                'url' => route('admin.pengajuan.index', ['status' => 'submitted']),
-            ]);
+        $permissionLabels = [
+            'letter.review' => 'verifikasi',
+            'letter.verify' => 'verifikasi Sekretaris Desa',
+            'letter.final_approve' => 'tanda tangan Kepala Desa',
+        ];
+
+        foreach ($permissionLabels as $permission => $label) {
+            if (! $this->user->hasPermissionTo($permission)) {
+                continue;
+            }
+
+            $statuses = $service->getPendingStatusesForPermission($permission);
+            $total = 0;
+            $linkStatus = $statuses[0] ?? null;
+
+            foreach ($statuses as $status) {
+                $count = PengajuanSurat::where('status', $status)->count();
+                $total += $count;
+                if ($linkStatus === null && $count > 0) {
+                    $linkStatus = $status;
+                }
+            }
+
+            if ($total > 0) {
+                $items->push([
+                    'type' => 'approval',
+                    'message' => "{$total} pengajuan menunggu {$label}",
+                    'url' => route('admin.pengajuan.index', ['status' => $linkStatus]),
+                ]);
+            }
         }
 
         $revisionCount = PengajuanSurat::where('status', 'revision')->count();
-        if ($revisionCount > 0 && $this->user->can('letter.view')) {
+        if ($revisionCount > 0 && $this->user->hasPermissionTo('letter.view')) {
             $items->push([
                 'type' => 'revision',
                 'message' => "{$revisionCount} pengajuan perlu direvisi",
@@ -164,7 +203,7 @@ class HeaderWidget implements WidgetInterface
         }
 
         $failedJobs = DB::table('failed_jobs')->count();
-        if ($failedJobs > 0 && $this->user->can('queue.manage')) {
+        if ($failedJobs > 0 && $this->user->hasPermissionTo('queue.manage')) {
             $items->push([
                 'type' => 'queue',
                 'message' => "{$failedJobs} antrean gagal",
@@ -173,7 +212,7 @@ class HeaderWidget implements WidgetInterface
         }
 
         $todayEvents = Event::whereDate('tanggal', today())->count();
-        if ($todayEvents > 0 && $this->user->can('event.manage')) {
+        if ($todayEvents > 0 && $this->user->hasPermissionTo('event.manage')) {
             $items->push([
                 'type' => 'event',
                 'message' => "{$todayEvents} event hari ini",

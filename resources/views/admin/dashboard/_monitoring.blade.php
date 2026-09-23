@@ -151,7 +151,7 @@
             <div class="flex items-start gap-2.5 mb-2 last:mb-0">
                 <div class="shrink-0 w-9 text-center bg-gray-50 rounded-lg py-1">
                     <div class="text-xs font-bold text-emerald-600">{{ \Carbon\Carbon::parse($event['tanggal_full'])->format('d') }}</div>
-                    <div class="text-[9px] text-gray-400">{{ \Carbon\Carbon::parse($event['tanggal_full'])->format('M') }}</div>
+                    <div class="text-[9px] text-gray-400">{{ \Carbon\Carbon::parse($event['tanggal_full'])->locale('id')->translatedFormat('F') }}</div>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-800 truncate">{{ $event['judul'] }}</p>

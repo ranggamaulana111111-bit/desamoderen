@@ -49,13 +49,26 @@ class ActivityLogController extends Controller
 
     public function destroyAll(Request $request)
     {
+        if (! $request->user()->hasRole('Super Admin')) {
+            abort(403, 'Hanya Super Admin yang dapat menghapus seluruh log aktivitas.');
+        }
+
+        $tipe = $request->input('tipe');
+
         $query = ActivityLog::query();
 
-        if ($tipe = $request->input('tipe')) {
+        if ($tipe) {
             $query->where('tipe', $tipe);
         }
 
         $count = $query->count();
+
+        ActivityLog::catat(
+            'wipe_logs',
+            "Menghapus {$count} log aktivitas".($tipe ? " (tipe: {$tipe})" : '').'.',
+            'sistem',
+            null
+        );
 
         if ($count > 0) {
             $query->delete();

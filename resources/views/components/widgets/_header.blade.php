@@ -25,7 +25,7 @@
     <div class="flex items-center gap-2 lg:gap-2.5 flex-wrap">
         <div class="hidden md:flex items-center gap-1.5 text-xs text-slate-500 bg-white/80 backdrop-blur rounded-xl px-3 py-2 border border-slate-200/60 shadow-sm">
             <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            <span>{{ config('app.env') === 'production' ? '32°C Cerah' : '--°C' }}</span>
+            <span>{{ ($weather['label'] ?? null) ?? '--°C' }}</span>
         </div>
         <div class="hidden md:flex items-center gap-2 bg-white/80 backdrop-blur rounded-xl px-3 py-2 border border-slate-200/60 shadow-sm text-slate-400 focus-within:border-brand-200 focus-within:ring-2 focus-within:ring-brand-500/10 transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>

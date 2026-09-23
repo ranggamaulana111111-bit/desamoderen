@@ -138,7 +138,7 @@
                         @endphp
                         @if ($isImage)
                             <div class="rounded-xl overflow-hidden border border-gray-200">
-                                <img src="{{ asset('storage/' . $surat->file_path) }}" alt="Lampiran surat"
+                                <img src="{{ route('admin.surat-masuk.download', $surat) }}" alt="Lampiran surat"
                                     class="w-full max-h-96 object-contain bg-gray-50">
                             </div>
                         @else
@@ -150,7 +150,7 @@
                                     <p class="text-sm font-semibold text-gray-900 truncate">{{ basename($surat->file_path) }}</p>
                                     <p class="text-xs text-gray-500">File {{ strtoupper($ext) }}</p>
                                 </div>
-                                <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank"
+                                <a href="{{ route('admin.surat-masuk.download', $surat) }}" target="_blank" rel="noopener"
                                     class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-semibold hover:bg-emerald-100 transition">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                                     Buka
@@ -180,7 +180,7 @@
                         Edit Surat
                     </a>
                     @if ($surat->file_path)
-                        <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank"
+                        <a href="{{ route('admin.surat-masuk.download', $surat) }}" target="_blank" rel="noopener"
                             class="flex items-center justify-center gap-2 w-full border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
                             Download Lampiran

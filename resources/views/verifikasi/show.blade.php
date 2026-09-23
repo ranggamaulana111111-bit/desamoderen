@@ -306,57 +306,44 @@
             {{-- ═══ SECTION 4: VALIDASI DIGITAL ═══ --}}
             <div class="section-card opacity-0 animate-slide-up a4">
                 <div class="px-5 sm:px-6 pt-5 pb-4">
+                    @php
+                        $passed = count(array_filter($checks ?? []));
+                        $total = count($checks ?? []);
+                        $allValid = ($status ?? 'expired') === 'valid' && $passed === $total;
+                    @endphp
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-1.5 h-5 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600"></div>
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Validasi Digital</h2>
-                        <span class="ml-auto text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">5 / 5 Lulus</span>
+                        <span class="ml-auto text-[10px] font-bold {{ $allValid ? 'text-emerald-700 bg-emerald-50 border-emerald-100' : 'text-amber-700 bg-amber-50 border-amber-100' }} px-2 py-0.5 rounded-full border">{{ $passed }} / {{ $total }} Lulus</span>
                     </div>
                     <div>
-                        <div class="check-item">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-semibold text-gray-800">Dokumen ditemukan</p>
-                                <p class="text-[11px] text-gray-400">Dokumen terdaftar dalam sistem Prodesa</p>
-                            </div>
-                        </div>
-                        <div class="check-item">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-semibold text-gray-800">QR Code valid</p>
-                                <p class="text-[11px] text-gray-400">Tautan verifikasi cocok dengan hash dokumen</p>
-                            </div>
-                        </div>
-                        <div class="check-item">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-semibold text-gray-800">Digital Signature valid</p>
-                                <p class="text-[11px] text-gray-400">Tanda tangan digital terverifikasi</p>
-                            </div>
-                        </div>
-                        <div class="check-item">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-semibold text-gray-800">Tidak mengalami perubahan data</p>
-                                <p class="text-[11px] text-gray-400">Integritas data terjamin sejak diterbitkan</p>
-                            </div>
-                        </div>
-                        <div class="check-item">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-semibold text-gray-800">Data berasal dari Server Prodesa</p>
-                                <p class="text-[11px] text-gray-400">Sumber data diverifikasi langsung dari server</p>
-                            </div>
-                        </div>
+                        @if(isset($checks) && is_array($checks))
+                            @foreach ($checks as $key => $ok)
+                                @php
+                                    $labels = [
+                                        'dokumen_ditemukan' => ['Dokumen ditemukan', 'Dokumen terdaftar dalam sistem Prodesa'],
+                                        'qr_valid' => ['QR Code valid', 'Tautan verifikasi cocok dengan hash dokumen'],
+                                        'signature_valid' => ['Digital Signature valid', 'Tanda tangan digital terverifikasi'],
+                                        'tidak_diubah' => ['Tidak mengalami perubahan data', 'Integritas data terjamin sejak diterbitkan'],
+                                        'sumber_server' => ['Data berasal dari Server Prodesa', 'Sumber data diverifikasi langsung dari server'],
+                                    ];
+                                    [$checkLabel, $checkDesc] = $labels[$key] ?? [ucfirst(str_replace('_', ' ', $key)), ''];
+                                @endphp
+                                <div class="check-item">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 {{ $ok ? 'bg-emerald-50' : 'bg-red-50' }}">
+                                        @if ($ok)
+                                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                                        @else
+                                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                        @endif
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-semibold text-gray-800">{{ $checkLabel }}</p>
+                                        <p class="text-[11px] text-gray-400">{{ $checkDesc }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

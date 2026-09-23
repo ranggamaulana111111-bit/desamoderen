@@ -246,10 +246,6 @@
             </div>
         </div>
     </nav>
-    <script>
-        // Setel status navbar secepatnya (sebelum paint) agar background konsisten saat reload di posisi scroll.
-        (function(){var n=document.getElementById('navbar');if(n){n.classList.toggle('nav-scrolled',(window.scrollY||window.pageYOffset||0)>40);}})();
-    </script>
     {{-- HERO --}}
     <section class="hero-gradient relative min-h-[92vh] flex items-center overflow-hidden">
         <div class="hero-mesh absolute inset-0"></div>
@@ -484,7 +480,7 @@
                     if ($secs < 3600) return (int) round($secs / 60).' menit lalu';
                     if ($secs < 86400) return (int) round($secs / 3600).' jam lalu';
                     if ($secs < 604800) return (int) round($secs / 86400).' hari lalu';
-                    return $date->format('d M Y');
+                    return $date->locale('id')->translatedFormat('d F Y');
                 };
             @endphp
 

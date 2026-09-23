@@ -1,14 +1,14 @@
 <x-admin-layout title="Edit Inventaris" maxWidth="max-w-[1200px]">
 
     <div x-data="{
-        namaBarang: '{{ old('nama_barang', addslashes($inventaris->nama_barang)) }}',
+        namaBarang: @js(old('nama_barang', $inventaris->nama_barang)),
         kategori: '{{ old('kategori', $inventaris->kategori) }}',
         nomorInventaris: '{{ old('nomor_inventaris', $inventaris->nomor_inventaris ?? '') }}',
         jumlah: {{ old('jumlah', $inventaris->jumlah) }},
-        keterangan: '{{ addslashes(old('keterangan', $inventaris->keterangan ?? '')) }}',
+        keterangan: @js(old('keterangan', $inventaris->keterangan ?? '')),
         kondisi: '{{ old('kondisi', $inventaris->kondisi) }}',
         status: '{{ old('status', $inventaris->status) }}',
-        lokasi: '{{ old('lokasi', addslashes($inventaris->lokasi ?? '')) }}',
+        lokasi: @js(old('lokasi', $inventaris->lokasi ?? '')),
         tahunPerolehan: '{{ old('tahun_perolehan', $inventaris->tahun_perolehan ?? '') }}',
         nilaiPerolehan: '{{ old('nilai_perolehan', $inventaris->nilai_perolehan ?? '') }}',
         filePreview: null,

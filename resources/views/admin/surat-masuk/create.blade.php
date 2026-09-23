@@ -9,7 +9,7 @@
         jenisSurat: '{{ old('jenis_surat', 'Masuk') }}',
         sifatSurat: '{{ old('sifat_surat', 'Biasa') }}',
         status: '{{ old('status', 'diterima') }}',
-        keterangan: '{{ addslashes(old('keterangan')) }}',
+        keterangan: @js(old('keterangan')),
         filePreview: null,
         fileName: '',
         get sifatBadge() {

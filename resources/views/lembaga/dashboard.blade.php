@@ -76,7 +76,7 @@
                     <span class="w-6 h-6 rounded-lg bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center shrink-0">{{ $index + 1 }}</span>
                     <div class="min-w-0 flex-1">
                         <p class="font-semibold text-slate-800 text-sm truncate">{{ $berita->judul }}</p>
-                        <p class="text-xs text-slate-400 mt-0.5">{{ $berita->created_at->translatedFormat('d M Y') }}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">{{ $berita->created_at->locale('id')->translatedFormat('d F Y') }}</p>
                     </div>
                     <span class="inline-flex items-center gap-1.5 text-sm font-bold text-slate-700 shrink-0">
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -102,12 +102,12 @@
                 <a href="{{ route('lembaga.events.show', $event) }}" class="flex items-start gap-3 px-6 py-4 hover:bg-brand-50/40 transition">
                     <div class="w-14 h-14 rounded-xl bg-slate-50 flex flex-col items-center justify-center shrink-0 ring-1 ring-slate-100">
                         <span class="text-lg font-bold text-brand-600 leading-none">{{ $event->tanggal->format('d') }}</span>
-                        <span class="text-[10px] font-semibold text-slate-400 uppercase">{{ $event->tanggal->translatedFormat('M') }}</span>
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase">{{ $event->tanggal->locale('id')->translatedFormat('F') }}</span>
                     </div>
                     <div class="min-w-0">
                         <p class="font-semibold text-slate-800 text-sm truncate">{{ $event->judul }}</p>
                         <div class="flex items-center gap-2 mt-1">
-                            <span class="badge-status bg-akan_datang">{{ $event->jenis }}</span>
+                            <span class="badge-status {{ match($event->jenis) { 'musrenbangdes' => 'bg-musrenbangdes', 'rapat' => 'bg-rapat', 'kegiatan' => 'bg-kegiatan', 'sosialisasi' => 'bg-sosialisasi', default => 'bg-kegiatan' } }}">{{ match($event->jenis) { 'musrenbangdes' => 'Musrenbangdes', 'rapat' => 'Rapat', 'kegiatan' => 'Kegiatan', 'sosialisasi' => 'Sosialisasi', default => ucfirst($event->jenis) } }}</span>
                             <span class="badge-status {{ 'bg-'.$event->status }}">{{ str_replace('_', ' ', $event->status) }}</span>
                         </div>
                     </div>

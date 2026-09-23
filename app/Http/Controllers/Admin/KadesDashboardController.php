@@ -11,6 +11,7 @@ use App\Models\PengajuanSurat;
 use App\Models\SuratKeluar;
 use App\Models\SuratMasuk;
 use App\Models\User;
+use App\Services\ApprovalService;
 use Illuminate\Support\Facades\DB;
 
 class KadesDashboardController extends Controller
@@ -22,8 +23,14 @@ class KadesDashboardController extends Controller
         $selesai = PengajuanSurat::where('status', 'completed')->count();
         $ditolak = PengajuanSurat::where('status', 'rejected')->count();
 
+        $activeSteps = app(ApprovalService::class)->getActiveStepKeys();
+        $kadesIdx = array_search('approved_kades', $activeSteps, true);
+        $menungguStatus = $kadesIdx !== false && $kadesIdx > 0
+            ? $activeSteps[$kadesIdx - 1]
+            : 'approved_sekdes';
+
         $menungguSaya = PengajuanSurat::with('user')
-            ->where('status', 'approved_sekdes')
+            ->where('status', $menungguStatus)
             ->latest()
             ->paginate(15);
 
@@ -147,10 +154,14 @@ class KadesDashboardController extends Controller
 
         // SLA monitoring
         $slaHours = 48;
-        $slaBreached = PengajuanSurat::whereNotIn('status', ['completed', 'rejected', 'submitted'])
+        $prosesStatuses = collect(app(ApprovalService::class)->getActiveStepKeys())
+            ->filter(fn ($s) => ! in_array($s, ['submitted', 'completed'], true))
+            ->values()
+            ->all();
+        $slaBreached = PengajuanSurat::whereIn('status', $prosesStatuses)
             ->where('created_at', '<', now()->subHours($slaHours))
             ->count();
-        $inProgress = PengajuanSurat::whereNotIn('status', ['completed', 'rejected', 'submitted'])->count();
+        $inProgress = PengajuanSurat::whereIn('status', $prosesStatuses)->count();
 
         // Chart data: 12 bulan (enhanced)
         $chartBulanan12 = PengajuanSurat::select(

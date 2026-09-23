@@ -2,24 +2,22 @@
 
     @php
         $statusBadge = match($apbdesa->status) {
-            'draft' => 'bg-gray-100 text-gray-600 border border-gray-200',
-            'aktif' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
-            'selesai' => 'bg-teal-100 text-teal-700 border border-teal-200',
-            'dibatalkan' => 'bg-red-100 text-red-700 border border-red-200',
+            'Draft' => 'bg-gray-100 text-gray-600 border border-gray-200',
+            'Disetujui' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
+            'Direvisi' => 'bg-amber-100 text-amber-700 border border-amber-200',
+            'Ditolak' => 'bg-red-100 text-red-700 border border-red-200',
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
         $statusLabel = match($apbdesa->status) {
-            'draft' => 'Draft',
-            'aktif' => 'Aktif',
-            'selesai' => 'Selesai',
-            'dibatalkan' => 'Dibatalkan',
+            'Draft' => 'Draft',
+            'Disetujui' => 'Disetujui',
+            'Direvisi' => 'Direvisi',
+            'Ditolak' => 'Ditolak',
             default => ucfirst($apbdesa->status),
         };
         $kategoriBadge = match($apbdesa->kategori) {
-            'pembangunan' => 'bg-teal-100 text-teal-700 border border-teal-200',
-            'pelayanan' => 'bg-emerald-100 text-emerald-700 border border-emerald-200',
-            'pemerintahan' => 'bg-purple-100 text-purple-700 border border-purple-200',
-            'kemasyrakatan' => 'bg-amber-100 text-amber-700 border border-amber-200',
+            'Pendapatan' => 'bg-teal-100 text-teal-700 border border-teal-200',
+            'Belanja' => 'bg-amber-100 text-amber-700 border border-amber-200',
             default => 'bg-gray-100 text-gray-600 border border-gray-200',
         };
         $sisaAnggaran = $apbdesa->anggaran - $apbdesa->realisasi;

@@ -5,6 +5,7 @@ namespace App\Dashboard\Widgets;
 use App\Dashboard\Contracts\WidgetInterface;
 use App\Models\PengajuanSurat;
 use App\Models\User;
+use App\Services\ApprovalService;
 
 class NotificationWidget implements WidgetInterface
 {
@@ -58,17 +59,27 @@ class NotificationWidget implements WidgetInterface
     public function getData(): array
     {
         $user = $this->user;
-        $role = $user->roles()->first()?->name;
+        $service = app(ApprovalService::class);
 
         $statusMap = [
-            'Operator Pelayanan' => ['submitted'],
-            'Sekretaris Desa' => ['approved_operator'],
-            'Kepala Desa' => ['approved_sekdes'],
+            'Operator Pelayanan' => ['letter.review'],
+            'Sekretaris Desa' => ['letter.verify'],
+            'Kepala Desa' => ['letter.final_approve'],
         ];
 
-        $myStatuses = $role === 'Super Admin'
-            ? ['submitted', 'verified', 'approved_operator', 'approved_sekdes']
+        $role = $user->roles()->first()?->name;
+
+        $myPermissions = $role === 'Super Admin'
+            ? ['letter.review', 'letter.verify', 'letter.final_approve']
             : ($statusMap[$role] ?? []);
+
+        $myStatuses = collect();
+        foreach ($myPermissions as $permission) {
+            if ($user->hasPermissionTo($permission)) {
+                $myStatuses = $myStatuses->merge($service->getPendingStatusesForPermission($permission));
+            }
+        }
+        $myStatuses = $myStatuses->unique()->values()->all();
 
         $myPending = empty($myStatuses) ? 0 : PengajuanSurat::whereIn('status', $myStatuses)->count();
 
