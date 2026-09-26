@@ -46,7 +46,7 @@
                 <p class="text-sm text-gray-500 font-medium">Tidak ada event</p>
                 <p class="text-xs text-gray-400 mt-0.5">Belum ada event yang dijadwalkan</p>
                 @can('event.manage')
-                <a href="{{ route('admin.events.create') }}" class="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-pink-600 bg-pink-50 hover:bg-pink-100 border border-pink-100 rounded-xl transition">
+                <a href="{{ route('admin.events.create') }}" class="tap-target mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-pink-600 bg-pink-50 hover:bg-pink-100 border border-pink-100 rounded-xl transition">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                     Buat Event
                 </a>

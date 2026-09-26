@@ -50,7 +50,7 @@
         <div class="bento-card p-5 stat-micro">
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Draf Belum Terbit</p>
             <p class="text-3xl font-bold text-amber-600 mt-2">{{ $stats['draft_total'] }}</p>
-            <a href="{{ route('lembaga.berita.index', ['status' => 'draft']) }}" class="text-xs font-semibold text-brand-600 hover:underline mt-1 inline-block">Kelola draf →</a>
+            <a href="{{ route('lembaga.berita.index', ['status' => 'draft']) }}" class="tap-target inline-flex items-center text-xs font-semibold text-brand-600 hover:underline mt-1">Kelola draf →</a>
         </div>
         <div class="bento-card p-5 stat-micro">
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Berita Terpopuler</p>
@@ -68,7 +68,7 @@
         <div class="lg:col-span-2 bento-card overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <div class="section-header !mb-0"><h3>Berita Terpopuler</h3></div>
-                <a href="{{ route('lembaga.berita.index') }}" class="text-xs font-semibold text-brand-600 hover:text-brand-700">Lihat semua</a>
+                <a href="{{ route('lembaga.berita.index') }}" class="tap-target inline-flex items-center text-xs font-semibold text-brand-600 hover:text-brand-700">Lihat semua</a>
             </div>
             <div class="divide-y divide-slate-100">
                 @forelse($topBerita as $index => $berita)
@@ -95,7 +95,7 @@
         <div class="bento-card overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <div class="section-header !mb-0"><h3>Event Terbaru</h3></div>
-                <a href="{{ route('lembaga.events.index') }}" class="text-xs font-semibold text-brand-600 hover:text-brand-700">Lihat semua</a>
+                <a href="{{ route('lembaga.events.index') }}" class="tap-target inline-flex items-center text-xs font-semibold text-brand-600 hover:text-brand-700">Lihat semua</a>
             </div>
             <div class="divide-y divide-slate-100">
                 @forelse($recentEvents as $event)
@@ -116,7 +116,7 @@
                 <div class="px-6 py-10 text-center">
                     <p class="text-sm font-semibold text-slate-600">Belum ada event</p>
                     <p class="text-xs text-slate-400 mt-1">Buat event kegiatan lembaga Anda.</p>
-                    <a href="{{ route('lembaga.events.create') }}" class="inline-block mt-3 text-xs font-bold text-brand-600 hover:underline">+ Buat event pertama</a>
+                    <a href="{{ route('lembaga.events.create') }}" class="tap-target inline-flex items-center mt-3 text-xs font-bold text-brand-600 hover:underline">+ Buat event pertama</a>
                 </div>
                 @endforelse
             </div>

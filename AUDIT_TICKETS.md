@@ -1,7 +1,7 @@
 # Audit Prodesa — Laporan Tiket
 
 Tanggal audit: 22 Sep 2026
-Status: **SELESAI DIPERBAIKI** (25 tiket DONE + M-04/M-05 dituntaskan 23 Sep 2026). Verifikasi: `php artisan test` → 92 passed (270 assertions), Pint bersih.
+Status: **SELESAI DIPERBAIKI** (25 tiket DONE + M-04/M-05 dituntaskan 23 Sep 2026). Verifikasi: `php artisan test` → 98 passed (289 assertions), Pint bersih.
 Label: `[C]` Critical · `[H]` High · `[M]` Medium · `[L]` Low · `[B]` Build/Env
 
 ---
@@ -180,6 +180,7 @@ Bug manual (dilaporkan pengguna):
 ### U-11 `[L]` — Konten hardcoded: IG `@rangga.mrw`, cuaca "32°C Cerah" saat non-produksi
 - File: `admin/dashboard.blade.php:~105`, `widgets/_header.blade.php:~28,32`, `kades:~878`, `sekdes:~952`
 - Perbaikan: Jadikan config-driven.
+- **DONE 23 Sep 2026**: IG `@rangga.mrw` sudah lama tidak ada di sumber. Cuaca kini **realtime** via `app/Services/WeatherService.php` (Open-Meteo, tanpa API key): baca `village.latitude/longitude` dari DB, cache sukses 10 mnt / gagal 5 mnt, Peta kode WMO → deskripsi Indonesia, chip di `components/widgets/_header.blade.php` (dan file header lama `admin/dashboard/_header.blade.php`) menampilkan `{suhu}°C {deskripsi}` dengan fallback `--°C`. Regresi: `tests/Feature/WeatherServiceTest.php` (6 tes).
 
 ### U-12 `[L]` — Format tanggal campur-campur (`d M Y`, `h`, bulan telanjang)
 - File: `admin/berita/index:~158`, `admin/events/index`, `admin/warga/index`, widgets

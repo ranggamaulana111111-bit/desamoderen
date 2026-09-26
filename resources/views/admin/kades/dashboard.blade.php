@@ -337,7 +337,7 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                    <div class="flex justify-between px-0.5 mt-1">
+                                                    <div class="step-caption flex justify-between px-0.5 mt-1">
                                                         @foreach($steps as $si => $step)
                                                             <span class="text-[8px] font-bold {{ $si === 3 ? 'text-amber-600' : 'text-emerald-500' }} uppercase tracking-wide">{{ $step }}</span>
                                                         @endforeach
@@ -347,7 +347,7 @@
                                                 {{-- Action buttons --}}
                                                 <div class="flex items-center gap-2 flex-wrap">
                                                     <a href="{{ route('admin.pengajuan.show', $item) }}"
-                                                       class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-600 text-[11px] font-semibold hover:bg-gray-100 transition-colors border border-gray-100">
+                                                       class="tap-target inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-50 text-gray-600 text-[11px] font-semibold hover:bg-gray-100 transition-colors border border-gray-100">
                                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                                         Detail
                                                     </a>
@@ -355,17 +355,17 @@
                                                           onsubmit="return confirm('Setujui pengajuan ini? Surat akan langsung selesai dan warga bisa mengambil.')">
                                                         @csrf
                                                         <button type="submit"
-                                                                class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[11px] font-semibold shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-px active:scale-[.97] transition-all duration-200">
+                                                                class="tap-target inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[11px] font-semibold shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-px active:scale-[.97] transition-all duration-200">
                                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                                                             Setujui
                                                         </button>
                                                     </form>
                                                     <button @click="openReject({{ $item->id }})"
-                                                            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-[11px] font-semibold hover:bg-red-100 transition-colors border border-red-100/80">
+                                                            class="tap-target inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 text-[11px] font-semibold hover:bg-red-100 transition-colors border border-red-100/80">
                                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                                                         Tolak
                                                     </button>
-                                                    <button @click="open = !open" class="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors ml-auto">
+                                                    <button @click="open = !open" class="tap-target inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors ml-auto">
                                                         <svg class="w-3.5 h-3.5" :class="open && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
                                                     </button>
                                                 </div>
@@ -420,7 +420,7 @@
                             <div class="px-5 sm:px-6 py-4 border-b border-gray-100/80 flex items-center justify-between">
                                 <div class="section-label mb-0"><h3 class="text-gray-700">Event Mendatang</h3></div>
                                 @can('event.manage')
-                                <a href="{{ route('admin.events.index') }}" class="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors uppercase tracking-wide">Lihat Semua</a>
+                                <a href="{{ route('admin.events.index') }}" class="tap-target inline-flex items-center text-[10px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors uppercase tracking-wide">Lihat Semua</a>
                                 @endcan
                             </div>
                             <div class="p-4 sm:p-5">
@@ -514,7 +514,7 @@
                             <div class="px-5 sm:px-6 py-4 border-b border-gray-100/80 flex items-center justify-between">
                                 <div class="section-label mb-0"><h3 class="text-gray-700">Log Aktivitas Terbaru</h3></div>
                                 @can('audit.view')
-                                <a href="{{ route('admin.activity-log.index') }}" class="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors uppercase tracking-wide">Semua Log</a>
+                                <a href="{{ route('admin.activity-log.index') }}" class="tap-target inline-flex items-center text-[10px] font-bold text-emerald-600 hover:text-emerald-700 transition-colors uppercase tracking-wide">Semua Log</a>
                                 @endcan
                             </div>
                             @if($recentActivities->count())
@@ -537,10 +537,12 @@
                                                 {{ $actInitials }}
                                             </div>
                                             <div class="flex-1 min-w-0 pt-0.5">
-                                                <p class="text-[13px] font-semibold text-gray-900 leading-tight">{{ $act->user->name ?? 'System' }}</p>
+                                                <div class="flex items-baseline justify-between gap-2">
+                                                    <p class="text-[13px] font-semibold text-gray-900 leading-tight truncate">{{ $act->user->name ?? 'System' }}</p>
+                                                    <span class="text-[10px] text-gray-400 shrink-0">{{ $act->created_at->diffForHumans() }}</span>
+                                                </div>
                                                 <p class="text-[11px] text-gray-500 mt-0.5">{{ $act->deskripsi }}</p>
                                             </div>
-                                            <span class="text-[10px] text-gray-400 shrink-0 pt-0.5">{{ $act->created_at->diffForHumans() }}</span>
                                         </div>
                                     @endforeach
                                 </div>

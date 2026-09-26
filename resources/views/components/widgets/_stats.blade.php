@@ -73,7 +73,7 @@
             </div>
             <div class="min-w-0">
                 <p class="text-xl font-bold text-gray-900 count-up" x-data x-init="animateNumber($el, {{ $bs['value'] }})">0</p>
-                <p class="text-[11px] text-gray-500 truncate">{{ $bs['label'] }}</p>
+                <p class="text-[11px] text-gray-500 leading-tight">{{ $bs['label'] }}</p>
                 <div class="flex items-center gap-1 mt-0.5">
                     <span class="text-[10px] font-semibold text-{{ $bs['growth'] >= 0 ? 'green' : 'red' }}-600">{{ $bs['growth'] >= 0 ? '+' : '' }}{{ $bs['growth'] }}%</span>
                     <span class="text-[10px] text-gray-400">vs bulan lalu</span>

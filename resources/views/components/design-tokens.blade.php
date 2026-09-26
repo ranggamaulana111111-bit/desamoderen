@@ -247,6 +247,29 @@
     .shadow-xl { box-shadow: 0 12px 24px rgba(0,0,0,.15); }
     .shadow-2xl { box-shadow: 0 16px 40px rgba(0,0,0,.25); }
     .shadow-none { box-shadow: none; }
+
+    /* ── Touch-legibility layer (≤ 1023px: phone + tablet portrait) ──
+       The dashboards are tuned for desktop density and lean on 7–10px
+       utility labels, tight 3-up micro-stat rows and inline uppercase
+       step captions. Below the `md` breakpoint those collapse into
+       unreadable, colliding text. This layer raises a legibility floor,
+       lets micro-labels wrap, and enlarges mouse-sized controls to
+       finger size. Desktop (≥ 1024px) keeps the original density. */
+    @media (max-width: 1023px) {
+        /* Legibility floor: nothing renders below 10px on a phone. */
+        .text-\[7px\], .text-\[8px\], .text-\[9px\] { font-size: 10px !important; line-height: 1.35; }
+        .text-\[10px\] { font-size: 11px !important; }
+
+        /* Relaxed tracking so bumped-uppercase labels can wrap cleanly. */
+        .tracking-widest, .tracking-wide { letter-spacing: .04em; }
+
+        /* Micro-stat / step captions wrap instead of colliding. */
+        .step-caption { display: flex; flex-wrap: wrap; gap: 0 .25rem; }
+        .step-caption > * { min-width: 0; }
+
+        /* Pointer-sized controls become finger-sized (opt-in per control). */
+        .tap-target { min-height: 40px; }
+    }
 </style>
 <script>
     // Extend whatever tailwind.config each page sets with the brand accent palette.

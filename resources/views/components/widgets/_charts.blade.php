@@ -22,7 +22,7 @@
                 <button
                     @click="filterMainChart({{ $days }})"
                     :class="mainChartDays === {{ $days }} ? 'bg-gradient-to-r from-brand-500 to-teal-500 text-white border-brand-500 shadow-sm shadow-brand-500/20' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'"
-                    class="text-xs px-3 py-1.5 rounded-lg border transition-all font-medium duration-200">
+                    class="tap-target text-xs px-3 py-1.5 rounded-lg border transition-all font-medium duration-200">
                     {{ $label }}
                 </button>
                 @endforeach

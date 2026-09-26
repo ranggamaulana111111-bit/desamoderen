@@ -352,7 +352,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <div class="flex justify-between px-1 mb-4">
+                                            <div class="step-caption flex justify-between px-1 mb-4">
                                                 @foreach($steps as $si => $step)
                                                     <span class="text-[9px] font-semibold {{ $si == 2 ? 'text-amber-600' : ($si < 2 ? 'text-emerald-600' : 'text-gray-400') }}">{{ $step }}</span>
                                                 @endforeach

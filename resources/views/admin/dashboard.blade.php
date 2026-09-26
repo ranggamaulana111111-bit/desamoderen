@@ -87,7 +87,10 @@
                     </div>
                 @else
                     {{-- Eager-loaded widget (rendered server-side) --}}
-                    <div data-span="{{ $span }}" class="a-fade-up d{{ min($widget['position'], 10) }} {{ $widget['key'] === 'header' ? 'isolate z-40' : '' }}">
+                    {{-- `isolate` contains the header card's internal layers; it must NOT
+                         carry a z-index, or this content wrapper ties with (and beats,
+                         by DOM order) the fixed mobile sidebar drawer at z-40. --}}
+                    <div data-span="{{ $span }}" class="a-fade-up d{{ min($widget['position'], 10) }} {{ $widget['key'] === 'header' ? 'isolate' : '' }}">
                         @include($widget['component'], $widget['data'])
                     </div>
                 @endif

@@ -79,7 +79,7 @@
         </div>
         @if (count($logs) > 8)
         <div class="mt-3 pt-3 border-t border-gray-100/60 text-center">
-            <a href="{{ route('admin.activity-log.index') }}" class="text-xs font-medium text-violet-600 hover:text-violet-700 transition">Lihat Semua Aktivitas &rarr;</a>
+            <a href="{{ route('admin.activity-log.index') }}" class="tap-target inline-flex items-center text-xs font-medium text-violet-600 hover:text-violet-700 transition">Lihat Semua Aktivitas &rarr;</a>
         </div>
         @endif
         @else

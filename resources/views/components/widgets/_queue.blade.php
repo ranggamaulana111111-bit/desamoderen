@@ -53,7 +53,7 @@
         @endif
         @if ($canManage ?? false)
         <div class="mt-3 pt-3 border-t border-gray-100/60">
-            <a href="{{ route('admin.queue.index') }}" class="group flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50 hover:bg-cyan-50 border border-gray-100 hover:border-cyan-200 transition-all text-xs font-medium text-gray-600 hover:text-cyan-700">
+            <a href="{{ route('admin.queue.index') }}" class="tap-target group flex items-center justify-between px-3 py-2 rounded-xl bg-gray-50 hover:bg-cyan-50 border border-gray-100 hover:border-cyan-200 transition-all text-xs font-medium text-gray-600 hover:text-cyan-700">
                 <span class="flex items-center gap-2">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Kelola Antrean

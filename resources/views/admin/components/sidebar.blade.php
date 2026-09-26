@@ -312,14 +312,17 @@
         <span class="font-bold text-sm text-slate-800">Prodesa</span>
     </div>
     <div class="flex items-center gap-1">
-        <button onclick="document.getElementById('mobile-sidebar').classList.toggle('hidden')" class="p-2 hover:bg-slate-100 rounded-xl transition">
+        <button type="button" onclick="toggleMobileSidebar()" aria-controls="mobile-sidebar" aria-expanded="false" class="p-2 hover:bg-slate-100 rounded-xl transition">
             <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
         </button>
     </div>
 </div>
 
 {{-- Mobile Slide-down Drawer --}}
-<div id="mobile-sidebar" class="hidden lg:hidden fixed top-[52px] left-0 right-0 z-40 bg-gradient-to-b from-[#022c22] to-[#064e3b] text-white shadow-2xl max-h-[calc(100vh-52px)] overflow-y-auto">
+{{-- Sits flush under the 56px top bar (py-3 + 32px control). `z-[45]` keeps it above
+     every in-flow content layer (some cards isolate themselves at z-40) but below the
+     z-50 top bar, so the hamburger stays reachable. --}}
+<div id="mobile-sidebar" class="hidden lg:hidden fixed top-14 left-0 right-0 z-[45] bg-gradient-to-b from-[#022c22] to-[#064e3b] text-white shadow-2xl max-h-[calc(100vh-56px)] overflow-y-auto">
     <nav class="p-3 space-y-0.5">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-accent-500/25 text-white border-l-2 border-[#34d399]' : 'text-white/60 hover:text-white hover:bg-white/[.06]' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
@@ -466,6 +469,50 @@
         </form>
     </div>
 </div>
+
+{{-- Mobile drawer scrim: dims the page and dismisses the drawer on outside tap --}}
+<div id="mobile-sidebar-backdrop" class="hidden lg:hidden fixed top-14 inset-x-0 bottom-0 z-[44] bg-slate-900/40" onclick="closeMobileSidebar()" aria-hidden="true"></div>
+
+<script>
+    /* Mobile slide-down drawer: single source of truth for open/closed so the
+       hamburger, the scrim, nav links and the Escape key can never disagree. */
+    function mobileSidebar() { return document.getElementById('mobile-sidebar'); }
+
+    function setMobileSidebar(open) {
+        var drawer = mobileSidebar();
+        if (!drawer) return;
+        drawer.classList.toggle('hidden', !open);
+        var scrim = document.getElementById('mobile-sidebar-backdrop');
+        if (scrim) scrim.classList.toggle('hidden', !open);
+        document.documentElement.classList.toggle('overflow-hidden', open);
+        document.querySelectorAll('[aria-controls="mobile-sidebar"]').forEach(function (btn) {
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+    }
+
+    function toggleMobileSidebar() {
+        var drawer = mobileSidebar();
+        if (drawer) setMobileSidebar(drawer.classList.contains('hidden'));
+    }
+
+    function closeMobileSidebar() { setMobileSidebar(false); }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeMobileSidebar();
+    });
+
+    document.addEventListener('click', function (e) {
+        var drawer = mobileSidebar();
+        if (!drawer || drawer.classList.contains('hidden')) return;
+        if (drawer.contains(e.target)) {
+            /* Tapping a link navigates; close so the next page starts clean. */
+            if (e.target.closest('a')) closeMobileSidebar();
+            return;
+        }
+        if (e.target.closest('[aria-controls="mobile-sidebar"]')) return;
+        closeMobileSidebar();
+    });
+</script>
 
 <div class="flex min-h-screen">
     <div class="hidden lg:block w-[260px] shrink-0"
