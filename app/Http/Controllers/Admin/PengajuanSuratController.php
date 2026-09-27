@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\PrivateFileHelper;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessCompletedLetter;
 use App\Models\ActivityLog;
@@ -177,7 +178,7 @@ class PengajuanSuratController extends Controller
             ->with('success', 'Permintaan perbaikan berhasil dikirim.');
     }
 
-    public function downloadLampiran(PengajuanSurat $pengajuan, int $index)
+    public function showLampiran(Request $request, PengajuanSurat $pengajuan, int $index)
     {
         Gate::authorize('viewLampiran', $pengajuan);
 
@@ -187,15 +188,28 @@ class PengajuanSuratController extends Controller
             abort(404, 'Lampiran tidak ditemukan.');
         }
 
-        $path = $lampiran[$index];
+        $located = PrivateFileHelper::locate($lampiran[$index]);
 
-        if (! Storage::disk('private')->exists($path)) {
+        if (! $located) {
             abort(404, 'File lampiran tidak tersedia di server.');
         }
 
-        $filename = basename($path);
+        $filename = basename($located['path']);
 
-        return Storage::disk('private')->download($path, $filename);
+        return Storage::disk($located['disk'])->response($located['path'], $filename, [
+            'Content-Type' => $this->lampiranMime($filename),
+            'X-Content-Type-Options' => 'nosniff',
+        ], $request->boolean('download') ? 'attachment' : 'inline');
+    }
+
+    private function lampiranMime(string $filename): string
+    {
+        return match (strtolower(pathinfo($filename, PATHINFO_EXTENSION))) {
+            'pdf' => 'application/pdf',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            default => 'application/octet-stream',
+        };
     }
 
     private function handleCompletion(PengajuanSurat $pengajuan): void

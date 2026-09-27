@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Warga;
 
+use App\Helpers\PrivateFileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePengajuanRequest;
 use App\Models\ActivityLog;
@@ -11,7 +12,6 @@ use App\Services\ApprovalService;
 use App\Services\TelegramNotifier;
 use App\Services\WebhookNotifier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SuratController extends Controller
@@ -134,12 +134,12 @@ class SuratController extends Controller
             foreach ($request->file('lampiran') as $i => $file) {
                 $extension = $file->getClientOriginalExtension();
                 $filename = "{$pengajuan->jenis_surat}_{$hash}_{$timestamp}_{$i}.{$extension}";
-                $paths[] = $file->storeAs('private/lampiran', $filename);
+                $paths[] = $file->storeAs('lampiran', $filename, 'private');
             }
 
             foreach (($dataTambahan['lampiran'] ?? []) as $old) {
-                if ($old && ! in_array($old, $paths) && Storage::exists($old)) {
-                    Storage::delete($old);
+                if ($old && ! in_array($old, $paths)) {
+                    PrivateFileHelper::delete($old);
                 }
             }
 
@@ -190,7 +190,7 @@ class SuratController extends Controller
         foreach (is_array($files) ? $files : [$files] as $i => $file) {
             $extension = $file->getClientOriginalExtension();
             $filename = "{$validated['jenis_surat']}_{$hash}_{$timestamp}_{$i}.{$extension}";
-            $paths[] = $file->storeAs('private/lampiran', $filename);
+            $paths[] = $file->storeAs('lampiran', $filename, 'private');
         }
 
         $dataTambahan = collect($validated)

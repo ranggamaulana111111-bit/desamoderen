@@ -123,7 +123,7 @@ Route::middleware(['auth', 'admin', 'ip.whitelist'])->prefix('admin')->name('adm
     Route::post('pengajuan/{pengajuan}/reject', [PengajuanSuratController::class, 'reject'])->middleware('permission:letter.review|letter.verify|letter.final_approve|letter.reject')->name('pengajuan.reject');
     Route::post('pengajuan/{pengajuan}/revision', [PengajuanSuratController::class, 'requestRevision'])->middleware('permission:letter.review')->name('pengajuan.revision');
     Route::get('pengajuan/{pengajuan}/cetak', [CetakSuratController::class, 'cetak'])->middleware('permission:letter.print')->name('pengajuan.cetak');
-    Route::get('pengajuan/{pengajuan}/lampiran/{index}', [PengajuanSuratController::class, 'downloadLampiran'])->middleware('permission:letter.view')->whereNumber('index')->name('pengajuan.lampiran');
+    Route::get('pengajuan/{pengajuan}/lampiran/{index}', [PengajuanSuratController::class, 'showLampiran'])->middleware('permission:letter.view')->whereNumber('index')->name('pengajuan.lampiran');
 
     // ── Document Versioning ──
     Route::prefix('pengajuan/{pengajuan}/versions')->name('pengajuan.versions.')->middleware('permission:letter.version.view')->group(function () {
