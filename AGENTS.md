@@ -54,10 +54,26 @@ php artisan tinker --execute="\App\Models\User::create(['name'=>'Admin','nik'=>'
 | Run single test | `vendor/bin/phpunit tests/Unit/ExampleTest.php` |
 | Lint (Pint) | `vendor/bin/pint` |
 | Migrate | `php artisan migrate` |
-| Fresh migrate | `php artisan migrate:fresh` |
+| Fresh migrate (**DESTRUKTIF**) | `php artisan migrate:fresh` |
 | Tinker | `php artisan tinker` |
 | Seed all | `php artisan db:seed` |
 | Seed specific | `php artisan db:seed --class=LetterConfigSeeder` |
+
+> **Seeders tidak boleh menimpa data user.** Semua seeder wajib memakai
+> `firstOrCreate`, **dilarang** `updateOrCreate`/`updateOrInsert` untuk data
+> yang bisa diedit dari UI (Pengaturan Desa, Template Surat, Akun, Role).
+> Violasi ini dulu membuat `db:seed`/`migrate --seed` mengembalikan nama Kades,
+> Sekdes, dsb ke nilai default tiap kali aplikasi di-*update*.
+
+### Village Settings
+
+- Sumber kebenaran: tabel `village_settings`.
+- `App\Providers\VillageSettingServiceProvider` memuat seluruh isi tabel ke
+  `config('village.*')` pada `boot()` — semua komponen membaca dari situ.
+- `config/village.php` **hanya fallback** (dipakai kalau tabel belum ada).
+  Jangan isi nama desa/pejabat/nomor di sana — file ikut ter-deploy.
+- Tampilan Kades/Sekdes/Kaur/Kasi/BPD ada di **Admin → Pengaturan**, disimpan
+  sebagai key di grup `officials`.
 
 ## Routes
 

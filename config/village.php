@@ -1,21 +1,27 @@
 <?php
 
-return [
-    // ─── Identitas & Legalitas Desa ───
-    'nama_desa' => env('VILLAGE_NAMA_DESA', 'Kumpay'),
-    'nama_kecamatan' => env('VILLAGE_KECAMATAN', 'Ciasem'),
-    'nama_kabupaten' => env('VILLAGE_KABUPATEN', 'Subang'),
-    'kode_pos' => env('VILLAGE_KODE_POS', '41256'),
-    'alamat_kantor' => env('VILLAGE_ALAMAT', 'Kp. Kumpay, RT 01 RW 01, Kec. Ciasem, Kab. Subang'),
-    'email_desa' => env('VILLAGE_EMAIL', 'desakumpay@subang.go.id'),
-    'logo_desa' => 'uploads/identity/pwa-icon-source.png',
+// Fallback saja. Nilai sesungguhnya dibaca dari tabel `village_settings`
+// oleh App\Providers\VillageSettingServiceProvider — file ini hanya dipakai
+// kalau tabel belum ada / belum bisa dibaca. Jangan diisi nama atau nomor
+// pejabat asli di sini: file ini ikut ter-deploy ke server lain.
 
-    // ─── Manajemen Pejabat & Penandatangan ───
-    'nama_kades' => env('VILLAGE_NAMA_KADES', 'Ade Komara'),
-    'nip_kades' => env('VILLAGE_NIP_KADES', '-'),
-    'jabatan_kades' => env('VILLAGE_JABATAN_KADES', 'Kepala Desa Kumpay'),
-    'nama_sekdes' => env('VILLAGE_NAMA_SEKDES', 'Dede Supendi'),
-    'nip_sekdes' => env('VILLAGE_NIP_SEKDES', '-'),
+return [
+    'nama_desa' => '-',
+    'nama_provinsi' => '-',
+    'nama_kecamatan' => '-',
+    'nama_kabupaten' => '-',
+    'kode_desa' => '-',
+    'kode_pos' => '-',
+    'alamat_kantor' => '-',
+    'email_desa' => '-',
+    'telepon_desa' => '-',
+    'website_desa' => '-',
+    'logo_desa' => null,
+    'nama_kades' => '-',
+    'nip_kades' => '-',
+    'jabatan_kades' => 'Kepala Desa',
+    'nama_sekdes' => '-',
+    'nip_sekdes' => '-',
 
     // ─── Konfigurasi Fitur G2C ───
     'antrean_jam_mulai' => env('VILLAGE_ANTREAN_JAM_MULAI', '09:00'),

@@ -30,14 +30,14 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'motto_desa', 'value' => 'Kumpay Maju, Kumpay Sejahtera', 'group' => 'identity'],
 
             // ─── Pemerintahan (officials) ───
-            ['key' => 'nama_kades', 'value' => 'Ade Komara', 'group' => 'officials'],
+            ['key' => 'nama_kades', 'value' => '-', 'group' => 'officials'],
             ['key' => 'nip_kades', 'value' => '-', 'group' => 'officials'],
             ['key' => 'nik_kades', 'value' => '-', 'group' => 'officials'],
-            ['key' => 'jabatan_kades', 'value' => 'Kepala Desa Kumpay', 'group' => 'officials'],
+            ['key' => 'jabatan_kades', 'value' => 'Kepala Desa', 'group' => 'officials'],
             ['key' => 'foto_kades', 'value' => null, 'group' => 'officials'],
-            ['key' => 'periode_kades_mulai', 'value' => '2021', 'group' => 'officials'],
-            ['key' => 'periode_kades_selesai', 'value' => '2027', 'group' => 'officials'],
-            ['key' => 'nama_sekdes', 'value' => 'Dede Supendi', 'group' => 'officials'],
+            ['key' => 'periode_kades_mulai', 'value' => '-', 'group' => 'officials'],
+            ['key' => 'periode_kades_selesai', 'value' => '-', 'group' => 'officials'],
+            ['key' => 'nama_sekdes', 'value' => '-', 'group' => 'officials'],
             ['key' => 'nip_sekdes', 'value' => '-', 'group' => 'officials'],
             ['key' => 'nik_sekdes', 'value' => '-', 'group' => 'officials'],
             ['key' => 'kaur_keuangan_nama', 'value' => '-', 'group' => 'officials'],
@@ -60,8 +60,8 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'bpd_wakil_nik', 'value' => '-', 'group' => 'officials'],
             ['key' => 'bpd_sekretaris_nama', 'value' => '-', 'group' => 'officials'],
             ['key' => 'bpd_sekretaris_nik', 'value' => '-', 'group' => 'officials'],
-            ['key' => 'nama_camat', 'value' => 'Drs. H. Ahmad Saepudin, M.Si.', 'group' => 'officials'],
-            ['key' => 'nip_camat', 'value' => '19681212 199403 1 005', 'group' => 'officials'],
+            ['key' => 'nama_camat', 'value' => '-', 'group' => 'officials'],
+            ['key' => 'nip_camat', 'value' => '-', 'group' => 'officials'],
             ['key' => 'nama_operator', 'value' => '-', 'group' => 'officials'],
 
             // ─── TTD Digital (signature) ───
@@ -156,7 +156,7 @@ class VillageSettingSeeder extends Seeder
         ];
 
         foreach ($defaults as $item) {
-            VillageSetting::updateOrCreate(
+            VillageSetting::firstOrCreate(
                 ['key' => $item['key']],
                 ['value' => $item['value'], 'group' => $item['group']]
             );

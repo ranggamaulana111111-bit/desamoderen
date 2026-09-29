@@ -289,7 +289,7 @@ class LetterConfigSeeder extends Seeder
         ];
 
         foreach ($letters as $letter) {
-            LetterConfig::updateOrCreate(
+            LetterConfig::firstOrCreate(
                 ['jenis_surat' => $letter['jenis_surat']],
                 $letter + ['is_active' => true]
             );

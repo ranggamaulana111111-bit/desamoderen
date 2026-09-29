@@ -35,10 +35,15 @@ Panduan konfigurasi server, deployment, dan maintenance aplikasi Prodesa
    npm install
    npm run build
    ```
-4. Migrasi + seed:
+4. Migrasi + seed (instalasi baru):
    ```powershell
    php artisan migrate --seed
    ```
+   > **Hanya untuk instalasi baru.** `--seed` aman dijalankan ulang (seeder memakai
+   > `firstOrCreate`, hanya menambah key yang belum ada — hasil edit di
+   > **Pengaturan Desa** dan **Template Surat** tidak tertimpa).
+   > **Jangan pernah** memakai `php artisan migrate:fresh` pada instalasi yang sudah
+   > berisi data — perintah itu menghapus seluruh isi database.
 5. Jalankan:
    ```powershell
    php artisan serve      # http://127.0.0.1:8000

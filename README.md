@@ -101,13 +101,25 @@ npm install && npm run build
 cp .env.example .env
 php artisan key:generate
 
-# Database (MySQL)
+# Database (MySQL) — HANYA untuk instalasi baru
 php artisan migrate:fresh --seed
+
+# Upgrade dari versi lama: JANGAN pakai --fresh / --seed
+php artisan migrate --force
 
 # Start
 php artisan serve
 npm run dev
 ```
+
+> **Peringatan:** `migrate:fresh` **menghapus seluruh isi database** (warga, pengajuan surat,
+> pengaturan desa). Hanya untuk instalasi baru. Untuk memperbarui aplikasi yang sudah
+> berjalan, cukup `php artisan migrate --force` atau pakai card
+> **Admin → Pengaturan → Maintenance**.
+>
+> `db:seed` aman terhadap data yang sudah ada: seeder hanya mengisi key yang belum ada
+> (`firstOrCreate`), sehingga hasil edit di **Pengaturan Desa** dan **Template Surat** tidak
+> lagi tertimpa. Akun admin serta role & permission juga tidak di-reset.
 
 > **Catatan:** `QUEUE_CONNECTION=sync` dipakai agar job (PDF + notifikasi) langsung berjalan tanpa worker. Konfigurasi token & chat ID Telegram diatur lewat **Pengaturan Desa → Notifikasi**.
 
