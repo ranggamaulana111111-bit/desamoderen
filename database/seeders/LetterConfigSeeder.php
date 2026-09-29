@@ -288,11 +288,22 @@ class LetterConfigSeeder extends Seeder
             ],
         ];
 
+        $created = 0;
+        $skipped = [];
+
         foreach ($letters as $letter) {
-            LetterConfig::firstOrCreate(
+            $wasCreated = LetterConfig::firstOrCreate(
                 ['jenis_surat' => $letter['jenis_surat']],
                 $letter + ['is_active' => true]
-            );
+            )->wasRecentlyCreated;
+
+            $wasCreated ? $created++ : $skipped[] = $letter['jenis_surat'];
+        }
+
+        $this->command?->info("LetterConfig: {$created} template baru dibuat, ".count($skipped).' template sudah ada dan dipertahankan.');
+
+        if ($skipped !== []) {
+            $this->command?->line('  Dipertahankan: '.implode(', ', $skipped));
         }
     }
 }

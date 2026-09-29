@@ -18,7 +18,8 @@ class VillageSettingServiceProvider extends ServiceProvider
         try {
             if (Schema::hasTable('village_settings')) {
                 $settings = VillageSetting::pluck('value', 'key')->toArray();
-                config(['village' => $settings]);
+
+                config(['village' => array_merge(config('village', []), $settings)]);
 
                 if (! empty($settings['security_session_timeout'])) {
                     config(['session.lifetime' => (int) $settings['security_session_timeout']]);

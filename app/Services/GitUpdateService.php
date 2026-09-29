@@ -9,6 +9,10 @@ class GitUpdateService
 {
     private const TIMEOUT = 600;
 
+    public function __construct(
+        private BackupService $backupService,
+    ) {}
+
     private function basePath(): string
     {
         return base_path();
@@ -89,6 +93,24 @@ class GitUpdateService
         ];
     }
 
+    private function createSafetyBackup(): array
+    {
+        try {
+            $path = $this->backupService->create(includeStorage: false);
+            $file = basename($path);
+
+            return [
+                'success' => true,
+                'output' => "Backup database otomatis: {$file}",
+            ];
+        } catch (\Throwable $e) {
+            return [
+                'success' => false,
+                'output' => 'Gagal membuat backup otomatis: '.$e->getMessage(),
+            ];
+        }
+    }
+
     public function checkForUpdates(): array
     {
         $branch = $this->currentBranch();
@@ -130,6 +152,7 @@ class GitUpdateService
         $branch = $this->currentBranch();
 
         $commands = [
+            'backup' => null,
             'git_pull' => ['git', 'pull', '--ff-only', 'origin', $branch],
             'composer' => ['composer', 'install', '--no-dev', '--optimize-autoloader', '--no-interaction'],
             'migrate' => [PHP_BINARY, 'artisan', 'migrate', '--force'],
@@ -139,7 +162,12 @@ class GitUpdateService
         ];
 
         foreach ($commands as $key => $command) {
-            $result = $this->run($command);
+            if ($key === 'backup') {
+                $result = $this->createSafetyBackup();
+            } else {
+                $result = $this->run($command);
+            }
+
             $steps[] = [
                 'step' => $key,
                 'success' => $result['success'],

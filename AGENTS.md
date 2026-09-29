@@ -26,7 +26,8 @@ The "Update Aplikasi" card (Admin → Pengaturan → Maintenance) uses `git` via
 - `git` must be on the PATH of the process serving the app (`php artisan serve` / Laragon Apache). On Windows, prepend `C:\Program Files\Git\cmd` to PATH before starting the server.
 - The app folder must be a `git clone` of the project repo (a plain copy/folder is not detected as a repository).
 - The server must have internet access to `origin` for `git fetch`.
-- The card runs `git pull --ff-only`, `composer install`, `php artisan migrate`, `npm ci`, `npm run build`, `php artisan optimize:clear` (requires Node + Composer on PATH).
+- The card creates an automatic database backup (`BackupService`, SQL only, no storage) as its first step, then runs `git pull --ff-only`, `composer install`, `php artisan migrate`, `npm ci`, `npm run build`, `php artisan optimize:clear` (requires Node + Composer on PATH).
+- The card never runs any seeder, so `village_settings` / `letter_configs` / user accounts are never touched by an update.
 - Important (Windows): the service uses array-form `Process(['git', ...])`, NOT `Process::fromShellCommandline()`. Shell-form commands (`cmd.exe /c`) fail to resolve executables inside Laravel web requests on Windows even when `git` is on PATH — array-form is reliable.
 ```
 
@@ -70,10 +71,16 @@ php artisan tinker --execute="\App\Models\User::create(['name'=>'Admin','nik'=>'
 - Sumber kebenaran: tabel `village_settings`.
 - `App\Providers\VillageSettingServiceProvider` memuat seluruh isi tabel ke
   `config('village.*')` pada `boot()` — semua komponen membaca dari situ.
+  Nilainya di-`merge` dengan default `config/village.php`, bukan menggantikannya,
+  supaya key yang belum ada di tabel tetap punya nilai default.
 - `config/village.php` **hanya fallback** (dipakai kalau tabel belum ada).
   Jangan isi nama desa/pejabat/nomor di sana — file ikut ter-deploy.
 - Tampilan Kades/Sekdes/Kaur/Kasi/BPD ada di **Admin → Pengaturan**, disimpan
   sebagai key di grup `officials`.
+- **Riwayat perubahan tersimpan** di tabel `setting_versions` (snapshot penuh tiap
+  kali settings disimpan). Kalau data pengaturan pernah hilang/terbalik, restore
+  dari Admin → Pengaturan → Audit Log / Riwayat, atau dari file `.zip` di
+  `storage/app/backups/`.
 
 ## Routes
 

@@ -155,11 +155,22 @@ class VillageSettingSeeder extends Seeder
             ['key' => 'tampilan_sidebar_style', 'value' => 'default', 'group' => 'appearance'],
         ];
 
+        $created = 0;
+        $skipped = [];
+
         foreach ($defaults as $item) {
-            VillageSetting::firstOrCreate(
+            $wasCreated = VillageSetting::firstOrCreate(
                 ['key' => $item['key']],
                 ['value' => $item['value'], 'group' => $item['group']]
-            );
+            )->wasRecentlyCreated;
+
+            $wasCreated ? $created++ : $skipped[] = $item['key'];
+        }
+
+        $this->command?->info("VillageSetting: {$created} key baru dibuat, ".count($skipped).' key sudah ada dan dipertahankan.');
+
+        if ($skipped !== []) {
+            $this->command?->line('  Dipertahankan: '.implode(', ', array_slice($skipped, 0, 15)).(count($skipped) > 15 ? ', ...' : ''));
         }
     }
 }
