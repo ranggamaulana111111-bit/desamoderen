@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Setting\SettingStoreRequest;
 use App\Models\ActivityLog;
 use App\Models\LetterConfig;
+use App\Models\PengajuanSurat;
+use App\Models\User;
 use App\Services\BackupService;
 use App\Services\GitUpdateService;
 use App\Services\SettingService;
@@ -29,6 +31,7 @@ class SettingController extends Controller
     {
         $groupedSettings = $this->settingService->getAllGrouped();
         $categories = $this->settingService->getCategories();
+        $categoriesBySection = $this->settingService->getCategoriesBySection();
         $letterTemplates = LetterConfig::all();
 
         $auditLogs = ActivityLog::where('tipe', 'pengaturan')
@@ -61,10 +64,24 @@ class SettingController extends Controller
             ->mapWithKeys(fn ($k) => [$k => $settings[$k] ?? ''])
             ->all();
 
+        $stats = [
+            'warga' => User::role('Warga')->count(),
+            'rt' => User::role('RT')->count(),
+            'rw' => User::role('RW')->count(),
+            'surat_bulan_ini' => PengajuanSurat::whereYear('created_at', now()->year)
+                ->whereMonth('created_at', now()->month)
+                ->count(),
+            'surat_total' => PengajuanSurat::count(),
+            'template_surat' => $letterTemplates->count(),
+            'kategori' => count($categories),
+            'backup_terakhir' => $backups[0] ?? null,
+        ];
+
         return view('admin.setting.index', compact(
             'settings',
             'groupedSettings',
             'categories',
+            'categoriesBySection',
             'letterTemplates',
             'auditLogs',
             'versions',
@@ -72,6 +89,7 @@ class SettingController extends Controller
             'previewDefaults',
             'telegramConfigured',
             'backups',
+            'stats',
         ));
     }
 

@@ -1,10 +1,10 @@
 <div x-show="activeTab === 'maintenance'" x-cloak class="animate-fade-in space-y-4">
     {{-- Update Aplikasi dari GitHub --}}
     @hasrole('Super Admin')
-    <div class="setting-card bg-white rounded-2xl shadow-sm overflow-hidden" x-data="updateApp()" x-init="initUpdate()">
-        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-emerald-50/50 to-white">
+    <div class="setting-card" data-acc="emerald" x-data="updateApp()" x-init="initUpdate()">
+        <div class="setting-head">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <div class="setting-head-icon">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 </div>
                 <div class="flex-1">
@@ -25,7 +25,7 @@
                             <span class="text-xs font-mono text-gray-700" x-text="current.shortHash || '-'"></span>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-gray-800" x-text="current.message || '—'"></p>
+                            <p class="text-sm font-semibold text-gray-800" x-text="current.message || 'â€”'"></p>
                             <p class="text-xs text-gray-500 mt-0.5" x-text="current.date ? formatDate(current.date) : ''"></p>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                         <div class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                             <p class="text-sm font-bold text-emerald-800">
-                                Update tersedia — <span x-text="behindCount"></span> commit baru
+                                Update tersedia â€” <span x-text="behindCount"></span> commit baru
                             </p>
                         </div>
                         <div>
@@ -83,10 +83,10 @@
     </div>
     @endhasrole
 
-    <div class="setting-card bg-white rounded-2xl shadow-sm overflow-hidden">
-        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50/50 to-white">
+    <div class="setting-card" data-acc="gray">
+        <div class="setting-head">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center">
+                <div class="setting-head-icon">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-4.29-4.3m0 0l-4.29 4.3m4.29-4.3V1.59m0 18.82V21m0-21l4.29 4.3m0 0l4.29-4.3M17.59 9H21M3 9h3.41m10.18 0H21M3 9h3.41"/></svg>
                 </div>
                 <div>

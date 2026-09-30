@@ -1,5 +1,5 @@
 {{-- Configuration Versioning Bar --}}
-<div class="px-6 py-3 border-b border-gray-100 bg-gradient-to-r from-amber-50/30 to-white">
+<div class="setting-subhead">
     <div class="flex items-center flex-wrap gap-2">
         <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         <span class="text-xs font-medium text-gray-600">Configuration Versioning:</span>

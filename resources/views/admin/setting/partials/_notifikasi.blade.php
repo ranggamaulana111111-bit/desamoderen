@@ -10,10 +10,10 @@
       action="{{ route('admin.setting.update', 'notifikasi') }}" method="POST"
       class="animate-fade-in" @submit="saving = true">
     @csrf
-    <div class="setting-card bg-white rounded-2xl shadow-sm overflow-hidden">
-        <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-pink-50/50 to-white">
+    <div class="setting-card" data-acc="pink">
+        <div class="setting-head">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center">
+                <div class="setting-head-icon">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
                 </div>
                 <div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+            <label class="setting-toggle">
                 <input type="hidden" name="notif_reminder_aktif" value="0">
                 <input type="checkbox" name="notif_reminder_aktif" value="1" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" {{ ($settings['notif_reminder_aktif'] ?? '1') == '1' ? 'checked' : '' }}>
                 <div>
@@ -56,8 +56,8 @@
                 </div>
             </label>
         </div>
-        <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
-            <button type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition shadow-sm hover:shadow" :disabled="saving">
+        <div class="setting-foot">
+            <button type="submit" class="btn-save" :disabled="saving">
                 <svg x-show="!saving" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
                 <svg x-show="saving" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182"/></svg>
                 <span x-text="saving ? 'Menyimpan...' : 'Simpan Perubahan'"></span>

@@ -1,15 +1,28 @@
-@props(['name', 'label', 'value' => '', 'accept' => 'image/png,image/jpeg'])
+@props(['name', 'label', 'value' => '', 'accept' => 'image/png,image/jpeg', 'hint' => null])
 
 <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1.5">{{ $label }}</label>
-    @if (!empty($value) && Storage::disk('public')->exists($value))
-    <div class="mb-2">
-        <img src="{{ asset('storage/' . $value) }}" alt="{{ $label }}" class="h-20 w-auto rounded-lg border border-gray-200 shadow-sm">
+    <p class="setting-label">{{ $label }}</p>
+
+    <div class="setting-upload">
+        @if (!empty($value) && Storage::disk('public')->exists($value))
+        <div class="setting-upload-preview">
+            <img src="{{ asset('storage/' . $value) }}" alt="{{ $label }}" class="h-full w-auto max-h-16 object-contain">
+        </div>
+        @endif
+
+        <label class="setting-upload-drop" for="file-{{ $name }}">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/>
+            </svg>
+            <span class="text-xs font-semibold text-gray-700">Pilih berkas</span>
+            <span class="text-[10px] font-medium text-gray-400">atau tarik ke sini</span>
+            <input type="file"
+                   id="file-{{ $name }}"
+                   name="{{ $name }}"
+                   accept="{{ $accept }}"
+                   {{ $attributes->merge(['class' => 'sr-only']) }}>
+        </label>
     </div>
-    @endif
-    <input type="file"
-           name="{{ $name }}"
-           accept="{{ $accept }}"
-           {{ $attributes->merge(['class' => 'block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 file:transition cursor-pointer']) }}>
-    <p class="text-xs text-gray-400 mt-1">Format: {{ str_replace(',', ', ', $accept) }}, maks. 2 MB</p>
+
+    <p class="setting-hint">{{ $hint ?? 'Format: '.str_replace(',', ', ', $accept).' · maks. 2 MB' }}</p>
 </div>
